@@ -11,7 +11,7 @@ return array (
 		'DB_NAME' => 'tongdui', // 数据库名
 		'DB_USER' => 'root', // 用户名
 //		'DB_PWD' => 'jycf20150805@', // 密码'
-        'DB_PWD' => '',
+        'DB_PWD' => 'kyo123',
 		'DB_PREFIX' => 'ms_common_', // 数据库表前缀
 		'DB_PREFIX_G' => 'ms_',
 		'DB_PREFIX_C' => 'ms_common_',
