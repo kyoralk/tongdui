@@ -1,0 +1,24 @@
+<table class="search-form">
+	<tr>
+		<td>&nbsp;</td>
+		<td class="w60">本店分类</td>
+		<td class="w160"><select name="store_class_id" class="w160">
+				<option value="">请选择...</option>
+				<volist name="class_list" id="sc"> <option value="{$sc.sc_id}" 
+					<if condition="$sc.sc_id eq $store_class_id"> selected="selected"</if>
+					>{$sc.sc_name}
+					</option>
+					<volist name="sc._child" id="scc"> <option value="{$scc.sc_id}" 
+						<if condition="$scc.sc_id eq $store_class_id"> selected="selected"</if>
+						>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|——{$scc.sc_name}
+						</option>
+					</volist>
+				</volist>
+			</select></td>
+		<td class="w96"> 商品名称 </td>
+		<td class="w160"><input type="text" class="text w150" name="goods_name" value="{$goods_name}" /></td>
+		<td class="tc w70"><label class="submit-border">
+				<input type="submit" class="submit" value="搜索" />
+			</label></td>
+	</tr>
+</table>

@@ -1,0 +1,50 @@
+<div class="tb-sku">
+	<volist name="sku_list" id="sk">
+		<dl class="tb-prop tm-sale-prop tm-clear ">
+			<dt class="tb-metatit">{$sk.attr_name}</dt>
+			<dd>
+				<ul data-property="{$al.attr_name}" class="tm-clear J_TSaleProp     ">
+					<volist name="sk.attr_value" id="sv" key="key">
+						<if condition="$key eq 1">
+							<li class="tb-selected" >
+								<a data-value="{$sv.add_price}" href="javascript:;" onclick="reset_price(this)">
+									<span>{$sv.attr_values}</span>
+								</a>
+								<i>已选中</i>
+							</li>
+						<else/>
+							<li>
+								<a data-value="{$sv.add_price}" href="javascript:;" onclick="reset_price(this)">
+									<span>{$sv.attr_values}</span>
+								</a>
+							</li>
+						</if>
+
+					</volist>
+				</ul>
+			</dd>
+		</dl>
+	</volist>
+</div>
+
+<script>
+function reset_price(the_current){
+	var ul = $(the_current).parent().parent();
+	var li = $(the_current).parent();
+	ul.find("li").attr("class","");
+	ul.find("li").find("i").remove();
+	
+	$(the_current).parent().attr("class","tb-selected");
+	$("<i>已选中</i>").appendTo(li);
+	
+	var add_price = 0;
+	var selected = $(".tb-selected");
+	selected.each(function(){
+		price_linshi = $(this).find("a").attr("data-value");
+		add_price +=price_linshi/1;
+	});
+	var price = $("#_baknowPriceStr").val();
+	price = price/1+add_price/1;
+	$("#_nowPriceStr").html(price.toFixed(2))
+}
+</script>

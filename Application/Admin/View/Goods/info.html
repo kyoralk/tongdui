@@ -1,0 +1,279 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<form name="myform" id="myform" class="form-horizontal" action="{:U('Goods/save')}" method="post" >
+<input name="goods_id" type="hidden" value="{$goods_info.goods_id}"/>
+<div class="box">
+	<div class="box-body">
+		<div class="nav-tabs-custom">
+			<ul class="nav nav-tabs">
+				<li class="active"><a aria-expanded="true" href="#tab_1" data-toggle="tab">通用信息</a></li>
+				<li class=""><a aria-expanded="false" href="#tab_2" data-toggle="tab">详细描述</a></li>
+				<li class=""><a aria-expanded="false" href="#tab_3" data-toggle="tab">其他信息</a></li>
+<!-- 				<li class=""><a aria-expanded="false" href="#tab_4" data-toggle="tab">扩展信息</a></li> -->
+				<li class=""><a aria-expanded="false" href="#tab_5" data-toggle="tab">商品相册</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_1">
+					{:fastModule('form-group',array('商品标题'),array('text','goods_name',$goods_info['goods_name']))}
+					{:fastModule('form-group',array('副标题'),array('text','small_name',$goods_info['small_name']))}
+					{:fastModule('form-group',array('商品分类'),array('select','gc_id',array($class_list,$goods_info['gc_id'],array('gc_id','gc_name'))))}
+					<div class="form-group">
+						<label for="" class="col-sm-2 control-label">商品品牌</label>
+						<div class="col-sm-4">
+							<select name="brand_id" class="form-control">
+							<option value="">选择品牌</option>
+							</select>
+						</div>
+					</div>
+					{:fastModule('form-group',array('市场价格'),array('text','market_price',$goods_info['market_price']))}
+					{:fastModule('form-group',array('本店售价'),array('text','shop_price',$goods_info['shop_price']))}
+					{:fastModule('form-group',array('最大购买数量'),array('text','max_buy',$goods_info['max_buy']))}
+					{:fastModule('form-group',array('促销价格'),array('text','promote_price',$goods_info['promote_price']))}
+					<div class="form-group">
+						<label for="" class="col-sm-2 control-label">促销起始时间</label>
+						<div class="row">
+							<div class="col-md-2">
+								<div class="col-sm-12 input-group date">
+	                  				<div class="input-group-addon">
+	                    				<i class="fa fa-calendar"></i>
+	                  				</div>
+	                  				<input class="form-control pull-right" placeholder="开始时间" name="promote_start_date" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" 
+	                  					<notempty name="goods_info.promote_start_date">
+	                  					value="{$goods_info.promote_start_date|date='Y-m-d H:i:s',###}"</notempty> >
+	                			</div>
+							</div>
+							<div class="col-md-2">
+								<div class="col-sm-12 input-group date">
+	                  				<div class="input-group-addon">
+	                    				<i class="fa fa-calendar"></i>
+	                  				</div>
+	                  				<input class="form-control pull-right" placeholder="结束时间" name="promote_end_date" type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" 
+	                  					<notempty name="goods_info.promote_end_date">
+	                  					value="{$goods_info.promote_end_date|date='Y-m-d H:i:s',###}" </notempty> >
+	                			</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_2">
+					{:fastModule('form-group',array('详细描述'),array('kindEditor','goods_desc',$goods_info['goods_desc'],'goods_desc','Mall'))}
+				</div>
+				<div class="tab-pane" id="tab_3">
+					{:fastModule('form-group',array('消费类型'),array('radio','consumption_type',array(array('现金',1,$goods_info['consumption_type'],1),array('一卷通',2,$goods_info['consumption_type'],1),array('购物券',3,$goods_info['consumption_type'],1)),'','','radio'))}
+<!-- 					{:fastModule('form-group',array('可用一卷通'),array('text','yjt_can',$goods_info['gwq_can']))} -->
+<!-- 					{:fastModule('form-group',array('可用购物券'),array('text','gwq_can',$goods_info['gwq_can']))} -->
+					{:fastModule('form-group',array('赠送积分'),array('text','give_integral',$goods_info['give_integral']))}
+					{:fastModule('form-group',array('商品重量'),array('text','goods_weight',$goods_info['goods_weight']))}
+					{:fastModule('form-group',array('运费计算'),array('radio','freight_type',array(array('固定运费',1,$goods_info['freight_type'],1),array('运费模板',2,$goods_info['freight_type'],1)),'','','radio'))}
+					{:fastModule('form-group',array('商品运费'),array('text','freight',$goods_info['freight']),'选择固定运费时有效，0表示包邮')}
+					{:fastModule('form-group',array('加入推荐'),array('checkbox',array('is_best','is_new','is_hot'),array(array('精品',1,$goods_info['is_best'],0),array('新品',1,$goods_info['is_new'],0),array('热销',1,$goods_info['is_hot'],0)),'','','checkbox'))}
+					{:fastModule('form-group',array('是否上架'),array('checkbox',array('is_on_sale'),array(array('上架',1,$goods_info['is_on_sale'],1)),'','','checkbox'))}
+					<div class="form-group">
+						<label for="" class="col-sm-2 control-label">商品标签</label>
+						<div class="col-sm-10">
+							<ul class="list-inline">
+								<li class="left w20pre h36">
+									<input id="goods_tag_radio_cancel" name="goods_tag_radio" value="" type="radio" class="span4">
+									<label for="goods_tag_radio_cancel" style="font-weight: normal;">取消单选标签</label>
+								</li>
+								<volist name="tag_list['tag_radio']" id="vo">
+								<li class="left w20pre h36">
+									<input id="goods_tag_radio{$key}" name="goods_tag_radio" value="{$vo.tag}" type="radio" class="span4" <if condition="$vo.checked eq 1">checked="checked"</if>>
+									<label for="goods_tag_radio{$key}" style="font-weight: normal;">{$vo.tag}</label>
+								</li>
+								</volist>
+							</ul>
+							<ul class="list-inline">
+								<volist name="tag_list['tag_checkbox']" id="vo">
+								<li class="left w20pre h36">
+									<input id="goods_tag_checkbox{$key}" name="goods_tag_checkbox[]" value="{$vo.tag}" type="checkbox" class="span4" <if condition="$vo.checked eq 1">checked="checked"</if>>
+									<label for="goods_tag_checkboxa{$key}" style="font-weight: normal;">{$vo.tag}</label>
+								</li>
+								</volist>
+							</ul>
+						</div>
+						<p class="help-block"></p>
+					</div>
+					{:fastModule('form-group',array('商品关键词'),array('text','keywords',$goods_info['keywords']))}
+					{:fastModule('form-group',array('简单描述'),array('text','description',$goods_info['description']))}
+				</div>
+<!-- 				<div class="tab-pane" id="tab_4"> -->
+<!-- 					<div class="form-group"> -->
+<!-- 						<label for="" class="col-sm-2 control-label">选择模型</label> -->
+<!-- 						<div class="col-sm-4"> -->
+<!-- 							<select name="mid" class="form-control"> -->
+<!-- 							<option value="0">选择模型</option> -->
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-sm-2"><button type="button" class="btn btn-warning" onclick="resetModel()">重置模型</button></div> -->
+<!-- 					</div> -->
+<!-- 					<div id="extend"></div> -->
+<!-- 				</div> -->
+				<div class="tab-pane" id="tab_5">
+				
+				<div class="row">
+					<volist name="goods_info.goods_img" id="img">
+  					<div class="col-xs-6 col-md-2">
+  						<div class="thumbnail">
+ 							<img src="/Uploads/{$img.save_path}Thumb/m_{$img.save_name}">
+ 							<div class="caption">
+        					<a href="#" class="btn btn-danger btn-xs" role="button" onclick="removeImg(this,'{$img.save_name}',{$goods_info.goods_id})">删除图片</a>
+     						 </div>
+    					</div>
+  					</div>
+  					</volist>
+				</div>
+				<include file="Goods:fileinput"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="box-footer">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-4">
+			<button type="button" class="btn btn-primary" onclick="submitForm()">保存</button>
+		</div>
+	</div>
+</div>
+</form>
+</section>
+<input name="init_mid" type="hidden" value="{$goods_info.mid}"/>
+<input name="init_brand_id" type="hidden" value="{$goods_info.brand_id}"/>
+<script type="text/javascript" src="/Static/Common/My97DatePicker/WdatePicker.js"></script>
+<script>
+//初始化属性
+$(function(){
+	var gc_id = $("select[name='gc_id']").find("option:selected").val();
+	var mid = $("input[name='init_mid']").val();
+	var brand_id = $("input[name='init_brand_id']").val();
+	if(gc_id !=''){
+		getInit(gc_id,brand_id,mid);
+	}
+	if(mid !=''){
+		var goods_id = $("input[name='goods_id']").val();
+		getAttr(gc_id,goods_id);
+	}
+});
+$("select[name='gc_id']").change(function(){
+	var gc_id = $(this).find("option:selected").val();
+	getInit(gc_id);
+});
+function getInit(gc_id,brand_id,mid){
+	$.get("{:U('Brand/getBrand')}",{gc_id:gc_id},function(res){
+		if(res.status == 1){
+			var data = res.result;
+			var html = '<option value="">选择品牌</option>';
+			for(var i in data){
+				var item = data[i];
+				html += '<option ';
+				if(item['brand_id']==brand_id){
+					html += ' selected="selected" ';
+				}
+				html += ' value="'+item['brand_id']+'">'+item['brand_name']+'</option>';
+			}
+			$("select[name='brand_id']").html(html);
+		}
+	});
+	$.get("{:U('General/Model/getModel')}",{gc_id:gc_id},function(res){
+		if(res.status == 1){
+			var data = res.result;
+			var html = '<option value="0">选择模型</option>';
+			for(var i in data){
+				var item = data[i];
+				html += '<option ';
+				if(item['mid']==mid){
+					html += ' selected="selected" ';
+				}
+				html += ' value="'+item['mid']+'">'+item['model_name']+'</option>';
+			}
+			$("select[name='mid']").html(html);
+		}
+	});
+}
+/**
+ * 选择模型
+ */
+$("select[name='mid']").change(function(){
+	var mid = $(this).find("option:selected").val();
+	var goods_id = $("input[name='goods_id']").val();
+	getAttr(mid,goods_id);
+});
+/**
+ * 重置模型
+ */
+function resetModel(){
+	var mid = $("select[name='mid']").find("option:selected").val();
+	getAttr(mid,0);
+}
+/**
+ * 获取扩展属性
+ */
+function getAttr(mid,goods_id=0){
+	$.get("{:U('General/Model/getAttr')}",{mid:mid,goods_id:goods_id},function(ret){
+		$("#extend").html(ret);
+	},'text');
+}
+/**
+ * 添加属性
+ */
+function addAttr(the_current,extend_id=0){
+	var row = $(the_current).parent().parent();
+	var html = row.html();
+	html = html.replace('<a href="javascript:;" onclick="addAttr(this,'+extend_id+');"><i class="fa fa-plus" title="增加"></i>增加</a>','<a href="javascript:;" onclick="minusAttr(this);"><i class="fa fa-minus" title="减少"></i>减少</a>');
+	
+	if(extend_id!=0){
+		html = html.replace('<input name="extend_id[]" value="'+extend_id+'" type="hidden">','<input name="extend_id[]" value="0" type="hidden">');
+		html = html.replace('<a href="javascript:;" onclick="removeExtend(this,'+extend_id+');"><i class="fa fa-remove" title="移除"></i>移除</a>','');
+	}
+	row.after('<div class="form-group">'+html+'</div>');
+}
+/**
+ * 删除属性
+ */
+function minusAttr(the_current){
+	$(the_current).parent().parent().remove();
+}
+/**
+ * 移除扩展信息
+ */
+ function removeExtend(the_current,extend_id){
+	$.get("{:U('Goods/removeExtend')}",{extend_id,extend_id},function(res){
+		if(res.status == 1){
+			$(the_current).parent().parent().remove();
+		}else{
+			alert(res.info);
+		}
+	})
+}
+/**
+ * 删除图片
+ */
+ function removeImg(the_current,img_name,goods_id){
+	$.get("{:U('Goods/removeImg')}",{img_name:img_name,goods_id:goods_id},function(res){
+		if(res.status == 1){
+			$(the_current).parent().parent().parent().remove();
+		}else{
+			alert(res.info);
+		}
+	})
+}
+/**
+ * 提交表单
+ */
+function submitForm(){
+	var goods_img = $("input[name='goods_img[]']").val();
+	if(goods_img!=''){
+		document.getElementById('myform').encoding="multipart/form-data";
+	}
+	document.myform.submit();	
+}
+</script>

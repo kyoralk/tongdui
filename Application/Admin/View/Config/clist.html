@@ -1,0 +1,31 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+	</div>
+</section>
+<section class="content">
+	<div class="box">
+		<div class="box-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="table-textcenter">名称</th>
+						<th class="table-textcenter">简介</th>
+						<th class="table-textcenter">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="config_list" id="cl">
+						<tr>
+							<td class="table-textcenter">{$cl.name}</td>
+							<td>{$cl.desc}</td>
+							<td class="table-textcenter">
+								<a href="{:U('Config/info?code='.$cl['code'])}">配置</a>
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>

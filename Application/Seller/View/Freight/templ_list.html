@@ -1,0 +1,49 @@
+<div class="main-content" id="mainContent">
+	<div class="wrap">
+		<div class="tabmenu">
+			<ul class="tab pngFix">
+				<li><a href="#">模板列表</a></li>
+			</ul>
+			<a href="{:U('Freight/templInfo')}" class="ncsc-btn ncsc-btn-green" title="添加模板">添加模板</a> 
+		</div>
+		<table class="ncsc-default-table">
+			<thead>
+				<tr>
+					<th class="table-textcenter">名称</th>
+					<th class="table-textcenter">类型</th>
+					<th class="table-textcenter">首重/首件</th>
+					<th class="table-textcenter">续重/续件</th>
+					<th class="table-textcenter">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="tl">
+					<tr>
+						<td class="table-textcenter">{$tl.templ_name}</td>
+						<td class="table-textcenter"><if condition="$tl.type eq 1">按重量
+								<else/>
+								按件付费</if></td>
+						<td class="table-textcenter">{$tl.first_fee}</td>
+						<td class="table-textcenter">{$tl.next_fee}</td>
+						<td class="table-textcenter">
+							<a href="{:U('Freight/templInfo?templ_id='.$tl['templ_id'])}">编辑</a>&nbsp; 
+							<a href="{:U('Freight/templDel?templ_id='.$tl['templ_id'])}">删除</a></td>
+					</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+	<form id="del_form" method="post" action="http://shopnc.dxeee.com/shop/index.php?act=store_navigation&amp;op=navigation_del">
+		<input id="del_sn_id" name="sn_id" type="hidden">
+	</form>
+	<script type="text/javascript">
+    $(document).ready(function(){
+        $('[nctype="btn_del"]').on('click', function() {
+            var url = $(this).attr('data-url');
+            if(confirm('确认删除？')) {
+               	window.location.href = url;
+            }
+        });
+    });
+</script> 
+</div>

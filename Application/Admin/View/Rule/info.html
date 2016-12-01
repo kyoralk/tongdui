@@ -1,0 +1,41 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box box-info form-inline">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Rule/save')}" method="post">
+		<div class="box-body"> 
+			<ul>
+			<volist name="list" id="vo" key="k">
+			<li style="margin-top: 20px;height: 100%;clear: left;">
+				<label>
+					{$vo.name}
+					<input name="name[]" type="hidden" value="{$vo.name}"/>
+					<input name="type" type="hidden" value="{$vo.type}"/>
+				</label>
+			<p>
+				<volist name="vo.config" id="co">
+					<span style="display: table;float: left;margin-left: 20px;margin-bottom: 10px;">{$Think.lang.$key}：
+					<input name="key[{$k}][]" type="hidden" value="{$key}"/>
+					<input name="value[{$k}][]" class="form-control" style="width: 100px;" type="text" value="{$co}"/>
+					</span>&nbsp;
+				</volist>
+			</p>
+			</li>
+			</volist>
+			</ul>
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="submit" class="btn btn-primary">保存</button></div>
+		</div>
+	</form>
+</div>
+</section>

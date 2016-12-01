@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta id="viewport" content="width=device-width, user-scalable=no, initial-scale=1" name="viewport" />
+<link rel="stylesheet" href="/Static/Mall/WAP/Css/track.css">
+<title>物流追踪</title>
+</head>
+<body>
+<div role="main" data-role="content" class="smart-result ui-content" style="margin-bottom:10px">
+	<div class="content-primary">
+		<div> 
+			<span id="result-comname" class="smart-result-comname">{$shipping_name}</span>
+			<span id="result-kuaidinum" class="smart-result-kuaidinum">{$shipping_sn}</span>
+		</div>
+		<table id="queryResult">
+			<tbody>
+			<volist name="result.data" id="r" key="key">
+			<tr 
+				<if condition="$key eq $result['count']">
+						class="even first-line"
+				<elseif condition="($result.state eq 3) AND ($key eq 1)" />
+						class="even last-line checked"
+				<elseif condition="($result.state eq 0) AND ($key eq 1)" />
+						class="even last-line wait"
+				<else/>
+						class="even"
+				</if> >
+				<td class="col1"><span class="result-date">{$r.nyr}</span><span class="result-time">{$r.sfm}</span></td>
+				<td class="colstatus"></td>
+				<td class="col2"><span>{$r.context}</span></td>
+			</tr>
+			</volist>
+		</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

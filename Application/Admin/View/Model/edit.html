@@ -1,0 +1,72 @@
+<style>
+.left {
+    float: left;
+}
+.h36 {
+    height: 36px;
+}
+.w20pre {
+    width: 20%;
+    color: #333;
+}
+</style>
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Model/save')}" method="post">
+		<input name="mid" type="hidden" value="{$model_info.mid}"/>
+		<div class="box-body"> 
+			{:fastModule('form-group',array('模型名称'),array('text','model_name',$model_info['model_name']))}
+			{:fastModule('form-group',array('价格区间'),array('text','range',$model_info['range']))}
+			{:fastModule('form-group',array('关键词'),array('text','keywords',$model_info['keywords']))}
+			{:fastModule('form-group',array('品牌类型'),array('select','gc_id',array($class_list,$model_info['gc_id'],array('gc_id','gc_name'))))}
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">包含品牌</label>
+				<div class="col-sm-10">
+					<ul id="brand_list" class="list-inline">
+					<volist name="brand_list" id="bl">
+						<li class="left w20pre h36">
+						<input name="brand_id[]" type="checkbox" class="span4" checked="checked" value="{$bl.brand_id}"/>
+						<label>{$bl.brand_name}</label>
+						</li>
+					</volist>
+					</ul>
+				</div>
+			</div>
+			{:fastModule('form-group',array('是否启用'),array('radio','enabled',array(array('启用',1,$model_info['enabled'],1),array('不启用',0,$model_info['enabled'],1)),'','','radio'))}
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="submit" class="btn btn-primary" onclick="formSubmit();">保存</button></div>
+		</div>
+	</form>
+</div>
+</section>
+<script>
+$("select[name='gc_id']").change(function(){
+	var gc_id = $(this).val();
+	$.get("{:U('Brand/getBrand')}",{gc_id:gc_id},function(res){
+		var html = "";
+		if(res.status == 1){
+			var data = res.result;
+			for(var i in data){
+				var item = data[i];
+				html+='<li class="left w20pre h36">';
+				html+='<input name="brand_id[]" type="checkbox" class="span4" checked="checked" value="'+item.brand_id+'"/>';
+				html+='<label>&nbsp;&nbsp;'+item.brand_name+'</label>';
+				html+='</li>';
+			}
+		$("#brand_list").html(html);
+		}
+	});
+});
+</script>

@@ -1,0 +1,301 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11">
+			<h4><small>{$content_header}</small></h4>
+		</div>
+		<div class="col-md-1">
+			<notempty name="right_menu"> <a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a> </notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info form-inline">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Rule/dailishang')}" method="post">
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td rowspan="4" width="10px">省代理</td>
+					<td width="300px">直接对接的企业/商家/代理商</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>省内</td>
+									<td><table class="table table-bordered">
+											<tbody>
+												<tr>
+													<td>已售出的产品供货价 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="3_V_N_G_I" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_N_G_I}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+												<tr>
+													<td>加盟费 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="3_V_N_J_I" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_N_J_I}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+								<tr>
+									<td>省外</td>
+									<td><table class="table table-bordered">
+											<tbody>
+												<tr>
+													<td>已售出的产品供货价*
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="3_V_N_G_O" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_N_G_O}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+												<tr>
+													<td>加盟费*
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="3_V_N_G_O" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_N_G_O}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<tr>
+					<td>本省内市代直接对接的企业/商家/代理商</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>已售出的产品供货价  *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="3_V_2_G" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_2_G}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+								<tr>
+									<td>加盟费  *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="3_V_2_J" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_2_J}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<tr>
+					<td>本省内县发直接对接的企业/商家/代理商</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>已售出的产品供货价  *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="3_V_1_G" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_1_G}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+								<tr>
+									<td>加盟费*
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="3_V_1_J" class="form-control" type="text"  style="width: 50px;" value="{$list.3_V_1_J}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<tr>
+					<td>全国业务员对接本省内的企业/商家</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>已售出的产品供货价*
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_3_G" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_3_G}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+								<tr>
+									<td>商家加盟费 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_3_J" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_3_J}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<!-- -------------------分割线----------------------- -->
+				<tr>
+					<td rowspan="3">市代理</td>
+					<td>直接对接的企业/商家/代理商</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>市内</td>
+									<td><table class="table table-bordered">
+											<tbody>
+												<tr>
+													<td>已售出的产品供货价 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="2_V_N_G_I" class="form-control" type="text"  style="width: 50px;" value="{$list.2_V_N_G_I}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+												<tr>
+													<td>加盟费 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="2_V_N_J_I" class="form-control" type="text"  style="width: 50px;" value="{$list.2_V_N_J_I}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+								<tr>
+									<td>市外</td>
+									<td><table class="table table-bordered">
+											<tbody>
+												<tr>
+													<td>已售出的产品供货价 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="2_V_N_G_O" class="form-control" type="text"  style="width: 50px;" value="{$list.2_V_N_G_O}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+												<tr>
+													<td>加盟费 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="2_V_N_J_O" class="form-control" type="text"  style="width: 50px;" value="{$list.2_V_N_J_O}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<tr>
+					<td>本市内县代直接对接的企业/商家/代理商</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>已售出的产品供货价 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="2_V_1_G" class="form-control" type="text"  style="width: 50px;" value="{$list.2_V_1_G}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+								<tr>
+									<td>加盟费 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="2_V_1_J" class="form-control" type="text"  style="width: 50px;" value="{$list.2_V_1_J}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<tr>
+					<td>全国业务员对接本市内的企业/商家</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>已售出的产品供货价 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_2_G" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_2_G}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+								<tr>
+									<td>商家加盟费 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_2_J" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_2_J}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<!-- -------------------分割线----------------------- -->
+				<tr>
+					<td rowspan="2">县代理</td>
+					<td>直接对接的企业/商家/代理商</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>县内</td>
+									<td><table class="table table-bordered">
+											<tbody>
+												<tr>
+													<td>已售出的产品供货价 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="1_V_N_G_I" class="form-control" type="text"  style="width: 50px;" value="{$list.1_V_N_G_I}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+												<tr>
+													<td>加盟费 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="1_V_N_J_I" class="form-control" type="text"  style="width: 50px;" value="{$list.1_V_N_J_I}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+								<tr>
+									<td>县外</td>
+									<td><table class="table table-bordered">
+											<tbody>
+												<tr>
+													<td>已售出的产品供货价 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="1_V_N_G_O" class="form-control" type="text"  style="width: 50px;" value="{$list.1_V_N_G_O}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+												<tr>
+													<td>加盟费 *
+														<div class="input-group" style="margin-left: 10px;">
+															<input name="1_V_N_J_O" class="form-control" type="text"  style="width: 50px;" value="{$list.1_V_N_J_O}">
+															<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+												</tr>
+											</tbody>
+										</table></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<tr>
+					<td>全国业务员对接本县内的企业/商家</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>已售出的产品供货价 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_1_G" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_1_G}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+								<tr>
+									<td>商家加盟费 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_1_J" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_1_J}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+				<tr>
+					<td>业务员</td>
+					<td>全国业务员对接的企业/商家</td>
+					<td><table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>已售出的产品供货价 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_N_G" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_N_G}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+								<tr>
+									<td>商家加盟费 *
+										<div class="input-group" style="margin-left: 10px;">
+											<input name="S_V_N_J" class="form-control" type="text"  style="width: 50px;" value="{$list.S_V_N_J}">
+											<span class="input-group-addon" style="background: #eee;">%</span> </div></td>
+								</tr>
+							</tbody>
+						</table></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4">
+					<button type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+		</form>
+		
+	</div>
+</section>

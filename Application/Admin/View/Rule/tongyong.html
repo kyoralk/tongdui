@@ -1,0 +1,95 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11">
+			<h4><small>{$content_header}</small></h4>
+		</div>
+		<div class="col-md-1">
+			<notempty name="right_menu"> <a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a> </notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info form-inline">
+		<form name="myform" id="myform" class="form-horizontal" action="{:U('Rule/tongyong')}" method="post">
+			<div class="box-body">
+				<volist name="list" id="co" key="k" offset="2" length="1">
+					<div class="panel panel-default">
+						<div class="panel-heading">黑金</div>
+						<div class="panel-body">
+						剩余
+							<div class="input-group" style="margin-left: 10px;">
+								<input name="heijin" class="form-control" type="text"  style="width: 200px;" value="{$heijin}">
+								<span class="input-group-addon" style="background: #eee;">枚</span> 
+							</div>
+						</div>
+						<div class="panel-body">
+						每消费&nbsp;<input name="YJT_H" class="form-control" type="text"  style="width: 60px;" value="{$co['config']['YJT_H']}">&nbsp;一卷通送一枚黑金&nbsp;&nbsp;&nbsp;&nbsp;
+						每充值&nbsp;<input name="GWQ_H" class="form-control" type="text"  style="width: 60px;" value="{$co['config']['GWQ_H']}">&nbsp;购物券送一枚黑金&nbsp;&nbsp;&nbsp;&nbsp;
+						每获得分享赠送一卷通满&nbsp;<input name="FXZSYJT_H" class="form-control" type="text"  style="width: 60px;" value="{$co['config']['FXZSYJT_H']}">&nbsp;送一枚黑金
+						</div>
+						<div class="panel-body">
+						黑金满&nbsp;<input name="HJS" class="form-control" type="text"  style="width: 60px;" value="{$co['config']['HJS']}">&nbsp;可提现值第三方平台，并扣除
+						<div class="input-group" style="margin-left: 10px;">
+							<input name="TX_FEE_H" class="form-control" type="text"  style="width: 50px;" value="{$co['config']['TX_FEE_H']}">
+							<span class="input-group-addon" style="background: #eee;">%</span> 
+						</div>
+						的手续费
+						</div>
+					</div>
+				</volist>
+				<volist name="list" id="vo" key="k" offset="0" length="2">
+					<div class="panel panel-default">
+						<div class="panel-heading">{$vo.name}</div>
+						<div class="panel-body">
+							<volist name="vo.config" id="co">
+								<switch name="key">
+									<case value="TX_FEE">
+									手续费
+								<div class="input-group" style="margin-left: 10px;">
+									<input name="{$key}" class="form-control" type="text"  style="width: 50px;" value="{$co}">
+									<span class="input-group-addon" style="background: #eee;">%</span> 
+								</div>
+									</case>
+									<case value="CZ_GWQ_S_GWQ">
+									充值购物券送购物券
+								<div class="input-group" style="margin-left: 10px;">
+									<input name="{$key}" class="form-control" type="text"  style="width: 50px;" value="{$co}">
+									<span class="input-group-addon" style="background: #eee;">%</span> 
+								</div>
+									</case>
+									<case value="TX_MIN">
+									最小提现
+									<div class="input-group" style="margin-left: 10px;">
+									<input name="{$key}" class="form-control" type="text"  style="width: 50px;" value="{$co}">
+									<span class="input-group-addon" style="background: #eee;">元</span> 
+								</div>
+									</case>
+									<case value="TX_BASE">
+									提现基数
+									<div class="input-group" style="margin-left: 10px;">
+									<input name="{$key}" class="form-control" type="text"  style="width: 50px;" value="{$co}">
+									<span class="input-group-addon" style="background: #eee;">元</span> 
+								</div>
+									</case>
+									<default/>
+								人民币：{$Think.lang.$key}
+								<div class="input-group" style="margin-left: 10px;">
+									<input name="{$key}_{$k}" class="form-control" type="text"  style="width: 50px;" value="{$co}">
+									<span class="input-group-addon" style="background: #eee;">：1</span> 
+								</div>
+								</switch>
+								&nbsp;&nbsp;&nbsp;
+							</volist>
+						</div>
+					</div>
+				</volist>
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4">
+					<button type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>

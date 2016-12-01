@@ -1,0 +1,481 @@
+
+            <div class="m-article">
+                <div class="article-head">
+                    <div class="head-tool">
+                        <div class="item font-setting w-drop drop-hover">
+                            <span class="drop-show"><i class="icon icon-font"></i><b class="text">文字</b></span>
+                            <div class="drop-hide drop-hide-left">
+                                <b class="drop-arrow-outer"><i class="drop-arrow-inner"></i></b>
+
+                                <div class="drop-hide-inner">
+                                    <div class="buttons size-list">
+                                        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+                                        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+                                    </div>
+                                    <div class="buttons theme-list">
+                                        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">默认</button>
+                                        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">护眼</button>
+                                        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">夜间</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="head-util">
+
+                    <div class="item w-drop drop-hover"><span class="drop-show"><i class="icon icon-share"></i><b class="text">分享</b></span><div class="drop-hide drop-hide-right"><b class="drop-arrow-outer" style="margin-left: 88px;"><i class="drop-arrow-inner"></i></b><div class="drop-hide-inner"><div class="m-share-list"><a class="weixin icon-weixin" data-sharing="wechat"></a><a class="qq icon-qq" data-sharing="qq"></a><a class="weibo icon-sina" data-sharing="weibo"></a></div></div></div></div><a class="comment item" title="评论"><i class="icon icon-speech-bubble"></i><b class="text">评论</b></a><a class="collect item" title="收藏"><i class="icon icon-heart"></i><b class="text">收藏</b></a></div>
+                    <h1>另：(helper.php)辅助函数</h1>
+                </div>
+                <div class="article-wrap">
+                    <div class="article-view">
+                        <div class="view-body think-editor-content"><div class="markdown-toc"><ul class="markdown-toc-list"><li><ul><li><a class="toc-level-2" href="#1-thinkphp-helper-php-" level="2">1 辅助函数文件函数列表(thinkphp\helper.php)</a></li><li><a class="toc-level-2" href="#2-" level="2">2 分析</a></li><li><a class="toc-level-2" href="#3-" level="2">3 总结</a></li></ul></li></ul></div>
+
+<h2 id="1-thinkphp-helper-php-">1 辅助函数文件函数列表(thinkphp\helper.php)</h2>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">A</span><span class="hljs-params">(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$layer</span> = CONTROLLER_LAYER)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::controller(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$layer</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">C</span><span class="hljs-params">(<span class="hljs-variable">$name</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$value</span> = null, <span class="hljs-variable">$range</span> = <span class="hljs-string">''</span>)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (is_null(<span class="hljs-variable">$value</span>) &amp;&amp; is_string(<span class="hljs-variable">$name</span>)) {
+        <span class="hljs-keyword">return</span> \think\Config::get(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$range</span>);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> \think\Config::set(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span>, <span class="hljs-variable">$range</span>);
+    }
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cookie</span><span class="hljs-params">(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span> = <span class="hljs-string">''</span>)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$name</span>)) {
+        <span class="hljs-comment">// 初始化</span>
+        \think\Cookie::init(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">elseif</span> (is_null(<span class="hljs-variable">$name</span>)) {
+        <span class="hljs-comment">// 清除</span>
+        \think\Cookie::clear(<span class="hljs-variable">$value</span>);
+    } <span class="hljs-keyword">elseif</span> (<span class="hljs-string">''</span> === <span class="hljs-variable">$value</span>) {
+        <span class="hljs-comment">// 获取</span>
+        <span class="hljs-keyword">return</span> \think\Cookie::get(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">elseif</span> (is_null(<span class="hljs-variable">$value</span>)) {
+        <span class="hljs-comment">// 删除session</span>
+        <span class="hljs-keyword">return</span> \think\Cookie::delete(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// 设置session</span>
+        <span class="hljs-keyword">return</span> \think\Cookie::set(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span>);
+    }
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">D</span><span class="hljs-params">(<span class="hljs-variable">$name</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$layer</span> = MODEL_LAYER)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::model(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$layer</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dump</span><span class="hljs-params">(<span class="hljs-variable">$var</span>, <span class="hljs-variable">$echo</span> = true, <span class="hljs-variable">$label</span> = null)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Debug::dump(<span class="hljs-variable">$var</span>, <span class="hljs-variable">$echo</span>, <span class="hljs-variable">$label</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">db</span><span class="hljs-params">(<span class="hljs-variable">$config</span> = [])</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Db::connect(<span class="hljs-variable">$config</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">E</span><span class="hljs-params">(<span class="hljs-variable">$msg</span>, <span class="hljs-variable">$code</span> = <span class="hljs-number">0</span>)</span>
+</span>{
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> \think\<span class="hljs-keyword">Exception</span>(<span class="hljs-variable">$msg</span>, <span class="hljs-variable">$code</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">G</span><span class="hljs-params">(<span class="hljs-variable">$start</span>, <span class="hljs-variable">$end</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$dec</span> = <span class="hljs-number">6</span>)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">''</span> == <span class="hljs-variable">$end</span>) {
+        \think\Debug::remark(<span class="hljs-variable">$start</span>);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'m'</span> == <span class="hljs-variable">$dec</span> ? \think\Debug::getRangeMem(<span class="hljs-variable">$start</span>, <span class="hljs-variable">$end</span>) : \think\Debug::getRangeTime(<span class="hljs-variable">$start</span>, <span class="hljs-variable">$end</span>, <span class="hljs-variable">$dec</span>);
+    }
+}</code></pre>
+
+<pre><code class="hljs bash"><span class="hljs-keyword">function</span> I(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$default</span> = null, <span class="hljs-variable">$filter</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$merge</span> = <span class="hljs-literal">false</span>)
+{
+    <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> === strpos(<span class="hljs-variable">$key</span>, <span class="hljs-string">'?'</span>)) {
+        <span class="hljs-variable">$key</span> = substr(<span class="hljs-variable">$key</span>, <span class="hljs-number">1</span>);
+        <span class="hljs-variable">$has</span> = <span class="hljs-string">'?'</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-variable">$has</span> = <span class="hljs-string">''</span>;
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$pos</span> = strpos(<span class="hljs-variable">$key</span>, <span class="hljs-string">'.'</span>)) {
+
+        <span class="hljs-variable">$method</span> = substr(<span class="hljs-variable">$key</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$pos</span>);
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">in</span>_array(<span class="hljs-variable">$method</span>, [<span class="hljs-string">'get'</span>, <span class="hljs-string">'post'</span>, <span class="hljs-string">'put'</span>, <span class="hljs-string">'delete'</span>, <span class="hljs-string">'param'</span>, <span class="hljs-string">'request'</span>, <span class="hljs-string">'session'</span>, <span class="hljs-string">'cookie'</span>, <span class="hljs-string">'server'</span>, <span class="hljs-string">'globals'</span>, <span class="hljs-string">'env'</span>, <span class="hljs-string">'path'</span>, <span class="hljs-string">'file'</span>])) {
+            <span class="hljs-variable">$key</span> = substr(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$pos</span> + <span class="hljs-number">1</span>);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-variable">$method</span> = <span class="hljs-string">'param'</span>;
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-variable">$method</span> = <span class="hljs-string">'param'</span>;
+    }
+    <span class="hljs-built_in">return</span> \think\Input::<span class="hljs-variable">$method</span>(<span class="hljs-variable">$has</span> . <span class="hljs-variable">$key</span>, <span class="hljs-variable">$default</span>, <span class="hljs-variable">$filter</span>, <span class="hljs-variable">$merge</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">import</span><span class="hljs-params">(<span class="hljs-variable">$class</span>, <span class="hljs-variable">$baseUrl</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$ext</span> = EXT)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::import(<span class="hljs-variable">$class</span>, <span class="hljs-variable">$baseUrl</span>, <span class="hljs-variable">$ext</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">L</span><span class="hljs-params">(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$vars</span> = [], <span class="hljs-variable">$lang</span> = <span class="hljs-string">''</span>)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Lang::get(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$vars</span>, <span class="hljs-variable">$lang</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">M</span><span class="hljs-params">(<span class="hljs-variable">$name</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$tablePrefix</span> = null, <span class="hljs-variable">$connection</span> = <span class="hljs-string">''</span>)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::table(<span class="hljs-variable">$name</span>, [<span class="hljs-string">'prefix'</span> =&gt; <span class="hljs-variable">$tablePrefix</span>, <span class="hljs-string">'connection'</span> =&gt; <span class="hljs-variable">$connection</span>]);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">R</span><span class="hljs-params">(<span class="hljs-variable">$url</span>, <span class="hljs-variable">$vars</span> = [], <span class="hljs-variable">$layer</span> = CONTROLLER_LAYER)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::action(<span class="hljs-variable">$url</span>, <span class="hljs-variable">$vars</span>, <span class="hljs-variable">$layer</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">S</span><span class="hljs-params">(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$options</span> = null)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$options</span>)) {
+
+        \think\Cache::connect(<span class="hljs-variable">$options</span>);
+    } <span class="hljs-keyword">elseif</span> (is_array(<span class="hljs-variable">$name</span>)) {
+
+        <span class="hljs-keyword">return</span> \think\Cache::connect(<span class="hljs-variable">$name</span>);
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">''</span> === <span class="hljs-variable">$value</span>) {
+
+        <span class="hljs-keyword">return</span> \think\Cache::get(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">elseif</span> (is_null(<span class="hljs-variable">$value</span>)) {
+
+        <span class="hljs-keyword">return</span> \think\Cache::rm(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">else</span> {
+
+        <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$options</span>)) {
+            <span class="hljs-variable">$expire</span> = <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$options</span>[<span class="hljs-string">'expire'</span>]) ? <span class="hljs-variable">$options</span>[<span class="hljs-string">'expire'</span>] : <span class="hljs-keyword">null</span>; 
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-variable">$expire</span> = is_numeric(<span class="hljs-variable">$options</span>) ? <span class="hljs-variable">$options</span> : <span class="hljs-keyword">null</span>; 
+        }
+        <span class="hljs-keyword">return</span> \think\Cache::set(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span>, <span class="hljs-variable">$expire</span>);
+    }
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">session</span><span class="hljs-params">(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span> = <span class="hljs-string">''</span>)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$name</span>)) {
+
+        \think\Session::init(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">elseif</span> (is_null(<span class="hljs-variable">$name</span>)) {
+
+        \think\Session::clear(<span class="hljs-variable">$value</span>);
+    } <span class="hljs-keyword">elseif</span> (<span class="hljs-string">''</span> === <span class="hljs-variable">$value</span>) {
+
+        <span class="hljs-keyword">return</span> \think\Session::get(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">elseif</span> (is_null(<span class="hljs-variable">$value</span>)) {
+
+        <span class="hljs-keyword">return</span> \think\Session::delete(<span class="hljs-variable">$name</span>);
+    } <span class="hljs-keyword">else</span> {
+
+        <span class="hljs-keyword">return</span> \think\Session::set(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span>);
+    }
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">T</span><span class="hljs-params">(<span class="hljs-variable">$class</span>, <span class="hljs-variable">$ext</span> = EXT)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::import(<span class="hljs-variable">$class</span>, TRAIT_PATH, <span class="hljs-variable">$ext</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">trace</span><span class="hljs-params">(<span class="hljs-variable">$log</span> = <span class="hljs-string">'[think]'</span>, <span class="hljs-variable">$level</span> = <span class="hljs-string">'log'</span>)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">'[think]'</span> === <span class="hljs-variable">$log</span>) {
+        <span class="hljs-keyword">return</span> \think\Log::getLog();
+    } <span class="hljs-keyword">else</span> {
+        \think\Log::record(<span class="hljs-variable">$log</span>, <span class="hljs-variable">$level</span>);
+    }
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">U</span><span class="hljs-params">(<span class="hljs-variable">$url</span>, <span class="hljs-variable">$vars</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$suffix</span> = true, <span class="hljs-variable">$domain</span> = false)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Url::build(<span class="hljs-variable">$url</span>, <span class="hljs-variable">$vars</span>, <span class="hljs-variable">$suffix</span>, <span class="hljs-variable">$domain</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">V</span><span class="hljs-params">(<span class="hljs-variable">$template</span> = <span class="hljs-string">''</span>, <span class="hljs-variable">$vars</span> = [])</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\View::instance(\think\Config::get())-&gt;fetch(<span class="hljs-variable">$template</span>, <span class="hljs-variable">$vars</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">vendor</span><span class="hljs-params">(<span class="hljs-variable">$class</span>, <span class="hljs-variable">$ext</span> = EXT)</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::import(<span class="hljs-variable">$class</span>, VENDOR_PATH, <span class="hljs-variable">$ext</span>);
+}</code></pre>
+
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">W</span><span class="hljs-params">(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$data</span> = [])</span>
+</span>{
+    <span class="hljs-keyword">return</span> \think\Loader::action(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$data</span>, <span class="hljs-string">'Widget'</span>);
+}</code></pre>
+
+<h2 id="2-">2 分析</h2>
+
+<p>1 <code>A()</code>
+调用Loader::controller,创建控制器实例。</p>
+
+<blockquote class="default">
+  <p>$name:控制器名称<br>
+  $layer:控制层</p>
+</blockquote>
+
+<p>Loader分析见另:自动加载器实例化</p>
+
+<hr>
+
+<p>2 <code>C()</code>
+调用Config::get() Config::set()操作配置参数</p>
+
+<blockquote class="default">
+  <p>$name:配置参数名称<br>
+  $value:配置参数值,为空则get获取，否则set设置<br>
+  $range:参数作用域</p>
+</blockquote>
+
+<p>Config分析见附:全局配置文件</p>
+
+<hr>
+
+<p><code>cookie()</code>
+调用think\Cookie操作cookie数据</p>
+
+<blockquote class="default">
+  <p>$name:</p>
+  
+  <blockquote class="default">
+    <p>数组:初始化cookie<br>
+        为空:清除cookie</p>
+  </blockquote>
+  
+  <p>$value:</p>
+  
+  <blockquote class="default">
+    <p>null : 删除session<br>
+        ' '    : 获取cookie的$name<br>
+        其他   : 设置cookie的$name的值</p>
+  </blockquote>
+</blockquote>
+
+<p>Cookie分析见另：Cookie.php文件</p>
+
+<hr>
+
+<p>3 <code>D()</code>
+调用Loader::model()创建数据模型对象</p>
+
+<blockquote class="default">
+  <p>$name:数据模型名称<br>
+  $layer:数据模型业务层</p>
+</blockquote>
+
+<p>Loader分析见另：自动加载器实例化</p>
+
+<hr>
+
+<p><code>dump()</code>
+调用Debug::dump()格式化友好输出数据</p>
+
+<blockquote class="default">
+  <p>$var: 输出数据<br>
+  $echo: treu,直接输出;false，返回结果<br>
+  $label:标签控制</p>
+</blockquote>
+
+<p>Debug分析见另:Debug.php文件</p>
+
+<hr>
+
+<p><code>db()</code>
+调用Db::connect()创建数据库连接对象</p>
+
+<blockquote class="default">
+  <p>$config:数据库连接配置</p>
+</blockquote>
+
+<p>Db分析见 另:Db.php文件</p>
+
+<hr>
+
+<p>4 <code>E()</code>
+调用Exception()抛出异常</p>
+
+<blockquote class="default">
+  <p>$msg:异常消息<br>
+  $code:异常代码，默认为0</p>
+</blockquote>
+
+<p>Exception分析见Exception.php文件</p>
+
+<p>5 <code>G()</code>
+调用Debug::remark()记录资源使用情况</p>
+
+<blockquote class="default">
+  <p>$start:开始标签<br>
+  $end:结束标签<br>
+  $desc:小数位</p>
+</blockquote>
+
+<p>Debug文件分析见另:Debug.php文件</p>
+
+<p>6 <code>I()</code></p>
+
+<p>调用think\Input获取输入数据，</p>
+
+<blockquote class="default">
+  <p>$key：键名[get.xx，表明参数来源,]<br>
+  $default:默认值<br>
+  $filter:过滤出来<br>
+  $merge:</p>
+</blockquote>
+
+<p>Input文件分析见另:Input.php文件</p>
+
+<hr>
+
+<p><code>import()</code>
+调用Loader快速导入类库</p>
+
+<hr>
+
+<p>7 <code>L()</code>
+调用Lang::get()获取语言变量配置</p>
+
+<blockquote class="default">
+  <p>$name:语言变量名称<br>
+  $vars:<br>
+  $lang:</p>
+</blockquote>
+
+<p>Lang分析见 另:Lang.php文件</p>
+
+<hr>
+
+<p>8 <code>M()</code>
+调用Loader::table()创建模型对象</p>
+
+<blockquote class="default">
+  <p>$name: 模型名称<br>
+  $tablePrefix: 数据表前缀<br>
+  $connection 数据库连接信息</p>
+</blockquote>
+
+<hr>
+
+<p>9 <code>R()</code>
+到普Loader::action()远程调用控制器的操作</p>
+
+<blockquote class="default">
+  <p>$url:模块/控制器/方法url<br>
+  $vars:调用参数<br>
+  $layer:</p>
+</blockquote>
+
+<hr>
+
+<p>10 <code>S()</code>
+调用Cache实现缓存</p>
+
+<blockquote class="default">
+  <p>$name：缓存名称<br>
+  $value:缓存数据<br>
+  $options:缓存参数</p>
+</blockquote>
+
+<p>Cache分析见另:Cache.php文件</p>
+
+<hr>
+
+<p>11 <code>T()</code>
+调用Loader快速导入Traits</p>
+
+<blockquote class="default">
+  <p>$class:trait库<br>
+  $ext:文件后缀</p>
+</blockquote>
+
+<p>Traits的原理见基础原理的php的trait</p>
+
+<hr>
+
+<p><code>trace()</code>
+调用Log操作日志细心</p>
+
+<blockquote class="default">
+  <p>$log:log字符串<br>
+  $level:日志级别</p>
+</blockquote>
+
+<p>Log分析见另：log.php文件</p>
+
+<hr>
+
+<p>12 <code>U()</code>
+调用Url生成url</p>
+
+<blockquote class="default">
+  <p>$url,基础url<br>
+  $vars,参数<br>
+  $suffix,<br>
+  $domain,</p>
+</blockquote>
+
+<p>Url分析见另：Url.php文件</p>
+
+<hr>
+
+<p>13 <code>V()</code>
+快速创建视图对象，</p>
+
+<blockquote class="default">
+  <p>$template:文件名称<br>
+  $vars:模板变量</p>
+</blockquote>
+
+<p>View分析见V：视图渲染文件</p>
+
+<hr>
+
+<p><code>venodr()</code>
+调用Loader快速导入插件</p>
+
+<hr>
+
+<p>14 <code>W()</code>
+调用Loader::Action()，渲染输出Widget组件</p>
+
+<blockquote class="default">
+  <p>$name:Widget名称<br>
+  $data:参数</p>
+</blockquote>
+
+<h2 id="3-">3 总结</h2>
+
+<p>26个字母中除 B,F,H,J,K,N,O,P,Q,X,Y,Z外实现了14个单字母函数。</p>
+
+<p>2个导入函数import，vendor</p>
+
+<p>2个通信函数session,cookie</p>
+
+<p>2个调试函数dump,trace</p>
+
+<p>1个数据库函数db</p>
+
+<p>总共21个辅助函数。</p></div>
+                        <div class="view-foot">
+                            <div class="article-jump">
+                                <span class="jump-up" style="display: block;">上一篇：<a data-articleid="120831" href="/zmwtp/tp5/120831">框架工具</a></span>
+                                <span class="jump-down">下一篇：<a data-articleid="120828" href="/zmwtp/tp5/120828">另：(Cache.php)数据缓存</a></span>
+                            </div>
+                            <a class="view-backtop"><i class="icon-arrow-up2"></i></a>
+                        </div>
+                    </div>
+                <div class="article-comment"><div id="articleComment" class="m-comment"><div class="comment-result"><strong class="title">相关评论(<b class="comment-total">0</b>)</strong><div class="comment-post"><form class="form" action="/comment/create" method="post"><label class="enter w-textarea textarea-full"><textarea class="textarea-input" name="content" placeholder="文明上网，理性发言" style="height: 72px;"></textarea><input name="doc_id" value="120824" type="hidden"></label><div class="util cf"><div class="left"><span class="comment-code"><b class="e-code icon-embed2" title="插入代码"></b></span></div><div class="right"><span class="form-tip w-fragment fragment-tip">Ctrl + Enter快速发布</span><label class="form-submit w-btn btn-success btn-m"><button class="btn-input" type="submit">发布</button></label></div></div><span class="form-loading">提交中...</span></form></div><div class="comment-list"><div class="comment-empty"><i class="image"></i><b class="text">暂无相关评论</b></div><div class="think-loading loading-ripple-empty"><span class="loading-inner"><i class="loading-image"></i><b class="loading-text">评论加载中</b></span></div></div><div class="comment-more"><span class="more-inner">加载剩余<b class="number">0</b>条评论</span></div></div></div></div></div>
+            <div class="think-loading loading-ripple"><span class="loading-inner"><i class="loading-image"></i><b class="loading-text"></b></span></div></div>

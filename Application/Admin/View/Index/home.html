@@ -1,0 +1,71 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box">
+	<section class="content" id="main"> 
+		<!-- Info boxes -->
+		<div class="row">
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="info-box"> <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+					<div class="info-box-content"> <span class="info-box-text">CPU Traffic</span> <span class="info-box-number">90<small>%</small></span> </div>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="info-box"> <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+					<div class="info-box-content"> <span class="info-box-text">Likes</span> <span class="info-box-number">41,410</span> </div>
+				</div>
+			</div>
+			<div class="clearfix visible-sm-block"></div>
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="info-box"> <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+					<div class="info-box-content"> <span class="info-box-text">Sales</span> <span class="info-box-number">760</span> </div>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<div class="info-box"> <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+					<div class="info-box-content"> <span class="info-box-text">New Members</span> <span class="info-box-number">2,000</span> </div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<table class="table table-bordered table-striped" style="width:100%">
+				<thead>
+					<tr>
+						<th>系统信息</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Web服务器：{$server_info.sysos}</td>
+						<td>php服务器版本：{$server_info.sysversion}</td>
+					</tr>
+					<tr>
+						<td>Mysql版本：{$server_info.mysqlinfo}</td>
+						<td>GD库版本：{$server_info.gdinfo}</td>
+					</tr>
+					<tr>
+						<td>FreeType：{$server_info.freetype}</td>
+						<td>远程文件获取：{$server_info.allowurl}</td>
+					</tr>
+					<tr>
+						<td>最大上传限制：{$server_info.max_upload}</td>
+						<td>最大执行时间：{$server_info.max_ex_time}</td>
+					</tr>
+					<tr>
+						<td>服务器时间：{$server_info.systemtime}</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+</div>
+</section>

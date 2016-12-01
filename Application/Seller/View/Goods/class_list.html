@@ -1,0 +1,156 @@
+<div class="main-content" id="mainContent"> 
+	<!-- S setp -->
+	<ul class="add-goods-step">
+		<li class="current"><i class="icon icon-list-alt"></i>
+			<h6>STEP.1</h6>
+			<h2>选择商品分类</h2>
+			<i class="arrow icon-angle-right"></i></li>
+		<li><i class="icon icon-edit"></i>
+			<h6>STEP.2</h6>
+			<h2>填写商品详情</h2>
+			<i class="arrow icon-angle-right"></i></li>
+		<li><i class="icon icon-camera-retro "></i>
+			<h6>STEP.3</h6>
+			<h2>上传商品图片</h2>
+			<i class="arrow icon-angle-right"></i></li>
+		<li><i class="icon icon-ok-circle"></i>
+			<h6>STEP.4</h6>
+			<h2>商品发布成功</h2>
+		</li>
+	</ul>
+	<!--S 分类选择区域-->
+	<div class="wrapper_search">
+		<div class="wp_sort">
+			<div id="dataLoading" class="wp_data_loading">
+				<div class="data_loading">加载中...</div>
+			</div>
+			<div class="sort_selector">
+				<div class="sort_title"> 您常用的商品分类：
+					<div class="text" id="commSelect">
+						<div>请选择</div>
+						<div class="select_list" id="commListArea">
+							<ul>
+								<notempty name="gc_id_path">
+									<volist name="gc_id_path" id="path">
+									<li onclick="self.location.href='/Seller/Goods/info/gc_id_path/{$path.path_id_str}'">
+										<span>{$path.path_name_str}</span>
+									</li>
+									</volist>
+								<else/>
+									<li id="select_list_no">
+										<span class="title">您还没有添加过常用的分类</span>
+									</li>
+								</notempty>
+								
+							</ul>
+						</div>
+						<i class="icon-angle-down"></i>
+					</div>
+					 </div>
+			</div>
+			<div id="class_div" class="wp_sort_block">
+				<div class="sort_list">
+					<div class="wp_category_list">
+						<div class="category_list">
+							<select size="15" style="height: unset;width:100%;" deep="1" id="deep_1">
+								<volist name="class_list" id="cl">
+									<option value="{$cl.gc_id}" <if condition="$key eq 0"> selected="selected" </if> >{$cl.gc_name}</option>
+								</volist>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="sort_list">
+					<div class="wp_category_list">
+						<div class="category_list">
+							<select size="15" style="height: unset;width:100%;" deep="2" id="deep_2">
+								
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="sort_list sort_list_last">
+					<div class="wp_category_list">
+						<div class="category_list">
+							<select size="15" style="height: unset;width:100%;" deep="3" id="deep_3">
+								
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="alert">
+			<dl class="hover_tips_cont">
+				<dt id="commodityspan"> <span style="color: #F00;">请选择商品类别</span> </dt>
+				<dt id="commoditydt" style="display: none;" class="current_sort">您当前选择的商品类别是：</dt>
+				<dd id="commoditydd"></dd>
+			</dl>
+		</div>
+		<div class="wp_confirm">
+			<form action="{:U('Goods/info')}" method="get">
+				<input name="goods_add" value="{$goods_add}" type="hidden"/>
+				<input name="goods_id" value="{$goods_id}" type="hidden"/>
+				<input name="gc_id" value="" type="hidden">
+				<input name="gc_id_path" value="" type="hidden">
+				<div class="bottom tc">
+					<label class="submit-border">
+						<input id="next_btn" disabled="disabled" value="下一步，填写商品信息" class="submit" style="width: 200px; border-radius:0px;" type="submit">
+					</label>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+var gc_id_path = "";
+$(function(){
+	var gc_id = $("#deep_1").val();
+	var gc_name = $("#deep_1 option:selected").text();
+	$("#next_btn").attr("disabled",true);
+	getClass(gc_id,gc_name,'1');
+});
+$("select").change(function(){
+	var gc_id = $(this).val();
+	var gc_name = $(this).find("option:selected").text();
+	var deep = $(this).attr("deep");
+	getClass(gc_id,gc_name,deep);
+});
+function getClass(gc_id,gc_name,deep){
+	$("#commodityspan").hide();
+	$("#commoditydt").show();
+	switch(deep){
+		case '1':
+			gc_id_path =gc_id+'-';
+			$("#deep_3").html('');
+			$("#commoditydd").html(gc_name+'<i class="icon-double-angle-right"></i>');
+			break;
+		case '2':
+			gc_id_path +=gc_id+'-';
+			$("#commoditydd").append(gc_name+'<i class="icon-double-angle-right"></i>');
+			break;
+		case '3':
+			gc_id_path +=gc_id;
+			$("input[name='gc_id']").val(gc_id);
+			$("input[name='gc_id_path']").val(gc_id_path);
+			$("#commoditydd").append(gc_name);
+			$("#next_btn").attr("disabled",false);
+			break;
+	}
+	$.get("{:U('Goods/selectClass')}",{gc_id:gc_id},function(res){
+		var html = "";
+		var data = res.result;
+		for(var i in data){
+			var item = data[i];
+			html+='<option value="'+item.gc_id+'">'+item.gc_name+'</option>';
+		}
+		deep++;
+		$("#deep_"+deep).html(html);
+	});
+}
+$("#commSelect").hover(function(){
+	$("#commListArea").show();
+},function(){
+	$("#commListArea").hide();
+});
+</script> 

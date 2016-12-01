@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>minshop</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" type="text/css" href="/Static/Common/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/Static/Admin/Css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/Static/Admin/Css/ionicons.min.css">
+<link rel="stylesheet" type="text/css" href="/Static/Admin/Css/AdminLTE.min.css">
+<link rel="stylesheet" href="/Static/Admin/Css/skins/_all-skins.min.css">
+<link rel="stylesheet" type="text/css" href="/Static/Admin/Css/style.css">
+<script src="/Static/Common/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="/Static/Common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/Static/Common/Js/minshop.js"></script>
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+	<div class="content-wrapper" id="main"> 
+		{__CONTENT__}
+	</div>
+<!-- 	<footer class="main-footer"> -->
+<!-- 		<div class="pull-right hidden-xs"> <i><b>Version</b> {$Think.config.version}</i></div> -->
+<!-- 		<i><strong>Copyright &copy; 2015-{$Think.const.NOW_TIME|date="Y",###} <a href="http://www.minshop.net" target="_blank" style="color: #3880f5;">minshop Studio</a>.</strong> All rights -->
+<!-- 		reserved. </i> -->
+<!-- 	</footer> -->
+</div>
+<script>
+  $(function(){
+  	$(document).bind("keydown",function(e){
+  		e = e ? e : window.event;
+  		actualCode = e.keyCode ? e.keyCode : e.charCode;
+  		if(actualCode == 116 && parent.myframe) {
+  			parent.myframe.location.reload();
+  			if(document.all) {
+  				e.keyCode = 0;
+  				e.returnValue = false;
+  			} else {
+  				e.cancelBubble = true;
+  				e.preventDefault();
+  			}
+  		}
+  	});
+  });
+$(function(){
+	var box_height = $(".box").outerHeight(true);
+	var availHeight = window.screen.availHeight;
+	var boxHeight = availHeight-255;
+	if(boxHeight-box_height>0){
+		$(".box").prop("style","margin-bottom:0;height:"+boxHeight+"px");
+	}
+	
+});
+</script>
+</body>
+</html>

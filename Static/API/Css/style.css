@@ -1,0 +1,277 @@
+@CHARSET "UTF-8";
+.api-content {
+    line-height: 1.5em;
+    margin-bottom: 20px;
+}
+
+.api-content .api-header {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.api-content .api-type {
+	font-size:14px;
+	color:#fff;
+    width: 26px;
+    height: 13px;
+    background-color: #333333;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    vertical-align: middle;
+    text-indent: -9000px;
+	margin-right:10px;    
+    padding: 4px 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.api-content .api-type.type-get {
+    background-color: #6bbd5b;
+}
+
+.api-content .api-type.type-post {
+    background-color: #248fb2;
+}
+
+.api-content .api-type.type-put {
+    background-position: 14px -26px;
+}
+
+.api-content .api-type.type-patch {
+    background-position: 4px -114px;
+    background-color: #e09d43;
+}
+
+.api-content .api-type.type-delete {
+    background-position: 10px -42px;
+    background-color: #e27a7a;
+}
+
+.api-content .api-body .api-params {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font-size: .9em;
+}
+
+.api-content .table {
+    border: 0 none;
+    display: table;
+    width: 100%;
+}
+
+.api-content .table .tr {
+    display: table-row;
+}
+
+.api-content .table .tr .td {
+    display: table-cell;
+}
+
+.api-content .table .tr .td p {
+    margin-bottom: 0;
+    color: #474a54;
+    font-size: .7em;
+}
+
+.api-content .table .tr .td.param {
+    text-align: right;
+    padding-right: 20px;
+    width: 20%;
+}
+
+.api-content .table .tr .td .param-default {
+    margin-left: 10px;
+    font-style: italic;
+    font-size: 0.85em;
+    color: #999999;
+}
+
+.api-content .table .required {
+    font-size: .7em;
+    color: #c82829;
+}
+
+.api-content .api-body h3 {
+    font-size: 1.5em;
+
+    margin-bottom: 5px;
+}
+
+.api-content .api-body .api-results .result-tab {
+
+}
+
+.api-content .api-body .api-results .result-tab .tab-nav {
+    position: relative;
+    margin-top: -1px;
+    z-index: 10;
+}
+
+.api-content .api-body .api-results .result-tab .tab-nav .tab-nav-item {
+    font-size: 16px;
+    display: inline-block;
+    color: #bbbbbb;
+}
+
+.api-content .api-body .api-results .result-tab .tab-nav .tab-nav-item a {
+    display: inline-block;
+    padding: 2px 5px 5px;
+    color: #aaaaaa;
+}
+
+.api-content .api-body .api-results .result-tab .tab-nav .tab-nav-item.active a {
+    font-weight: bold;
+    color: #5ea43f;
+}
+
+.api-content .api-body .api-results .result-tab .tab-wrap {
+
+}
+
+.api-content .api-body .api-results .result-tab .tab-wrap .tab-wrap-item {
+    display: none;
+}
+
+.api-content .api-body .api-results .result-tab .tab-wrap .tab-wrap-item.active {
+    display: block;
+}
+
+.api-content .api-body .api-tester .tester-body {
+    display: none;
+}
+
+.api-content .api-body .api-tester .tester-params {
+    overflow: hidden;
+}
+
+.api-content .api-body .api-tester .w-form .form-item {
+    float: left;
+    width: 50%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 15px;
+    font-size: 13px;
+}
+
+.api-content .api-body .api-tester .w-form .form-item:nth-child(2n+1) {
+    padding-left: 0;
+}
+
+.api-content .api-body .api-tester .tester-url {
+    position: relative;
+}
+
+.api-content .api-body .api-tester .tester-url .w-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.api-content .api-body .api-tester .tester-url .w-text {
+    padding-right: 65px;
+}
+
+.api-content .api-body .api-tester .tester-url .w-text input {
+    padding-left: 100px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 34px;
+}
+
+.api-content .api-body .api-tester .api-type {
+    position: relative;
+    top: 30px;
+    left: 9px;
+    z-index: 10;
+}
+
+.api-content .api-body .api-tester .tester-result {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-width: 1px 0 0 1px;
+    -webkit-box-shadow: 0 0 0 5px #eeeeee;
+    box-shadow: 0 0 0 5px #eeeeee;
+    margin: 25px 5px 0;
+    font-size: 13px;
+    display: none;
+}
+
+.api-content .api-body .api-tester .tester-result .tester-result-status {
+    background-color: #ffffff;
+    padding: 10px;
+    border-bottom: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+}
+
+.api-content .api-body .api-tester .tester-result .httpstatus.http_200 i {
+    color: #5bb349;
+}
+
+.api-content .api-body .api-tester .tester-result .httpstatus.http_404 i {
+    color: #d96367;
+}
+.api-content .api-body .api-tester .tester-result .httpstatus.http_500 i {
+    color: #e164e1;
+}
+.api-content .api-body .api-tester .tester-result .httpstatus.http_304 i {
+    color: #fbb157;
+}
+.api-content .api-body .api-tester .tester-result .httpstatus em {
+    font-style: normal;
+    color: #999999;
+}
+
+.api-content .api-body .api-tester .tester-result pre {
+    background-color: #ffffff;
+    padding: 0;
+    margin: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    border: 0 none;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.api-content .api-body .api-tester .tester-result pre.tester-result-panel {
+    border: 1px solid #cccccc;
+    border-width: 0 1px 0px 0;
+    padding: 15px;
+}
+
+.api-content .api-body .api-tester .tester-result table {
+    width: 100%;
+    border-top: 1px solid #cccccc;
+    table-layout: fixed;
+}
+
+.api-content .api-body .api-tester .tester-result table th {
+    white-space: nowrap;
+    vertical-align: top;
+    border: none;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    background-color: #f7f7f7;
+    padding: 5px 15px;
+    width: 150px;
+}
+
+.api-content .api-body .api-tester .tester-result table tr:hover td {
+    background-color: #ffffff;
+}
+
+.api-content .api-body .api-tester .tester-result table td {
+    border: none;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    vertical-align: top;
+    padding: 5px 15px;
+}
+.w-table{
+	text-align: center;
+	width: 100%;
+}

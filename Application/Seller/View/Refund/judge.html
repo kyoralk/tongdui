@@ -1,0 +1,185 @@
+<link rel="stylesheet" href="/Static/Seller/Css/olist.css">
+
+<div class="main-content" id="mainContent">
+    <div class="tabmenu">
+        <ul class="tab pngFix">
+            <li class="active"> <a href="#">{$content_header}</a> </li>
+        </ul>
+    </div>
+    <div class="uc-order-list-box">
+        <ul>
+            <li>
+                <label>
+                    订单号
+                </label>
+                <span>{$model.order_sn}</span>
+            </li>
+            <li>
+                <label>
+                    商品名称
+                </label>
+                <span>{$goods.goods_name}</span>
+            </li>
+            <li>
+                <label>
+                    退换货类型
+                </label>
+                <span>{$model.type}</span>
+            </li>
+
+            <li>
+                <label>
+                    商品图片
+                </label>
+                <span><img src="/Uploads/{$goods.goods_img}" /></span>
+            </li>
+
+            <li>
+                <label>
+                    退换货数量
+                </label>
+                <span>{$goods.prosum}</span>
+            </li>
+
+            <li>
+                <label>退换货原因</label>
+                <span>{$model.reason}</span>
+            </li>
+
+
+            <li>
+                <label>上传凭证</label>
+                <span><img src="{$model.refund_img}" ></span>
+            </li>
+
+            <?php if ($model['type']== "退货") { ?>
+            <li>
+                <label>
+                    退货现金
+                </label>
+                <span>{$model.cash}</span>
+            </li>
+            <li>
+                <label>
+                    退货一卷通
+                </label>
+                <span>{$model.yqt}</span>
+            </li>
+            <li>
+                <label>
+                    退货购物卷
+                </label>
+                <span>{$model.gwq}</span>
+            </li>
+            <li>
+                <label>退货总计</label>
+                <span>{$model.amount}</span>
+            </li>
+            <?php } ?>
+
+            <?php
+                if($model['status'] == 1 && $model['type'] == '退货') {
+            ?>
+            <li>
+                <label>物流公司</label>
+                <span>{$model.ship_company}</span>
+            </li>
+            <li>
+                <label>物流单号</label>
+                <span>{$model.ship_id}</span>
+            </li>
+            <li>
+                <label>物流单号</label>
+                <span>{$model.ship_id}</span>
+            </li>
+            <?php  } ?>
+
+
+        </ul>
+
+        <?php
+            if($model['status'] == 0 && $model['type'] == '退货') {
+        ?>
+        <button onclick="tuihuo();" class="btn">同意退货</button>
+        <?php } ?>
+
+        <?php
+            if($model['status'] == 2 && $model['type'] == '退货') {
+        ?>
+        <button onclick="tuikuan();" class="btn" >同意退款</button>
+        <?php } ?>
+
+        <?php
+            if($model['status'] == 0 && $model['type'] == '换货') {
+        ?>
+        <button onclick="huanhuo();" class="btn" >同意换货</button>
+        <?php } ?>
+
+        <?php
+            if($model['status'] == 3) {
+        ?>
+            <span class="sign">已退款</span>
+        <?php } ?>
+        <?php
+            if($model['status'] == 4) {
+        ?>
+        <span class="sign">已换货</span>
+        <?php } ?>
+
+
+    </div>
+
+</div>
+
+<script>
+    function tuikuan() {
+        $.ajax({
+            type: "POST",
+            url : "/Seller/Refund/tuikuan",
+            data: {refund_id:"{$model.refund_id}"},
+            dataType: 'json',
+            success:function(msg){
+                if (msg.status == 1) {
+                    alert("操作成功！");
+                    window.location.href = "/Seller/Refund/index";
+                } else {
+                    alert(msg.content);
+                }
+            }
+        })
+    }
+    function tuihuo() {
+        $.ajax({
+            type: "POST",
+            url : "/Seller/Refund/dohuo",
+            data: {type:"退货", refund_id:"{$model.refund_id}"},
+            dataType: 'json',
+            success:function(msg){
+                if (msg.status == 1) {
+                    alert("操作成功！");
+                    window.location.href = "/Seller/Refund/index";
+                } else {
+                    alert(msg.content);
+                }
+            }
+        })
+    }
+
+    function huanhuo() {
+        $.ajax({
+            type: "POST",
+            url : "/Seller/Refund/dohuo",
+            data: {type:"换货", refund_id:"{$model.refund_id}", order_sn:"{$model.order_sn}"},
+            dataType: 'json',
+            success:function(msg){
+                if (msg.status == 1) {
+                    alert("已经生成新订单！");
+                    window.location.href = "/Seller/Refund/index";
+                } else {
+                    alert(msg.content);
+                }
+            }
+        })
+    }
+
+</script>

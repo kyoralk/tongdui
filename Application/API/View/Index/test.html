@@ -1,0 +1,109 @@
+<div class="api-tester">
+	<a href="javascript:;" data-internal="1" class="w-btn btn-m show-tester" onclick="openTest(this)"><span class="btn-input"><i class="icon-compass"></i> 在线调试</span></a>
+	<div class="tester-body" style="display: none;">
+		<h3>在线调试</h3>
+		<form class="w-form" id="test-form">
+		<div class="tester-params">
+			<volist name="params" id="p">
+			<div class="form-item">
+				<label class="form-label">{$p.p_name}<i class="form-must">*</i></label>
+				<div class="form-target">
+					<label class="w-text text-m">
+					<if condition="$p['p_type'] eq 'file'">
+						<input class="text-input" name="{$p.p_name}" type="file">
+					<else/>
+						<input class="text-input" name="{$p.p_name}" value="{$p.p_default}" type="text">
+					</if>
+					</label>
+				</div>
+			</div>
+			</volist>
+		</div>
+		<div class="tester-url"><span class="api-type type-{$info.type|strtolower}">{$info.type}<input name="zhbtype" value="{$info.type}" type="hidden"></span>
+			<div class="w-text text-m text-full"> 
+				<input value="{$info.url}" class="text-input" name="zhburl" readonly="readonly">
+			</div>
+			<label class="w-btn btn-l btn-success">
+				<input class="btn-input" value="调试" type="button" style="margin-top: 22px;" onclick="test()">
+			</label>
+		</div>
+		</form>
+		<div class="tester-result" style="display: none;">
+			<div class="tester-result-status status_code"></div>
+			<pre class="tester-result-panel"><code id="result" class="hljs json" style="font-size: 16px;"></code></pre>
+			<div class="tester-result-panel">
+				<table>
+					<tbody>
+						<tr>
+							<th>请求方式</th>
+							<td>{$info.type}</td>
+						</tr>
+						<tr>
+							<th>URL</th>
+							<td>{$info.url}</td>
+						</tr>
+						<tr>
+							<th>状态码</th>
+							<td class="status_code"></td>
+						</tr>
+						<tr>
+							<th>消息头</th>
+							<td><pre id="Response-Headers"></pre></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function openTest(e){
+	$(e).hide();
+	$(".tester-body").show();
+}
+function test(){
+	$("#result").html('');
+	//var data = $("#test-form").serialize();
+	var data = new FormData(document.getElementById('test-form'));
+	var url = $("input[name='zhburl']").val();
+	$.ajax({
+	    type: 'post',
+	    url: '/API/Test/send',
+	    data: data,
+        async: false,  
+        cache: false,  
+        contentType: false,  
+        processData: false,
+	    success: function(data, status, xhr) {
+	    	$("#result").html(syntaxHighlight(data));
+	    	$(".tester-result").show();
+	    },
+	    complete: function(xhr, textStatus) {
+	    	$(".status_code").html('<span class="httpstatus http_'+xhr.status+'"><i class="icon icon-circle"></i> '+xhr.status+' <em>'+xhr.statusText+'</em></span>');
+	    	$("#Response-Headers").html(xhr.getAllResponseHeaders());
+	    } 
+	});
+}
+function syntaxHighlight(json) {
+	json = eval("("+json+")");
+    if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, 2);
+    }
+    json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+        var cls = 'hljs-number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'hljs-attr';
+            } else {
+                cls = 'hljs-string';
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+</script>

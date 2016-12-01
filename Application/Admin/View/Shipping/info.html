@@ -1,0 +1,27 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info">
+		<form name="myform" id="myform" class="form-horizontal" action="{:U('Shipping/save')}" method="post">
+			<input name="shipping_id" type="hidden" value="{$shipping_info.shipping_id}"/>
+			<div class="box-body"> 
+				{:fastModule('form-group',array('配送方式名称'),array('text','shipping_name',$shipping_info['shipping_name']))}
+				{:fastModule('form-group',array('标识码'),array('text','shipping_code',$shipping_info['shipping_code']))}
+				{:fastModule('form-group',array('描述'),array('textarea','shipping_desc',$shipping_info['shipping_desc']))} 
+				{:fastModule('form-group',array('是否启用'),array('radio','enabled',array(array('启用',1,$shipping_info['enabled'],1),array('不启用',0,$shipping_info['enabled'],1)),'','','radio'))}
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4"><button type="submit" class="btn btn-primary">保存</button></div>
+			</div>
+		</form>
+	</div>
+</section>

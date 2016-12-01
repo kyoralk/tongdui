@@ -1,0 +1,101 @@
+<link rel="stylesheet" href="/Static/Seller/Css/olist.css">
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-8">
+			<h4><small>{$content_header}</small></h4>
+		</div>
+		<div class="col-md-4 right_menu">
+			
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box">
+	<div class="box-body">
+
+<div class="main-content" id="mainContent">
+	<div class="uc-order-list-box">
+		<ul class="uc-order-detail-list">
+		<empty name="order_list">
+			<li>
+				<table>
+					<tbody>
+						<tr>
+							<td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+						</tr>
+					</tbody>
+				</table>
+			</li>		
+		<else/>
+			<volist name="order_list" id="ol">
+				<li class="uc-order-detail-item">
+				<table class="order-detail-table">
+					<thead>
+						<tr>
+							<th colspan="4" class="column-info column-t"> <div class="column-content"> 订单号：<a href="">{$ol.order_sn}</a><span class="sep">|</span>联系人：{$ol.consignee}<span class="sep">|</span>收货地址：{$ol.address}<span class="sep">|</span>联系电话：{$ol.mobile}<span class="sep">|</span>预定时间：{$ol.order_time|date="Y-m-d h:i:s",###} </div>
+							</th>
+							<th class="column-info column-t">
+								<div class="operates">
+	                        	<if condition="($ol['pay_status'] eq 0) AND ($ol['shipping_status'] eq 0)">
+									<a title="删除" href="{:U('Order/delete_order?order_type=2&order_id='.$ol['order_id'])}"class="del">删除</a>
+								</if>
+								</div> 
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="column-detail column-l">
+								<ul class="order-goods-list">
+									<volist name="ol.order_goods" id="goods" key="gg"> 
+									<li <if condition="$gg eq 1">class="first"</if>> 
+										<a href="javascript:;" target="_blank"> 
+											<img alt="{$ol.lineTitle}"  src="/Uploads/Mall/Seller/{$ol.store_id}/{$goods.goods_img}" class="goods-thumb"> 
+										</a>
+										<div class="desc"style="width:400px;">
+											<p class="baobei-name"> <a href="/product/{$goods.goods_id}.html" target="_blank">{$goods.goods_name}</a> </p>
+										</div>
+										<div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">单价：{$goods.price}</i><br>
+											<i class="special-num">数量：{$goods.prosum}</i><br>
+											<i class="special-num">小计：{$goods['price']*$goods['prosum']}</i> 
+										</div>
+									</li>
+									</volist>
+								</ul>
+							</td>
+							<td class="column-price"><div  class="order-info order-price">运费：￥{$ol.freight}</div></td>
+							<td class="column-price"><div  class="order-info order-price">合计：￥{$ol.total}</div></td>
+							<td class="column-action column-r">
+								<div class="order-info order-action">
+									<if condition="($ol['pay_status'] eq 0) AND ($ol['shipping_status'] eq 0) AND ($ol['receipt_status'] eq 0) ">
+										<a href="{:U('Order/delete?order_sn='.$ol['order_sn'])}" class="btn btn-info btn-xs" 
+											style="margin:auto;width:80px;color:#fff;">取消订单
+										</a>
+									<elseif condition="($ol['pay_status'] eq 1) AND ($ol['shipping_status'] eq 0) AND ($ol['receipt_status'] eq 0) "/>
+										<a href="{:U('Order/info?order_sn='.$ol['order_sn'])}" class="btn btn-info btn-xs" 
+											style="background:#09c762;border:1px solid #09c762; margin-left:2px;margin-right:2px;display:inline;float:left;color:#fff;">已付款，发货
+										</a> <br/>
+									<elseif condition="($ol['pay_status'] eq 1) AND ($ol['shipping_status'] eq 1) AND ($ol['receipt_status'] eq 0) "/>
+										<span class="order-status">已发货</span>
+									<elseif condition="($ol['pay_status'] eq 1) AND ($ol['shipping_status'] eq 1) AND ($ol['receipt_status'] eq 1) "/>
+										<span class="order-status">交易成功</span> 
+									</if>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</li>
+			</volist>		
+		</empty>
+		</ul>
+	</div>
+	<div class="box-footer clearfix">
+		<ul class="pagination pagination-sm no-margin pull-right">
+			{$page}
+		</ul>
+	</div>
+</div>
+	</div>
+</div>
+</section>

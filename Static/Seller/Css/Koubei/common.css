@@ -1,0 +1,735 @@
+@font-face {
+	font-family: crmhome;
+	src: url(fonts/font_1435921103_9349346.eot);
+	src: url(fonts/font_1435921103_9349346.eot?#iefix)
+		format('embedded-opentype'),
+		url(fonts/font_1435921103_9349346.woff) format('woff'),
+		url(fonts/font_1435921103_9349346.ttf) format('truetype'),
+		url(fonts/font_1435921103_9349346.svg#crmhome)
+		format('svg')
+}
+
+.iconfont-crmhome {
+	font-family: crmhome;
+	font-weight: 400;
+	font-style: normal;
+	cursor: default;
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-stroke-width: .2px
+}
+
+#J-nav-container #J-nav-merchant-global {
+	height: auto
+}
+
+body #container {
+	padding-top: 0;
+	width: auto
+}
+
+a.gray {
+	color: gray
+}
+
+.fn-mr12 {
+	margin-right: 12px
+}
+
+.fn-relative {
+	position: relative
+}
+
+.tbf-sepLine {
+	width: 1px;
+	border-left: 1px solid gray;
+	position: relative;
+	top: 2px;
+	height: 14px;
+	display: inline-block
+}
+
+.bub.bub-success {
+	background-color: #00B9EE
+}
+
+.bub.bub-error {
+	background-color: #F4333C
+}
+
+.tbf-icon-loading {
+	width: 32px;
+	height: 32px;
+	margin: 0 auto;
+	margin-top: 100px;
+	z-index: 1000;
+	background:
+		url(data:image/gif;base64,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)
+		no-repeat 50% 50%
+}
+
+body {
+	background-color: #E7E8EB;
+	min-width: 1200px
+}
+
+.tbf-header {
+	background-color: #232736
+}
+
+.tbf-headerTop {
+	padding: 7px 0;
+	border-bottom: 1px solid #1A1E29
+}
+
+.tbf-headerTop ul {
+	overflow: hidden;
+	width: 1200px;
+	margin: 0 auto
+}
+
+.tbf-headerTop ul li {
+	float: right;
+	margin-left: 8px;
+	line-height: 18px
+}
+
+.tbf-headerTop ul li.leftCnt {
+	float: left;
+	margin-left: 0
+}
+
+.tbf-headerWrapper {
+	width: 1200px;
+	margin: 0 auto;
+	padding: 15px 0;
+	overflow: hidden
+}
+
+.tbf-headerWrapper .logo {
+	float: left;
+	margin: 0;
+	position: relative;
+	top: 3px
+}
+
+.tbf-headerWrapper .logo, .tbf-headerWrapper .logo a {
+	color: #fff
+}
+
+.tbf-headerWrapper .logo a {
+	font-size: 34px;
+	line-height: 36px;
+	float: left
+}
+
+.tbf-headerWrapper .logo a:hover {
+	text-decoration: none
+}
+
+.tbf-headerWrapper .logo em {
+	font-size: 20px;
+	border-left: 1px solid gray;
+	margin-left: 15px;
+	margin-top: 3px;
+	padding-top: 3px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	float: left
+}
+
+.tbf-headerWrapper .minfo {
+	float: right;
+	overflow: hidden;
+	color: gray
+}
+
+.tbf-headerWrapper .minfo .merchantLogo, .tbf-headerWrapper .minfo .infomation,
+	.tbf-headerWrapper .minfo .loginout {
+	float: right
+}
+
+.tbf-headerWrapper .minfo .merchantLogo {
+	margin-right: 10px;
+	border-radius: 2px
+}
+
+.tbf-headerWrapper .minfo .infomation .bub {
+	margin-top: -2px;
+	color: #fff;
+	padding: 0 2px 0 1px
+}
+
+.tbf-headerWrapper .minfo .infomation p:last-child {
+	position: relative;
+	top: -5px
+}
+
+.loginout {
+	margin-top: 10px
+}
+
+.loginout .tbf-sepLine {
+	margin: 0 8px;
+	position: relative;
+	top: 1px
+}
+
+.loginout .gray {
+	position: relative;
+	top: -1px
+}
+
+.loginout .email {
+	position: relative;
+	top: -2px;
+	color: gray
+}
+
+.loginout .email a {
+	color: gray
+}
+
+.tbf-container {
+	width: 1198px;
+	min-height: 600px;
+	margin: 30px auto 0;
+	border: 1px solid #E7E8EB;
+	background-color: #fff
+}
+
+.tbf-title-actionWrapper {
+	position: absolute;
+	height: 30px;
+	right: 30px;
+	top: 20px;
+	line-height: 30px
+}
+
+.tbf-footer .ui-footer, .tbf-footer .ui-footer-copyright {
+	background-color: #232736
+}
+
+.tbf-footer .ui-footer, .tbf-footer .ui-footer-ctn {
+	border-top: 0;
+	margin-top: 50px
+}
+
+.tbf-footer .ui-footer-link a, .tbf-footer .ui-footer-link em {
+	color: #999
+}
+
+.tbf-footer .ui-footer-copyright .server {
+	color: #232736
+}
+
+.tbf-sliderNav, .tbf-context {
+	display: table-cell;
+	vertical-align: top
+}
+
+.tbf-sliderNav {
+	width: 16.7%;
+	max-width: 200px;
+	border-right: 1px solid #e7e7eb;
+	padding-top: 15px;
+	padding-bottom: 20px
+}
+
+.tbf-sliderNav dl {
+	padding: 5px 0;
+	border-bottom: 1px solid #e7e7eb;
+	font-size: 14px
+}
+
+.tbf-sliderNav dl:last-child {
+	border-bottom: 0
+}
+
+.tbf-sliderNav dl dt em, .tbf-sliderNav dl dt a {
+	padding-left: 30px
+}
+
+.tbf-sliderNav dl dt em .iconfont-crmhome, .tbf-sliderNav dl dt a .iconfont-crmhome
+	{
+	position: relative;
+	top: 0;
+	padding-right: 10px;
+	color: #b2b2b2;
+	font-size: 20px
+}
+
+.tbf-sliderNav dl dt em {
+	color: gray;
+	display: block;
+	width: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal
+}
+
+.tbf-sliderNav dl dt, .tbf-sliderNav dl dd {
+	line-height: 35px
+}
+
+.tbf-sliderNav dl dt a, .tbf-sliderNav dl dd a {
+	color: #1a1a1a;
+	display: block;
+	width: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal
+}
+
+.tbf-sliderNav dl dt a:hover, .tbf-sliderNav dl dd a:hover {
+	background-color: #F4F5F9;
+	text-decoration: none
+}
+
+.tbf-sliderNav dl dt a.title {
+	color: gray;
+	display: block;
+	width: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal
+}
+
+.tbf-sliderNav dl dt a.title:hover {
+	background-color: #fff;
+	cursor: default
+}
+
+.tbf-sliderNav dl dd a {
+	padding-left: 60px
+}
+
+.tbf-sliderNav dl .selected, .tbf-sliderNav dl .selected a:hover {
+	background-color: #0ae
+}
+
+.tbf-sliderNav dl .selected a, .tbf-sliderNav dl .selected a .iconfont-crmhome
+	{
+	color: #fff
+}
+
+.tbf-sliderNav dl .navMerchant {
+	margin: 10px 0
+}
+
+.tbf-sliderNav dl .navMerchant a {
+	margin: 0 25px;
+	padding: 0
+}
+
+.tbf-context {
+	width: 2000px;
+	height: 700px;
+	position: relative
+}
+
+.tbf-topWarnMessage {
+	position: absolute;
+	top: 0;
+	z-index: 999;
+	width: 100%;
+	text-align: center;
+	line-height: normal
+}
+
+.tbf-topWarnMessage span {
+	min-width: 200px;
+	color: #fff;
+	display: inline-block;
+	height: 30px;
+	line-height: 30px
+}
+
+.tbf-topWarnMessage span.success {
+	background-color: #2cd7aa
+}
+
+.tbf-contextTitle {
+	padding: 30px 0 30px 30px;
+	font-size: 18px;
+	line-height: 18px;
+	border-bottom: 1px solid #e7e7eb;
+	font-weight: 400
+}
+
+.tbf-noBorderBottom, .tbf-noBorderBottom15 {
+	padding-bottom: 0;
+	border-bottom: 0
+}
+
+.tbf-noBorderBottom15 {
+	padding-bottom: 15px
+}
+
+.tbf-tabTitle {
+	border-bottom: 1px solid #E7E8EB
+}
+
+.tbf-tabTitle em {
+	font-size: 14px;
+	color: #333;
+	padding: 30px 20px 15px 30px;
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	border-bottom: 3px solid #00B9EE
+}
+
+.tbf-tabTitle:after {
+	content: "\200B";
+	display: block;
+	height: 0;
+	clear: both
+}
+
+.tbf-tabTitle li {
+	float: left
+}
+
+.tbf-tabTitle li.selected a, .tbf-tabTitle li.selected a:hover {
+	border-bottom: 3px solid #00B9EE
+}
+
+.tbf-tabTitle li a {
+	font-size: 14px;
+	color: #333;
+	padding: 15px 20px;
+	display: block;
+	position: relative;
+	top: 1px
+}
+
+.tbf-tabTitle li a:hover {
+	border-bottom: 3px solid #a0a3ab;
+	text-decoration: none
+}
+
+.tbf-tabTitle li:first-child a {
+	padding-left: 30px
+}
+
+.tbf-main {
+	padding: 30px
+}
+
+.tbf-contextSubTitle {
+	font-size: 14px;
+	font-weight: 400
+}
+
+.tbf-contextBody {
+	overflow: hidden
+}
+
+.jui-custom-dialog {
+	background-color: rgba(0, 0, 0, .5);
+	border: 0;
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(startColorstr=#88000000,
+		endColorstr=#88000000);
+	padding: 6px;
+	outline: 0
+}
+
+.jui-custom-dialog-content {
+	background: #fff
+}
+
+:root .jui-custom-dialog {
+	FILTER: none\9
+}
+
+.jui-custom-dialog-close {
+	color: #999;
+	cursor: pointer;
+	display: block;
+	font-family: tahoma;
+	font-size: 24px;
+	font-weight: 700;
+	height: 18px;
+	line-height: 14px;
+	position: absolute;
+	right: 16px;
+	text-decoration: none;
+	top: 16px;
+	z-index: 10
+}
+
+.jui-custom-dialog-close:hover {
+	color: #666;
+	text-shadow: 0 0 2px #aaa;
+	text-decoration: none;
+	border: 0;
+	line-height: 14px
+}
+
+.jui-custom-dialog-close em {
+	font-size: 14px;
+	color: #39F;
+	text-shadow: none
+}
+
+.jui-custom-dialog-title {
+	height: 45px;
+	font-size: 16px;
+	font-family: '微软雅黑', '黑体', Arial;
+	line-height: 46px;
+	border-bottom: 1px solid #E1E1E1;
+	color: #4d4d4d;
+	text-indent: 20px
+}
+
+.jui-custom-dialog-title .dialog-explain {
+	font-size: 12px;
+	color: #a6a6a6;
+	margin-left: 10px
+}
+
+.jui-custom-dialog-container {
+	padding: 15px 0 0;
+	font-size: 12px;
+	overflow: hidden
+}
+
+.jui-custom-dialog-message {
+	margin-bottom: 15px;
+	padding: 0 20px
+}
+
+.jui-custom-dialog-operation {
+	zoom: 1;
+	height: 39px;
+	outline-color: #DEDEDE;
+	outline-style: solid;
+	outline-width: 1px;
+	border-top: 1px solid #fff;
+	background-color: #f7f7f7;
+	text-align: right;
+	padding-right: 20px;
+	padding-top: 10px
+}
+
+.jui-custom-dialog-confirm, .jui-custom-dialog-cancel {
+	display: inline
+}
+
+.jui-custom-dialog-operation .jui-custom-dialog-confirm {
+	margin-right: 4px
+}
+
+.mi-dialog-header {
+	border-bottom: 1px solid #eee
+}
+
+.mi-dialog-title {
+	color: #333;
+	font-size: 18px;
+	font-weight: 700;
+	padding: 10px 10px 8px 15px
+}
+
+.mi-dialog-footer-cnt {
+	text-align: center;
+	padding-bottom: 20px
+}
+
+.mi-dialog-cont {
+	padding: 15px 20px 20px
+}
+
+.tbf-searchFormBox {
+	margin-bottom: 10px
+}
+
+.tbf-searchFormBox .jui-select, .tbf-searchFormBox .jui-btn,
+	.tbf-searchFormBox .jui-input {
+	float: left;
+	margin-right: 10px
+}
+
+.tbf-contextBody .tbf-leftBox {
+	float: left;
+	padding: 0 90px 0 0;
+	position: relative
+}
+
+.tbf-contextBody .tbf-editBox {
+	float: left;
+	width: 570px
+}
+
+.tbf-contextBody .select2-container .select2-choice {
+	margin-top: 0
+}
+
+.tbf-cityList {
+	border: 1px solid #e1e1e1;
+	height: 357px;
+	overflow-y: auto
+}
+
+.tbf-areaBox {
+	overflow: hidden;
+	font-size: 14px
+}
+
+.tbf-areaBox:first-child {
+	padding-top: 5px
+}
+
+.tbf-areaBox .tbf-city-item-title {
+	font-weight: 700;
+	padding: 5px 10px;
+	clear: both;
+	line-height: 18px
+}
+
+.tbf-areaBox .tbf-store-item-title {
+	padding: 5px 10px 5px 20px;
+	line-height: 18px
+}
+
+.tbf-areaBox .tbf-store-item-title:hover {
+	background-color: #f4f5f9
+}
+
+.editText {
+	width: 400px
+}
+
+.jui-inputDetail .jui-form-item {
+	margin-bottom: 6px
+}
+
+.tbf-rateSimulator {
+	position: absolute;
+	left: 13px;
+	top: 37px;
+	background:
+		url(tfscom/T17PVfXX8pXXXXXXXX.png) 0 0
+		no-repeat;
+	background-size: 223px 397px;
+	display: block;
+	width: 223px;
+	height: 397px
+}
+
+.tbf-rateSimulator .s_rate {
+	position: absolute;
+	font-size: 80px;
+	color: #fff;
+	left: 0;
+	top: 37px;
+	width: 100%;
+	text-align: center
+}
+
+.tbf-rateSimulator .s_actived {
+	color: #fff;
+	position: absolute;
+	top: 164px;
+	width: 100%;
+	text-align: center
+}
+
+.tbf-rateSimulator .s_share {
+	position: absolute;
+	top: 135px;
+	color: #fff;
+	width: 100%;
+	text-align: center;
+	font-size: 12px
+}
+
+.jui-form-sub-input {
+	position: relative;
+	overflow: hidden;
+	display: inline-block
+}
+
+.jui-form-sub-input .jui-form-sub-text {
+	position: absolute;
+	right: 5px;
+	top: 7px;
+	font-size: 14px
+}
+
+.tbf-tablelist .jui-table>thead>tr {
+	border-bottom: 1px solid #e7e7eb
+}
+
+.tbf-emptyNotice {
+	background-image:
+		url(tfscom/T1LU0fXnJjXXXXXXXX.png);
+	background-position: center 0;
+	background-repeat: no-repeat;
+	background-size: 80px 80px;
+	margin-top: 103px;
+	padding-top: 100px;
+	text-align: center
+}
+
+.tbf-confirmTipBox {
+	position: relative
+}
+
+.tbf-confirmTipBox .jui-tip {
+	background-color: #fff;
+	color: #1a1a1a;
+	border: 1px solid #e7e7eb;
+	padding: 10px 20px;
+	height: auto;
+	left: -135px;
+	top: 35px;
+	-webkit-box-shadow: 0 0 4px #e0e0e0;
+	-moz-box-shadow: 0 0 4px #e0e0e0;
+	box-shadow: 0 0 4px #e0e0e0
+}
+
+.tbf-confirmTipBox .jui-tip .jui-tip-arrow-top:before {
+	content: "◆";
+	position: absolute;
+	left: 110px;
+	top: -9px;
+	z-index: 10;
+	font-size: 20px;
+	font-family: SimSun, Hiragino Sans GB;
+	font-style: normal;
+	line-height: 16px;
+	color: #e7e7eb
+}
+
+.tbf-confirmTipBox .jui-tip .jui-tip-arrow-top:after {
+	left: 110px;
+	top: -7px;
+	color: #fff;
+	font-size: 20px
+}
+
+.tbf-confirmTipBox .jui-tip .buttonBox {
+	display: block;
+	padding-top: 10px
+}
+
+.fn-mb60 {
+	margin-bottom: 60px
+}
+
+.fn-pt60 {
+	padding-top: 60px
+}
+
+.fixedLeft.jui-dialog-message {
+	padding-bottom: 0
+}
+
+.fixedLeft .jui-dialog-operation {
+	text-align: left;
+	padding-left: 106px
+}

@@ -1,0 +1,52 @@
+<div class="all-nav">
+	<div class="w1210">
+		<div class="home-category fl" > <a href="catalog.php" class="menu-event" title="查看全部商品分类">全部商品分类<i></i></a> </div>
+		<div class="allnav fl" id="nav">
+			<ul>
+				<volist name="nav_list" id="nl" key="i">
+					<li>
+					<a href="{$nl.nav_url}" <if condition="$i eq 1">class="nav"</if> >{$nl.nav_name}</a></li>
+				</volist>
+			</ul>
+			<div class="wrap-line"><span style="left:15px;"></span></div>
+		</div>
+		<div class="all-cat main-bg-color" <if condition="$show_left_menu neq 1">style="display:none;"</if>>
+			<volist name="left_menu" id="lm" key="index">
+				<div class="list">
+					<dl class="cat">
+						<dt class="cat-name"> <a href="{:U('Goods/glist',array('gc_id'=>$lm['gc_id']))}" target="_blank" title="{$lm.gc_name}">{$lm.gc_name}</a> </dt>
+						<i>&gt;</i>
+					</dl>
+					<div class="categorys">
+						<div class="item-left fl">
+							<div class="item-channels">
+								<div class="channels"> <a href="{:U('Goods/glist',array('gc_id'=>$lm['gc_id'],'keywords'=>$lm['gc_id']))}" target="_blank" title="五金家装">五金家装<i>&gt;</i></a> </div>
+							</div>
+							<div class="subitems">
+								<volist name="lm._child" id="lmc">
+									<dl class="fore1">
+										<dt>
+											<a href="{:U('Goods/glist',array('gc_id'=>$lmc['gc_id']))}" target="_blank" title="{$lmc.gc_name}">{$lmc.gc_name}<i>&gt;</i></a>
+										</dt>
+										<dd>
+											<volist name="lmc._child" id="lmcc">
+												<a href="{:U('Goods/glist',array('gc_id'=>$lmcc['gc_id']))}" target="_blank" title="{$lmcc.gc_name}">{$lmcc.gc_name}</a>
+											</volist>
+										</dd>
+									</dl>
+								</volist>
+							</div>
+						</div>
+						<div class="item-right fr">
+							<div class="item-brands">
+								<div class="brands-inner"> <a href="brand.php?id=67&amp;cat=5" class="img-link" target="_blank" title="美的"> <img src="data/brandlogo/1437433779804083933.jpg" width="90" height="36" /> </a> <a href="brand.php?id=66&amp;cat=5" class="img-link" target="_blank" title="海尔"> <img src="data/brandlogo/1437433767280039957.jpg" width="90" height="36" /> </a> <a href="brand.php?id=71&amp;cat=5" class="img-link" target="_blank" title="格兰仕"> <img src="data/brandlogo/1437433840630073088.jpg" width="90" height="36" /> </a> <a href="brand.php?id=68&amp;cat=5" class="img-link" target="_blank" title="格力"> <img src="data/brandlogo/1437433795060834486.jpg" width="90" height="36" /> </a> <a href="brand.php?id=70&amp;cat=5" class="img-link" target="_blank" title="西门子"> <img src="data/brandlogo/1437433823734794032.gif" width="90" height="36" /> </a> <a href="brand.php?id=30&amp;cat=5" class="img-link" target="_blank" title="三星"> <img src="data/brandlogo/1437430441802693617.png" width="90" height="36" /> </a> <a href="brand.php?id=73&amp;cat=5" class="img-link" target="_blank" title="伊莱克斯"> <img src="data/brandlogo/1437434172223731860.jpg" width="90" height="36" /> </a> <a href="brand.php?id=28&amp;cat=5" class="img-link" target="_blank" title="LG"> <img src="data/brandlogo/1437430374768843113.jpg" width="90" height="36" /> </a> </div>
+							</div>
+							<div class="item-promotions"> <a href="affiche.php?ad_id=62&uri=#" class="img-link" target="_blank"><img src="data/afficheimg/1453362914810023437.jpg"  width="182" /></a> <a href="affiche.php?ad_id=63&uri=#" class="img-link" target="_blank"><img src="data/afficheimg/1453362954584810931.jpg"  width="182" /></a> </div>
+						</div>
+					</div>
+				</div>
+			</volist>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="__PMALL__/Js/nav.js"></script>

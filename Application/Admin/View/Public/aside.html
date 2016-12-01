@@ -1,0 +1,41 @@
+<script type="text/javascript">
+$(function(){
+	$(".sidebar-menu li a").click(function(){
+		if($(this).next("ul").is(":hidden")){	
+			$(".treeview-menu").slideUp(300);
+			$(this).next("ul").slideDown(300);
+		}else{
+			$(this).next("ul").slideUp(300);
+		};
+	});
+	$(".treeview-menu a").click(function(){
+		$(".treeview-menu i").prop("class","fa fa-circle-o");
+		$(this).find("i").prop("class","fa fa-circle-o text-aqua");
+	});	
+});
+</script>
+<aside class="main-sidebar"> 
+	<section class="sidebar"> 
+		<ul class="sidebar-menu">
+			<volist name="menu_list.menu" id="menu_1">
+			<li class="treeview"> <a href="javascript:;"> <i class="fa fa-folder"></i> <span>{$menu_1.lang}</span> <i class="fa fa-angle-left pull-right"></i> </a>
+				<ul class="treeview-menu">
+				<volist name="menu_1.menu" id="menu_2">
+					<li><a href="{$menu_2.url}" target="myframe"><i class="fa fa-circle-o"></i> {$menu_2.lang}</a></li>
+				</volist>
+				</ul>
+			</li>
+			</volist>
+		</ul>
+	</section>
+	<!-- /.sidebar --> 
+	<div style="bottom: 0px;position: absolute;padding-left: 5px; padding-top: 5px; background: #1a2226;width: 100%;">
+	<p style="font-style: italic;color:#4b646f;">
+	Copyright &copy; {$Think.const.NOW_TIME|date="Y",###} 
+	<br/>
+	Powered by <a style="color: #4b646f;" href="http://www.minshop.net" target="_blank">minshop</a> V{$Think.config.version}
+	 </p>
+		
+	</div>
+</aside>
+	

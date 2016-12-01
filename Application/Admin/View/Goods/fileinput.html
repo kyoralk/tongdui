@@ -1,0 +1,50 @@
+<link rel="stylesheet" type="text/css" href="/Static/Common/bootstrap/css/fileinput.min.css">
+<div class="form-group">
+	<div class="file-input">
+		<div class="file-preview">
+			<div class=" file-drop-zone">
+				<div class="file-preview-thumbnails" id="preview">
+				</div>
+				<div class="form-group">
+					<div class="btn btn-default btn-file">
+						<i class="fa fa-paperclip"></i> 选择图片
+						<input type="file"  name="goods_img[]" id="doc" multiple="multiple"  style="width:150px;" onchange="javascript:setImagePreviews();" accept="image/*" />
+					</div>
+					<div id="unset_file_div"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function setImagePreviews(){
+	var doc_obj = document.getElementById("doc");
+  	var file_list = doc_obj.files;
+  	var count = file_list.length;
+  	var html = "";
+  	for(var i = 0;i<count;i++){
+  		var img_src = window.URL.createObjectURL(file_list[i]);
+	  	html +='<div class="file-preview-frame" id="preview_'+i+'">';
+		html +='<img src="'+img_src+'" class="file-preview-image" style="width:auto;height:160px;">';
+		html +='<div class="file-thumbnail-footer">';
+		html +='<div class="file-actions">';
+		html +='<div class="file-footer-buttons">';
+		html +='<button type="button" class="kv-file-remove btn btn-xs btn-default" title="Remove file" onclick="removePreview('+i+')" ><i class="glyphicon glyphicon-trash text-danger"></i></button>';
+		html +='</div>';
+		html +='<div class="clearfix"></div>';
+		html +='</div>';
+		html +='</div>';
+		html +='</div>'; 
+		
+  	}
+  	$("#preview").html(html);
+  	$("#preview").append('<div class="clearfix"></div>');
+  	$("#unset_file_div").html("");
+  	
+}
+function removePreview(id){
+	$("#unset_file_div").append('<input name="unset_file[]" type="hidden" value="'+id+'"/>');
+	$("#preview_"+id).remove();
+	
+}
+</script>

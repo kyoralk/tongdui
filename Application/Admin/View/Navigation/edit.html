@@ -1,0 +1,43 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Navigation/update')}" method="post">
+		<input name="id" type="hidden" value="{$nav_info.id}"/>
+		<div class="box-body"> 
+			{:fastModule('form-group',array('栏目名称'),array('text','nav_name',$nav_info['nav_name']))}
+			{:fastModule('form-group',array('链接地址'),array('text','nav_url',$nav_info['nav_url']))}
+			{:fastModule('form-group',array('缩略图'),array('file','nav_thumb',$nav_info['nav_thumb'],$nav_info['id']))}
+			{:fastModule('form-group',array('排序'),array('text','nav_sort',50))}
+			{:fastModule('form-group',array('SEO关键词'),array('text','nav_keywords',$nav_info['nav_keywords']))}
+			{:fastModule('form-group',array('SEO描述'),array('textarea','nav_description',$nav_info['nav_description']))} 
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="button" class="btn btn-primary" onclick="formSubmit();">保存</button></div>
+		</div>
+	</form>
+</div>
+</section>
+<script type="text/javascript">
+function formSubmit() {
+	var nav_thumb=$("input[name='nav_thumb']").val();
+	if(nav_thumb!=''){
+		document.getElementById('myform').encoding="multipart/form-data";
+	}
+	document.myform.submit();
+}
+function remove(remove_id,id,path){
+	var _action = "{:U('Navigation/navThumbDelete')}";
+	ms.removeImg(remove_id,id,path,_action);
+}
+
+</script>

@@ -1,0 +1,51 @@
+<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<notempty name="right_menu">
+  					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+  				</notempty>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+	<div class="box">
+		<div class="box-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="table-textcenter">ID</th>
+						<th class="table-textcenter">用户名</th>
+						<th class="table-textcenter">角色</th>
+						<th class="table-textcenter">账户余额</th>
+						<th class="table-textcenter">手机号</th>
+						<th class="table-textcenter">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="admin_list" id="al">
+						<tr>
+							<td class="table-textcenter">{$al.admin_id}</td>
+							<td class="table-textcenter">{$al.admin_name}</td>
+							<td class="table-textcenter">{$al.role_name}</td>
+							<td class="table-textcenter">{$al.commission}</td>
+							<td class="table-textcenter">{$al.mobile}</td>
+							<td class="table-textcenter">
+								<a href="{:U('Admin/adminEdit?admin_id='.$al['admin_id'])}">编辑</a> 
+								<a href="{:U('Admin/adminDelete?admin_id='.$al['admin_id'])}">删除</a>
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+		<div class="box-footer clearfix">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div>
+	</div>
+</section>
+
+
+

@@ -1,0 +1,28 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>基本信息</small></h4></div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info">
+		<form name="myform" id="myform" class="form-horizontal" action="{:U('Setting/save')}" method="post">
+			<input name="item" type="hidden" value="{$item}"/>
+			<div class="box-body">
+			<volist name="set_list" id="s">
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">{$s.item_name}<input name="item_name[]" type="hidden" value="{$s.item_name}"></label>
+				<div class="col-sm-4">
+					<input name="item_key[]" type="hidden" value="{$s.item_key}">
+					<input name="item_sort[]" type="hidden" value="{$s.item_sort}">
+					<input class="form-control" name="item_value[]" value="{$s.item_value}" type="text">
+				</div>
+			</div>
+			</volist>
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4"><button type="submit" class="btn btn-primary">保存</button></div>
+			</div>
+		</form>
+	</div>
+</section>

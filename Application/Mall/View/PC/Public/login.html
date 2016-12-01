@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>会员登录-{$set.sitename}</title>
+<meta name="description" content="{$description}" />
+<meta name="keywords" content="{$keywords}" />
+<link rel="stylesheet" type="text/css" href="../Public/Css/Login/common.css" />
+<link rel="stylesheet" type="text/css" href="../Public/Css/Login/layout.css" />
+</head>
+<body>
+<div class="header-wrap">
+  <header class="public-head-layout wrapper">
+    <h1 class="site-logo"><a href="/index.php"><img src="../Public/images/logo.png" class="pngFix"></a></h1>
+            <div class="nc-regist-now">
+    <span class="avatar"><img src="/Public/Upload/photo/default.gif"></span>
+    <span>您好，欢迎来到{$sitename}<br>已注册的会员请登录，或立即<a title="" href="{:U('Public/register')}" class="register">注册新会员</a></span></div>
+          </header>
+</div>
+<div style="clear:both;"></div>
+	<div class="wrapper">
+		
+		<div class="g-login-con clrfix" id="g_login" style="background:#54b1ff url(../Public/Images/Login/20150710114148673.jpg) top center no-repeat;">
+			<div class="m-login-screen clrfix">
+				<div id="loadingPicBlock" class="screen-left fl"></div>
+				<div class="screen-right fr clrfix">
+					<div class="login-panel" id="LoginForm">
+						<dl>
+							<dt>
+								<em class="fl">登录</em> <a id="hylinkRegisterPage" tabindex="7"
+									class="fr orange"
+									href="{:U('Public/register')}">免费注册<i
+									class="passport-icon"></i></a>
+							</dt>
+							<dd>
+							 <form id="loginform" name="loginform" action="{:U('Public/checkLogin')}" method="post">
+							 <input type="hidden" name="his_url" value="{$his_url}" />
+								<div class="register-form-con clrfix">
+									<ul>
+										<li>
+											<input name="username" type="text" maxlength="100" tabindex="1" autocomplete="off" placeholder="用户名" tabindex="1"/>
+											<b class="passport-icon user-name transparent-png"></b>
+											
+											<span id="username_warn" class="orange"></span>
+                            				<s style="display: none;" class="passport-icon"></s>
+										</li>
+										<li>
+											<input name="password" type="password" maxlength="20" tabindex="2" value="" placeholder="密码" tabindex="2"/>
+											<b class="passport-icon login-password transparent-png"></b>
+											
+											<span id="password_warn" class="orange"></span>
+                           	 				<s style="display: none;" class="passport-icon"></s>
+										</li>
+										<li>
+				                    	    <input type="text" style="width:100px;" maxlength="6" name="captcha" id="captcha" placeholder="验证码" tabindex="3">
+			                                <b class="passport-icon verification-code transparent-png"></b>
+											<img style="margin-left:10px;height:40px;" onclick="this.src='/Public/verify?'+(new Date()).getTime()" id="verify" src="/Public/verify">
+				                        </li>
+									</ul>
+								</div>
+								</form>
+							</dd>
+							<dd class="text-alignL">
+								<span id="error_warn" class="orange"></span>
+							</dd>
+							
+							
+						</dl>
+						<p style="margin-top:20px;">
+							<a id="btnSubmitLogin" href="javascript:;" class="z-agreeBtn"
+								tabindex="4">登录</a>
+						</p>
+						<div class="other-login" style="display: none;">
+							<span>使用其它方式快捷登录：</span> <a id="qq_login_btn" href="javascript:;"
+								class="qq-icon" tabindex="5"><b
+								class="passport-icon transparent-png"></b></a> <a id="wx_login_btn"
+								href="javascript:;" class="wx-icon" tabindex="6"><b
+								class="passport-icon transparent-png"></b></a>
+						</div>
+						<ul id="j-tips-wrap" class="j-tips-wrap j-login-page">
+						</ul>
+					</div>
+					<div class="wx-login clrfix" id="wxLogin" style="display: none;">
+						<h2 class="gray3">微信登录</h2>
+						<p id="p_code"></p>
+						<a id="a_return" href="javascript:;"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 底部版权 -->
+		<div class="g-copyrightCon clrfix">
+			<div class="g-links">
+			
+				<a target="_blank" href="/index.php" title="首页">首页</a><s></s>
+				
+				<volist name="bottom_help" id="vo" key="key">
+				<a target="_blank" href="/article/index/ac_id/{$vo.ac_id}.html" title="{$vo.ac_name}">{$vo.ac_name}</a><s></s> 
+				</volist>
+			</div>
+			<div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有
+				{$sitename}{$domain} {$icp}</div>
+		</div>
+	</div>
+</body>
+<script src="../Public/Js/jquery.js" ></script>
+<script src="../Public/Js/jquery.validate.js"></script>
+<script>
+/**
+* 提交注册请求
+* @author yangxin
+*/
+
+$(document).keyup(function(event){
+	  if(event.keyCode ==13){
+	    $("#btnSubmitLogin").trigger("click");
+	  }
+});
+$("#btnSubmitLogin").click(function(){
+	var	username=$("[name='username']").val();
+	var	password=$("[name='password']").val();
+	var	his_url=$("[name='his_url']").val();
+	var	captcha=$("[name='captcha']").val();
+	$.post('/Public/checkLogin',{username:username,password:password,captcha:captcha,his_url:his_url},function(result){
+		
+		if(result.status == 1){
+			$('#error_warn').html('<strong class="error"></strong>'+result.info);
+			if(result.data){
+				window.location=result.data;
+			}else{
+				window.location="{:U('User/index')}";
+			}
+			
+		}else{
+			$('#error_warn').html('<strong class="error"></strong>'+result.info);
+		}
+		
+	});
+})
+</script>
+
+</html>

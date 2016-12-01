@@ -1,0 +1,111 @@
+<section class="content-header">
+    <div class="row">
+        <div class="col-md-8">
+            <form action="{:U('Finance/withdrawlist')}" method="get">
+                <h4><small>提现列表</small></h4>
+                <div class="form-group">
+                    <select name="store_id" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+                        <option value="0">选择类型</option>
+                        <?php foreach ($withdrawTypes as $k=>$v){ ?>
+                            <option value="{$k}" <if condition="$k eq $withdraw_type">selected</if>>{$v}</option>
+                        <?php } ?>
+                    </select>
+
+                    <select name="store_id" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+                        <option value="0">目前状态</option>
+                        <?php foreach ($withdrawStatus as $k=>$v){ ?>
+                        <option value="{$k}" <if condition="$k eq $withdraw_type">selected</if>>{$v}</option>
+                        <?php } ?>
+                    </select>
+
+
+                    <div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+                        <input class="form-control" type="text" name="user_name" value="{$user_name}" placeholder="收款人">
+                        <span class="input-group-btn">
+						<button type="submit" class="btn btn-info btn-flat">搜索</button>
+						</span> </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4 right_menu">
+
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>申请编号</th>
+                    <th width="10%" class="table-textcenter">收款人</th>
+                    <th class="table-textcenter">收款机构</th>
+                    <th class="table-textcenter">收款账号</th>
+                    <th class="table-textcenter">提现金额</th>
+                    <th class="table-textcenter">提现类型</th>
+                    <th class="table-textcenter">用户</th>
+                    <th class="table-textcenter">状态</th>
+                    <th class="table-textcenter" width="15%">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="goods_list" id="gl">
+                    <tr>
+                        <td>{$gl.apply_no}</td>
+                        <td align="center" class="table-textcenter">{$gl.account_name}</td>
+                        <td class="table-textcenter">{$gl.bank_name}</td>
+                        <td class="table-textcenter">{$gl.bank_num}</td>
+                        <td class="table-textcenter">{$gl.withdraw_money}</td>
+                        <td class="table-textcenter">{$gl.withdraw_type}</td>
+                        <td class="table-textcenter">
+                            <?php $user = M('Member')->where('uid='.$gl['uid'])->find();
+                            if ($user)
+                            echo $user['username'];
+                            else
+                            echo $gl['uid'];
+                            ?>
+                        </td>
+                        <td class="table-textcenter"><?php echo $withdrawStatus[$gl['status']] ?></td>
+                        <td class="table-textcenter">
+                            <a class="btn btn-info btn-xs" href="{:U('Finance/drawDetail?apply_no='.$gl['apply_no'])}">编辑</a>
+                            <?php if ($gl['status'] == 2){?>
+                            <a class="btn btn-info btn-xs" href="javascript:void(0);" onclick="Da('<?php  echo $gl[\'apply_no\']; ?>', this);">打款</a>
+                            <?php } ?>
+
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer clearfix">
+            <ul class="pagination pagination-sm no-margin pull-right">
+                {$page}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+    var lock = 0;
+    function Da(_apply_no, obj) {
+        if (lock == 1)
+            return false;
+        $(obj).html('打款中...');
+        $(obj).addClass('loading');
+
+
+        window.open("<?php echo U('Admin/Finance/withdrawPay'); ?>" + "?apply_no=" + _apply_no);
+//        $.ajax({
+//            type:"POST",
+//            url:"<?php echo U('Admin/Finance/withdrawPay'); ?>",
+//            data: {apply_no:_apply_no},
+//            success: function(msg) {
+//                alert(msg);
+////                window.location.href =window.location.href;
+//            }
+//        });
+
+    }
+</script>

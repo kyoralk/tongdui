@@ -1,0 +1,38 @@
+<div class="header">
+	<div class="w1210">
+		<div class="mall-logo"> <a href="./"><img src="__PMALL__/Images/logo.png" width="250" /></a> </div>
+		<div class="mall-logo-right"> <a href="#" target="_blank"></a> </div>
+		<div class="mall-search">
+			<div id="search-tips" style="display:none;"></div>
+			<form class="mallSearch-form" method="get" name="searchForm" id="searchForm" action="search.php" onSubmit="return checkSearchForm()">
+				<input type='hidden' name='type' id="searchtype" value="0">
+				<div class="mallSearch-input">
+					<ul class="search-type">
+						<li class="cur" num="0">宝贝<i class="icon-down"></i></li>
+						<li  num="1">店铺<i class="icon-down"></i></li>
+					</ul>
+					<div class="s-combobox">
+						<div class="s-combobox-input-wrap">
+							<input aria-haspopup="true" role="combobox" class="s-combobox-input" name="keywords" id="keyword" tabindex="9" accesskey="s" onkeyup="STip(this.value, event);" autocomplete="off"  value="请输入关键词" onFocus="if(this.value=='请输入关键词'){this.value='';}else{this.value=this.value;}" onBlur="if(this.value=='')this.value='请输入关键词'" type="text">
+						</div>
+					</div>
+					<input type="submit" value="搜索" class="button main-bg-color"  >
+				</div>
+			</form>
+			<ul class="hot-query" >
+				<li style="border-left: none;"> <a href="search.php?keywords=iPhone5" title="iPhone5">iPhone5</a> </li>
+				<li > <a href="search.php?keywords=NZXT" title="NZXT">NZXT</a> </li>
+				<li > <a href="search.php?keywords=%E6%97%85%E8%A1%8C%E5%8C%85" title="旅行包">旅行包</a> </li>
+				<li > <a href="search.php?keywords=%E6%A0%BC%E5%8A%9B%E7%94%B5%E6%9A%96%E5%99%A8" title="格力电暖器">格力电暖器</a> </li>
+				<li > <a href="search.php?keywords=%E5%B9%B4%E8%B4%A7%E5%85%88%E5%88%B0%E5%AE%B6" title="年货先到家">年货先到家</a> </li>
+				<li > <a href="search.php?keywords=MX2" title="MX2">MX2</a> </li>
+				<li > <a href="search.php?keywords=%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3" title="邓小平时代">邓小平时代</a> </li>
+			</ul>
+		</div>
+		<ul class="header-right">
+			<li> <a href="javascript:;"><img src="themes/ahxcgg_360buy/images/common/7day.jpg"/></a></li>
+			<li> <a href="javascript:;"><img src="themes/ahxcgg_360buy/images/common/guarantee.jpg"/></a></li>
+			<li> <a href="javascript:;"><img src="themes/ahxcgg_360buy/images/common/delivery.jpg"/></a></li>
+		</ul>
+	</div>
+</div>

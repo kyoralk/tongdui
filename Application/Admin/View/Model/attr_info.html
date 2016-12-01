@@ -1,0 +1,43 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="" method="post">
+		<input name="mid" type="hidden" value="{$mid}" />
+		<input name="attr_id" type="hidden" value="{$attr_info.attr_id}" />
+		<div class="box-body"> 
+			{:fastModule('form-group',array('属性名称'),array('text','attr_name',$attr_info['attr_name']))}
+			{:fastModule('form-group',array('显示位置'),array('checkbox',array('sxjs','sxsx'),array(array('属性介绍',1,$attr_info['sxjs']),array('属性筛选',1,$attr_info['sxsx'])),'','','checkbox'))}
+			{:fastModule('form-group',array('属性值录入方式'),array('radio','attr_input_type',array(array('下拉列表',1,$attr_info['attr_input_type']),array('复选框',2,$attr_info['attr_input_type']),array('单选按钮',3,$attr_info['attr_input_type'])),'','','radio'))}
+			{:fastModule('form-group',array('属性值'),array('textarea','attr_value',$attr_info['attr_value']))} 
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4">
+				<a href="{:U('Model/attrList?mid='.$mid)}" class="btn btn-warning">返回属性列表</a>
+				&nbsp;&nbsp;&nbsp;
+				<button type=button class="btn btn-primary" onclick="submitForm();">保存</button>
+			</div>
+		</div>
+	</form>
+</div>
+</section>
+<script>
+function submitForm(){
+	var attr_id = $("input[name='attr_id']").val();
+	if(attr_id == ''){
+		$("#myform").prop("action","{:U('Model/attrAdd')}");
+	}else{
+		$("#myform").prop("action","{:U('Model/attrUpdate')}");
+	}
+	$("#myform").submit();
+}
+</script>

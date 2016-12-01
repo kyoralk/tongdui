@@ -1,0 +1,177 @@
+<div id="comment" class="col-r-cm col-r-1">
+	<h3 class="pd-recommand">商品评价</h3>
+	<div class="mc">
+		<div id="i-comment">
+			<div class="rate">
+				<strong>{$hpd}<span>%</span></strong>
+				<p>好评度</p>
+			</div>
+			<div class="percent">
+				<dl>
+					<dt>好评：</dt>
+					<dd class="pb">
+						<div style="width: {$hpd}%"></div>
+					</dd>
+					<dd>
+						<span>{$hpd}%</span>
+					</dd>
+				</dl>
+				<dl>
+					<dt>中评：</dt>
+					<dd class="pb">
+						<div style="width: {$zpd}%"></div>
+					</dd>
+					<dd>
+						<span>{$zpd}%</span>
+					</dd>
+				</dl>
+				<dl>
+					<dt>差评：</dt>
+					<dd class="pb">
+						<div style="width: {$cpd}%"></div>
+					</dd>
+					<dd>
+						<span>{$cpd}%</span>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="pc-tab-box">
+		<div class="pc-tab-ti">
+			<ul>
+				<li class="on">全部评论({$hp_count+$zp_count+$cp_count})<i>◆</i></li>
+				<li>好评({$hp_count})<i>◆</i></li>
+				<li>中评({$zp_count})<i>◆</i></li>
+				<li style="border-right: 0">差评({$cp_count})<i>◆</i></li>
+			</ul>
+		</div>
+		<div class="pc-tab-con">
+			<div class="pc-tab-cc">
+				<volist name="e_list" id="e">
+				<div class="pc-list">
+					<div class="pcl-ti">
+						<div class="pc-author">{$e.username}</div>
+						<div class="pc-stars">
+							<span>评分：</span> <span class="s2"> <em
+								class="stars-cm stars-{$e.score}"></em>
+							</span>
+						</div>
+						<div class="pc-publish-date">点评发布于：{$e.send_time|date="Y-m-d
+							H:i:s",###}</div>
+					</div>
+					<ul class="pc-c-ul">
+						<li>{$e.evaluation}</li>
+						<li class="pc-date">购买日期： {$e.order_time|date="Y-m-d
+							H:i:s",###}</li>
+					</ul>
+				</div>
+				</volist>
+				<div class="mtb20">
+					<div class="c-pagination">
+						<div class="pagination-pages">{$ep}</div>
+
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="pc-tab-cc" style="disply:none;">
+				<volist name="hp_list" id="e">
+				<div class="pc-list">
+					<div class="pcl-ti">
+						<div class="pc-author">{$e.username}</div>
+						<div class="pc-stars">
+							<span>评分：</span> <span class="s2"> <em
+								class="stars-cm stars-{$e.score}"></em>
+							</span>
+						</div>
+						<div class="pc-publish-date">点评发布于：{$e.send_time|date="Y-m-d
+							H:i:s",###}</div>
+					</div>
+					<ul class="pc-c-ul">
+						<li>{$e.evaluation}</li>
+						<li class="pc-date">购买日期： {$e.order_time|date="Y-m-d
+							H:i:s",###}</li>
+					</ul>
+				</div>
+				</volist>
+				<div class="mtb20">
+					<div class="c-pagination">
+						<div class="pagination-pages">{$ep}</div>
+
+					</div>
+				</div>
+			</div>
+			
+			<div class="pc-tab-cc"  style="disply:none;">
+				<volist name="zp_list" id="e">
+				<div class="pc-list">
+					<div class="pcl-ti">
+						<div class="pc-author">{$e.username}</div>
+						<div class="pc-stars">
+							<span>评分：</span> <span class="s2"> <em
+								class="stars-cm stars-{$e.score}"></em>
+							</span>
+						</div>
+						<div class="pc-publish-date">点评发布于：{$e.send_time|date="Y-m-d
+							H:i:s",###}</div>
+					</div>
+					<ul class="pc-c-ul">
+						<li>{$e.evaluation}</li>
+						<li class="pc-date">购买日期： {$e.order_time|date="Y-m-d
+							H:i:s",###}</li>
+					</ul>
+				</div>
+				</volist>
+				<div class="mtb20">
+					<div class="c-pagination">
+						<div class="pagination-pages">{$zp}</div>
+
+					</div>
+				</div>
+			</div>
+			
+			<div class="pc-tab-cc" style="disply:none;">
+				<volist name="cp_list" id="e">
+				<div class="pc-list">
+					<div class="pcl-ti">
+						<div class="pc-author">{$e.username}</div>
+						<div class="pc-stars">
+							<span>评分：</span> <span class="s2"> <em
+								class="stars-cm stars-{$e.score}"></em>
+							</span>
+						</div>
+						<div class="pc-publish-date">点评发布于：{$e.send_time|date="Y-m-d
+							H:i:s",###}</div>
+					</div>
+					<ul class="pc-c-ul">
+						<li>{$e.evaluation}</li>
+						<li class="pc-date">购买日期： {$e.order_time|date="Y-m-d
+							H:i:s",###}</li>
+					</ul>
+				</div>
+				</volist>
+				<div class="mtb20">
+					<div class="c-pagination">
+						<div class="pagination-pages">{$cp}</div>
+
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<script>
+$(".pc-tab-ti ul li").hover(function(){
+	$(".pc-tab-ti ul li").removeClass("on");
+	$(this).addClass("on");
+	var pc_index=$(this).index();
+	$(".pc-tab-cc").hide();
+	$(".pc-tab-cc:eq("+pc_index+")").show();
+	
+});
+
+
+</script>

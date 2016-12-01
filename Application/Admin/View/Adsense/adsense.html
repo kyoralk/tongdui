@@ -1,0 +1,42 @@
+<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<notempty name="right_menu">
+  					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+  				</notempty>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Adsense/adsenseSave')}" method="post">
+		<input name="ad_id" type="hidden" value="{$info.ad_id}"/>
+		<div class="box-body"> 
+			{:fastModule('form-group',array('广告位'),array('select','position_id',array($position_list,$info['position_id'],array('position_id','position_name'))))}
+			{:fastModule('form-group',array('广告'),array('file','adsense',$info['adsense'],$info['ad_id']))}
+			{:fastModule('form-group',array('广告链接地址'),array('text','ad_url',$info['ad_url']))}
+			{:fastModule('form-group',array('商品id'),array('text','goods_id',$info['goods_id']))}
+			{:fastModule('form-group',array('新窗口打开'),array('checkbox',array('is_target'),array(array('',1,$info['is_target'],0)),'','','checkbox'))}
+			{:fastModule('form-group',array('启用'),array('checkbox',array('enabled'),array(array('',1,$info['enabled'],1)),'','','checkbox'))}
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="button" class="btn btn-primary" onclick="formSubmit();">保存</button></div>
+		</div>
+	</form>
+</div>
+</section>
+<script type="text/javascript">
+function formSubmit() {
+	var adsense=$("input[name='adsense']").val();
+	if(adsense!=''){
+		document.getElementById('myform').encoding="multipart/form-data";
+	}
+	document.myform.submit();
+}
+function remove(remove_id,id,path){
+	var _action = "{:U('Adsense/imgDelete')}";
+	ms.removeImg(remove_id,id,path,_action);
+}
+</script>

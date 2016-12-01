@@ -1,0 +1,473 @@
+
+<link rel="stylesheet" type="text/css" href="__PMALL__/Css/detail.css">
+	<div class="dmain">
+		<div class="dmainBox lazyload">
+			<div class="detail-guide">
+				<strong> <a target="_self" href="/">首页</a>
+				</strong> &gt; <a target="_self"
+					href="/product_list/{$gi.gc_id}">{$gi.gc_name}</a>
+				&gt; <a target="_self"
+					href="/product_list/0|{$gi.brand.brand_id}">{$gi.brand.brand_name}</a> &gt;
+				<span class="det-cur">{$gi.goods_name}</span>
+			</div>
+			<include file="Goods:detail-box1"/>
+			<div class="detail-box2">
+				<div class="detail-left">
+					<div style="display: none;" id="_canusecoupons"
+						class="u-coupons-box"></div>
+					<include file="Goods:tlglist"/>
+					<!-- 一周销量排行榜 -->
+					<include file="Goods:week_top"/>
+					<!-- 浏览历史 -->
+					<include file="Goods:history"/>
+				</div>
+				<div class="detail-right">
+					<div id="_tzvm"></div>
+					<div id="answerArea" class="detBox_title">
+						<div class="productTabTit">
+							<!-- js/newdetail/detail.js 商品介绍 -->
+							<ul>
+								<li class="on">商品介绍</li>
+								<li class="">评价<span id="_plnub">({$hp_count+$zp_count+$cp_count})</span></li>
+<!-- 								<li class="">商品咨询</li> -->
+								<!--  <li onclick="onloadZPBZPic()" class="">真品保证</li>
+								<li class="">商品辨真伪</li>-->
+							</ul>
+						</div>
+
+						<!--<div style="display: block;" class="detailSetBtn-box">
+							<a class="detailSetBtn float-top-btn" href="javascript:;"
+								style="" id="_jrgwc2"> <em></em> <span class="_jrgwcanmc">加入购物车</span>
+							</a>
+							<div style="display: none;" id="u-buy-laycl"
+								class="u-buy-lay u-buy-lay-small">
+								<div class="u-buy-con u-buy-con-small">
+									<div class="u-buy-ok u-buy-ok-small">
+										<i></i> <span>添加成功!</span>
+									</div>
+
+									<div class="u-buy-gon u-buy-gon-small">
+										<a class="u-buy-go" target="_blank"
+											href="http://cart.jiuxian.com">去结算</a> <a class="u-buy-g"
+											href="javascript:;">继续购物</a>
+									</div>
+								</div>
+								<a class="u-buy-close" href="javascript:;"></a> <s></s>
+							</div>
+
+							<div style="display: none;" id="u-buy-laycl2"
+								class="u-buy-lay u-buy-lay-small">
+								<div class="u-buy-con u-buy-con-small">
+									<div class="u-buy-no">
+										<i></i> <span class="_cartstatus">添加失败，库存不足！</span>
+									</div>
+								</div>
+								<a class="u-buy-close" href="javascript:;"></a> <s></s>
+							</div>
+						</div>-->
+
+						<!--<div class="detailCode detailCode-on">
+							下载客户端 美酒随时抢<span> <img width="21" height="21"
+								src="http://misc.jiuxian.com/img/detailImg/DB328B7A-7109-4A20-A3CC-094425EDCB71.jpg">
+							</span> <i></i>
+							<div class="detailCode-t">
+								<img width="200" height="200"
+									src="http://misc.jiuxian.com/img/detailImg/DB328B7A-7109-4A20-A3CC-094425EDCB71.jpg">
+							</div>
+						</div>-->
+					</div>
+					<div class="dRight-wrap">
+						<div class="dRight-tab-con" style="display: block;">
+							<div id="proShow" class="detail_switch clearfix">
+								<div class="dRight-parameter">
+									<ul>
+									   <volist name="attr_list" id="al">
+										<li><span>{$al.attr_name}： <em title="{$al.attr_values}">{$al.attr_values} </em>
+										</span></li>
+										</volist>
+										<div class="clear"></div>
+									</ul>
+								</div>
+
+								<div class="part_box clearfix">
+									<dl class="ass_share_dl2 clearfix">
+
+									</dl>
+								</div>
+								<div style="clear: both;"></div>
+								<!--part_box-->
+								<div class="part_box clearfix">
+								{$gi.goods_desc}
+								</div>
+							</div>
+						</div>
+						<div id="kkkkk" style="display: none;" class="dRight-tab-con">
+								<include file="Goods/evaluation" />
+							
+						</div>
+						<div style="display: none;" class="dRight-tab-con">
+							<div class="u-consulting-wrap">
+								<div class="u-consulting-title">
+									<ul>
+										<li class="on">全部咨询<i id="_zx0">(22)</i></li>
+										<li>商品提问<i id="_zx1">(16)</i></li>
+										<li>促销活动<i id="_zx2">(1)</i></li>
+										<li>库存及物流<i id="_zx3">(5)</i></li>
+										<li>售后提问<i id="_zx4">(0)</i></li>
+									</ul>
+									<div class="u-consulting-line"></div>
+								</div>
+								<div class="u-consulting-info-box">
+									<div class="u-consulting-info-con">
+										<div class="u-consulting-prompt">
+											<p>提示:因厂家更改产品包装、产地或者更换随机附件等没有任何提前通知，且每位咨询者购买情况、提问时间等不同，
+												为此以下回复信息仅供参考！若由此给您带来不便请多多谅解，谢谢！</p>
+											<a class="u-consulting-btn" href="#bottom-ask"> <span></span>
+												我要咨询
+											</a>
+											<div class="clear"></div>
+										</div>
+										<div id="_detailConsultContent0">
+											<ul class="u-consulting-qa">
+												<li>
+													<div class="u-consulting-ask">
+														<p class="u-consulting-a">
+															<i></i> <span class="u-consulting-n"> "**** </span> <span
+																class="u-consulting-time">2015-06-21 12:54:24</span>
+														</p>
+														<p class="u-consulting-q">能保证酒的正品吗 发票什么的都有吗
+															收到后发现不是正品怎么办</p>
+													</div>
+													<div class="u-consulting-ans">
+														<p class="u-consulting-c">
+															<i></i> <span class="u-consulting-s">酒仙网客服回复：</span> <span
+																class="u-consulting-time">2015-06-21 15:23:38</span>
+														</p>
+														<p class="u-consulting-r">亲爱的酒友您好，酒水的质量都是为您保证的呢，发票您可以在订单中选择需要哦，酒水有任何问题您都可以联系我们400-6179999，感谢您对酒仙的支持！</p>
+
+													</div>
+												</li>
+
+											</ul>
+											<div id="_detailConsultPage0" class="u-evaluate-page-wrap">
+												<div class="u-evaluate-page">
+													<a title="上一页" href="javascript:void(0);" class="prve">上一页</a><a
+														class="current">1</a><a onclick="sub(2,0);"
+														href="javascript:void(0);">2</a><a onclick="sub(3,0);"
+														href="javascript:void(0);">3</a><a onclick="sub(4,0);"
+														href="javascript:void(0);">4</a><a onclick="sub(2,0);"
+														title="下一页" href="javascript:void(0);" class="next">下一页</a>
+												</div>
+											</div>
+
+
+										</div>
+									</div>
+									<div style="display: none;" class="u-consulting-info-con">
+										<div class="u-consulting-prompt">
+											<p>提示:因厂家更改产品包装、产地或者更换随机附件等没有任何提前通知，且每位咨询者购买情况、提问时间等不同，
+												为此以下回复信息仅供参考！若由此给您带来不便请多多谅解，谢谢！</p>
+											<a class="u-consulting-btn" href="#bottom-ask"> <span></span>
+												我要咨询
+											</a>
+											<div class="clear"></div>
+										</div>
+										<div style="display: none;" id="_detailConsultContent1">
+										</div>
+									</div>
+									<div style="display: none;" class="u-consulting-info-con">
+										<div class="u-consulting-prompt">
+											<p>提示:因厂家更改产品包装、产地或者更换随机附件等没有任何提前通知，且每位咨询者购买情况、提问时间等不同，
+												为此以下回复信息仅供参考！若由此给您带来不便请多多谅解，谢谢！</p>
+											<a class="u-consulting-btn" href="#bottom-ask"> <span></span>
+												我要咨询
+											</a>
+											<div class="clear"></div>
+										</div>
+										<div style="display: none;" id="_detailConsultContent2">
+										</div>
+									</div>
+									<div style="display: none;" class="u-consulting-info-con">
+										<div class="u-consulting-prompt">
+											<p>提示:因厂家更改产品包装、产地或者更换随机附件等没有任何提前通知，且每位咨询者购买情况、提问时间等不同，
+												为此以下回复信息仅供参考！若由此给您带来不便请多多谅解，谢谢！</p>
+											<a class="u-consulting-btn" href="#bottom-ask"> <span></span>
+												我要咨询
+											</a>
+											<div class="clear"></div>
+										</div>
+										<div style="display: none;" id="_detailConsultContent3">
+										</div>
+									</div>
+									<div style="display: none;" class="u-consulting-info-con">
+										<div class="u-consulting-prompt">
+											<p>提示:因厂家更改产品包装、产地或者更换随机附件等没有任何提前通知，且每位咨询者购买情况、提问时间等不同，
+												为此以下回复信息仅供参考！若由此给您带来不便请多多谅解，谢谢！</p>
+											<a class="u-consulting-btn" href="#bottom-ask"> <span></span>
+												我要咨询
+											</a>
+											<div class="clear"></div>
+										</div>
+										<div style="display: none;" id="_detailConsultContent4">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="bottom-ask" class="dRight_bottom">
+								<div class="u-comments-area">
+									<div class="u-comments-title">
+										<i></i> <strong>提问：53°杏花酒家原浆酒30（青花瓷珍版）1500ml</strong> <span></span>
+									</div>
+									<div style="" class="u-comments-login login-cell _notislogined">
+										登录后才可发表咨询，<a href="https://login.jiuxian.com/login.htm">立即登录</a>
+									</div>
+									<div class="u-consulting-table">
+										<table width="100%" cellspacing="0" cellpadding="0" border="0">
+
+											<tbody>
+												<tr>
+													<td align="right"><strong>提问类型：</strong></td>
+													<td><label> <input type="radio"
+															checked="checked" id="RadioGroup1_0" value="1"
+															name="faq_flag"> <span>商品提问</span>
+													</label> <label> <input type="radio" id="RadioGroup1_1"
+															value="2" name="faq_flag"> <span>促销活动提问</span>
+													</label> <label> <input type="radio" id="RadioGroup1_2"
+															value="3" name="faq_flag"> <span>库存及物流提问</span>
+													</label> <label> <input type="radio" id="RadioGroup1_2"
+															value="4" name="faq_flag"> <span>售后提问</span>
+													</label></td>
+												</tr>
+												<tr>
+													<td valign="top" align="right"><strong>提问内容：</strong>
+													</td>
+													<td><textarea class="u-consulting-form" rows=""
+															cols="" name="" id="_ComContent1"></textarea></td>
+												</tr>
+												<tr>
+													<td>&nbsp;</td>
+													<td><input type="button" name="" value="提交问题"
+														onclick="javascript:addConsultation();"
+														class="u-consulting-b"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="u-consulting-rule">
+									<h4>咨询说明</h4>
+									<p>1、商品咨询是酒仙网为您提供的疑难问答，在这里您可以与工作人员直接进行交流。因发起咨询的用户较多，可能无法及时进行回复，我们将在最快的时间内为您解答；</p>
+									<p>2、当涉及广告、比价、重复反馈、不实评论、恶意评论、粗口、危害国家安全等等不当言论时，酒仙网有权予以管理。</p>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+
+
+						<!-- <div style="display: none;" class="dRight-tab-con">
+							<a target="_blank" href="http://special.jiuxian.com/zhengpin.htm"><img
+								width="790" id="zpbzPic"
+								src="http://misc.jiuxian.com/images/newdetail/zpbz.jpg"></a>
+						</div>-->
+						<!--<div proid="17164" style="display: none;" class="dRight-tab-con">
+							<div id="antifakeinfo">
+								<div class="antiFakeBox">
+
+									<div class="videoBox">
+
+										<p class="videoText">
+											<span></span>
+										</p>
+										<object width="640" height="360" id="FLVPlayer"
+											classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
+											<param
+												value="http://v.jiuxian.com/flash/FLVPlayer_Progressive.swf"
+												name="movie">
+											<param value="high" name="quality">
+											<param value="opaque" name="wmode">
+											<param value="noscale" name="scale">
+											<param value="lt" name="salign">
+											<param
+												value="&amp;MM_ComponentVersion=1&amp;skinName=http://v.jiuxian.com/flash/Clear_Skin_3&amp;autoPlay=false&amp;autoRewind=false&amp;streamName=http://v.jiuxian.com/2015/0507/71253c6e189e42579df8f06095661a53.flv"
+												name="FlashVars">
+											<param value="8,0,0,0" name="swfversion">
+											<param
+												value="http://v.jiuxian.com/flash/Scripts/expressInstall.swf"
+												name="expressinstall">
+											<object width="640" height="360"
+												data="http://v.jiuxian.com/flash/FLVPlayer_Progressive.swf"
+												type="application/x-shockwave-flash">
+												<param value="high" name="quality">
+												<param value="opaque" name="wmode">
+												<param value="noscale" name="scale">
+												<param value="lt" name="salign">
+												<param
+													value="&amp;MM_ComponentVersion=1&amp;skinName=http://v.jiuxian.com/flash/Clear_Skin_3&amp;autoPlay=false&amp;autoRewind=false&amp;streamName=http://v.jiuxian.com/2015/0507/71253c6e189e42579df8f06095661a53.flv"
+													name="FlashVars">
+												<param value="8,0,0,0" name="swfversion">
+												<param
+													value="http://v.jiuxian.com/flash/Scripts/expressInstall.swf"
+													name="expressinstall">
+												<div>
+													<h4>此页面上的内容需要较新版本的 Adobe Flash Player。</h4>
+													<p>
+														<a href="http://www.adobe.com/go/getflashplayer"><img
+															alt="获取 Adobe Flash Player"
+															src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"></a>
+													</p>
+												</div>
+											</object>
+										</object>
+									</div>
+									<div class="imagesBox">
+										<div class="item">
+											<p class="imagesText">
+												<span></span>
+											</p>
+											<img
+												src="http://img07.jximage.com/bill/2015/0507/d024b7b337754f71b9de37fc84776859.jpg">
+										</div>
+										<div class="item">
+											<p class="imagesText">
+												<span></span>
+											</p>
+											<img
+												src="http://img06.jiuxian.com/bill/2015/0507/9581320bbb0e46a9aa5ee2796a29add9.jpg">
+										</div>
+										<div class="item">
+											<p class="imagesText">
+												<span></span>
+											</p>
+											<img
+												src="http://img08.jiuxian.com/bill/2015/0507/bf12faca50924cbe8978cba1226c3291.jpg">
+										</div>
+										<div class="item">
+											<p class="imagesText">
+												<span></span>
+											</p>
+											<img
+												src="http://img08.jiuxian.com/bill/2015/0507/104257992ea54c258dd50ea5be0b06fe.jpg">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>-->
+
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+<div style="display: none;" class="alt_succ_coll_store">
+<div class="alt_succ_box_coll_store"><div class="sum"><span class="conticon"></span><span class="succ_close_store"></span>
+<h6 id="h6"></h6>
+</div></div></div>
+
+
+<div style="display: none;" class="alt_succ_coll">
+<div class="alt_succ_box_coll"><div class="sum"><span class="conticon"></span><span class="succ_close"></span>
+<h6 id="h6_1"></h6>
+</div></div></div>
+
+	<script>
+
+	$(".productTabTit li").click(function(){
+		$(".productTabTit li").removeClass("on");
+		$(this).addClass("on");
+		var index=$(this).index();
+		$(".dRight-tab-con").hide();
+		$(".dRight-tab-con:eq("+index+")").show();
+	});
+	
+	
+	
+	
+$(".show-list-con li").hover(function(){
+	$(".show-list-con li").removeClass("sList-on");
+	$(this).addClass("sList-on");
+	$(".show-pic img").attr("src",$(this).attr("data-img"));
+	$(".show-pic img").attr("jqimg",$(this).attr("data-zoom"));
+});
+function collect(goods_id){
+	//alert(goods_id);
+	$.ajax({
+		url:"{:U('Goods/collect')}",
+		type:'post',
+		data:{goods_id:goods_id},
+		dataType:'json',
+		success:function(re){
+			if(re.status==0){
+				var his_url= top.location.href;
+				window.location='/Public/login?his_url='+his_url;
+			}else if(re.status==2){
+				$.ajax({
+					url:"{:U('Goods/ajaxcollect')}",
+					type:'post',
+					data:{goods_id:goods_id},
+					dataType:'json',
+					success:function(re){
+						if(re.status==1){
+							$("#h6_1").html(re.info);
+						}else{
+							$("#h6_1").html(re.info);
+						}
+						$(".alt_succ_coll").show();
+					}
+				})
+			}else if(re.status==1){
+				$("#h6_1").html(re.info);
+				$(".alt_succ_coll").show();
+			}
+		}
+	})
+}
+
+function guanzhu(store_id){
+	$.ajax({
+		url:"{:U('Goods/guanzhu')}",
+		type:'post',
+		data:{store_id:store_id},
+		dataType:'json',
+		success:function(re){
+			if(re.status==0){
+				var his_url= top.location.href;
+				window.location='/Public/login?his_url='+his_url;
+			}else if(re.status==2){
+				$.ajax({
+					url:"{:U('Goods/ajaxguanzhu')}",
+					type:'post',
+					data:{store_id:store_id},
+					dataType:'json',
+					success:function(re){
+						if(re.status==1){
+							$("#h6").html(re.info);
+						}else{
+							$("#h6").html(re.info);
+						}
+						$(".alt_succ_coll_store").show();
+					}
+				})
+			}else if(re.status==1){
+				$("#h6").html(re.info);
+				$(".alt_succ_coll_store").show();
+			}else if(re.status==3){
+				alert(re.info);
+			}
+		}
+	})
+}
+$(".succ_close").click(function(){
+	$(".alt_succ_coll").hide();
+});
+
+$(".succ_close_store").click(function(){
+	$(".alt_succ_coll_store").hide();
+});
+</script>

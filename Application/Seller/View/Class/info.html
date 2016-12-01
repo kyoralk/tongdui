@@ -1,0 +1,61 @@
+<div class="main-content" id="mainContent">
+<div class="tabmenu">
+	<ul class="tab pngFix">
+		<li>
+			<a href="#">{$content_header}</a>
+		</li>
+	</ul>
+</div>
+<div class="ncsc-form-default">
+	<form method="post" action="{:U('Class/save')}" id="my_store_form">
+		<dl>
+			<dt>名称：</dt>
+			<dd>
+				<input class="w200 text" name="sc_name" type="text" value="{$class_info.sc_name}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>上级分类：</dt>
+			<dd>
+				<select name="sc_parent_id" class="w200">
+					<option value="0">选择分类</option>
+					<volist name="class_list" id="cl">
+					<option value="{$cl.sc_id}" <if condition="$cl.sc_id eq $sc_parent_id"> selected="selected" </if>>{$cl.sc_name}</option>
+					</volist>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt>排序：</dt>
+			<dd>
+				<input class="text w200" name="sc_sort" type="text" value="{$class_info.sc_sort}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>SEO关键字：</dt>
+			<dd>
+				<p>
+					<input class="text w400" name="sc_keywords" type="text"value="{$class_info.sc_keywords}" />
+				</p>
+				<p class="hint">用于店铺搜索引擎的优化，关键字之间请用英文逗号分隔</p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>SEO描述：</dt>
+			<dd>
+				<p>
+					<textarea name="sc_description" rows="3" class="textarea w400" id="remark_input">{$class_info.sc_description}</textarea>
+				</p>
+				<p class="hint">用于店铺搜索引擎的优化，建议120字以内</p>
+			</dd>
+		</dl>
+		<div class="bottom">
+			<label class="submit-border">
+				<input type="submit"
+								class="submit" value="提交" />
+			</label>
+		</div>
+		<input name="sc_id" type="hidden" value="{$sc_id}"/>
+	</form>
+</div>
+</div>

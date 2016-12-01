@@ -1,0 +1,44 @@
+		<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<notempty name="right_menu">
+  					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+  				</notempty>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Brand/save')}" method="post">
+		<input name="brand_id" type="hidden" value="{$brand_info.brand_id}"/>
+		<div class="box-body"> 
+			{:fastModule('form-group',array('品牌分类'),array('select','gc_id',array($class_list,$brand_info['gc_id'],array('gc_id','gc_name'))))}
+			{:fastModule('form-group',array('品牌名称'),array('text','brand_name',$brand_info['brand_name']))}
+			{:fastModule('form-group',array('品牌网址'),array('text','site_url',$brand_info['site_url']))}
+			{:fastModule('form-group',array('品牌logo'),array('file','brand_logo',$brand_info['brand_logo'],$brand_info['brand_id']))}
+			{:fastModule('form-group',array('排序'),array('text','sort',$brand_info['sort']))}
+			{:fastModule('form-group',array('品牌描述'),array('textarea','brand_desc',$brand_info['brand_desc']))} 
+			{:fastModule('form-group',array('是否显示'),array('radio','is_show',array(array('显示',1,$brand_info['is_show'],1),array('不显示',0,$brand_info['is_show'],1)),'','','radio'))}
+			{:fastModule('form-group',array('是否推荐'),array('radio','is_recommend',array(array('推荐',1,$brand_info['is_recommend'],1),array('不推荐',0,$brand_info['is_recommend'],1)),'','','radio'))}
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="button" class="btn btn-primary" onclick="formSubmit();">保存</button></div>
+		</div>
+	</form>
+</div>
+</section>
+<script type="text/javascript">
+function formSubmit() {
+	var brand_logo=$("input[name='brand_logo']").val();
+	if(brand_logo!=''){
+		document.getElementById('myform').encoding="multipart/form-data";
+	}
+	document.myform.submit();
+}
+function remove(remove_id,id,path){
+	var _action = "{:U('Brand/logoDelete')}";
+	ms.removeImg(remove_id,id,path,_action);
+}
+</script>

@@ -1,0 +1,49 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box">
+	<div class="box-body">
+		<table class="table table-bordered">
+			<tbody>
+				<tr style="background-color: #f9f9f9;">
+					<th style="width: 10px">#</th>
+					<th class="table-textcenter">名称</th>
+					<th class="table-textcenter">链接地址</th>
+					<th class="table-textcenter">排序</th>
+					<th class="table-textcenter">状态</th>
+					<th class="table-textcenter">操作</th>
+				</tr>
+				<volist name="list" id="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td class="table-textcenter">{$vo.nav_name}</td>
+					<td class="table-textcenter"><a href="{$vo.nav_url}">{$vo.nav_url}</a></td>
+					<td class="table-textcenter">{$vo.nav_sort}</td>
+					<td class="table-textcenter">
+					<span class="label label-success">显示</span>
+					</td>
+					<td class="table-textcenter">
+					<a class="btn btn-social-icon btn-info" title="编辑" href="{:U('Navigation/edit',array('id'=>$vo['id']))}"><i class="fa fa-edit"></i></a>
+					<a class="btn btn-social-icon btn-danger" title="删除" href="{:U('Navigation/delete',array('id'=>$vo['id']))}"><i class="fa fa-bitbucket"></i></a>
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+	<div class="box-footer clearfix">
+		<ul class="pagination pagination-sm no-margin pull-right">
+		{$page}
+		</ul>
+	</div>
+</div>
+</section>
+

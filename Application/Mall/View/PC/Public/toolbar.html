@@ -1,0 +1,203 @@
+<div id="ncToolbar" class="nc-appbar">
+	<div class="nc-appbar-tabs" id="appBarTabs">
+		<div class="ever">
+			<div class="cart"><a href="javascript:void(0);" id="rtoolbar_cart"><span class="icon"></span> <span class="name">购物车</span><i id="rtoobar_cart_count" class="new_msg" style="display:none;"></i></a></div>
+			<div class="chat"><a href="javascript:void(0);" id="chat_show_user"><span class="icon"></span><i id="new_msg" class="new_msg" style="display:none;"></i><span class="tit">在线联系</span></a></div>
+		</div>
+		<div class="variation">
+			<div class="middle">
+				<div class="user" nctype="a-barLoginBox"> <a href="javascript:void(0);">
+					<div class="avatar">
+						<empty name="avatar"> <img src="__PMALL__/Images/photo.gif"  >
+							<else />
+							<img src="/Public/Upload/Photo/{$avatar}"  > </empty>
+					</div>
+					<span class="tit">会员登录</span> </a> </div>
+					<script type="text/javascript">
+						$(function(){
+							$("#btnSubmitLogin").click(function(){
+								var	username=$("[name='username']").val();
+								var	password=$("[name='password']").val();
+								var	captcha=$("[name='captcha']").val();
+								$.post('/Public/checkLogin',{username:username,password:password,captcha:captcha},function(result){
+									if(result.status == 1){
+										$('#error_warn').html('<strong class="error"></strong>'+result.info);
+										window.location="{:U('User/index')}";
+									}else{
+										$('#error_warn').html('<strong class="error"></strong>'+result.info);
+									}
+									
+								});
+							})
+						})
+					</script>
+				<div class="user-login-box" nctype="barLoginBox" style="display:none;"> <i class="arrow"></i> 
+				<a href="javascript:void(0);" class="close-a" nctype="close-barLoginBox" title="关闭">X</a>
+						<empty name="username">
+						<dl>
+							<dt><strong>登录名</strong></dt>
+							<dd>
+								<input class="text" autocomplete="off" name="username" autofocus type="text">
+								<label></label>
+							</dd>
+						</dl>
+						<dl>
+							<dt><strong>登录密码</strong>
+							</dt>
+							<dd>
+								<input class="text" name="password" autocomplete="off" type="password">
+								<label></label>
+							</dd>
+						</dl>
+						<dl>
+							<dt><strong>验证码</strong>
+							</dt>
+							<dd>
+								<input name="captcha" autocomplete="off" class="text w130" id="captcha" maxlength="4" size="10" type="text">
+								<img style="margin-left:10px;" onclick="this.src='/Public/verify?'+(new Date()).getTime()" id="verify" src="/Public/verify">
+								<label></label>
+							</dd>
+						</dl>
+						<span id="error_warn" class="orange"></span>
+						<div class="bottom">
+							<input id="btnSubmitLogin" class="submit" value="确认" type="submit">
+						</div>
+						<else />
+						<div class="user-info" nctype="barUserInfo" style=""><i class="arrow"></i>
+				          <div class="avatar">
+				          <empty name="avatar">
+				          <a href="{:U('User/index')}"><img src="__PMALL__/Images/photo.gif"></a>
+				          <else />
+				          <a href="{:U('User/index')}"><img src="/Uploads/Member/{$avatar}"></a>
+				          </empty>
+				          
+				          
+				            <div class="frame"></div>
+				          </div>
+				          <dl>
+				            <dt>Hi, {$username}</dt>
+				          </dl>
+				        </div>
+						</empty>
+						
+				</div>
+				<div class="prech">&nbsp;</div>
+<!-- 				<div class="compare"><a href="javascript:void(0);" id="compare"><span class="icon"></span><span class="tit">商品对比</span></a></div> -->
+			</div>
+			<div class="gotop"><a style="opacity: 1;" href="javascript:void(0);" id="gotop"><span class="icon"></span><span class="tit">返回顶部</span></a></div>
+		</div>
+		<div class="content-box" id="content-compare">
+<!-- 			<div class="top"> -->
+<!-- 				<h3>商品对比</h3> -->
+<!-- 				<a href="javascript:void(0);" class="close" title="隐藏"></a></div> -->
+<!-- 			<div id="comparelist"></div> -->
+		</div>
+		<div class="content-box" id="content-cart">
+			<div class="top">
+				<h3>我的购物车</h3>
+				<a href="javascript:void(0);" class="close" title="隐藏"></a></div>
+			<div id="rtoolbar_cartlist"></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+//登录开关状态
+var connect_qq = "1";
+var connect_sn = "1";
+var connect_wx = "1";
+
+//返回顶部
+backTop=function (btnId){
+	var btn=document.getElementById(btnId);
+	var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	window.onscroll=set;
+	btn.onclick=function (){
+		btn.style.opacity="0.5";
+		window.onscroll=null;
+		this.timer=setInterval(function(){
+		    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+			scrollTop-=Math.ceil(scrollTop*0.1);
+			if(scrollTop==0) clearInterval(btn.timer,window.onscroll=set);
+			if (document.documentElement.scrollTop > 0) document.documentElement.scrollTop=scrollTop;
+			if (document.body.scrollTop > 0) document.body.scrollTop=scrollTop;
+		},10);
+	};
+	function set(){
+	    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	    btn.style.opacity=scrollTop?'1':"0.5";
+	}
+};
+backTop('gotop');
+
+//动画显示边条内容区域
+$(function() {
+    ncToolbar();
+    $(window).resize(function() {
+        ncToolbar();
+    });
+    function ncToolbar() {
+        if ($(window).width() >= 1240) {
+            $('#appBarTabs >.variation').show();
+        } else {
+            $('#appBarTabs >.variation').hide();
+        }
+    }
+    $('#appBarTabs').hover(
+        function() {
+            $('#appBarTabs >.variation').show();
+        }, 
+        function() {
+            ncToolbar();
+        }
+    );
+    $("#compare").click(function(){
+    	if ($("#content-compare").css('right') == '-210px') {
+ 		   loadCompare(false);
+ 		   $('#content-cart').animate({'right': '-210px'});
+  		   $("#content-compare").animate({right:'35px'});
+    	} else {
+    		$(".close").click();
+    		$(".chat-list").css("display",'none');
+        }
+	});
+    $("#rtoolbar_cart").click(function(){
+        if ($("#content-cart").css('right') == '-210px') {
+         	$('#content-compare').animate({'right': '-210px'});
+    		$("#content-cart").animate({right:'35px'});
+    		$.get('/Cart/toolCartInfo','',function(res){
+    			if(res.status ==2){
+    			  $("#rtoolbar_cartlist").html('<ul class="cart-list"><li><dl><dd style="text-align: center; ">暂无商品</dd></dl></li></ul>');
+    			}else{
+    				$("#rtoolbar_cartlist").html(res);
+    			}
+    		});
+        } else {
+        	$(".close").click();
+        	$(".chat-list").css("display",'none');
+        }
+	});
+	$(".close").click(function(){
+		$(".content-box").animate({right:'-210px'});
+      });
+
+	$(".quick-menu dl").hover(function() {
+		$(this).addClass("hover");
+	},
+	function() {
+		$(this).removeClass("hover");
+	});
+
+    // 右侧bar用户信息
+    $('div[nctype="a-barUserInfo"]').click(function(){
+        $('div[nctype="barUserInfo"]').toggle();
+    });
+    // 右侧bar登录
+    $('div[nctype="a-barLoginBox"]').click(function(){
+        $('div[nctype="barLoginBox"]').toggle();
+        document.getElementById('codeimage').src='index.php?act=seccode&op=makecode&nchash=1d55dd06&t=' + Math.random();
+    });
+    $('a[nctype="close-barLoginBox"]').click(function(){
+        $('div[nctype="barLoginBox"]').toggle();
+    });
+    });
+</script> 

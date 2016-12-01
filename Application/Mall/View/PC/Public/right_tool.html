@@ -1,0 +1,227 @@
+<div class="right-sidebar-con">
+	<div class="right-sidebar-main">
+        <div class="right-sidebar-panel">
+            <div id="quick-links" class="quick-links">
+            	<ul>
+                    <li class="quick-area quick-login">
+                        <a href="javascript:;" class="quick-links-a"><i class="setting"></i></a>
+                        <div class="sidebar-user quick-sidebar">
+                        	<i class="arrow-right"></i>
+                            <div class="sidebar-user-info">
+                            	                                <div class="user-pic">
+                                	<div class="user-pic-mask"></div>
+                                    <img src="themes/ahxcgg_360buy/images/people.gif" />
+                                </div>
+                                <p>你好！请<a href="javascript:;" class="quick-login-a main-color">登录</a>|<a href="register.php" class="main-color">注册</a></p>
+                                                            </div>
+                        </div>
+                    </li>
+                    <li class="sidebar-tabs">
+                    	<a href="javascript:void(0);" class="mpbtn_bonus quick-links-a"><i class="bonus"></i></a>
+                        <div class="popup">
+                            <font>领红包再购物</font>
+                            <i class="arrow-right"></i>
+                        </div>
+                    </li>
+                    <li class="sidebar-tabs">
+                        <div class="cart-list quick-links-a" id="collectBox">
+                            <i class="cart"></i>
+                            <div class="span">购物车</div>
+                            <span class="ECS_CARTINFO"><form id="formCart" name="formCart" method="post" action="flow.php" >
+	<span class="cart_num">0</span>
+	<div class="sidebar-cart-box">
+        <h3 class="sidebar-panel-header">
+            <a href="javascript:;" class="title"><i class="cart-icon"></i><em class="title">购物车</em></a>
+            <span class="close-panel"></span>
+        </h3>
+        <div class="cart-panel-main">
+            <div class="cart-panel-content">
+                                <div class="tip-box">
+                  <i class="tip-icon"></i>
+                  <div class="tip-text">您的购物车里什么都没有哦<br/><a class="main-color" href="./">再去看看吧</a></div>
+                </div>
+                            </div>
+        </div>
+            </div>
+<script type="text/javascript">
+function deleteCartGoods(rec_id){
+	Ajax.call('delete_cart_goods.php', 'id='+rec_id, deleteCartGoodsResponse, 'POST', 'JSON');
+}
+
+/**
+ * 接收返回的信息
+ */
+function deleteCartGoodsResponse(res){
+  if (res.error){
+    alert(res.err_msg);
+  }else{
+      $('.ECS_CARTINFO').html(res.content);
+	  $('.cart-panel-content').height($(window).height()-90);
+  }
+}
+</script> 
+</form>
+</span>
+                        </div>
+                    </li>
+                    <li class="sidebar-tabs">
+                        <a href="javascript:void(0);" class="mpbtn_history quick-links-a"><i class="history"></i></a>
+                        <div class="popup">
+                            <font id="mpbtn_histroy">我看过的</font>
+                            <i class="arrow-right"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="user.php?act=follow_shop" target="_blank" class="mpbtn_stores quick-links-a"><i class="stores"></i></a>
+                        <div class="popup">
+                            我关注的店铺
+                            <i class="arrow-right"></i>
+                        </div>
+                    </li>
+                    <li id="collectGoods">
+                        <a href="user.php?act=collection_list" target="_blank" class="mpbtn_collect quick-links-a"><i class="collect"></i></a>
+                        <div class="popup">
+                            我的收藏
+                            <i class="arrow-right"></i>
+                        </div>
+                    </li>
+                                    </ul>
+            </div>
+            <div class="quick-toggle">
+            	<ul>
+                    <li class="quick-area">
+                    	<a class="quick-links-a" href="javascript:;"><i class="customer-service"></i></a>
+                        <div class="sidebar-service quick-sidebar">
+                        	<i class="arrow-right"></i>
+                            
+<div class="customer-service customer-service-online">
+    <a target="_self" href="javascript:;" alt="点击这里给我发消息" title="点击这里给我发消息"><span class="icon-online"></span>在线客服</a>
+</div>
+<div class="customer-service">
+    <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=800007396&site=qq&menu=yes" alt="点击这里给我发消息" title="点击这里给我发消息"><span class="icon-qq"></span>QQ客服</a>
+</div>
+<div class="customer-service">
+    <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1111111&site=qq&menu=yes" alt="点击这里给我发消息" title="点击这里给我发消息"><span class="icon-qq"></span>QQ客服</a>
+</div>
+<div class="customer-service">
+    <a target="_blank" href="http://amos1.taobao.com/msg.ww?v=2&uid=sssss&s=2" alt="点击这里给我发消息" title="点击这里给我发消息"><span class="icon-ww"></span>旺旺</a>
+</div>
+                        </div>
+                    </li>
+                    <li class="quick-area">
+                    	<a class="quick-links-a" href="javascript:;"><i class="qr-code"></i></a>
+                        <div class="sidebar-code quick-sidebar">
+                        	<i class="arrow-right"></i>
+                            <img src="themes/ahxcgg_360buy/images/weixin.jpg"/>
+                        </div>
+                    </li>
+                    <li class="returnTop">
+                        <a href="javascript:;" class="return_top quick-links-a"><i class="top"></i></a>
+                        <div class="popup">
+                        	返回顶部
+                        	<i class="arrow-right"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="">
+        	
+            <div class="right-sidebar-panels">
+            	<h3 class="sidebar-panel-header">
+                    <a href="javascript:;" class="title"><i class="bonus-icon"></i><em class="title">红包</em></a>
+                    <span class="close-panel"></span>
+                </h3>
+                <div class="bonus-panel-main">
+                    <div class="bonus-panel-content">
+                    	<script type="text/javascript">
+						function fun(type_id, no_have_val){
+							no_have = (typeof(no_have_val) == "undefined" ? 0 : no_have_val)
+							Ajax.call('user.php?act=user_bonus', 'id=' + type_id + '&no_have=' + no_have, bounsResponse, 'GET', 'JSON');
+						}
+						function bounsResponse(result){
+							$('.pop-compare,.pop-mask').show();
+							$('.pop-compare .pop-text').html(result.message);
+							$('.pop-compare').css({'top':($(window).height()-$('.pop-compare').height())/2});
+						}
+						</script>
+												<div class="bonus-list">
+							 
+														 
+														 
+														 
+														 
+														 
+														 
+														 
+							 
+							<div class="bonus-item">
+							   <a href="javascript:;" onclick="fun(25)">
+                               	<div class="bonus-info">
+                                	<i class="bonus-icon"></i>
+                                	<p class="bonus-name">在线领红包50</p>
+                                    <p class="bonus-price"><i>¥</i>50.00<span class="fr bonus-btn">点击领取</span></p>
+                                </div>
+                               </a> 
+							</div>
+																				</div>
+						                    </div>
+                </div>
+            </div>
+            
+        	
+        	<div class="ECS_CARTINFO right-sidebar-panels"><form id="formCart" name="formCart" method="post" action="flow.php" >
+	<span class="cart_num">0</span>
+	<div class="sidebar-cart-box">
+        <h3 class="sidebar-panel-header">
+            <a href="javascript:;" class="title"><i class="cart-icon"></i><em class="title">购物车</em></a>
+            <span class="close-panel"></span>
+        </h3>
+        <div class="cart-panel-main">
+            <div class="cart-panel-content">
+                                <div class="tip-box">
+                  <i class="tip-icon"></i>
+                  <div class="tip-text">您的购物车里什么都没有哦<br/><a class="main-color" href="./">再去看看吧</a></div>
+                </div>
+                            </div>
+        </div>
+            </div>
+<script type="text/javascript">
+function deleteCartGoods(rec_id){
+	Ajax.call('delete_cart_goods.php', 'id='+rec_id, deleteCartGoodsResponse, 'POST', 'JSON');
+}
+
+/**
+ * 接收返回的信息
+ */
+function deleteCartGoodsResponse(res){
+  if (res.error){
+    alert(res.err_msg);
+  }else{
+      $('.ECS_CARTINFO').html(res.content);
+	  $('.cart-panel-content').height($(window).height()-90);
+  }
+}
+</script> 
+</form>
+</div>
+        	
+            
+        	<div class="right-sidebar-panels">
+				<h3 class="sidebar-panel-header">
+                	<a href="javascript:;" class="title"><i></i><em class="title">我的足迹</em></a>
+                    <span class="close-panel"></span>
+                </h3>
+          		<div class="sidebar-panel-main">
+            		<div class="sidebar-panel-content">
+              			<div class="history-panel">
+              				<ul>
+                				                			</ul>
+     		  			</div>
+            		</div>
+          		</div>
+        	</div>
+        	
+        </div>
+    </div>
+</div>

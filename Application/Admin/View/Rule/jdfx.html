@@ -1,0 +1,52 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11">
+			<h4><small>{$content_header}</small></h4>
+		</div>
+		<div class="col-md-1">
+			<notempty name="right_menu"> <a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a> </notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info form-inline">
+		<form name="myform" id="myform" class="form-horizontal" action="{:U('Rule/jdfxzsyjt')}" method="post">
+			<div class="box-body">
+				<volist name="list" id="vo" key="k" offset="0" length="1">
+					<div class="panel panel-default">
+						<div class="panel-heading">{$vo.name}</div>
+						<div class="panel-body">
+							<volist name="vo.config" id="co">
+								<span style="display: table;float: left;margin-left: 20px;margin-bottom: 10px;">{$Think.lang.$key}：
+								<input name="{$key}" class="form-control" style="width: 100px;" type="text" value="{$co}"/>
+								</span>&nbsp;
+							</volist>
+						</div>
+					</div>
+				</volist>
+				<volist name="list" id="vo" key="k" offset="1" length="2">
+					<div class="panel panel-default">
+						<div class="panel-heading">{$vo.name}</div>
+						<div class="panel-body">
+							<volist name="vo.config" id="co" key="i"> <span style="display: table;float: left;margin-left: 20px;margin-bottom: 20px;">{$Think.lang.$key}：
+								<input name="key_{$k}_{$i}" type="hidden" value="{$key}"/>
+								<volist name="co" id="coo" key="j">
+									<div class="input-group" style="margin-left: 10px;">
+										<input name="value_{$k}_{$i}_{$j}" class="form-control" type="text"  style="width: 50px;" value="{$coo}">
+										<span class="input-group-addon" style="background: #eee;">%</span> </div>
+								</volist>
+								</span>&nbsp; 
+							</volist>
+						</div>
+					</div>
+				</volist>
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4">
+					<button type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>

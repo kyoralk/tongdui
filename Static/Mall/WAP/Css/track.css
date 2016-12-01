@@ -1,0 +1,97 @@
+@CHARSET "UTF-8";
+body{font-family:"microsoft yahei" }
+.smart-result {
+	padding: 0
+}
+.smart-result-comname, .smart-result-kuaidinum {
+	display: inline-block;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	text-shadow: none;
+	font-size: 16px;
+	color: #FFFFFF
+}
+.smart-result-comname {
+	width: 30%;
+	padding-right: 5%;
+	background: #88cdfe;
+	float: left;
+}
+.smart-result-kuaidinum {
+	width: 60%;
+	padding-left: 5%;
+	background: #67baf7
+}
+.smart-result table {
+	width: 100%
+}
+.smart-result table tr {
+	width: 100%;
+	color: #909090
+}
+.smart-result table tr.last-line {
+	color: #333333;
+}
+.smart-result table tr.last-line {
+	color: #FF6600;
+}
+.smart-result table td {
+	height: 60px;
+	background: none
+}
+.smart-result table tr.odd {
+	background: #f6f6f6
+}
+.smart-result table tr.even {
+}
+.smart-result table td.col1 {
+	width: 30%;
+}
+.smart-result table td.col2 {
+	padding: 10px;
+	width: 60%;
+	line-height: 24px;
+}
+.smart-result table td.colstatus {
+	width: 10%
+}
+.smart-result table tr td.colstatus {
+	background: url("../Images/step_point.png") center center no-repeat
+}
+.smart-result table tr.first-line td.colstatus {
+	background: url("../Images/step_start.png") center center no-repeat
+}
+.smart-result table tr.wait td.colstatus {
+	background: url("../Images/step_wait.gif") center center no-repeat
+}
+.smart-result table tr.checked td.colstatus {
+	background: url("../Images/step_finish.png") center center no-repeat
+}
+.result-date, .result-time {
+	display: block;
+	width: 100%;
+	text-align: center
+}
+.result-date {
+	height: 15px;
+	padding-top: 10px;
+	font-weight: normal;
+	font-size: 12px;
+}
+.result-time {
+	height: 35px;
+	font-size: 24px;
+}
+.result-btn {
+	padding: 10px;
+	text-align: center;
+	background-color: #aaa;
+}
+.result-btn a {
+	text-decoration: none;
+	text-shadow: none;
+}
+.result-btn a.ui-link, .result-btn a.ui-link:hover, .result-btn a.ui-link:visited, .result-btn a.ui-link:active {
+	color: #fff;
+}

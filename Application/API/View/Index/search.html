@@ -1,0 +1,41 @@
+<div class="tab-item manual-search">
+	<div class="search-inner">
+		<div class="search-form">
+			<div class="w-search" onSubmit="return false;" method="post" autocomplete="off">
+				<label class="w-text text-m text-full search-enter">
+					<input class="text-input" name="keyword" placeholder="请输入搜索关键词..." type="text">
+				</label>
+				<input name="book_id" value="13266" type="hidden">
+				<button class="search-btn icon-search" type="button" onclick="search()"></button>
+				<span class="form-loading">提交中...</span>
+			</div>
+		</div>
+		<div class="search-result">
+			<ul class="search-list">
+			</ul>
+		</div>
+	</div>
+</div>
+<script>
+function search(){
+	var keyword = $("input[name='keyword']").val();
+	$.get("/API/Index/search",{keyword:keyword},function(res){
+		var html = '';
+		var init_id;
+		for(var i in res){
+			var item = res[i];
+			html +='<li onclick="loadPage('+item.id+')" ';
+			if(i == 0){
+				init_id = item.id;
+				html +='class="active"';
+			}
+			html +=' ><span class="text">'+item.name+'</span></li>';
+		}
+		$(".search-list").html(html);
+		loadPage(init_id);
+	});
+}
+function loadPage(id){
+	$("#myframe").prop("src","/API/Index/view/id/"+id);
+}
+</script>

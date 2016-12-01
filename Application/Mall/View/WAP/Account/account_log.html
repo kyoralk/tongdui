@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+<include file="Public:head"/>
+<style type="text/css">
+      .infinite-scroll-preloader {
+        margin-top:-20px;
+      }
+      </style>
+</head>
+<body>
+<header class="bar bar-nav">
+<a class="icon icon-me pull-left open-panel" href="{:U('Member/index')}"></a>
+	<h1 class="title">账户流水</h1>
+</header>
+<div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+	<div class="list-block">
+		<ul class="list-container">
+			<volist name="list" id="log">
+				<li class="item-content">
+					<div class="item-inner row">
+						<div class="col-20">{$log.add_time|date="Y-m-d",###}</div>
+						<div class="col-80">
+							<div class="row">
+								<div class="col-33">
+									<switch name="log['type']">
+										<case value="1">奖励</case>
+										<case value="2">消费</case>
+										<case value="3">提现</case>
+										<case value="4">充值</case>
+										<case value="5">提现驳回</case>
+										<case value="6">充值驳回</case>
+									</switch>
+								</div>
+								<div class="col-33">
+									<if condition="$log.cash lt 0"> <font color="green">{$log.cash}</font>
+										<else/>
+										<font color="red">{$log.cash}</font></if>
+								</div>
+								<div class="col-33">{$log.desc}</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</volist>
+		</ul>
+	</div>
+	<input id="p" type="hidden" value="1">
+	<!-- 加载提示符 -->
+	<div class="infinite-scroll-preloader" style="display:none;">
+		<div class="preloader"></div>
+	</div>
+</div>
+<script>
+
+//$(function(){  
+//	//openLoading();//
+//	  $(window).scroll(function() {  
+//	      //当内容滚动到底部时加载新的内容  
+//	      if ($(this).scrollTop() + $(window).height() + 20 >= $(document).height() && $(this).scrollTop() > 20) {  
+//	          //当前要加载的页码  
+//	          loadPage();
+//// 	          LoadPage(currPage);  
+//	      }  
+//	  });  
+//});
+
+
+$(function(){
+	$(".infinite-scroll-bottom").on("scroll",function(){
+		 console.log("$(this).scrollTop()"+$(this).scrollTop());
+		 console.log("$(window).height()"+$(window).height());
+		 console.log("$(document).height()"+ document.body.clientHeight);
+		
+	      if ($(this).scrollTop()-$(window).height()*$("#p").val()>=90) {  
+       loadPage();
+    } 
+		
+	});
+});
+function loadPage(){
+	$(".infinite-scroll-preloader").show();
+	var p = $("#p").val();
+	p++;
+	$.get('/Account/accountLog',{p:p,num:20},function(res){
+		res = eval("("+res+")");
+		if(res.status == 1){
+			var html = '';
+			var data = res.data.list;
+			for(var i in data){
+				var item = data[i];
+				html+='<li class="item-content">';
+				html+='<div class="item-inner row">';
+				html+='<div class="col-20">'+getLocalTime(item.add_time)+'</div>';
+				html+='<div class="col-80">';
+				html+='<div class="row">';
+				html+='<div class="col-33">';
+				switch(item.type){
+					case '1':
+						html+='奖励';
+						break;
+					case '2':
+						html+='消费';
+						break;
+					case '3':
+						html+='提现';
+						break;
+					case '4':
+						html+='充值';
+						break;
+					case '5':
+						html+='提现驳回';
+						break;
+					case '6':
+						html+='充值驳回';
+						break;
+				}
+				html+='</div>';
+				html+='<div class="col-33">';
+				if(item.cash < 0){
+					html+='<font color="green">'+item.cash+'</font>';
+				}else{
+					html+='<font color="red">'+item.cash+'</font>';
+				}
+				html+='</div>';
+				html+='<div class="col-33">'+item.desc+'</div>';
+				html+='</div>';
+				html+='</div>';
+				html+='</div>';
+				html+='</li>';			
+			} 
+			$("#p").val(res.data.p);
+			$(".infinite-scroll-preloader").hide();
+			$(".list-container").append(html);
+		}
+
+	});
+}
+
+function getLocalTime(nS) {
+	var str = new Date(parseInt(nS) * 1000).toLocaleString().substr(0,8);
+	str = str.replace(/\//g, "-");
+	return str
+	
+	}
+
+</script>
+</body>
+</html>

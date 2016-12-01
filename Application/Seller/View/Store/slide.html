@@ -1,0 +1,125 @@
+<div class="main-content" id="mainContent">
+	<div class="tabmenu">
+		<ul class="tab pngFix">
+			<li> <a href="{:U('Store/slide')}">幻灯片设置</a> </li>
+		</ul>
+	</div>
+	<div class="ncsc-form-default">
+		<div class="alert">
+			<ul>
+				<li>1. 最多可上传5张幻灯片图片。</li>
+				<li>2.
+					支持jpg、jpeg、gif、png格式上传，建议图片宽度790px、高度在300px到400px之间、大小1.00M以内的图片。提交2~5张图片可以进行幻灯片播放，一张图片没有幻灯片播放效果。</li>
+				<li>3. 操作完成以后，按“提交”按钮，可以在当前页面进行幻灯片展示。</li>
+				<li>4. 跳转链接必须带有<b style="color: red;">“http://”</b></li>
+			</ul>
+		</div>
+		<form action="{:U('Store/updateSlideOther')}" id="store_slide_form" method="post">
+			<ul class="ncsc-store-slider" id="goods_images">
+				<volist name="slide_list" id="sl" key="key">
+				<li id="thumbnail_{$key}">
+					<div class="picture">
+						<div id="img_{$key}" style="margin: auto;">
+							<empty name="sl.img">
+								<i class="icon-picture"></i>
+							<else/>
+								<img src="/Uploads/Mall/Seller/{$sl.store_id}/Store/{$sl.img}"/> 
+							</empty>
+						</div>
+						<input name="old_img_{$key}" type="hidden" value="{$sl.img}"/>
+						<a href="{:U('Store/deleteSlide',array('slide_id'=>$sl['slide_id'],'img'=>$sl['img']))}" class="del" title="移除">X </a> </div>
+					<div class="url">
+						<input name="slide_id[]" type="hidden" value="{$sl.slide_id}"/>
+						<label>跳转URL...</label>
+						<input type="text" class="text" style="width:96%;" name="url[]" 
+							<empty name="sl.url">
+							value="http://"
+							<else/>
+							value="{$sl.url}"</empty>/>
+						<label>排序</label>
+						<input type="text" class="text" style="width:96%;" name="sort[]" 
+							<empty name="sl.sort">
+							5
+							<else/>
+							value="{$sl.sort}"</empty>/>
+						<label>商品id仅对APP起作用（双击选择产品）</label>
+						<input type="text" class="text" style="width:96%;" name="goods_id[]" value="{$sl.goods_id}" id="goods_id_{$key}"/>
+					</div>
+					<div class="ncsc-upload-btn"> <span>
+						<input type="file" size="1" class="input-file" name="file_{$key}" />
+						</span>
+						<input type="button" value="上传图片" onclick="file_click({$key})"/>
+					</div>
+				</li>
+				</volist>
+			</ul>
+			<div class="bottom">
+				<label class="submit-border">
+					<input type="submit" class="submit" value="提交">
+				</label>
+			</div>
+		</form>
+	</div>
+</div>
+<script src="/Static/Common/layer/layer.js"></script>
+<script src="/Static/Common/Js/localResizeIMG.js"></script>
+<script type="text/javascript">
+function file_click(id){
+	return $("input[name='file_"+id+"']").click();
+}
+$("input[name='file_1']").localResizeIMG({
+	quality : 1,
+	success : function(result) {
+		$('#img_1').html('<img src="'+result.base64+'"/>');
+		update(1,result.base64);
+	}
+});
+$("input[name='file_2']").localResizeIMG({
+	quality : 1,
+	success : function(result) {
+		$('#img_2').html('<img src="'+result.base64+'"/>');
+		update(2,result.base64);
+	}
+});
+$("input[name='file_3']").localResizeIMG({
+	quality : 1,
+	success : function(result) {
+		$('#img_3').html('<img src="'+result.base64+'"/>');
+		update(3,result.base64);
+	}
+});
+$("input[name='file_4']").localResizeIMG({
+	quality : 1,
+	success : function(result) {
+		$('#img_4').html('<img src="'+result.base64+'"/>');
+		update(4,result.base64);
+	}
+});
+$("input[name='file_5']").localResizeIMG({
+	quality : 1,
+	success : function(result) {
+		$('#img_5').html('<img src="'+result.base64+'"/>');
+		update(5,result.base64);
+	}
+});
+$("input[name='goods_id[]']").dblclick(function(){
+	var id = $(this).prop("id");
+	layer.open({
+	    type: 2,
+	    title: '出售中的商品',
+	    fix: true,
+	    shadeClose: true,
+	    maxmin: true,
+	    area: ['60%', '80%'],
+	    content: "/Seller/Goods/goodsList/display/store/id/"+id,
+	});
+});
+function update(id,new_img){
+	var old_img = $("input[name='old_img_"+id+"']").val();
+	$.post("{:U('Store/updateSlide')}",{old_img:old_img,new_img:new_img},function(res){
+		if(res.result == 0){
+			alert("上传失败");
+		}
+	});
+}
+</script>

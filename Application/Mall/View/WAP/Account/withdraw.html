@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$sitename}</title>
+<include file="Public:head"/>
+</head>
+<body>
+<header class="bar bar-nav">
+<a class="icon icon-me pull-left open-panel" href="{:U('Member/index')}"></a>
+  <h1 class='title'>申请提现</h1>
+</header>
+<div class="content">
+  <div class="list-block">
+  <form name="myform" id="myform" class="form-inline" action="{:U('Account/withdrawApply')}" method="post">
+    <ul>
+      <!-- Text inputs -->
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">收款人</div>
+            <div class="item-input">
+              <input name="account_name" type="hidden" value="{$ai.account_name}"/>
+					{$ai.account_name}
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">收款机构</div>
+            <div class="item-input">
+              <input name="bank_name" type="hidden" class="span4" value="{$ai.bank_name}"/>
+					{$ai.bank_name}
+            </div>
+          </div>
+        </div>
+      </li>    
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">收款账号</div>
+            <div class="item-input">
+              <input name="bank_num" type="hidden" class="span4" value="{$ai.bank_num}"/>
+					{$ai.bank_num}
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">现金币余额</div>
+            <div class="item-input">
+					{$ai.cash}
+					<input name="cash_hide" value="{$ai.cash}" type="hidden"/>
+            </div>
+          </div>
+        </div>
+      </li>
+       <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">提现金额</div>
+            <div class="item-input">
+              <input name="withdraw_money" type="text" class="span2" />
+            </div>
+          </div>
+        </div>
+      </li>                                      
+    </ul>
+    </form>
+  </div>
+  <div class="content-block">
+    <div class="row">
+      <div class="col-50"><a href="{:U('Member/index')}" class="back button button-big button-fill button-danger">取消</a></div>
+      <div class="col-50"><a href="javascript:formSubmit();" class="button button-big button-fill button-success">提现</a></div>
+    </div>
+  </div>
+</div>
+<script>
+function formSubmit() {
+	
+	var cash_hide = $("input[name='cash_hide']").val();
+	var cash = $("input[name='withdraw_money']").val();
+	if(cash>0&cash!=''){
+		if(cash%10==0&cash>=100){
+			if(cash_hide-cash>0){
+				document.myform.submit();
+			}else{
+				$.toast("余额不足");
+			}
+		}else{
+			$.toast("必须大于100,并且是10的倍数");
+		}
+	}else{
+		$.toast("不能为空");
+	}
+
+
+	
+	
+	
+}
+</script>
+</body>
+</html>

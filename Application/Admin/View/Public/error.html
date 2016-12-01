@@ -1,0 +1,21 @@
+<meta http-equiv='Refresh' content='{$waitSecond};URL={$jumpUrl}' />
+<div class="box box-body">
+	<div class="alert alert-danger alert-dismissible">
+		<h4>
+			<i class="icon fa fa-check"></i> {$msgTitle}{$error}！
+		</h4>
+		正在<b id="wait">{$waitSecond}</b> 秒后为您转向基本配置页面，如果不想等待请点击 <a id="href" href="{$jumpUrl}">这里</a> 关闭
+	</div>
+</div>
+<script type="text/javascript">
+(function(){
+var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+var interval = setInterval(function(){
+	var time = --wait.innerHTML;
+	if(time <= 0) {
+		location.href = href;
+		clearInterval(interval);
+	};
+}, 1000);
+})();
+</script>

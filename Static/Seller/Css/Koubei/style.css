@@ -1,0 +1,407 @@
+@CHARSET "UTF-8";
+
+@font-face {
+	font-family: "rei";
+	src: url("fonts/rei.eot?20150616");
+	/* IE9 */
+	src: url("fonts/rei.eot?20150616#iefix") format("embedded-opentype"),
+		/* IE6-IE8 */
+    url("fonts/rei.woff?20150616") format("woff"),
+		/* chrome 6+、firefox 3.6+、Safari5.1+、Opera 11+ */
+    url("fonts/rei.ttf?20150616") format("truetype"),
+		/* chrome、firefox、opera、Safari, Android, iOS 4.2+ */  
+    
+		 url("fonts/rei.svg?20150616#rei") format("svg"); /* iOS 4.1- */
+}
+
+.iconfont {
+	font-family: "rei";
+	font-style: normal;
+	font-weight: normal;
+	cursor: default;
+	-webkit-font-smoothing: antialiased;
+}
+/************header******************/
+@font-face {
+	font-family: "nav";
+	src: url("fonts/font_1429775504_228338.eot?#iefix")
+		format("embedded-opentype"),
+		url("fonts/font_1429775504_228338.woff") format("woff"),
+		url("fonts/font_1429775504_228338.ttf") format("truetype"),
+		url("fonts/font_1429775504_228338.svg#iconfont")
+		format("svg");
+}
+
+.nav-common header, .nav-common div, .nav-common h1, .nav-common ul,
+	.nav-common li, .nav-common a {
+	margin: 0;
+	padding: 0;
+}
+
+.nav-common ul, .nav-common li {
+	list-style: outside none none;
+}
+
+.nav-common a, .nav-common a:active {
+	color: #fff;
+	text-decoration: none;
+}
+
+.nav-common a:hover {
+	color: #0ae;
+}
+
+#J-nav-merchant-global {
+	font: 12px/1.5 tahoma, arial, "Hiragino Sans GB", "Microsoft Yahei",
+		"宋体";
+	height: 93px;
+	left: 0;
+	min-width: 1200px;
+	position: relative;
+	top: 0;
+	width: 100%;
+	z-index: 990;
+}
+
+#J-nav-merchant-global .nav-iconfont {
+	font-family: "nav";
+	font-size: 16px;
+	font-style: normal;
+	font-weight: normal;
+}
+
+#J-nav-merchant-global .nav-left {
+	float: left;
+}
+
+#J-nav-merchant-global .nav-right {
+	float: right;
+}
+
+#J-nav-merchant-global .nav-current-type {
+	color: #0ae;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top-wrapper,
+	#J-nav-merchant-global .nav-merchant-global-header-wrapper {
+	width: 100%;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top-wrapper {
+	background: #1e1b29 none repeat scroll 0 0;
+	height: 28px;
+	line-height: 28px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header-wrapper {
+	background: #fff none repeat scroll 0 0;
+	border-bottom: 1px solid #eee;
+	height: 80px;
+	line-height: 80px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top, #J-nav-merchant-global .nav-merchant-global-header
+	{
+	height: 100%;
+	margin: 0 auto;
+	width: 1200px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top::before,
+	#J-nav-merchant-global .nav-merchant-global-header::before,
+	#J-nav-merchant-global .nav-merchant-global-top::after,
+	#J-nav-merchant-global .nav-merchant-global-header::after {
+	content: "";
+	display: table;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top::after,
+	#J-nav-merchant-global .nav-merchant-global-header::after {
+	clear: both;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top {
+	color: #fff;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top .nav-link-my-alipay {
+	margin-right: 30px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-top .nav-gap {
+	margin: 0 10px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part {
+	height: 80px;
+	line-height: 80px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part::before,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part::before,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-left-part::after,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part::after
+	{
+	content: "";
+	display: table;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part::after,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part::after
+	{
+	clear: both;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part .nav-logo,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part .nav-logo
+	{
+	background: rgba(0, 0, 0, 0)
+		url("tfscom/T1HHFgXXVeXXXXXXXX.png")
+		repeat scroll 0 0;
+	height: 40px;
+	text-indent: -9999px;
+	width: 114px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part .nav-logo,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part .nav-logo,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-left-part .nav-title,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part .nav-title
+	{
+	height: 40px;
+	line-height: 40px;
+	margin-top: 20px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part .nav-title:hover,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part .nav-title:hover
+	{
+	border-bottom: medium none;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part .nav-title,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part .nav-title
+	{
+	border-left: 1px solid #000;
+	color: #000;
+	font-size: 20px;
+	font-weight: normal;
+	margin-left: 10px;
+	padding-left: 10px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-left-part .nav-title strong,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part .nav-title strong
+	{
+	color: #000;
+	font-size: 20px;
+	font-weight: normal;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-right-part {
+	color: #000;
+	font-size: 14px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-right-part a,
+	#J-nav-merchant-global .nav-merchant-global-header .nav-right-part a:active
+	{
+	color: #000;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-right-part a:hover
+	{
+	color: #0ae;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-right-part li {
+	height: 20px;
+	line-height: 20px;
+	margin-top: 30px;
+}
+
+#J-nav-merchant-global .nav-merchant-global-header .nav-right-part li.nav-gap
+	{
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+@media not all , only screen and (min--moz-device-pixel-ratio: 2) , not all ,
+		not all , only screen and (min-resolution: 192dpi) , only screen and
+	(min-resolution: 2dppx) {
+	#J-nav-merchant-global .nav-merchant-global-header .nav-left-part .nav-logo
+		{
+		background: rgba(0, 0, 0, 0)
+			url("tfscom/T11rdgXbFkXXXXXXXX.png")
+			repeat scroll 0 0/100% auto;
+	}
+}
+/**************中间******************/
+.top-search {
+	line-height: 32px;
+}
+
+.tablelist {
+	margin-top: 15px;
+}
+
+.input-datepicker {
+	width: 150px;
+	line-height: 18px;
+}
+
+.pagination {
+	text-align: right;
+	padding-top: 30px;
+}
+
+.already-token {
+	background: #cccccc;
+	color: #999999;
+}
+
+.claim-confirm-title {
+	font-size: 16px;
+	padding: 20px 30px;
+	border-bottom: 1px solid #cccccc;
+}
+
+.claim-confirm-box {
+	padding: 10px 20px 10px;
+	text-align: right;
+	border-top: 1px solid #cccccc;
+}
+
+.claim-confirm-content {
+	padding: 20px 50px;
+}
+
+.claim-confirm-text {
+	text-align: center;
+	display: block;
+	font-size: 16px;
+	padding: 20px 0;
+}
+
+.claim-btn {
+	cursor: pointer;
+	outline: none;
+}
+
+.tbf-contextBody {
+	overflow: visible;
+}
+
+.jui-input-label {
+	width: 350px;
+}
+
+.jui-form-tip {
+	margin-left: 360px;
+}
+
+.pt-reset {
+	font-size: 14px;
+}
+
+.tbf-tabTitle em {
+	color: #1a1a1a;
+	border-bottom: 3px solid #00AAEE;
+	padding: 30px 20px 15px 30px;
+}
+
+/*.btn-register-box{*/
+/*border-top:1px solid #E7E7EB;*/
+/*padding-top: 40px;*/
+/*}*/
+.register-btn {
+	margin: 0 0 10px 360px;
+}
+
+.form-item-last {
+	margin-bottom: 20px;
+}
+
+.tbf-topWarnMessage {
+	top: 0;
+}
+
+.input-shopA {
+	width: 120px;
+	margin-right: 10px;
+}
+
+.input-shopB {
+	width: 170px;
+}
+
+.inlineShopItem {
+	display: inline;
+}
+
+.shopItem {
+	padding-left: 360px;
+	margin: 10px 0;
+}
+
+.lastingTip {
+	margin-left: 360px;
+	height: 20px;
+	font-size: 12px;
+	line-height: 20px;
+	color: gray;
+}
+/*************footer****************/
+.fn-clear:after {
+	font-size: 0;
+}
+
+.ui-footer {
+	font-size: 12px;
+	margin-top: 30px;
+	height: 100px;
+	line-height: 18px;
+	background: #1e1b29;
+	color: #808080;
+}
+
+.ui-footer .ui-separator {
+	font-weight: normal;
+}
+
+.ui-footer-link a {
+	padding: 0 3px 0 2px;
+}
+
+.ui-footer a, .ui-footer-copyright .copyright a {
+	color: #808080;
+}
+
+.ui-footer a:hover, .ui-footer-copyright .copyright a:hover {
+	color: #808080;
+	text-decoration: none;
+	border-bottom: 1px solid;
+}
+
+.ui-footer-ctn {
+	padding-top: 30px;
+	text-align: center;
+}
+
+.ui-footer-copyright {
+	padding-top: 10px;
+	background: #1e1b29;
+}
+
+.ui-footer-copyright .server {
+	color: #1e1b29;
+}
+
+.ui-footer-copyright .copyright {
+	color: #808080;
+}
+
+.copyright, .copyright a, .copyright a:hover {
+	color: #808080;
+}

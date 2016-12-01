@@ -1,0 +1,186 @@
+<style>
+.left {
+    float: left;
+}
+.h36 {
+    height: 36px;
+}
+.w20pre {
+    width: 20%;
+    color: #333;
+}
+.dialog_wrapper {
+	position: absolute;
+	width: 50%;
+	left: 20%;
+	top: 260px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 4px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.75);
+    z-index: 1100;
+
+}
+.dialog_body {
+    background: #fff;
+    position: relative;
+    display: table;
+    width: 100%;
+}
+.dialog_body ul{
+   padding-left:10px;
+}
+.dialog_head {
+    margin: 0;
+    border-bottom: solid 1px #EEE;
+    position: relative;
+    z-index: auto;
+}
+.dialog_title_icon {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: bold;
+    color: #555;
+}
+.dialog_close_button {
+    font-family: Verdana;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: lighter;
+    color: #999;
+    text-align: center;
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    z-index: 1;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+.dialog_wrapper h3 {
+    font-size: 15px;
+    color: #09C;
+    margin-bottom: 10px;
+    background-color:#fff;
+}
+</style>
+<div class="main-content" id="mainContent">
+<div class="tabmenu">
+	<ul class="tab pngFix">
+		<li>
+			<a href="#">{$content_header}</a>
+		</li>
+	</ul>
+</div>
+<div class="ncsc-form-default">
+	<form method="post" action="{:U('Freight/templSave')}" id="my_store_form">
+	<input name="templ_id" type="hidden" value="{$templ_info.templ_id}"/>
+		<dl>
+			<dt>模板名称：</dt>
+			<dd>
+				<input class="w200 text" name="templ_name" type="text" value="{$templ_info.templ_name}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>费用计算方式：</dt>
+			<dd>
+				<label><input name="type" value="1" <if condition="$templ_info.type eq 1">checked="checked" </if> type="radio">按重量计算&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<label><input name="type" value="2" <if condition="$templ_info.type eq 2">checked="checked" </if> type="radio">按商品件数计算 &nbsp;&nbsp;&nbsp;</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt>首重/首件费用：</dt>
+			<dd>
+				<input class="text w200" name="first_fee" type="text" value="{$templ_info.first_fee}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>续重（1kg）/续件费用：</dt>
+			<dd>
+				<p>
+					<input class="text w200" name="next_fee" type="text"value="{$templ_info.next_fee}" />
+				</p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>物流公司：<br/><br/><input id="shipping_all" name="shipping_all" class="span4" value="" type="checkbox"> &nbsp;全选</dt>
+			<dd>
+				<ul class="list-inline">
+					<volist name="shipping_list" id="sl">
+						<li class="left w20pre h36">
+							<input id="shipping_{$sl.shipping_id}" name="shipping_id[]" class="span4" value="{$sl.shipping_id}" type="checkbox" <if condition="$sl.checked eq 1 ">checked="checked"</if>>
+							<label for="shipping_{$sl.shipping_id}" style="font-weight: normal;">{$sl.shipping_name}</label>
+						</li>
+					</volist>
+				</ul>
+			</dd>
+		</dl>
+		<dl>
+			<dt>配送区域：<br/><br/><input name="region_all" class="span4" value="" type="checkbox"> &nbsp;全选</dt>
+			<dd>
+				<ul class="list-inline" id="plqy">
+					<volist name="region_list" id="rl">
+					<li class="left w20pre h36" id="{$rl.id}">
+						<input id="province_{$rl.id}" name="province[]" class="span4" value="{$rl.id}" type="checkbox" <if condition="$rl.checked eq 1 ">checked="checked"</if>>
+						<label for="province_{$rl.id}" style="font-weight: normal;">{$rl.name}</label>
+						<a href="javascript:child('#child_{$rl.id}');" title="下级地区"><i class="icon-pencil"></i></a>
+					</li>
+					<div class="dialog_wrapper" id="child_{$rl.id}" style="display: none;">
+						<div class="dialog_body">
+							<h3 class="dialog_head" style="cursor: move;"> 
+								<span class="dialog_title_icon">选择 {$rl.name} 子地区</span>
+								<span class="dialog_close_button" data-id="#child_{$rl.id}">X</span>
+							</h3>
+							<ul class="list-inline">
+								<volist name="rl.child" id="rlc">
+									<li class="left w20pre h36"> 
+									<input id="region_{$rlc.id}" name="region_id[]" class="span4" value="{$rlc.id}" type="checkbox" 
+										<if condition="$rlc.checked eq 1 ">checked="checked"</if>
+										>
+										<label for="region_{$rlc.id}" style="font-weight: normal;">{$rlc.name}</label>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+					</volist>
+					</ul>
+			</dd>
+		</dl>
+		<div class="bottom">
+			<label class="submit-border">
+				<input type="submit" class="submit" value="提交" />
+			</label>
+		</div>
+	</form>
+
+</div>
+</div>
+<script>
+
+function child(id){
+	$(".dialog_wrapper").hide();
+	$(id).show();
+}
+$(".dialog_close_button").click(function(){
+	var id = $(this).attr("data-id");
+	$(id).hide();
+});
+$("input[name='shipping_all']").click(function(){
+	ms.checkAll(this,"input[name='shipping_id[]']");
+});
+$("input[name='region_all']").click(function(){
+	ms.checkAll(this,"input[name='province[]']");
+	ms.checkAll(this,"input[name='region_id[]']");
+});
+$("input[name='province[]']").click(function(){
+	var id = $(this).val();
+	if($(this).is(":checked")){
+		$("#child_"+id).find("input").prop("checked", true);
+	}else{
+		$("#child_"+id).find("input").prop("checked", false);
+	}
+});
+
+</script>

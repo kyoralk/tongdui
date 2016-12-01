@@ -1,0 +1,56 @@
+<div class="main-content" id="mainContent">
+	<div class="wrap">
+		<div class="tabmenu">
+			<ul class="tab pngFix">
+				<li><a href="#">导航列表</a></li>
+			</ul>
+			<a href="{:U('Navigation/view')}" class="ncsc-btn ncsc-btn-green" title="添加导航">添加导航</a> 
+		</div>
+		<table class="ncsc-default-table">
+			<thead>
+				<tr>
+					<th class="w60">#</th>
+					<th>名称</th>
+					<th>链接地址</th>
+					<th>排序</th>
+					<th>状态</th>
+					<th class="table-textcenter w110">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+					<tr class="bd-line">
+						<td>{$vo.id}</td>
+						<td>{$vo.nav_name}</td>
+						<td><a href="{$vo.nav_url}">{$vo.nav_url}</a></td>
+						<td>{$vo.nav_sort}</td>
+						<td>
+							<if condition="$vo.is_show eq 1">
+							<font style="color: green;">显示</font>
+							<else/>
+							<font style="color: red;">不显示</font>
+							</if>
+						</td>
+						<td class="table-textcenter w110">
+								<a href="{:U('Navigation/edit',array('id'=>$vo['id']))}" class="btn-blue">编辑</a>&nbsp;&nbsp;|&nbsp;
+								<a href="javascript:;" nctype="btn_del" data-url="{:U('Navigation/delete',array('id'=>$vo['id']))}" class="btn-red">删除</a>
+						</td>
+					</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+	<form id="del_form" method="post" action="http://shopnc.dxeee.com/shop/index.php?act=store_navigation&amp;op=navigation_del">
+		<input id="del_sn_id" name="sn_id" type="hidden">
+	</form>
+	<script type="text/javascript">
+    $(document).ready(function(){
+        $('[nctype="btn_del"]').on('click', function() {
+            var url = $(this).attr('data-url');
+            if(confirm('确认删除？')) {
+               	window.location.href = url;
+            }
+        });
+    });
+</script> 
+</div>

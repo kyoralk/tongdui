@@ -1,0 +1,36 @@
+<div class="main-content" id="mainContent">
+<div class="tabmenu">
+	<ul class="tab pngFix">
+		<li>
+			<a href="#">收款信息</a>
+		</li>
+	</ul>
+</div>
+<div class="ncsc-form-default">
+	<form method="post" action="{:U('Account/save')}">
+		<dl>
+			<dt>收款方式：</dt>
+			<dd>
+				支付宝
+			</dd>
+		</dl>
+		<dl>
+			<dt>收款人：</dt>
+			<dd>
+				<input class="text w200" name="bank_account_name" type="text" value="{$account.bank_account_name}" required="required"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt>收款账号：</dt>
+			<dd>
+				<input class="text w200" name="bank_account_number" type="text" value="{$account.bank_account_number}" required="required"/>
+			</dd>
+		</dl>
+		<div class="bottom">
+			<label class="submit-border">
+				<input type="submit" class="submit" value="提交" />
+			</label>
+		</div>
+	</form>
+</div>
+</div>

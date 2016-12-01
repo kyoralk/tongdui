@@ -1,0 +1,65 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-8">
+			<form action="{:U('Finance/deliveryDetail')}" method="get">
+				<h4><small>发货明细</small></h4>
+				<div class="form-group">
+					<select name="store_id" class="form-control inline-block" style="width: 150px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+						<option value="0">选择店铺</option>
+						<volist name="store_list" id="sl">
+							<option value="{$sl.store_id}" <if condition="$store_id eq $sl['store_id']">selected</if>>{$sl.store_name}</option>
+						</volist>
+					</select>
+					<input name="order_sn" size="13" class=" form-control" type="text" placeholder="订单编号" value="{$order_sn}" style="margin-left:2px;width: 150px; float: left;height:30px;border-radius:3px;border-color: #d2d6de;font-size:12px;">
+					<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+						<input class="form-control" type="text" name="goods_name" value="{$goods_name}" placeholder="商品名称">
+						<span class="input-group-btn">
+						<button type="submit" class="btn btn-info btn-flat">搜索</button>
+						</span> </div>
+				</div>
+	        </form>
+		</div>
+		<div class="col-md-4 right_menu">
+			
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box">
+	<div class="box-body">
+	<table class="table table-bordered table-striped">
+           	<thead>
+               	<tr>
+                       <th width="10%">订单编号</th>
+                       <th class="table-textcenter">商品名称</th>
+                       <th class="table-textcenter">供货价</th>
+                       <th class="table-textcenter">出货价</th>
+                       <th class="table-textcenter">数量</th>
+                       <th class="table-textcenter">总价</th>
+                       <th class="table-textcenter">应结总额</th>
+                       <th class="table-textcenter">下单时间</th>
+                 </tr>
+               </thead>
+               <tbody>
+                   <volist name="list" id="vo">
+           		<tr>
+           			<td>{$vo.order_sn}</td>
+               		<td align="center" class="table-textcenter">{$vo.goods_name}</td>
+               		<td class="table-textcenter">{$vo.cost_price}</td>
+                    <td class="table-textcenter">{$vo.price}</td>
+                   	<td class="table-textcenter">{$vo.prosum}</td>
+                    <td class="table-textcenter">{$vo['price'] * $vo['prosum']}</td>
+                    <td class="table-textcenter">{$vo['cost_price'] * $vo['prosum']}</td>
+                    <td class="table-textcenter">{$vo.order_time|date="Y-m-d H:i:s",###}</td>
+               	</tr>
+                   </volist>
+               </tbody>
+           </table>  
+	</div>
+	<div class="box-footer clearfix">
+		<ul class="pagination pagination-sm no-margin pull-right">
+			{$page}
+		</ul>
+	</div>
+</div>
+</section>

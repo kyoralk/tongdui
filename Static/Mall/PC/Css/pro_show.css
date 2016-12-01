@@ -1,0 +1,225 @@
+.main .main_wrap{ width:1200px;margin: auto;float: left; }
+
+.min_in{
+	width:220px; 
+	padding:10px;
+	z-index:1;
+	overflow:hidden;
+    margin-bottom: 15px;
+	float:left;
+}
+.min_in:hover{
+	position:relative;
+    outline:1px solid #ff6400;
+	z-index:2;
+}
+.min_in .productImg-wrap{
+	margin:0;
+	height:220px;
+	width:211px;
+}
+.min_in .productImg-wrap img {
+    max-width:100%;
+	height:210px;
+	padding-top:5px;
+}
+.guanzhu b {
+color: #b57c5b;
+}
+.min_in .productTitle{
+    line-height: 16px;
+    margin-bottom: 3px;
+	height: 34px;
+    overflow: hidden;
+	margin-left:3px;
+}
+.min_in .productTitle a{
+	color: #666;
+	display:block;
+	width:100%;
+	height:18px;
+	text-overflow: ellipsis;
+	-moz-text-overflow: ellipsis;
+	-webkit-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	overflow: hidden;white-space: nowrap;
+}
+.productTitle a:hover{ color:#E4393C;}
+.productTitle font{
+	display:block;
+	width:100%;
+	height:18px;
+	text-overflow: ellipsis;
+	-moz-text-overflow: ellipsis;
+	-webkit-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	overflow: hidden;white-space: nowrap;
+}
+.min_in .productPrice{
+	line-height: 30px;
+    margin: 0 0 5px;
+	height:30px;
+	font-family: arial,verdana,sans-serif ;
+}
+.min_in .productPrice em{
+	font-family: arial;
+    font-size: 20px;
+    font-weight: 400;
+	color: #cc0000;
+    float: left;
+	font-style:normal;
+	float:left;
+}
+.min_in .productPrice a{
+	float:right;
+	padding:0 3px;
+	height:18px;
+	line-height:20px;
+	font-size:12px;
+	padding-bottom:6px;
+}
+.productPrice a.fav{
+	background:#fff;
+	color:#ff6400;
+}
+.productPrice a.fav:hover{
+	border-color:#ff6400; 
+	background:#fff;
+	color:#ff6400;
+}
+.productPrice a.shopCar{
+	background:#fff;
+	color:#c00;
+	margin-right:2px;
+}
+.productPrice a.shopCar:hover{
+	background:#fff;
+	color:#c00;
+}
+.productPrice a.shopCar:hover i{background:url(../Images/GJW/shopCar.png) no-repeat left 0px;}
+a.shopCar i{ background:url(../Images/GJW/shopCar.png) no-repeat left -18px;}
+.productPrice a i{
+	padding-right:1px;
+	display:inline-block;
+	width:15px; height:20px;
+	vertical-align:middle;
+	transition:all 0.3s ease-in-out;
+	-webkit-transition:all 0.3s ease-in-out;
+	-moz-transition:all 0.3s ease-in-out;
+	-ms-transition:all 0.3s ease-in-out;
+}
+.productPrice a span{ display:inline-block;
+	height:12px;
+	padding-top:3px;
+}
+.min_in .productPrice strong{
+	font-size:20px; font-family:Verdana; font-weight:400; color:#E4393C;
+}
+.productBtn{height:30px; line-height:30px; margin-top:10px; width:100%; margin-bottom:3px;}
+.pingjiaBox a:hover{background:url(../Images/GJW/proIcon.png) no-repeat left -30px; }
+.productBtn td{ text-align:center; border:1px solid #ddd; position:relative; border-right:none;/*border-right:1px solid #fff*/ font-size:12px;}
+.productBtn td:hover{ border-color:#e4393c; border-right:1px solid  #e4393c;}
+.productBtn a:hover{ color:#c00;text-decoration:none;}
+.productBtn .favBox:hover a{
+	background:url(../Images/GJW/proIcon.png) no-repeat left -90px;
+}
+.productBtn a{ display:inline-block; 
+	padding-left:18px;color:#666; 
+	transition:all 0.3s ease-in-out;
+	-webkit-transition:all 0.3s ease-in-out;
+	-moz-transition:all 0.3s ease-in-out;
+	-o-transition:all 0.3s ease-in-out;
+	-ms-transition:all 0.3s ease-in-out;}
+.pingjiaBox a{ background:url(../Images/GJW/proIcon.png) no-repeat left top; }
+.favBox{position:relative;}
+.favBox a { background:url(../Images/GJW/proIcon.png) no-repeat left -60px;}
+.shopCarBox a{ background:url(../Images/GJW/proIcon.png) no-repeat left -120px; color:#e4393c; }
+.shopCarBox a.noSale{
+	background:url(../Images/GJW/proIcon.png) no-repeat left -150px; color:#666;
+	
+}
+.shopCarBox a.noSale:hover{
+	border-color:#ddd;
+}
+td.shopCarBox{ border-right:1px solid #ddd;}
+.productBtn a{cursor:pointer;}
+/***添加购物车漂浮*****/
+	.alt_succ {
+    background: rgba(0, 0, 0, 0) url("../Images/alt_succ.png") repeat scroll 0 0;
+    border-radius: 5px;
+    height: 129px;
+    left: 50%;
+    margin-left: -170px;
+    padding: 7px;
+    position: fixed;
+    top: 200px;
+    width: 326px;
+    z-index: 999;
+}
+.alt_succ_box {
+    background: #fff none repeat scroll 0 0;
+    border-radius: 5px;
+    height: 109px;
+    padding: 10px 20px;
+    width: 286px;
+}
+
+.sum {
+    font-family: "microsoft yahei";
+    padding-left: 50px;
+    position: relative;
+    width: 236px;
+}
+.conticon, .succ_close {
+    background: rgba(0, 0, 0, 0) url("../Images/lsp_bt2n.png") no-repeat scroll 0 0;
+}
+
+.conticon {
+    background-position: 0 0;
+    height: 33px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 32px;
+}
+
+.succ_close {
+    background-position: 0 -99px;
+    cursor: pointer;
+    height: 18px;
+    position: absolute;
+    right: -15px;
+    top: -5px;
+    width: 19px;
+}
+.sum h6 {
+    color: #333;
+    font-size: 14px;
+    line-height: 26px;
+}
+.sum p {
+    color: #666;
+    line-height: 38px;
+}
+
+.sum p span {
+    color: #ca1728;
+    font-weight: bold;
+    padding: 0 3px;
+}
+.sum p .contpay {
+    background: #ca1728 none repeat scroll 0 0;
+    border-radius: 3px;
+    color: #fff;
+    display: inline;
+    float: right;
+    height: 26px;
+    line-height: 26px;
+    margin: 5px 30px 0 0;
+    padding: 0 5px;
+    text-align: center;
+    text-decoration: none;
+    width: 80px;
+}

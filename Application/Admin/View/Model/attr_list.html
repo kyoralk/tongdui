@@ -1,0 +1,62 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box">
+	<div class="box-body no-padding">
+		<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th width="100" class="table-textcenter">属性名称</th>
+				<th width="100" class="table-textcenter">录入方式</th>
+				<th>属性值</th>
+				<th width="200" class="table-textcenter">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="attr_list" id="al">
+				<tr>
+					<td class="table-textcenter">{$al.attr_name}</td>
+					<td class="table-textcenter">
+						<switch name="al.attr_input_type">
+							<case value="1">下拉列表</case>
+							<case value="2">复选框</case>
+							<case value="3">单选按钮</case>
+						</switch>
+					</td>
+					<td>
+						<volist name="al['attr_value']" id="all"> 
+							<a id="a_{$all.atv_id}" onclick="update({$all.atv_id},'{$all.attr_value}')">{$all.attr_value}</a>
+							<a id="r_{$all.atv_id}" href="javascript:delete_attr_values({$all.atv_id})">[-]</a>&nbsp;&nbsp;&nbsp; 
+						</volist>
+					</td>
+					<td class="table-textcenter">
+						<a href="{:U('Model/attrEdit?attr_id='.$al[attr_id])}" class="btn btn-primary btn-sm">编辑</a>
+						<a href="{:U('Model/attrDel?attr_id='.$al[attr_id])}" class="btn btn-danger btn-sm">删除</a>
+					</td>
+				</tr>
+			</volist>
+		</tbody>
+	</table>
+	</div>
+</div>
+</section>
+<script type="text/javascript">
+function delete_attr_values(id){
+	$.get("{:U('Model/atvDel')}",{id:id},function(ret){
+		if(ret==1){
+			$("#a_"+id).remove();
+			$("#r_"+id).remove();
+		}else{
+			alert('删除失败');
+		}
+	});
+}
+</script>

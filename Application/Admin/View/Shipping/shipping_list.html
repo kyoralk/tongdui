@@ -1,0 +1,67 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box">
+		<div class="box-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="table-textcenter">名称</th>
+						<th class="table-textcenter">简介</th>
+						<th class="table-textcenter">启用</th>
+						<th class="table-textcenter">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="shipping_list" id="sl">
+						<tr>
+							<td class="table-textcenter">{$sl.shipping_name}</td>
+							<td>{$sl.shipping_desc}</td>
+							<td class="table-textcenter"><img onclick="update_status(this,{$sl.shipping_id},{$sl.enabled})" 
+								<if condition="($sl['enabled']) eq 1"> src="/Static/Admin/Images/yes.gif"
+									<else/>
+									src="/Static/Admin/Images/no.gif" </if>
+								> </td>
+							<td class="table-textcenter">
+								<a href="{:U('Shipping/info?shipping_id='.$sl['shipping_id'])}">编辑</a>
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+		<div class="box-footer clearfix">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div>
+	</div>
+</section>
+<script>
+function update_status(obj,shipping_id,value){
+	$.get("{:U('Shipping/updateStatus')}",
+		{
+			shipping_id:shipping_id,
+			value:value
+		},
+		function(ret){
+			if(ret.status==1){
+				$(obj).attr("onclick","update_status(this,"+ret.result.shipping_id+","+ret.result.enabled+")");
+				if(ret.result.enabled==1){
+					$(obj).attr("src","/Static/Admin/Images/yes.gif");
+				}else{
+					$(obj).attr("src","/Static/Admin/Images/no.gif");
+				}
+			}
+		}
+	);
+}
+</script>

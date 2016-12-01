@@ -1,0 +1,46 @@
+<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<notempty name="right_menu">
+  					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+  				</notempty>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+<div class="box">
+	<div class="box-body">
+	  	<table class="table table-bordered table-striped">
+            	<thead>
+                	<tr>
+                		<th class="table-textcenter">ID</th>
+                        <th class="table-textcenter">广告位描述</th>
+                        <th class="table-textcenter">宽</th>
+                        <th class="table-textcenter">高</th>
+                        <th class="table-textcenter">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <volist name="list" id="p">
+            		<tr>
+            			<td class="table-textcenter">{$p.position_id}</td>
+                        <td class="table-textcenter">{$p.position_name}</td>
+                        <td class="table-textcenter">{$p.position_width}</td>
+                        <td class="table-textcenter">{$p.position_height}</td>
+                        <td class="table-textcenter">
+                        	<a href="{:U('Adsense/position?position_id='.$p['position_id'])}">编辑</a>
+                        	<a href="{:U('Adsense/deletePosition?position_id='.$p['position_id'])}">删除</a>
+                       </td>
+                	</tr>
+                    </volist>
+                </tbody>
+            </table>
+	</div>
+	<div class="box-footer clearfix">
+		<ul class="pagination pagination-sm no-margin pull-right">
+			{$page}
+		</ul>
+	</div>
+</div>
+</section>

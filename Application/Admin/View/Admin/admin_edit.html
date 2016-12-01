@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<include file="Public:head"/>
+</head>
+<body>
+<div class="page-header">
+	<h3 class="fl">编辑管理员</h3>
+	<div class="user_message fr"> <i class="icon-list"></i><a href="{:U('Admin/adminList')}">管理员列表</a> </div>
+	<div class="cl" style="margin-bottom: 20px;"></div>
+	<input class="btn btn-primary btn-small input-small" type="button" name="Submit" onclick="javascript:history.back(-1);" value="返回">
+</div>
+<div class="alert alert-error" style="display: none;">
+两次密码输入不一致
+</div>
+<form name="myform" id="myform" class="form-inline" action="{:U('Admin/adminUpdate')}" method="post">
+	<table class="table set_table">
+		<tbody>
+			<tr>
+				<td valign="middle">管理员名称</td>
+				<td><input name="admin_name" type="text" class="span4" required="required" value="{$ai.admin_name}"/></td>
+			</tr>
+			<tr>
+				<td valign="middle">手机号</td>
+				<td><input name="mobile" type="text" class="span4" required="required" value="{$ai.mobile}"/></td>
+			</tr>
+			<tr>
+				<td valign="middle">密码</td>
+				<td><input name="password" type="password" class="span4"/></td>
+			</tr>
+			<tr>
+				<td valign="middle">重复密码</td>
+				<td><input name="re_password" type="password" class="span4" /></td>
+			</tr>
+			<tr>
+				<td valign="middle">角色</td>
+				<td>
+					<select name="role_id"  required="required" >
+						<option value="">请选择</option>
+						<volist name="role_list" id="role">
+						<option value="{$role.role_id}" <if condition="$role['role_id'] eq $ai['role_id']">selected </if> >{$role.role_name}</option>
+						</volist>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<input name="admin_id" type="hidden" value="{$ai.admin_id}"/>
+	<p class="border_top"> <button class="btn btn-primary btn-small input-small" type="submit">保存</button> </p>
+</form>
+</body>
+</html>

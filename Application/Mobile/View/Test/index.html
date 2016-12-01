@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+pre {
+    -moz-border-radius: 0 0 0 0 !important;
+    -webkit-border-radius: 0 0 0 0 !important;
+    background: none !important;
+    border: 0 !important;
+    bottom: auto !important;
+    float: none !important;
+    height: auto !important;
+    left: auto !important;
+    line-height: 1.1em !important;
+    margin: 0 !important;
+    outline: 0 !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    position: static !important;
+    right: auto !important;
+    text-align: left !important;
+    top: auto !important;
+    vertical-align: baseline !important;
+    width: auto !important;
+    box-sizing: content-box !important;
+    font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-size: 1em !important;
+    min-height: inherit !important;
+    min-height: auto !important;
+}
+   
+    .string { color: blue !important; }
+    .number { color: darkorange; }
+    .boolean { color: violet; }
+    .null { color: magenta; }
+    .key { color: blue !important; }
+</style>
+</head>
+<body>
+<form action="__URL__/up" enctype="multipart/form-data" method="post" >
+<input type="file" name="hello[]" />
+<input type="file" name="hello[]" />
+<input type="file" name="hello1[]" />
+<input type="file" name="hello1[]" />
+<input type="submit" value="提交" ></form>
+<pre id="result">
+
+
+</pre>
+	<script>
+	function syntaxHighlight(json) {
+	    if (typeof json != 'string') {
+	        json = JSON.stringify(json, undefined, 2);
+	    }
+	    json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+	    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+	        var cls = 'number';
+	        if (/^"/.test(match)) {
+	            if (/:$/.test(match)) {
+	                cls = 'key';
+	            } else {
+	                cls = 'string';
+	            }
+	        } else if (/true|false/.test(match)) {
+	            cls = 'boolean';
+	        } else if (/null/.test(match)) {
+	            cls = 'null';
+	        }
+	        return '<span class="' + cls + '">' + match + '</span>';
+	    });
+	}
+	document.getElementById("result").innerHTML=syntaxHighlight({$res});
+	</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<title>{$sitename}</title>
+<include file="Public:head"/>
+</head>
+<body>
+<header class="bar bar-nav">
+<a class="icon icon-me pull-left open-panel" href="{:U('Member/index')}"></a>
+  <h1 class='title'>申请充值</h1>
+</header>
+<div class="content">
+  <div class="list-block">
+  <form name="myform" id="myform" class="form-inline" action="{:U('Account/rechargeApply')}" method="post">
+    <ul>
+      <!-- Text inputs -->
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">充值方法</div>
+            <div class="item-input">
+              {$czff}
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">充值账号</div>
+            <div class="item-input">
+              <input name="recharge_num" type="text" required="required"/>
+            </div>
+          </div>
+        </div>
+      </li>    
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">充值人姓名</div>
+            <div class="item-input">
+              <input name="recharge_name" type="text" required="required"/>
+            </div>
+          </div>
+        </div>
+      </li>                         
+    </ul>
+    </form>
+  </div>
+  <div class="content-block">
+    <div class="row">
+      <div class="col-50"><a href="{:U('Member/index')}" class="back button button-big button-fill button-danger">取消</a></div>
+      <div class="col-50"><a href="javascript:formSubmit();" class="button button-big button-fill button-success">充值</a></div>
+    </div>
+  </div>
+</div>
+<script>
+
+function formSubmit(){
+	var recharge_num = $("input[name='recharge_num']").val();
+	var recharge_name = $("input[name='recharge_name']").val();
+	if(recharge_num == ''){
+		$.toast("充值账号不能为空");
+		return;
+	}
+	if(recharge_name == ''){
+		$.toast("充值人姓名不能为空");
+		return;
+		
+	}
+	document.myform.submit();
+}
+</script>
+</body>
+</html>

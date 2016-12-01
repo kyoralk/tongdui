@@ -1,0 +1,50 @@
+<div class="dLeft-taste" style="display: block;">
+	<h4 class="taste-tit">同类产品</h4>
+	<ul id="taste" class="taste-list">
+		<!--<li id="u-buy-left_one" class="commonTip"><div
+									class="u-buy-lay">
+									<div class="u-buy-con">
+										<div class="u-buy-ok">
+											<i></i><span>添加成功!</span>
+										</div>
+										<div class="u-buy-gon">
+											<a class="u-buy-go" target="_blank"
+												href="http://cart.jiuxian.com">去结算</a><a class="u-buy-g"
+												href="javascript:;">继续购物</a>
+										</div>
+									</div>
+									<a class="u-buy-close" href="javascript:;"></a><s></s>
+								</div></li>
+								
+								
+								
+							<li id="u-buy-left_two" class="commonTip"><div
+									class="u-buy-lay">
+									<div class="u-buy-con">
+										<div class="u-buy-no">
+											<i></i><span class="_cartstatus">添加失败，库存不足！</span>
+										</div>
+									</div>
+									<a class="u-buy-close" href="javascript:;"></a><s></s>
+								</div></li>-->
+		
+		<volist name="tlglist" id="gl">
+			<li>
+				<div class="taste—listPic"> 
+					<a href="{:U('Goods/info',array('goods_id'=>$gl.goods_id))}" target="_blank"> 
+						<img src="__PMALL__/Images/loading.gif" data-echo="/Uploads/{$gl.save_path}Thumb/m_{$gl.save_name}" alt="{$gl.goods_name}" width="160" height="160"/>
+					</a> 
+				</div>
+				<div class="taste—listDep">
+					<p class="listDep-nam"> 
+						<a title="{$gl.goods_name}" href="{:U('Goods/info',array('goods_id'=>$gl.goods_id))}" target="_blank">{$gl.goods_name}</a> 
+					</p>
+					<p class="listDep-pri"> <b>￥{$gl.shop_price}</b> </p>
+<!-- 					<p class="listDep-but"> -->
+<!-- 						<a onclick="toCart(3,16557,1,0,3785,this)"href="javascript:void(0);">加入购物车</a> -->
+<!-- 					</p> -->
+				</div>
+			</li>
+		</volist>
+	</ul>
+</div>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>商家中心</title>
+<link href="__SELLER__/Css/base.css" rel="stylesheet" type="text/css">
+<link href="__SELLER__/Css/seller_center.css" rel="stylesheet" type="text/css">
+<link href="__SELLER__/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/Static/Common/jQuery/jquery.js"></script>
+</head>
+<body>
+<div id="loginBG01" class="ncsc-login-bg" style="display:block;">
+	<p class="pngFix"></p>
+</div>
+<div id="loginBG02" class="ncsc-login-bg">
+	<p class="pngFix"></p>
+</div>
+<div class="ncsc-login-container">
+	<div class="ncsc-login-title">
+		<h2>商家管理中心</h2>
+		<span>请输入您注册商铺时申请的商家名称<br/>
+		登录密码为商城用户通用密码</span></div>
+	<div class="input">
+		<label>用户名</label>
+		<span class="repuired"></span>
+		<input name="username" type="text" autocomplete="off" class="text" autofocus>
+		<span class="ico"><i class="icon-user"></i></span> </div>
+	<div class="input">
+		<label>密码</label>
+		<span class="repuired"></span>
+		<input name="password" type="password" autocomplete="off" class="text">
+		<span class="ico"><i class="icon-key"></i></span> </div>
+	<div class="input">
+		<label>验证码</label>
+		<span class="repuired"></span>
+		<input type="text" name=verify id="captcha" autocomplete="off" class="text" style="width: 80px;" maxlength="4" size="10" />
+		<img style="height:25px;margin-top:5px;" name="codeimage" border="0" id="codeimage" onclick="this.src='/General/General/verifyCode?'+Math.random()" id="verify" src="/General/General/verifyCode"> <span class="ico"><i class="icon-qrcode"></i></span>
+		<input type="button" class="login-submit" value="商家登录">
+	</div>
+	<div class="copyright"><i>Powered by <a href="http://www.minshop.net" target="_blank" style="color: #3880f5;">minshop</a></i></div>
+</div>
+<script>
+$(document).keyup(function(event){
+	  if(event.keyCode ==13){
+		  $('.login-submit').trigger('click');
+	  }
+});
+$(".login-submit").click(function(){
+	var username=$("input[name='username']").val();
+	var password=$("input[name='password']").val();
+	var verify=$("input[name='verify']").val();
+	$.post("{:U('Public/checkLogin')}",{
+		username:username,
+		password:password,
+		verify:verify
+	},function(res){
+		if(res.status==1){
+			window.location.href="/Seller/Center";
+		}else if(res.status==4){
+			alert(res.info);
+			return false;
+		}else{
+			$("#codeimage").prop("src",'/General/General/verifyCode?'+Math.random());
+			$(".repuired").html('');
+			$(".repuired:eq("+res.status+")").html('<label class="error"><i class="icon-exclamation-sign"></i>'+res.info+'</label>');
+		}
+	})
+});
+
+</script>
+</body>
+</html>
+
+

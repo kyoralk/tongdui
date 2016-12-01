@@ -1,0 +1,144 @@
+<link rel="stylesheet" type="text/css" href="__PMALL__/Css/index.css" />
+<script type="text/javascript" src="__PMALL__/Js/index.js"></script>
+<include file="Index:banner"/>
+<div class="w1210 ad-groups">
+    <div class="mc">
+    <ul class="sc-list">
+    {:R('AD/output',array(21,'item w-bg'))}
+    </ul>
+    </div>
+</div>
+<!-- <include file="Index:store_street"/> -->
+<include file="Index:promote"/>
+
+
+
+
+<!-- <include file="Index:floor_list"/> -->
+
+
+
+
+    <div class="elevator">
+	<div class="elevator-floor">
+				<a class="smooth" href="javascript:;">
+			<b class="fs">1F</b>
+			<em class="fs-name">家电</em>
+						<i class="fs-line"></i>
+					</a>
+				<a class="smooth" href="javascript:;">
+			<b class="fs">2F</b>
+			<em class="fs-name">数码</em>
+						<i class="fs-line"></i>
+					</a>
+				<a class="smooth" href="javascript:;">
+			<b class="fs">3F</b>
+			<em class="fs-name">家居</em>
+						<i class="fs-line"></i>
+					</a>
+				<a class="smooth" href="javascript:;">
+			<b class="fs">4F</b>
+			<em class="fs-name">服饰</em>
+						<i class="fs-line"></i>
+					</a>
+				<a class="smooth" href="javascript:;">
+			<b class="fs">5F</b>
+			<em class="fs-name">个护</em>
+						<i class="fs-line"></i>
+					</a>
+				<a class="smooth" href="javascript:;">
+			<b class="fs">6F</b>
+			<em class="fs-name">酒饮</em>
+						<i class="fs-line"></i>
+					</a>
+				<a class="smooth" href="javascript:;">
+			<b class="fs">7F</b>
+			<em class="fs-name">母婴</em>
+						<i class="fs-line"></i>
+					</a>
+				<a class="smooth" href="javascript:;">
+			<b class="fs">8F</b>
+			<em class="fs-name">食品</em>
+					</a>
+			</div>
+</div>
+<script type="text/javascript" src="__PMALL__/Js/base.js" ></script> 
+<script type="text/javascript">	
+$(window).scroll(function(){ 
+	if($(this).scrollTop() > $(window).height() ){ 
+		$('.returnTop').show();
+	}else{ 
+		$('.returnTop').hide();
+	} 
+}) 
+$('.cart-panel-content').height($(window).height()-90);
+$('.bonus-panel-content').height($(window).height()-40);
+$(".returnTop").click(function(){
+	$('body,html').animate({scrollTop:0},800);
+	return false;
+});
+//点击用户图标弹出登录框
+$('.quick-login .quick-links-a,.quick-login .quick-login-a,.customer-service-online a').click(function(){
+	$('.pop-login,.pop-mask').show();
+})
+$('.quick-area').hover(function(){
+	$(this).find('.quick-sidebar').toggle();
+})
+//移动图标出现文字
+$(".right-sidebar-panel li").mouseenter(function(){
+	$(this).children(".popup").stop().animate({left:-92,queue:true});
+	$(this).children(".popup").css("visibility","visible");
+	$(this).children(".ibar_login_box").css("display","block");
+});
+$(".right-sidebar-panel li").mouseleave(function(){
+	$(this).children(".popup").css("visibility","hidden");
+	$(this).children(".popup").stop().animate({left:-121,queue:true});
+	$(this).children(".ibar_login_box").css("display","none");
+});
+//点击购物车、用户信息以及浏览历史事件
+$('.sidebar-tabs').click(function(){
+	if($('.right-sidebar-main').hasClass('right-sidebar-main-open')&&$(this).hasClass('current')){
+		$('.right-sidebar-main').removeClass('right-sidebar-main-open');
+		$(this).removeClass('current');
+		$('.right-sidebar-panels').eq($(this).index()-1).removeClass('animate-in').addClass('animate-out').css('z-index',1);
+	}else{
+		$(this).addClass('current').siblings('.sidebar-tabs').removeClass('current');
+		$('.right-sidebar-main').addClass('right-sidebar-main-open');
+		$('.right-sidebar-panels').eq($(this).index()-1).addClass('animate-in').removeClass('animate-out').css('z-index',2).siblings('.right-sidebar-panels').removeClass('animate-in').addClass('animate-out').css('z-index',1);
+	}
+});
+$(".right-sidebar-panels").on('click', '.close-panel', function () {
+	$('.sidebar-tabs').removeClass('current');
+	$('.right-sidebar-main').removeClass('right-sidebar-main-open');
+	$('.right-sidebar-panels').removeClass('animate-out');
+});
+$(document).click(function(e){ 
+	var target = $(e.target); 
+	if(target.closest('.right-sidebar-con').length == 0){ 
+		$('.right-sidebar-main').removeClass('right-sidebar-main-open');
+		$('.sidebar-tabs').removeClass('current');
+		$('.right-sidebar-panels').removeClass('animate-in').addClass('animate-out').css('z-index',1);
+	} 
+}) 
+$('.pop-login').css('top',($(window).height()-$('.pop-login').height())/2);
+$('.pop-close').click(function(){
+	$('.pop-main,.pop-mask').hide();
+	$('form[name="formLogin"]').find('.msg-wrap').css('visibility','hidden');
+	$('.pop-login .item,.pop-login .item-detail').removeClass('item-error');
+	$('.pop-login .text').val('');
+})
+$('.pop-login .item .text').focus(function(){
+	$(this).addClass('')	
+})
+</script> 
+<script type="text/javascript">
+	$(".brand-con").hover(function(){
+		var num = $(this).find("li").length;
+		if(num > 10){
+			$(this).find(".brand-btn").fadeTo('fast',0.4);	
+		}
+	},
+	function(){
+		$(this).find(".brand-btn").fadeTo('fast',0);	
+	})
+</script>

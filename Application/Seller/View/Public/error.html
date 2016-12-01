@@ -1,0 +1,51 @@
+<meta http-equiv='Refresh' content='{$waitSecond};URL={$jumpUrl}' />
+<style type="text/css">
+body, .header-wrap {
+	background-color: #FAFAFA;
+}
+.wrapper {
+	width: 1000px;
+}
+
+#faq {
+	display: none;
+}
+
+.msg {
+	font: 100 36px/48px arial, "microsoft yahei";
+	color: #555;
+	background-color: #FFF;
+	text-align: center;
+	width: 100%;
+	border: solid 1px #E6E6E6;
+	margin-bottom: 10px;
+	padding: 120px 0;
+}
+.msg i {
+	font-size: 48px;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.msg p {
+	font-size: 14px;
+}
+</style>
+<div class="msg">
+	<i class="icon-info-sign" style="color: #F00;"></i> {$error}
+	<br/>
+	<p style="font-size: 120x;">
+	正在<b id="wait">{$waitSecond}</b> 秒后为您转向基本配置页面，如果不想等待请点击 <a id="href" href="{$jumpUrl}">这里</a> 关闭 
+	</p>
+</div>
+<script type="text/javascript">
+(function(){
+var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+var interval = setInterval(function(){
+	var time = --wait.innerHTML;
+	if(time <= 0) {
+		location.href = href;
+		clearInterval(interval);
+	};
+}, 1000);
+})();
+</script>

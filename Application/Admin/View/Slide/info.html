@@ -1,0 +1,81 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info">
+		<form name="myform" id="myform" class="form-horizontal" action="" method="post">
+			<div class="box-body"> 
+				{:fastModule('form-group',array('幻灯图片'),array('file','img',$info['img'],$info['id']))}
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label">背景颜色</label>
+					<div class="col-sm-4">
+						<input class="form-control" id="" placeholder="" name="bg_color" value="{$info.bg_color}" type="text">
+					</div>
+					<label class="col-sm-1">
+						<img id="colour" width="15" height="16" style="margin-top: 8px;"src="/Static/Admin/Images/colour.png">
+						<input id="name_style" name="name_style" type="hidden"/>
+					</label>
+				</div>
+				{:fastModule('form-group',array('图片链接'),array('text','url',$info['url']))}
+				{:fastModule('form-group',array('图片描述'),array('text','alt',$info['alt']))}
+				{:fastModule('form-group',array('商品id'),array('text','goods_id',$info['goods_id']))}
+				{:fastModule('form-group',array('排序'),array('text','sort',$info['sort']))}
+				{:fastModule('form-group',array('启用'),array('radio','enabled',array(array('启用',1,$info['enabled'],1),array('不启用',0,$info['enabled'],1)),'','','radio'))}
+				{:fastModule('form-group',array('显示位置'),array('radio','position',array(array('电脑',1,$info['position'],1),array('手机',2,$info['position'],1)),'','','radio'))}
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label">所属模块</label>
+					<div class="col-sm-4">
+						<select class="form-control" name="module">
+							<option value="0">选择模块</option>
+							<volist name="module_list" id="ml">
+							<option value="{$key}" <if condition="$key eq $info['module']" > selected </if> >{$ml}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4"><button type="button" class="btn btn-primary" onclick="formSubmit();">保存</button></div>
+			</div>
+			<input name="id" type="hidden" value="{$info.id}"/>
+			<input name="oldimg" type="hidden" value="{$info.img}"/>
+		</form>
+	</div>
+</section>
+	<script type="text/javascript" src="/Static/Common/colorpicker/jquery.colorpicker.js"></script>
+<script type="text/javascript">
+$("#colour").colorpicker({
+    fillcolor:true,
+    success:function(o,color){
+    	$("input[name='bg_color']").prop("style","color:"+color+";")
+        $("input[name='bg_color']").val(color);
+    }
+});
+function formSubmit() {
+	var img=$("input[name='img']").val();
+	if(img!=''){
+		document.getElementById('myform').encoding="multipart/form-data";
+	}
+	var id = $("input[name='id']").val();
+	if(id != ''){
+		$("#myform").prop("action","{:U('Slide/update')}");
+	}else{
+		$("#myform").prop("action","{:U('Slide/add')}");
+	}
+	document.myform.submit();
+}
+function remove(remove_id,id,path){
+	var _action = "{:U('Slide/imgDelete')}";
+	ms.removeImg(remove_id,id,path,_action);
+}
+</script>
+

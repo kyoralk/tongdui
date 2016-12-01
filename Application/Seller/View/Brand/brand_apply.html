@@ -1,0 +1,107 @@
+<div class="main-content" id="mainContent">
+<div class="tabmenu">
+	<ul class="tab pngFix">
+		<li>
+			<a href="#">品牌申请</a>
+		</li>
+	</ul>
+</div>
+<div class="ncsc-form-default">
+	<form method="post" action="{:U('Brand/apply')}" id="my_store_form">
+		<dl>
+			<dt>品牌分类：</dt>
+			<dd>
+			<select name="gc_id" required="required">
+				<option value="0">选择分类</option>
+				<volist name="class_list" id="cl">
+					<option value="{$cl.gc_id}">{$cl.gc_name}</option>
+				</volist>
+			</select>
+			<label id="gc_id" class="error" style="display:none;"><i class="icon-exclamation-sign"></i>请选择品牌分类</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt>品牌名称：</dt>
+			<dd>
+			<input class="text w200 validate" name="brand_name" type="text" value="" required="required"/>
+			<label id="brand_name" class="error" style="display:none;"><i class="icon-exclamation-sign"></i>品牌已存在</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt>品牌首字母：</dt>
+			<dd>
+			<input class="text w200 validate" name="first_letter" type="text" value="" required="required"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt>品牌介绍：</dt>
+			<dd>
+				<textarea name="store_zy" rows="2" class="textarea w400" maxlength="50">{$store_info.store_zy}</textarea>
+			</dd>
+		</dl>
+		<dl>
+			<dt>品牌logo：</dt>
+			<dd>
+				<div class="ncsc-upload-thumb store-logo">
+					<p id="brand_logo" onclick="file_click('brand_logo')">
+					<i class="icon-picture"></i>
+					</p>
+				</div>
+				<div class="ncsc-upload-btn" style="display: none;">
+					<input type="file" size="1" class="input-file" name="brand_logo_btn" required="required"/>
+				</div>
+			</dd>
+		</dl>
+		<div class="bottom">
+			<label class="submit-border">
+				<input type="submit"
+								class="submit" value="提交" />
+			</label>
+		</div>
+		<input name="brand_logo" type="hidden" value=""/>
+	</form>
+</div>
+</div>
+<script src="/Static/Common/Js/localResizeIMG.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("select[name='gc_id']").focus();
+});
+$("select[name='gc_id']").blur(function(){
+	alert($("select[name='gc_id'] option:selected").val());
+	if($("select[name='gc_id'] option:selected").val() == 0){
+		
+		$("#gc_id").show();
+	}else{
+		$("#gc_id").hide();
+	}
+});
+$("input[name='brand_name']").blur(function(){
+	var string  = $(this).val();
+	
+	$.get("/Seller/Brand/checkBrandName",{brand_name:string},function(res){
+		if(res == 1){
+			$("#brand_name").hide();
+			if(string != ''){
+				$.get("/General/Pinyin/ajaxFirstLetter",{string:string},function(res){
+					$("input[name='first_letter']").val(res);
+				});
+			}
+		}else{
+			$("#brand_name").show();
+		}
+	});
+	
+	
+});
+function file_click(id){
+	return $("input[name='"+id+"_btn']").click();
+}
+$("input[name='brand_logo_btn']").localResizeIMG({
+	quality : 1,
+	success : function(result) {
+		$("input[name='brand_logo']").val(result.base64);
+		$('#brand_logo').html('<img src="'+result.base64+'"/>');
+	}
+});
+</script>

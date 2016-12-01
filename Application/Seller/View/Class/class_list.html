@@ -1,0 +1,89 @@
+<form id="myform" name="myform" action="" method="post">
+<div class="main-content" id="mainContent">
+	<div class="wrap">
+		<div class="tabmenu">
+			<ul class="tab pngFix">
+				<li><a href="#">店铺分类</a></li>
+			</ul>
+			<a href="{:U('Class/view')}" class="ncsc-btn ncsc-btn-green">添加分类</a> 
+		</div>
+		<table class="table">
+			<tbody>
+				<tr>
+					<th style="width:10px"><input name="checkAll" type="checkbox" value=""></th>
+					<th style="width:60px;">排序</th>
+					<th style="width:300px;">名称</th>
+					<th style="width:400px;">关键字</th>
+					<th style="width:400px;">描述</th>
+					<th>操作</th>
+				</tr>
+				<volist name="list" id="vo">
+				<tr>
+					<td><input name="sc_id[]" type="checkbox" value="{$vo.sc_id}"></td>
+					<td><input type="text" name="sc_srot[]" value="{$vo.sc_sort}" class="text w20"></td>
+					<td>
+						<input type="text" name="sc_name[]" value="{$vo.sc_name}">
+                	</td>
+                	<td>
+						<input type="text" name="sc_keywords[]" value="{$vo.sc_keywords}" class="text w300" placeholder="多个关键字请用半角逗号分隔">
+                	</td>
+                	<td>
+						<input type="text" name="sc_description[]" value="{$vo.sc_description}" class="text w300" placeholder="">
+                	</td>
+					<td>
+						<a href="{:U('Class/edit',array('sc_id'=>$vo['sc_id']))}">设置</a>&nbsp;|&nbsp;
+						<a href="{:U('Class/delete',array('sc_id'=>$vo['sc_id']))}">删除</a>
+					</td>
+				</tr>
+					<volist name="vo._child" id="voc">
+						<tr>
+							<td><input name="sc_id[]" type="checkbox" value="{$voc.sc_id}"></td>
+							<td><input type="text" name="sc_srot[]" value="{$voc.sc_sort}" class="text w20"></td>
+							<td>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="text" name="sc_name[]" value="{$voc.sc_name}">
+		                	</td>
+		                	<td>
+								<input type="text" name="sc_keywords[]" value="{$voc.sc_keywords}" class="text w300" placeholder="多个关键字请用半角逗号分隔">
+		                	</td>
+		                	<td>
+								<input type="text" name="sc_description[]" value="{$voc.sc_description}" class="text w300" placeholder="">
+		                	</td>
+							<td>
+								<a href="{:U('Class/edit',array('sc_id'=>$voc['sc_id']))}">设置</a>&nbsp;|&nbsp;
+								<a href="{:U('Class/delete',array('sc_id'=>$voc['sc_id']))}">删除</a>
+							</td>
+						</tr>
+					</volist>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+	<div class="bottom">
+			<label class="submit-border">
+				<input type="button" class="submit" onclick="formSubmit(1)" value="保存" />
+			</label>
+			<label class="submit-border">
+				<input type="button" class="submit" onclick="formSubmit(2)" value="删除"/>
+			</label>
+	</div>
+</div>
+</form>
+<script>
+$("input[name='checkAll']").click(function(){
+	ms.checkAll(this,"input[name='sc_id[]']");
+});
+function formSubmit(todo){
+	switch(todo){
+		case 1:
+			$("#myform").prop("method","post");
+			$("#myform").prop("action","{:U('Class/saves')}");
+		break;
+		case 2:
+			$("#myform").prop("method","get");
+			$("#myform").prop("action","{:U('Class/delete')}");
+		break;
+	}
+	$("#myform").submit();
+}
+</script>

@@ -1,0 +1,151 @@
+
+<style>
+.table tbody tr:hover td {
+	background-color: #fff;
+}
+label {
+	float: left;
+	display: inline;
+	margin-left: 40px;
+}
+</style>
+<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<notempty name="right_menu">
+  					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+  				</notempty>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<div class="box-body" style="margin-left:-190px;">
+		<form name="myform" id="myform" class="form-horizontal" action="{:U('Admin/roleHandler')}" method="post">
+			{:fastModule('form-group',array('角色名称'),array('text','role_name',$role_info['role_name'],'','',''))}
+			{:fastModule('form-group',array('分配权限'),array('checkbox',array('check_all'),array(array('全选',1,'',0)),'','','checkbox'))}
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">权限列表</label>
+				<div class="col-sm-10" style="float: right;padding-left: 60px;">
+					<table class="table table-bordered" style="border: 1px solid #ddd;">
+						<tbody>
+							<volist name="menu_list" id="ml">
+								<tr>
+									<td style="padding:0;text-align: center;vertical-align: middle; width: 150px;">
+										<label class="checkbox"> 
+											<input class="input_{$ml.menu_id}" data-pid="{$ml.menu_pid}" name="menu_id[]" type="checkbox" value="{$ml.menu_id}" 
+												<if condition="$ml.checked eq 1"> checked </if> >{$ml.menu_name}
+										</label>
+									</td>
+									<td style="padding:0;border-bottom: 0;">
+										<table class="table" style="margin-bottom: 0;border: 0;">
+											<volist name="ml._child" id="mlc">
+												<tr style="border-top:0;">
+													<td style="text-align: center;vertical-align: middle;width: 150px;border-top:0;border-bottom: 1px solid #ddd; ">
+														<label class="checkbox"> 
+															<input class="input_{$mlc.menu_id}" data-pid="{$mlc.menu_pid}" name="menu_id[]" type="checkbox" value="{$mlc.menu_id}" 
+																<if condition="$mlc.checked eq 1"> checked </if> >
+																{$mlc.menu_name}
+														</label>
+													</td>
+													<td style="border-top:0;border-bottom: 1px solid #ddd;border-left: 1px solid #ddd; ">
+														<volist name="mlc._child" id="mlcc">
+															<label class="checkbox"> 
+																<input class="input_last" data-pid="{$mlcc.menu_pid}" name="menu_id[]" type="checkbox" value="{$mlcc.menu_id}" 
+																<if condition="$mlcc.checked eq 1"> checked </if> >
+																{$mlcc.menu_name}
+															</label>
+														</volist>
+													</td>
+												</tr>
+											</volist>
+										</table>
+									</td>
+								</tr>
+							</volist>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<input name="role_id" type="hidden" value="{$role_info.role_id}"/>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4">
+					<button type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</section>
+<script>
+	var menu_length = document.getElementsByName("menu_id[]").length;
+	$(function(){
+		var i = 0;
+		$("input[name='menu_id[]']").each(function(){
+			if($(this).is(":checked")){
+				i++;
+			}
+		});
+		if(i!=menu_length){
+			$("input[name='check_all']").prop("checked",false);
+		}
+	});
+	$("input[name='check_all']").click(function(){
+		if($(this).is(":checked")){
+			$("input[name='menu_id[]']").prop("checked",true);
+		}else{
+			$("input[name='menu_id[]']").prop("checked",false);
+		}
+	});
+	$("input[name='menu_id[]']").click(function(){
+		var tr = $(this).parent().parent().parent();
+		var id = $(this).attr("data-pid");
+		if($(this).prop("class")!="input_last"){
+			if($(this).is(":checked")){
+				tr.find("input").prop("checked",true);
+			}else{
+				tr.find("input").prop("checked",false);
+			}
+			var i = 0;
+			var td = tr.parent().parent().parent();
+			td.find("input").each(function(){
+				if($(this).is(":checked")){
+					i++;
+				}
+			});
+			if(i==0){
+				$(".input_"+id).prop("checked",false);
+			}
+		}
+		if($(this).is(":checked")){
+			$(".input_"+id).prop("checked",true);
+		}else{
+			var td = $(this).parent().parent();
+			if($(this).prop("class")=="input_last"){
+				var i = 0;
+				td.find("input").each(function(){
+					if($(this).is(":checked")){
+						i++;
+					}
+				});
+				if(i==0){
+					$(".input_"+id).prop("checked",false);
+				}
+			}
+		}
+		
+		var i = 0;
+		$("input[name='menu_id[]']").each(function(){
+			if($(this).is(":checked")){
+				i++;
+			}
+		});
+		if(i!=menu_length){
+			$("input[name='check_all']").prop("checked",false);
+		}
+	});
+	
+
+</script>

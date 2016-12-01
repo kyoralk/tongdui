@@ -1,0 +1,252 @@
+<link rel="stylesheet" type="text/css" href="__PMALL__/Css/pro_show_list.css" />
+<link rel="stylesheet" type="text/css" href="__PMALL__/Css/pro_show.css" />
+
+<div class="content w1210 fix"> 
+	<!--内容导航 begin-->
+	<div class="bcNav"> <a href="/">首页</a>
+		<empty name="search_key">
+			<volist name="tree" id="t"> <span>></span><a href='/product_list/{$t.gc_id}'>{$t.gc_name}</a> </volist>
+			<else />
+			<span>></span>{$search_key} </empty>
+		<notempty name="brand_name"> <span>></span>{$brand_name} </notempty>
+	</div>
+	<div id="selectorBox">
+		<notempty name="brand_list">
+			<div class="botLine">
+				<div class="selTit fl"> <span>品牌</span> </div>
+				<div class="fl seleList">
+					<ul id="row5" class="brand">
+						<li><a id="0" href="javascript:void(0);" onclick="filter(this)" 
+							<if condition="$brand_id eq 0">class="curr"</if>
+							>全部</a></li>
+						<volist name="brand_list" id="bl">
+							<li><a id="{$bl.brand_id}" href="javascript:void(0);"
+							onclick="filter(this)"
+								<if
+									condition="$brand_id eq $bl['brand_id']">class="curr"</if>
+								>{$bl.brand_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+			</div>
+		</notempty>
+		<div id="seleAttr">
+			<notempty name="sxsx1">
+				<volist name="sxsx1" id="ss" key="key">
+					<div class="botLine">
+						<div class="selTit fl"> <span>{$ss.attr_name}</span> </div>
+						<div class="fl seleList">
+							<ul id="row5" class="sxsx">
+								<li><a  id="0" href="javascript:void(0);" onclick="filter(this)" 
+									<if condition="$ss.curr eq 0">class="curr" </if>
+									>全部</a></li>
+								<volist name="ss['attrvalues']" id="sv">
+									<li > <a  id="{$sv.atv_id}" href="javascript:void(0);" onclick="filter(this)" 
+										<if condition="$ss.curr eq $sv['atv_id']">class="curr" </if>
+										>{$sv.attr_values}</a> </li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+				</volist>
+			</notempty>
+			<div class="toggle">
+				<notempty name="range_list">
+					<div class="botLine">
+						<div class="selTit fl"> <span>价格</span> </div>
+						<div class="fl seleList">
+							<ul id="row5" class="range">
+								<li> <a href="javascript:void(0);" title="all" onclick="filter(this)" 
+									<if condition="$range eq 0">class="curr"</if>
+									>全部</a></li>
+								<volist name="range_list" id="r" key="k">
+									<li > <a href="javascript:void(0);" title="{$r}" onclick="filter(this)"
+										<if condition="$r eq $range">class="curr"</if>
+										>{$r} </a> 
+								</volist>
+							</ul>
+						</div>
+					</div>
+				</notempty>
+			</div>
+		</div>
+	</div>
+	<div class="main_wrap">
+		<div class="sortBar ">
+			<div class="fl sortBtnBox"> <a id="o1" href="javascript:void(0);" title="综合排序" onclick="filter(this)" 
+				<if condition="$order eq o1" >class="curr"</if>
+				>综合<s></s></a> <a id="o2" href="javascript:void(0);" title="人气排序" onclick="filter(this)" 
+				<if condition="$order eq o2" >class="curr"</if>
+				>人气<s></s></a> <a id="o3" href="javascript:void(0);" title="价格排序" onclick="filter(this)" 
+				<if condition="$order eq o3" >class="curr"</if>
+				>价格由低到高<s></s></a> <a id="o4" href="javascript:void(0);" title="价格排序" onclick="filter(this)" 
+				<if condition="$order eq o4" >class="curr"</if>
+				>价格由高到低<s></s></a> 
+				
+				<!--<a href="http://www.gjw.com/baijiu-search-srt-1.htm" class="currentBtn">销量<i class="sortIcon sortDn">&nbsp;</i></a>
+                    <a href="http://www.gjw.com/baijiu-search-srt-2.htm" class="">价格<i class="">&nbsp;</i></a>
+                    <a href="http://www.gjw.com/baijiu-search-srt-4.htm" class="">评论数<i class="">&nbsp;</i></a>
+                    <a href="http://www.gjw.com/baijiu-search-srt-6.htm" class="">上架时间<i class="">&nbsp;</i></a>
+                    <a href="http://www.gjw.com/baijiu-search-instock-1.htm" class="noBd"><i class="checkBox "></i>仅显示有货</a>--> 
+			</div>
+		</div>
+		<volist name="list" id="gl">
+			<div class="min_in">
+				<div class="productImg-wrap"> 
+					<a href="{:U('Goods/info',array('goods_id'=>$gl['goods_id']))}" target="_blank" title="{$gl.goods_name}"> 
+						<img src="__PMALL__/Images/loading.gif" data-echo="/Uploads/{$gl.save_path}Thumb/m_{$gl.save_name}" alt="{$gl.goods_name}" width="230" height="230"/> 
+					</a>
+				</div>
+				<p class="productPrice">
+					<em id="G_2" title="{$gl.shop_price}"><strong>￥{$gl.shop_price|floatval}</strong> </em>
+					 <span class="guanzhu fr">关注度 <b>{$gl.click_count}</b> </span> 
+				</p>
+				<p class="productTitle"> <a href="{:U('Goods/info',array('goods_id'=>$gl['goods_id']))}" target="_blank" title="{$gl.goods_name}"> {$gl.goods_name}</a> <font color="#ffaa71">{$gl.small_name}</font>
+					<label id="A_2" title=""> </label>
+				</p>
+				<table class="productBtn">
+					<tbody>
+						<tr>
+							<td class="pingjiaBox"><a href="javascript:;" > {$gl.evaluation_count}</a></td>
+							<td width="26%"><div class="favBox"> <a onClick="javascript:collect({$gl.goods_id});">收藏</a> </div></td>
+							<td class="shopCarBox" width="48%"><a href="javascript:add_cart({$gl.goods_id},{$gl.store_id},'{$gl.goods_name}','{$gl.goods_img}');">加入购物车</a></td>
+						</tr>
+					</tbody>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</volist>
+	</div>
+	<div  style="clear:both" > </div>
+	<!--         <div class="page_box"> --> 
+	<!--         {$page} --> 
+	<!--         </div> -->
+	<div class="page"> <div class="page-wrap fr"><ul class="page-num fl">{$page}</ul></div></div> </div>
+	<div  style="clear:both" > </div>
+</div>
+<input name="gc_id" type="hidden" value="{$gc_id}"/>
+<input name="brand_id" type="hidden" value="{$brand_id}"/>
+<input name="search_key" type="hidden" value="{$search_key}"/>
+<div style="display: none;" class="alt_succ">
+	<div class="alt_succ_box">
+		<div class="sum"><span class="conticon"></span><span class="succ_close"></span>
+			<h6>该商品已成功放入购物车</h6>
+			<p>购物车共<span id="alt_num"></span>件商品</p>
+			<p><a style="color:#fff;" class="contpay" href="{:U('Cart/info')}">去购物车结算</a><a style="color:#ca1728;" class="contgo" href="javascript:;">&lt;&lt; 继续购物</a></p>
+			<div class="clear"></div>
+			<p></p>
+		</div>
+	</div>
+</div>
+<div style="display: none;" class="alt_succ_coll">
+	<div class="alt_succ_box_coll">
+		<div class="sum"><span class="conticon"></span><span class="succ_close"></span>
+			<h6 id="h6"></h6>
+		</div>
+	</div>
+</div>
+<script>
+
+function filter(curr){
+	$(curr).parent().parent().find("a").removeClass("curr");
+	$(curr).addClass("curr");
+	var gc_id = $("input[name=gc_id]").val();
+	var brand_id = $(".brand").find("li").children(".curr").attr("id");
+	var range=$(".range").find("li").children(".curr").attr("title");
+	var order=$(".sortBtnBox").children(".curr").attr("id");
+	var serarch_key=$("input[name=search_key]").val();
+	var data=$(".sxsx").find("li").children(".curr");
+	brand_id=brand_id==undefined?0:brand_id;
+	range=range==undefined?0:range;
+	if(data!=undefined){
+		var atv_id_str = "";
+		for(var i=0;i<data.length;i++){
+	         if(i==0){
+	        	 atv_id_str = data.eq(i).attr("id");
+	         }else{
+	        	 atv_id_str +=","+data.eq(i).attr("id");
+	         }
+	    }
+	}else{
+		atv_id_str=0;
+	}
+	window.location.href="/product_list/"+gc_id+"|"+brand_id+"|"+range+"|"+atv_id_str+"|"+order+"|"+serarch_key;
+	
+	
+}
+function add_cart(goods_id,store_id,goods_name,goods_img){
+	 $.post("/Cart/add",
+			  {
+			    goods_id:goods_id,
+			    prosum:1,
+			    store_id:store_id,
+			    goods_name:goods_name,
+			    goods_img:goods_img,
+			  },
+			  function(ret){
+					if(ret.status==2){
+						var his_url= top.location.href;
+						window.location='/Public/login?his_url='+his_url;
+					}else{
+						if(ret.status==1){
+							$.post("/Cart/getCartCount",{},function(ret){
+								$("#alt_num").html(ret.data);
+								$(".alt_succ").show();
+							});
+						}else if(ret.status==3){
+							alert(ret.info);
+						}else{
+							alert("添加失败");
+						}
+					}
+			  }
+	);
+}
+
+function collect(goods_id){
+	//alert(goods_id);
+	$.ajax({
+		url:"{:U('Goods/collect')}",
+		type:'post',
+		data:{goods_id:goods_id},
+		dataType:'json',
+		success:function(re){
+			if(re.status==0){
+				var his_url= top.location.href;
+				window.location='/Public/login?his_url='+his_url;
+			}else if(re.status==2){
+				$.ajax({
+					url:"{:U('Goods/ajaxcollect')}",
+					type:'post',
+					data:{goods_id:goods_id},
+					dataType:'json',
+					success:function(re){
+						if(re.status==1){
+							$("#h6").html(re.info);
+						}else{
+							$("#h6").html(re.info);
+						}
+						$(".alt_succ_coll").show();
+					}
+				})
+			}else if(re.status==1){
+				$("#h6").html(re.info);
+				$(".alt_succ_coll").show();
+			}else if(re.status==3){
+				alert(re.info);
+			}
+		}
+	})
+}
+
+$(".contgo").click(function(){
+	$(".alt_succ").hide();
+});
+$(".succ_close").click(function(){
+	$(".alt_succ").hide();
+});
+$(".succ_close").click(function(){
+	$(".alt_succ_coll").hide();
+});
+</script> 

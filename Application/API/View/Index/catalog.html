@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="Static/API/Plugins/jstree/themes/default/style.min.css" />
+<script src="/Static/API/Plugins/jstree/jstree.min.js"></script>
+<div class="tab-item manual-catalog">
+<div id="jstree">
+  <ul>
+  	<volist name="catalog" id="c">
+    <li>{$c.name}
+		<notempty name="c.api">
+		<ul>
+		  <volist name="c.api" id="api">
+		  <li><a href="{:U('Index/view',array('id'=>$api['id']))}" target="myframe">{$api.name}</a></li>
+		  </volist>
+		</ul>
+		</notempty>
+    </li>
+    </volist>
+  </ul>
+</div>
+</div>
+<script>
+$(function(){
+	$('#jstree').jstree(
+			{
+				plugins : ["wholerow"],
+			}
+		);
+});
+$('#jstree').on("changed.jstree", function (e, data) {
+	var url = $("#"+data.selected+"_anchor").prop("href");
+	$("#myframe").prop("src",url);
+	});
+	
+</script>

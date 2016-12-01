@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>提示信息</title>
+<meta name="Description" content="" />
+<link rel="stylesheet" type="text/css" href="../Public/Css/Login/common.css" />
+<link rel="stylesheet" type="text/css" href="../Public/Css/Login/layout.css" />
+<link rel="stylesheet" type="text/css" href="../Public/Css/Login/font-awesome.min.css" />
+
+<style type="text/css">
+.msg { font: 100 36px/48px "microsoft yahei"; color: #555; background-color: #FFF; text-align: center; border: solid 1px #E6E6E6; margin-bottom: 10px; padding: 120px 0;}
+.msg i { font-size: 48px; vertical-align: middle; margin-right: 10px;}
+#wait{display:none;}
+.error_img{vertical-align:middle;margin-top:-5px;}
+</style>
+</head>
+<body>
+<div class="header-wrap">
+  <header class="public-head-layout wrapper">
+    <h1 class="site-logo"><a href="/index.php"><img src="../Public/images/logo.png" class="pngFix"></a></h1>
+            <div class="nc-regist-now">
+    <span class="avatar"><img src="/Public/Upload/photo/default.gif"></span>
+    <span>您好，欢迎来到{$sitename}<br>已注册的会员请登录，或立即<a title="" href="{:U('Public/register')}" class="register">注册新会员</a></span></div>
+          </header>
+</div>
+<div style="clear:both;"></div>
+	<div class="wrapper">
+		
+
+		<div class="msg">
+            <i class="icon-ok-sign" style=" color: #27AE61;"></i>
+               <img class="error_img" src="../Public/Images/error.png" /><?php echo($error); ?><a id="href" href="<?php echo($jumpUrl); ?>"></a><b  id="wait"><?php echo($waitSecond); ?></b>
+        </div>
+
+		<!-- 底部版权 -->
+		<div class="g-copyrightCon clrfix">
+			<div class="g-links">
+			
+				<a target="_blank" href="/index.php" title="首页">首页</a><s></s>
+				
+				<volist name="bottom_help" id="vo" key="key">
+				<a target="_blank" href="/article/index/ac_id/{$vo.ac_id}.html" title="{$vo.ac_name}">{$vo.ac_name}</a><s></s> 
+				</volist>
+			</div>
+			<div class="g-copyright">Copyright &copy; 2011 - 2015, 版权所有
+				{$sitename}{$domain} {$icp}</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+(function(){
+var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+var interval = setInterval(function(){
+	var time = --wait.innerHTML;
+	if(time <= 0) {
+		location.href = href;
+		clearInterval(interval);
+	};
+}, 1000);
+})();
+</script>
+</html>

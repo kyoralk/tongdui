@@ -1,0 +1,44 @@
+<div id="cti">
+	<div class="wrapper">
+		<ul>
+			<li><span class="line"></span> <span class="icon"> <img style="width: 60px;" src="../Public/Images/7day_60.gif"> </span> <span class="name"> 7天退货 </span> </li>
+			<li><span class="line"></span> <span class="icon"> <img style="width: 60px;" src="../Public/Images/pz_60.gif"> </span> <span class="name"> 品质承诺 </span> </li>
+			<li><span class="line"></span> <span class="icon"> <img style="width: 60px;" src="../Public/Images/psbf_60.gif"> </span> <span class="name"> 破损补寄 </span> </li>
+			<li><span class="line"></span> <span class="icon"> <img style="width: 60px;" src="../Public/Images/jswl_60.gif"> </span> <span class="name"> 急速物流 </span> </li>
+		</ul>
+	</div>
+</div>
+<div id="faq">
+	<div class="wrapper">
+		<ul>
+			<volist name="bottom_help" id="vo" key="key">
+				<li>
+					<dl class="s{$key}">
+						<dt> {$vo.ac_name} </dt>
+						<volist name="vo['article_list']" id="voo">
+							<dd><i></i><a href="{:U('Article/detail',array('article_id'=>$voo['article_id']))}" title="{$voo.article_title}"> {$voo.article_title} </a></dd>
+						</volist>
+					</dl>
+				</li>
+			</volist>
+		</ul>
+	</div>
+</div>
+<div id="footer" class="wrapper">
+	<p><a href="/index.php">首页</a>
+		<volist name="bottom_help" id="vo" key="key"> | <a href="/article/index/ac_id/{$vo.ac_id}.html">{$vo.ac_name}</a>&nbsp; </volist>
+	</p>
+	Copyright 2007-2015 {$sitename} Inc.,All rights reserved.<br>
+	Powered by <a target="_blank" href="http://www.miitbeian.gov.cn/">{$icp}</a><span class="vol"><font class="b">{$sitename}</font></span> <br>
+</div>
+<script type="text/javascript" src="../Public/Js/echo.min.js"></script> 
+<script>
+    echo.init({
+      offset: 100,
+      throttle: 250,
+      unload: false,
+      callback: function (element, op) {
+        console.log(element, 'has been', op + 'ed')
+      }
+    });
+    </script> 

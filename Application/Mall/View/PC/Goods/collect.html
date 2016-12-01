@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$sitename}</title>
+<meta name="description" content="{$description}" />
+<meta name="keywords" content="{$keywords}" />
+<link type="text/css" rel="stylesheet"  href="../Public/css/base.min.css">
+
+<link type="text/css" rel="stylesheet"  href="../Public/css/goods-category.min.css">
+<script src="../Public/js/jquery-1.9.1.min.js" ></script>
+<script src="../Public/js/jquery.lazyload.min.js" ></script>
+</head>
+<body>
+<include file="Public:header"/>
+<div class="container">
+<div class="xm-line-box filter-box">
+	<notempty name="sxsx">
+	
+        <div class="box-hd">
+            <h3 class="title">商品筛选</h3>
+        </div>
+        <div class="box-bd">
+            <div class="filter-lists">
+            <volist name="sxsx" id="ss" key="key">
+                                <dl class="xm-filter-list xm-filter-list-first category-filter-list clearfix">
+                    <dt>{$ss.attr_name}：</dt>
+                                        <dd>
+                        <ul id="ul_{$key}">
+                        <volist name="ss['attrvalues']" id="sv">
+                            <li id="li_{$sv.atv_id}" >
+                            <a id="{$sv.atv_id}" href="javascript:filter({$sv.atv_id})">{$sv.attr_values}</a></li>
+                           
+                           </volist>
+     </ul>
+                    </dd>
+                                    </dl>
+                                    
+                                    
+                                    
+                                    </volist>
+
+                            </div>
+        </div>
+       </notempty>
+        
+        
+        
+    </div><div class="xm-line-box goods-list-box">
+        <div class="box-hd">
+            <div class="filter-lists">
+                <dl class="xm-filter-list xm-filter-list-first category-filter-list clearfix">
+                    <dd>
+                        <ul class="clearfix" id="typeOrder">
+                            <li class=" first"><a rel="nofollow" href="">推荐</a></li>
+                            <li><a rel="nofollow" href="">最新</a></li>
+                            <li><a rel="nofollow" href="">价格从高到低</a></li>
+                            <li><a rel="nofollow" href="">价格从低到高</a></li>
+                            <li><a rel="nofollow" href="">关注度</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+            <div class="more">
+                <div class="filter-stock">
+					<a href=""><i class="icon-check iconfont "></i>仅显示特惠商品</a>&nbsp;&nbsp;
+					<a href=""><i class="icon-check iconfont "></i>仅显示有货商品</a>
+                </div>
+            </div>
+        </div>
+		<div class="box-bd" id="ajax_page">
+            <div class="goods-list-section">
+                <div class="xm-goods-list-wrap xm-goods-list-wrap-col20">
+                    <ul class="xm-goods-list clearfix">
+						<volist name="juanpi" id="jp">
+                         <li class="">
+                            <div class="xm-goods-item">
+                                <div class="item-thumb">
+                                
+                                    <a href="/Goods/collect_info/goods_id/{$jp.goods_id}">          
+                                       
+                                      <img alt=""  src="{$jp.goods_img}">
+                                       
+                                       
+                                    </a>
+                                     
+                                </div>
+                                <div class="item-info">
+                                    <h3 class="item-title">
+                                        <a href="/Goods/collect_info/goods_id/{$jp.goods_id}">{$jp.goods_name}</a>
+                                    </h3>
+                                    <div class="item-price">
+                                       {$jp.goods_price}元                                    </div>
+                                                                        <div class="item-star">
+                                        <span class="icon-stat icon-stat-5"></span>
+                                        <span class="item-comments">19129人评价</span>
+                                    </div>
+										<div class="item-actions">
+											<a rel="nofollow" data-package="false" data-disabled="false" data-gid="2134700050" onclick="add_cart()" class="btn btn-small btn-primary J_addCart"><i class="iconfont"></i>购物车</a>
+                                            <a data-cid="1134700050" href="javascript: void(0);" class="btn btn-dake btn-small J_addFav"><i class="iconfont"></i>收藏</a>
+                                    </div>
+                                    <div class="item-flag"></div>
+                                </div>
+                            </div>
+                        </li>
+					</volist>
+					 </ul>
+                </div>
+				<div class="xm-pagenavi">
+                                {$page}
+                </div>
+			</div>
+        </div>
+	</div>
+</div>
+<include file="Public:footer"/>
+<script> 
+function filter(atv_id){
+	
+	var ul_id = $("#li_"+atv_id).parent().attr("id");
+	
+	$("#"+ul_id+" li").attr("class","");
+	
+	$("#"+ul_id+" li").eq($("#li_"+atv_id).index()).attr("class","current");
+	
+	send();
+
+}
+
+
+function send(page){
+	var data=$(".current a");
+	var atv_id_str = "";
+	for(var i=0;i<data.length;i++){
+         
+         if(i==0){
+        	 
+        	 atv_id_str = data.eq(i).attr("id");
+        	
+         }else{
+        	 
+        	 atv_id_str +=","+data.eq(i).attr("id");
+         }
+         
+         
+    }
+	  $.get("/Search/filter",
+			  {
+			    atv_id_str:atv_id_str,
+			    p:page,
+			  },
+			  function(ret){
+				  
+			   
+				  	var html ="";
+					if(ret.status==1){
+						var data = ret.data.goods_list;
+						//alert(JSON.stringify(ret.data.goods_list))
+						for(i in data){
+							item = data[i];
+                       html+=' <li class="">';
+                        html+='<div class="xm-goods-item">';
+                            html+='<div class="item-thumb">';
+                                html+='<a href="/Goods/goods_info/goods_id/'+item.goods_id+'">';          
+                                   if(item.goods_img[0].img_src==null||item.goods_img[0].img_src==""){
+                                	   html+='<img alt=""  src="/Public/Upload/Image/Goods/Thumb/m_'+item.goods_img[0].goods_img+'">';
+                                   }else{
+                                  html+='<img alt=""  src="'+item.goods_img[0].img_src+'/goods_thumb/m_'+item.goods_img[0].goods_img+'">';
+                                   }
+                                   html+='<input id="img_'+i+'" type="hidden" value="'+item.goods_img[0].goods_img+'">';
+                                   html+='<input id="img_src_'+i+'" type="hidden" value="'+item.goods_img[0].img_src+'">';
+                                html+='</a>';
+                            html+='</div>';
+                            html+='<div class="item-info">';
+                                html+='<h3 class="item-title">';
+                                    html+='<a href="/Goods/goods_info/goods_id/'+item.goods_id+'">'+item.goods_name+'</a>';
+                                    html+='<input name="goods_id" id="goods_id" type="hidden" value="'+item.goods_id+'">';
+                                html+='</h3>';
+                                html+='<div class="item-price">'+item.shop_price+'元 </div>';
+                                                                       
+                                                                  html+='  <div class="item-star">';
+                                   html+=' <span class="icon-stat icon-stat-5"></span>';
+                                    html+='<span class="item-comments">19129人评价</span>';
+                               html+=' </div>';
+									html+='<div class="item-actions">';
+										html+='<a rel="nofollow" data-package="false" data-disabled="false" data-gid="2134700050" onclick="add_cart()" class="btn btn-small btn-primary J_addCart"><i class="iconfont"></i>购物车</a>';
+                                        html+='<a data-cid="1134700050" href="javascript: void(0);" class="btn btn-dake btn-small J_addFav"><i class="iconfont"></i>收藏</a>';
+                                html+='</div>';
+                                html+='<div class="item-flag"></div></div></div></li>';
+						}
+						$(".xm-goods-list").html(html);
+						$(".xm-pagenavi").html(ret.data.page);
+					}
+					if(ret.status==0){
+						
+						$(".xm-goods-list").html(html);
+						$(".xm-pagenavi").html(html);
+					}
+				  
+				  
+				  
+			  }
+			  );
+}
+
+function ajax_page(page){
+	
+	send(page);
+	
+	
+	
+}
+
+
+function add_cart(){
+	
+	
+	var goods_id = $("#goods_id").val();
+	var prosum  = 1
+	var img = $("#img_0").val();
+	var img_src = $("#img_src_0").val();
+	
+	
+	  $.post("/Cart/add_goods",
+			  {
+			    goods_id:goods_id,
+			    prosum:prosum,
+			    img:img,
+			    img_src:img_src
+			  },
+			  function(ret){
+			   
+					if(ret.status==1){
+						
+						window.location='/Cart/cart_info';
+					}
+					if(ret.status==2){
+						var his_url= top.location.href;
+						window.location='/Public/login?his_url='+his_url;
+					}
+				  
+				  
+				  
+			  }
+			  );
+
+}
+
+
+</script>
+</body>
+</html>

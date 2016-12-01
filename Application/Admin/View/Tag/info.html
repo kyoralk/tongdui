@@ -1,0 +1,21 @@
+		<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>标签管理</small></h4></div>
+  		</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Tag/save')}" method="post">
+		<input name="module" type="hidden" value="{$module}"/>
+		<div class="box-body"> 
+			{:fastModule('form-group',array('系统标签'),array('textarea','system',$system_tag),'系统标签，无法修改')} 
+			{:fastModule('form-group',array('单选标签'),array('textarea','tag_radio',$module_tag['tag_radio']),'多个标签请用半角逗号隔开（,）')} 
+			{:fastModule('form-group',array('复选标签'),array('textarea','tag_checkbox',$module_tag['tag_checkbox']),'多个标签请用半角逗号隔开（,）')} 
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="submit" class="btn btn-primary">保存</button></div>
+		</div>
+	</form>
+</div>
+</section>

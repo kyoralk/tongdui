@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="/Static/Seller/Css/store_joinin_new.css">
+<include file="Index/header" />
+<div class="main-content" id="mainContent">
+	<div class="ncsc-form-default" style="width: 600px;margin: 0 auto;">
+		<form method="post" action="{:U('Index/joinDo')}" id="my_store_form" enctype="multipart/form-data">
+			<dl>
+				<dt>店铺名称：</dt>
+				<dd>
+					<input class="w400 text" name="store_name" id="store_name" value="" type="text">
+					<label style="display:none;" class="error" id="store_name_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>公司名称：</dt>
+				<dd>
+					<input class="w400 text" name="company_name" id="company_name" value="" type="text">
+					<label style="display:none;" class="error" id="company_name_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>公司所在地：</dt>
+				<dd>
+					<input class="w400 text" name="company_location" id="company_location" value="" type="text">
+					<label style="display:none;" class="error" id="company_location_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>公司详细地址：</dt>
+				<dd>
+					<input class="w400 text" name="company_address" id="company_address" value="" type="text">
+					<label style="display:none;" class="error" id="company_address_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>公司电话：</dt>
+				<dd>
+					<input class="w400 text" name="company_phone" id="company_phone" value="" type="text">
+					<label style="display:none;" class="error" id="company_phone_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>员工人数：</dt>
+				<dd>
+					<input class="w400 text" name="employees_count" id="employees_count" value="" type="text" placeholder="人">
+					<label style="display:none;" class="error" id="employees_count_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>注册资金：</dt>
+				<dd>
+					<input class="w400 text" name="registered_capital" id="registered_capital" value="" type="text" placeholder="万元">
+					<label style="display:none;" class="error" id="registered_capital_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>营业执照编号：</dt>
+				<dd>
+					<input class="w400 text" name="business_licence_number" id="business_licence_number" value="" type="text">
+					<label style="display:none;" class="error" id="business_licence_number_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>营业执照图片：</dt>
+				<dd>
+					<input class="w400 text" name="business_licence_pic" id="business_licence_pic" value="" type="file" accept="image/*">
+					<label style="display:none;" class="error" id="business_licence_pic_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>经营范围：</dt>
+				<dd>
+					<textarea rows="" cols="" name="business_scope" id="business_scope" style="width: 400px; height: 70px;"></textarea>
+					<label style="display:none;" class="error" id="business_scope_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>联系人：</dt>
+				<dd>
+					<input class="w400 text" name="contacts_name" id="contacts_name" value="" type="text">
+					<label style="display:none;" class="error" id="contacts_name_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>联系人电话：</dt>
+				<dd>
+					<input class="w400 text" name="contacts_phone" id="contacts_phone" value="" type="text">
+					<label style="display:none;" class="error" id="contacts_phone_warn"></label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>联系人邮箱：</dt>
+				<dd>
+					<input class="w400 text" name="contacts_email" id="contacts_email" value="" type="text">
+					<label style="display:none;" class="error" id="contacts_email_warn"></label>
+				</dd>
+			</dl>
+			<div class="bottom">
+				<label class="submit-border">
+					<input class="submit" value="提交" type="button" id="btnAgreeBtn">
+				</label>
+			</div>
+		</form>
+	</div>
+</div>
+<include file="Index/footer" /> 
+<script src="/Static/Common/jQuery/jquery.js" ></script>
+<script src="/Static/Common/jQuery/jquery.validate.js"></script> 
+<script src="/Static/Seller/Js/join.js"></script> 

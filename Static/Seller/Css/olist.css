@@ -1,0 +1,741 @@
+@CHARSET "UTF-8";
+
+.uc-order-list-type a {
+	color: #333
+}
+
+.uc-order-list-type a.current {
+	color: #ff4a00
+}
+
+.uc-order-list-box {
+	margin: 20px 0;
+	border-bottom: 0
+}
+
+.uc-order-detail-list {
+	margin: 0;
+	padding: 0;
+	list-style-type: none
+}
+
+.uc-order-detail-list li.empty {
+	padding: 10px 20px;
+	border-bottom: 1px solid #dfdfdf
+}
+
+.uc-order-detail-item {
+	*position: relative;
+	*z-index: 1;
+	margin-bottom: 10px;
+}
+
+.uc-order-detail-item .order-detail-table {
+	vertical-align: middle;
+	width: 100%;
+	color: #333
+}
+
+.uc-order-detail-item .order-detail-table a {
+	color: #333
+}
+
+.uc-order-detail-item .order-detail-table a:hover {
+	color: #ff4a00
+}
+
+.uc-order-detail-item .order-detail-table th, .uc-order-detail-item .order-detail-table td
+	{
+	padding: 0;
+	border: 1px solid #dfdfdf
+}
+
+.uc-order-detail-item .order-detail-table .column-t {
+	border-width: 0 0 1px
+}
+
+.uc-order-detail-item .order-detail-table .column-l {
+	border-left: 0
+}
+
+.uc-order-detail-item .order-detail-table .column-r {
+	border-right: 0
+}
+
+.uc-order-detail-item .order-detail-table .column-info {
+	height: 41px;
+	font-weight: 400;
+	text-align: left;
+	background: #fafafa
+}
+
+.uc-order-detail-item .order-detail-table .column-info .column-content {
+	position: relative;
+	height: 21px;
+	padding: 10px 20px
+}
+
+.uc-order-detail-item .order-detail-table .column-info .order-status {
+	color: #ff4a00
+}
+
+.uc-order-detail-item .order-detail-table .column-info .order-status-shipping
+	{
+	color: #90ce36
+}
+
+.uc-order-detail-item .order-detail-table .column-info .order-status-finish
+	{
+	color: #8c8c8c
+}
+
+.uc-order-detail-item .order-detail-table .column-info .sep {
+	margin: 0 5px;
+	color: #dfdfdf
+}
+
+.uc-order-detail-item .order-detail-table .column-info .more {
+	position: absolute;
+	right: 20px;
+	top: 10px
+}
+
+.uc-order-detail-item .order-detail-table .column-info .more .time {
+	color: #ff4a00
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status
+	{
+	position: absolute;
+	top: 40px;
+	right: -1px;
+	z-index: 3;
+	width: 300px;
+	border: 1px solid #ffc700;
+	font-size: 12px;
+	background: #fffdf5
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-info
+	{
+	padding: 10px 25px;
+	border-bottom: 1px solid #dfdfdf;
+	color: #6d6d6d
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-info span
+	{
+	margin-right: 10px
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-detail
+	{
+	height: 300px;
+	margin: 10px 25px;
+	overflow: auto;
+	_zoom: 1
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-detail ul
+	{
+	margin: 0 0 0 15px;
+	padding: 0;
+	list-style-type: disc
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-detail li
+	{
+	margin: 10px 0;
+	color: #c3c3c3
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-detail li:first-child
+	{
+	color: #ff4a00
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-detail li:first-child .text
+	{
+	color: #ff4a00
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .delivery-status-detail .text
+	{
+	color: #333
+}
+
+.uc-order-detail-item .order-detail-table .column-info .delivery-status .arrow
+	{
+	position: absolute;
+	top: -10px;
+	right: 70px;
+	width: 19px;
+	height: 10px;
+	_font-size: 0;
+	background: url(../Images/arrow.png?2014041302) no-repeat 0 0
+}
+
+.uc-order-detail-item .order-detail-table .order-goods-list {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	overflow: hidden;
+}
+
+.uc-order-detail-item .order-detail-table .order-goods-list li {
+	position: relative;
+	min-height: 42px;
+	_height: 42px;
+	padding: 30px 20px 30px 100px;
+	border-top: 1px solid #dfdfdf
+}
+
+.uc-order-detail-item .order-detail-table .order-goods-list li.first {
+	border-top: 0
+}
+
+.uc-order-detail-item .order-detail-table .order-goods-list .goods-thumb
+	{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 60px;
+	height: 60px
+}
+
+.uc-order-detail-item .order-detail-table .order-goods-list .goods-price
+	{
+	display: block
+}
+
+.uc-order-detail-item .order-detail-table .column-price {
+	width: 80px;
+	padding: 30px 0 20px;
+	text-align: center;
+}
+
+.uc-order-detail-item .order-detail-table .column-price del {
+	display: block;
+	color: #8c8c8c
+}
+
+.uc-order-detail-item .order-detail-table .column-action {
+	width: 180px;
+	padding: 30px 0 20px;
+	text-align: center;
+}
+
+.uc-order-detail-item .order-detail-table .order-action {
+	font-size: 12px
+}
+
+.uc-order-detail-item .order-detail-table .order-action a {
+	display: block;
+	margin: 0 auto;
+	text-decoration: none;
+}
+
+.uc-order-detail-item .order-detail-table .order-action .btn {
+	margin-bottom: 5px;
+	color: #fff
+}
+
+.uc-order-detail-item .order-detail-table .order-action .btn:hover {
+	color: #fff
+}
+
+.uc-order-detail-item-checked {
+	*position: relative;
+	*z-index: 2
+}
+
+.uc-order-detail-box {
+	color: #333
+}
+
+.uc-order-detail-box .box-hd .more {
+	position: absolute;
+	right: 0;
+	top: 10px
+}
+
+.uc-order-detail-box .box-hd .more .time {
+	margin-right: 3px;
+	line-height: 30px;
+	color: #ff4a00
+}
+
+.uc-order-detail-box .box-hd .more .btn {
+	margin-left: 20px;
+	color: #fff
+}
+
+.uc-order-detail-box .box-hd .more .btn:hover {
+	color: #fff
+}
+
+.uc-order-detail-box .order-detail-tables {
+	margin: 20px 0
+}
+
+.uc-order-detail-box .order-detail-table {
+	width: 100%;
+	margin-bottom: -1px;
+	border: 1px solid #dfdfdf;
+	color: #333
+}
+
+.uc-order-detail-box .order-detail-table a {
+	color: #333
+}
+
+.uc-order-detail-box .order-detail-table a:hover {
+	color: #ff4a00
+}
+
+.uc-order-detail-box .order-detail-table th, .uc-order-detail-box .order-detail-table td
+	{
+	padding: 0;
+	border: 1px solid #dfdfdf
+}
+
+.uc-order-detail-box .order-detail-table .column-info {
+	height: 41px;
+	font-weight: 400;
+	text-align: left;
+	background: #fafafa
+}
+
+.uc-order-detail-box .order-detail-table .column-info .column-content {
+	position: relative;
+	height: 21px;
+	padding: 10px 20px
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list {
+	margin: 0;
+	padding: 0;
+	list-style-type: none
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list li {
+	position: relative;
+	min-height: 60px;
+	_height: 60px;
+	padding: 20px 80px 20px 100px;
+	border-top: 1px solid #dfdfdf
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list li.first {
+	border-top: 0
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list .package-item
+	{
+	margin-left: 30px
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list .goods-thumb
+	{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 60px;
+	height: 60px
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list .goods-price
+	{
+	display: block
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list .goods-link {
+	font-size: 12px;
+	color: #6d6d6d
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list .goods-link a
+	{
+	color: #6d6d6d
+}
+
+.uc-order-detail-box .order-detail-table .order-goods-list .goods-amount
+	{
+	position: absolute;
+	top: 20px;
+	right: 30px
+}
+
+.uc-order-detail-box .order-detail-table .column-price {
+	width: 119px;
+	padding: 30px 0 20px;
+	text-align: center;
+	vertical-align: top
+}
+
+.uc-order-detail-box .order-detail-table .column-date {
+	width: 125px;
+	padding: 30px 0 20px;
+	text-align: center;
+	vertical-align: top
+}
+
+.uc-order-detail-box .order-detail-table .column-action {
+	width: 148px;
+	padding: 30px 0 20px;
+	text-align: center;
+	vertical-align: top
+}
+
+.uc-order-detail-box .order-detail-table .order-action {
+	font-size: 12px
+}
+
+.uc-order-detail-box .order-detail-table .order-action a {
+	display: block;
+	margin: 0 auto
+}
+
+.uc-order-detail-box .order-detail-table .order-action .btn {
+	margin-bottom: 5px;
+	color: #fff
+}
+
+.uc-order-detail-box .order-detail-table .order-action .btn:hover {
+	color: #fff
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-status
+	{
+	padding: 30px 0 30px 30px
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container
+	{
+	position: relative;
+	z-index: 2;
+	margin-bottom: 10px
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status-info
+	{
+	color: #6d6d6d
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status-info span
+	{
+	font-weight: 700;
+	color: #000
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .more
+	{
+	position: absolute;
+	top: 0;
+	right: 20px
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status
+	{
+	position: absolute;
+	top: 35px;
+	right: 0;
+	z-index: 3;
+	width: 300px;
+	border: 1px solid #ffc700;
+	font-size: 12px;
+	background: #fffdf5
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-info
+	{
+	padding: 10px 25px;
+	border-bottom: 1px solid #dfdfdf;
+	color: #6d6d6d
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-info span
+	{
+	margin-right: 10px
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-detail
+	{
+	height: 300px;
+	margin: 10px 25px;
+	overflow: auto;
+	_zoom: 1
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-detail ul
+	{
+	margin: 0 0 0 15px;
+	padding: 0;
+	list-style-type: disc
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-detail li
+	{
+	margin: 10px 0;
+	color: #c3c3c3
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-detail li:first-child
+	{
+	color: #ff4a00
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-detail li:first-child .text
+	{
+	color: #ff4a00
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .delivery-status-detail .text
+	{
+	color: #333
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .delivery-status .arrow
+	{
+	position: absolute;
+	top: -10px;
+	right: 70px;
+	width: 19px;
+	height: 10px;
+	_font-size: 0;
+	background: url(../Images/arrow.png?2014041302) no-repeat 0 0
+}
+
+.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-steps
+	{
+	*position: relative;
+	*z-index: 1
+}
+
+.uc-order-detail-box .order-detail-total {
+	padding: 30px;
+	border: 1px solid #dfdfdf;
+	border-top: 0;
+	color: #6d6d6d
+}
+
+.uc-order-detail-box .order-detail-total .total-list {
+	float: right;
+	width: 220px;
+	margin: 0;
+	text-align: right
+}
+
+.uc-order-detail-box .order-detail-total .total-list dt {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	width: 80px;
+	margin-bottom: 10px
+}
+
+.uc-order-detail-box .order-detail-total .total-list dd {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	width: 130px;
+	margin: 0 0 10px;
+	color: #ff4a00
+}
+
+.uc-order-detail-box .order-detail-total .total-list dd b {
+	margin-right: 10px;
+	font-size: 30px
+}
+
+.uc-order-detail-box .order-delivery-address {
+	padding: 30px;
+	background: #fafafa
+}
+
+.uc-order-detail-box .order-delivery-address .order-text-section {
+	margin-bottom: 30px
+}
+
+.uc-order-detail-box .order-delivery-address .order-text-section h4 {
+	margin: 0 0 10px;
+	font-size: 14px;
+	font-weight: 400;
+	color: #8c8c8c
+}
+
+.uc-order-detail-box .order-delivery-address .order-text-table {
+	color: #333
+}
+
+.uc-order-detail-box .order-delivery-address .order-text-table th {
+	width: 75px;
+	font-weight: 400;
+	text-align: left;
+	vertical-align: top
+}
+
+.uc-order-detail-box .order-delivery-address .order-text-table a {
+	text-decoration: underline
+}
+
+.uc-order-detail-box .order-delivery-address .order-text-table a:hover {
+	text-decoration: none
+}
+
+.uc-order-detail-box .order-delivery-address .order-text-table .delivery-tip
+	{
+	font-size: 12px;
+	color: #d6313a
+}
+
+.uc-order-detail-box .order-delivery-address .order-delivery-time ul {
+	margin: 0 0 20px 20px;
+	padding: 0;
+	list-style-type: none
+}
+
+.uc-order-detail-box .order-delivery-address .order-delivery-time li {
+	margin: 5px 0
+}
+
+.uc-order-detail-box .order-delivery-address .order-delivery-time li input
+	{
+	margin-right: 5px
+}
+
+.uc-order-detail-box .uc-manage-address-hide {
+	display: none
+}
+
+.uc-order-detail-box .form-section {
+	margin: 0 0 10px;
+	padding: 0;
+	border: 0
+}
+
+.uc-order-detail-box .form-section label {
+	float: left;
+	width: 90px;
+	line-height: 30px
+}
+
+.uc-order-detail-box .form-section .input-text {
+	width: 200px;
+	height: 21px;
+	padding: 3px 5px;
+	border: 1px solid #dfdfdf
+}
+
+@media ( max-width :1260px) {
+	.uc-order-detail-box .order-detail-table .order-goods-list li {
+		padding: 20px 70px 20px 80px
+	}
+	.uc-order-detail-box .order-detail-table .order-goods-list .goods-thumb
+		{
+		left: 10px
+	}
+	.uc-order-detail-box .order-detail-table .order-goods-list .goods-amount
+		{
+		right: 20px
+	}
+	.uc-order-detail-box .order-detail-table .column-price {
+		width: 100px
+	}
+	.uc-order-detail-box .order-detail-table .column-date {
+		width: 100px
+	}
+	.uc-order-detail-box .order-detail-table .column-action {
+		width: 130px
+	}
+	.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-status
+		{
+		padding: 20px 0 20px 20px
+	}
+	.uc-order-detail-box .order-detail-table .column-delivery .order-delivery-container .more
+		{
+		position: absolute;
+		top: 0;
+		right: 20px
+	}
+}
+/**来自天猫的订单列表***/
+.column-detail .desc {
+	display: inline;
+	float: left;
+	overflow: hidden;
+	width: 216px;
+	word-wrap: break-word;
+}
+
+.column-detail .desc .baobei-name {
+	line-height: 18px;
+	margin-bottom: 5px;
+	overflow: hidden;
+}
+
+.operates .del, .operates .resale, .operates .share {
+	display: inline;
+	float: right;
+	font-size: 0;
+	height: 17px;
+	margin-right: 10px;
+	overflow: hidden;
+	text-indent: -999px;
+	vertical-align: middle;
+	width: 18px;
+}
+
+.operates .del {
+	background: rgba(0, 0, 0, 0)
+		url("//img.alicdn.com/tps/i1/TB1heyGFVXXXXXpXXXXR3Ey7pXX-550-260.png")
+		no-repeat scroll -239px -176px;
+}
+
+.operates .share {
+	background: rgba(0, 0, 0, 0)
+		url("//img.alicdn.com/tps/i1/TB1heyGFVXXXXXpXXXXR3Ey7pXX-550-260.png")
+		no-repeat scroll -206px -177px;
+}
+
+.operates .resale {
+	background: rgba(0, 0, 0, 0)
+		url("//img.alicdn.com/tps/i1/TB1heyGFVXXXXXpXXXXR3Ey7pXX-550-260.png")
+		no-repeat scroll -270px -177px;
+}
+
+.breadcrumbs {
+	color: #8c8c8c;
+	font-size: 12px;
+	margin: 10px auto;
+}
+
+.breadcrumbs .sep {
+	margin: 0 10px;
+}
+
+.uc-order-list-box ul li {
+	width:100%;
+	font-size:14px;
+	margin:10px 0;
+}
+.uc-order-list-box ul li label {
+	display: inline-block;
+	width: 100px;
+	margin-right:15px;
+}
+.sign , .btn, a.btn, .uc-order-detail-item .order-detail-table a.btn {
+	display: inline-block;
+	margin:10px;
+	background:#0a6aa1;
+	padding: 4px 10px;
+	color:#fff;
+	border-radius: 4px;
+	cursor:pointer;
+}
+.sign {
+	background: #2c4762;
+}
+.btn:hover {
+	background:#00a7d0;
+}

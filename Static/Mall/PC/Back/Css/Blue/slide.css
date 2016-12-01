@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+
+/* S通栏ban */
+
+.bannerArea{ height:480px; margin-bottom:10px;}
+.banner-img{ width:100%; height:480px; overflow:hidden; position:relative; z-index:1;}
+.banner-img .banner-box li{  position:absolute; height:480px; width:100%; background-repeat:no-repeat; background-position:center;}
+.banner-img .banner-btn-box{ width:1200px; height:480px; margin:0 auto; position:relative; cursor:pointer;}
+.banner-img .banner-btn { position:absolute; left:230px; bottom:10px;}
+.banner-img .banner-btn span{ display:block; float:left; width:15px; height:15px; text-align:center; line-height:15px; color:#FFF; font-size:10px; margin-right:10px; text-indent:-9999px; background-color:#eaeaea; border-radius:50% 50% 50% 50%;box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4); cursor:pointer;}
+.banner-img .banner-btn .on{ background-color:#C80002;}
+
+.banner_bg{width:100%; height:480px; overflow:hidden;}
+#turn{ height:480px; width:100%; position:relative; z-index:1;}
+#bigUl{ width:100%; height:480px; position:absolute; z-index:1}
+#bigUl li{ width:100%; position:absolute; z-index:0; height:480px;}
+#bigUl li .bigImg{ display:block; width:100%; height:100%; position:absolute; left:0; top:0px; overflow:hidden; }
+.ban_cter{ height:480px; width:1200px; position:relative; margin:0 auto; z-index:11;}
+.mav{width:190px; height:390px; position:absolute; top:0px; right:0; z-index:7;}
+#bigUl .mav li{display:block; width:190px; height:210px; position:relative;}
+/*这里是banner上面浮动图片的效果*/
+.mav a img{	-webkit-transition: -webkit-transform 0.4s; -moz-transition: -moz-transform 0.4s; transition:transform 0.4s; width:190px; height:210px;}
+.mav a:hover img,
+.mav a.cs-hover img {-webkit-transform:translateX(5%);-moz-transform:translateX(5%);-ms-transform:translateX(5%);transform:translateX(5%);}
+/*这里是banner上面浮动图片的效果*/
+
+.smallBtn{ height:25px;left:-150px;position: absolute;text-align:center; top:280px; width:100%;z-index: 9999;}
+.smallBtn #small{height: 25px; margin: 0 auto; position: relative; width: 322px; z-index: 9999;}
+.smallBtn #small li{float:left; width:24px; height:6px;font-size:0px; font-weight:bold; margin-right:10px; background:#222222; opacity:0.8;  color:#fff; box-shadow:0 0 5px; line-height:22px; cursor:pointer;margin: 7px 8px;}
+.smallBtn #small li.on{ background:#C40000;}
+
+.banner-adimg{ width:190px; height:400px; position:absolute; background:#f7f7f7; right:0; top:10px; overflow:hidden;}
+.banner-adimg ul{ overflow:hidden; padding:3px;}
+.banner-adimg li{ float:left; width:184px; height:124px; overflow:hidden; border-bottom:#dedede solid 1px; padding:3px 0;}
+/* E通栏ban */

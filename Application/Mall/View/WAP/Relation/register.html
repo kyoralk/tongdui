@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+<include file="Public:head"/>
+</head>
+<body>
+<header class="bar bar-nav">
+  <h1 class='title'>会员注册</h1>
+</header>
+<div class="content">
+  <div class="list-block">
+  <form name="myform" id="myform" class="form-inline" action="{:U('Member/update')}" method="post">
+    <ul>
+      <!-- Text inputs -->
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">用户名</div>
+            <div class="item-input">
+              <input type="text" name="username" value="">
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">Email</div>
+            <div class="item-input">
+              <input name="email" type="text" value=""/>
+            </div>
+          </div>
+        </div>
+      </li>  
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">姓名</div>
+            <div class="item-input">
+              <input type="text" name="real_name" value="">
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">身份证号</div>
+            <div class="item-input">
+              <input type="text" name="card_id" value="">
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">手机号</div>
+            <div class="item-input">
+              <input type="text" name="mobile" value="">
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">推荐人</div>
+            <div class="item-input">
+              <input  name="referrer_name" type="text" value="{$register_info.referrer_name}" readonly="readonly">
+			  <input class="span4" name="referrer_id" type="hidden" value="{$register_info.referrer_id}">
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">节点人</div>
+            <div class="item-input">
+				<input name="node_name" type="text" value="{$register_info.node_name}" readonly="readonly">
+				<input type="hidden" name="node_id" value="{$register.node_id}">
+            </div>
+          </div>
+        </div>
+      </li>  
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">节点位置</div>
+            <div class="item-input">
+				<input disabled="disabled" type="radio" value="l" name="lorr" <if condition="($register_info.lorr eq 'l') OR ($lorr eq '')">checked</if>>&nbsp;&nbsp;左&nbsp;&nbsp;
+				<input disabled="disabled" type="radio" value="r" name="lorr" <if condition="$register_info.lorr eq 'r'" value="r">checked</if>>&nbsp;&nbsp;右
+				<input name="lorr" type="hidden" value="{$register_info.lorr}"/>
+            </div>
+          </div>
+        </div>
+      </li>              
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">密码</div>
+            <div class="item-input">
+              <input name="password" type="password" value="111111"/>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">重复密码</div>
+            <div class="item-input">
+              <input name="repassword" type="text" value="111111"/>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">二级密码</div>
+            <div class="item-input">
+             <input name="password_2" type="text" value="222222"/>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">重复二级密码</div>
+            <div class="item-input">
+              <input name="repassword_2" type="text" value="222222"/>
+            </div>
+          </div>
+        </div>
+      </li>                  
+    </ul>
+    <input name="bc_id" type="hidden" value="{$register_info.bc_id}"/>
+	<input name="bc_name" type="hidden" value="{$register_info.bc_name}"/>
+    </form>
+  </div>
+  <div class="content-block">
+    <div class="row">
+      <div class="col-50"><a href="{:U('Member/index')}" class="back button button-big button-fill button-danger">取消</a></div>
+      <div class="col-50"><a href="javascript:formSubmit();" class="button button-big button-fill button-success">保存</a></div>
+    </div>
+  </div>
+</div>
+<script>
+function formSubmit(){
+	$.ajax({
+	 type: 'POST',
+	 url: '/Relation/registerDo',
+	 data: $('#myform').serializeArray(),
+	 dataType: 'json',
+	 timeout: 300,
+	 context: $('body'),
+	 success: function(data){
+     	if(data.status == 0){
+    		$.toast(data.info);
+    	}else{
+    		$.toast('注册成功');
+    		location.href="/Member/index";
+    	}
+	 },
+	 error: function(xhr, type){
+	     alert('Ajax error!')
+	 }
+	});
+}
+
+</script>
+</body>
+</html>

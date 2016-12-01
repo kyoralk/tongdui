@@ -1,0 +1,133 @@
+<link href="/Static/Seller/Css/store_joinin_new.css" rel="stylesheet" type="text/css">
+<include file="Index/header" />
+<div class="banner">
+	<div class="user-box">
+		<empty name="Think.session.uid">
+			<div class="user-login">
+				<h3>商务登录<em>（使用已注册的会员账号）</em></h3>
+				<dl>
+					<dt>用户名：</dt>
+					<dd>
+						<input type="text" class="text" autocomplete="off" name="username" id="user_name">
+						<label></label>
+					</dd>
+				</dl>
+				<dl>
+					<dt>密&nbsp;&nbsp;&nbsp;码：</dt>
+					<dd>
+						<input type="password" class="text" name="password" autocomplete="off" id="password">
+						<label></label>
+					</dd>
+				</dl>
+				<dl>
+					<dt>验证码：</dt>
+					<dd>
+						<input type="text" name="verify_code" class="text w50 fl" id="verify_code" maxlength="4" size="10">
+						<img style="margin-left:10px;width: 90px;" onclick="this.src='/General/General/verifyCode?'+(new Date()).getTime()" id="verify" src="/General/General/verifyCode"> </dd>
+				</dl>
+				<span id="error_warn" style="padding-left:33px;color:#fff;"></span>
+				<dl>
+					<dt></dt>
+					<dd>
+						<input name="提交" type="submit" id="btnSubmitLogin" class="button" value="登&nbsp;&nbsp;录">
+					</dd>
+				</dl>
+				<div class="register"> 还没有成为我们的合作伙伴？ <a href="{:U('Mall/Public/register')}" target="_blank">快速注册</a> </div>
+			</div>
+		<else />
+			<div class="user-joinin">
+				<if condition="$Think.session.store_status eq 'meiyou' ">
+					<h3>亲爱的：{$Think.session.username}</h3>
+					<dl>
+						<dt>欢迎来到</dt>
+						<dd> 若您还没有填写入驻申请资料<br>
+							请点击“<a href="{:U('Index/join')}" target="_blank">我要入驻</a>”进行入驻资料填写</dd>
+					</dl>
+					<div class="bottom"><a href="{:U('Index/join')}">我要入驻</a></div>
+				<else/>
+					<h3>亲爱的：{$Think.session.username}，
+						<switch name="Think.session.store_status">
+							<case value="meiyou"></case>
+							<case value="0">您的店铺已关闭</case>
+							<case value="1">您的申请已通过审核</case>
+							<case value="2">您已申请入驻，请等待审核</case>
+						</switch>
+					</h3>
+					<div class="bottom"><a href="{:U('Index/join')}">登录商家管理中心</a></div>
+				</if>
+			</div>
+		</empty>
+	</div>
+	<ul id="fullScreenSlides" class="full-screen-slides">
+		<li style="background-color:#F1A595;background-image:url(/Static/Seller/Images/store_joinin_1.jpg)"></li>
+		<li style="background-color:#F1A595;background-image:url(/Static/Seller/Images/store_joinin_2.jpg)"></li>
+	</ul>
+</div>
+<div class="indextip">
+	<div class="container"> <span class="title"><i></i>
+		<h3>贴心提示</h3>
+		</span><span class="content">{$sitename}平台提供各类专业管家服务，协助您开通店铺、运营店铺、组织营销活动及分析运营数据，悉心为您解答各类疑问，引导您按相关规则展开运营；我们将竭尽全力，为您的店铺保驾护航。</span> </div>
+</div>
+<div class="main mt30" id="zhinan">
+	<h2 class="index-title">入驻流程</h2>
+	<div class="joinin-index-step"> <span class="step"><i class="a"></i>签署入驻协议</span><span class="arrow"></span><span class="step"><i class="b"></i>商家信息提交</span><span class="arrow"></span><span class="step"><i class="c"></i>平台审核资质</span><span class="arrow"></span><span class="step"><i class="d"></i>商家缴纳费用</span><span class="arrow"></span><span class="step"><i class="e"></i>店铺开通</span> </div>
+	<h2 class="index-title">入驻指南</h2>
+	<div class="joinin-info">
+		<ul class="tabs-nav">
+			<li class="tabs-selected">
+				<h3>招商方向</h3>
+			</li>
+			<li class="">
+				<h3>招商标准</h3>
+			</li>
+			<li class="">
+				<h3>资质要求</h3>
+			</li>
+			<li class="">
+				<h3>资费标准</h3>
+			</li>
+		</ul>
+		<volist name="guide" id="vo">
+		<div 
+		<if condition="$key eq 0"> class="tabs-panel"
+			<else />
+			class="tabs-panel tabs-hide"</if>
+		>
+		{$vo.article_content} </div>
+	</volist>
+</div>
+</div>
+<include file="Index/footer" /> 
+<script>
+$(function(){
+	$("#btnSubmitLogin").click(function(){
+		var	username=$("[name='username']").val();
+		var	password=$("[name='password']").val();
+		var	verify_code=$("[name='verify_code']").val();
+		$.post('/Seller/Index/checkLogin',{username:username,password:password,verify_code:verify_code},function(result){
+			if(result.status == 1){
+				$('#error_warn').html('<strong class="error"></strong>'+result.info);
+				window.location="/Seller/Index/index";
+			}else{
+				$("#verify").prop("src","/General/General/verifyCode?"+(new Date()).getTime());
+				$('#error_warn').html('<strong class="error"></strong>'+result.info);
+			}
+			
+		});
+	})
+})
+
+
+</script>
+<script>
+$(".tabs-nav li").hover(function(){
+	
+	$(".tabs-nav li").removeClass("tabs-selected");
+	$(this).addClass("tabs-selected");
+	var index = $(this).index();
+	$(".tabs-panel").addClass("tabs-hide");
+	$(".tabs-panel").eq(index).removeClass("tabs-hide");
+	
+});
+
+</script>

@@ -1,0 +1,233 @@
+<div class="m-box">
+	<div class="box-head"> <strong class="box-title">{$box_title}</strong> </div>
+	<div class="box-body">
+		<div class="m-manual-create">
+			<form  class="w-form " action="{:U('Index/save')}" method="post">
+				<div class="form-item">
+					<label class="form-label">接口分组</label>
+					<div class="form-target">
+						<label class="w-text text-m">
+							<select class="text-input" name="gid">
+								<volist name="group" id="g">
+								<option value="{$g.gid}" <if condition="$info.gid eq $g['gid'] "> selected="selected"</if>>{$g.name}</option>
+								</volist>
+							</select>
+						</label>
+						<label class="w-text text-m">
+							<input class="text-input" name="group_name" placeholder="分组名称" type="text">
+						</label>
+						<label class="w-btn btn-l btn-success">
+							<button class="btn-input" type="button" onclick="addGroup()">添加分组</button>
+						</label>
+					</div>
+				</div>
+				<div class="form-item">
+					<label class="form-label">接口名称</label>
+					<div class="form-target">
+						<label class="w-text text-m text-full">
+							<input class="text-input" name="name" value="{$info.name}" type="text" required>
+						</label>
+					</div>
+				</div>
+				<div class="form-item">
+					<label class="form-label">请求地址</label>
+					<div class="form-target">
+						<label class="w-text text-m text-full">
+							<input class="text-input" name="url" value="{$info.url}" type="text" required>
+						</label>
+					</div>
+				</div>
+				<div class="form-item">
+					<label class="form-label">请求方式</label>
+					<div class="form-target">
+						<label class="w-text text-m text-full">
+							<select class="text-input" name="type">
+								<option value="GET" <if condition="$info.type eq 'GET' "> selected="selected"</if>>GET</option>
+								<option value="POST" <if condition="$info.type eq 'POST' "> selected="selected"</if>>POST</option>
+							</select>
+						</label>
+					</div>
+				</div>
+				<div class="form-item">
+					<label class="form-label">请求参数</label>
+					<div class="form-target">
+						<table class="w-table">
+							<thead>
+								<tr>
+									<th>参数名</th>
+									<th>参数类型</th>
+									<th>必传</th>
+									<th>缺省值</th>
+									<th>描述</th>
+									<th> 
+										<label class="w-btn btn-l btn-success">
+											<button type="button" class="btn-input" onclick="add()">新增</button>
+										</label>
+									</th>
+								</tr>
+							</thead>
+							<tbody id="parameter">
+								<empty name="params">
+								<tr>
+									<td>
+										<label class="w-text text-m">
+											<input class="text-input" name="p_name[]" placeholder="参数名" required type="text">
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+											<input class="text-input" name="p_type[]" placeholder="参数类型" required type="text">
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+											<select class="text-input" name="p_must[]">
+												<option value="Y">Y</option>
+												<option value="N">N</option>
+											</select>
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+											<input class="text-input" name="p_default[]" placeholder="缺省值" type="text">
+										</label>
+									</td>
+									<td>
+										<label class="w-textarea textarea-m">
+											<textarea name="p_desc[]" rows="1" class="textarea-input" placeholder="描述" style="height: 35px;"></textarea>
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+										<button type="button" class="btn-input" onclick="del(this)">删除</button>
+										</label>
+									</td>
+								</tr>
+								<else/>
+								<volist name="params" id="p">
+								<tr>
+									<td>
+										<label class="w-text text-m">
+											<input class="text-input" name="p_name[]" placeholder="参数名" required type="text" value="{$p.p_name}">
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+											<input class="text-input" name="p_type[]" placeholder="参数类型" required type="text" value="{$p.p_type}">
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+											<select class="text-input" name="p_must[]">
+												<option value="Y" <if condition="$p.p_must eq 'Y' "> selected="selected"</if>>Y</option>
+												<option value="N" <if condition="$p.p_must eq 'N' "> selected="selected"</if>>N</option>
+											</select>
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+											<input class="text-input" name="p_default[]" placeholder="缺省值" type="text" value="{$p.p_default}">
+										</label>
+									</td>
+									<td>
+										<label class="w-textarea textarea-m">
+											<textarea name="p_desc[]" rows="1" class="textarea-input" placeholder="描述" style="height: 35px;">{$p.p_desc}</textarea>
+										</label>
+									</td>
+									<td>
+										<label class="w-text text-m">
+										<button type="button" class="btn-input" onclick="del(this)">删除</button>
+										</label>
+									</td>
+								</tr>
+								</volist>
+								</empty>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="form-item">
+					<label class="form-label">返回结果</label>
+					<div class="form-target">
+						<label class="w-textarea textarea-m textarea-full">
+							<textarea class="textarea-input" name="result" style="width: 980px; height: 200px;">{$info.result}</textarea>
+						</label>
+					</div>
+				</div>
+				<div class="form-item">
+					<label class="form-label">接口说明</label>
+					<div class="form-target">
+						<label class="w-textarea textarea-m textarea-full">
+							{:R('General/Editor/kindEditor',array('','desc','desc',$info['desc'],'module=Mall'))} 
+						</label>
+						<p class="field-msg w-fragment fragment-s fragment-tip">描述信息不超过300个字符</p>
+					</div>
+				</div>
+				<div class="form-item">
+					<label class="w-btn btn-l btn-success">
+						<button class="btn-input" type="submit">保存</button>
+					</label>
+				</div>
+				<input name="id" type="hidden" value="{$info.id}"/>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+var tr = '';
+tr +='<tr>';
+tr +='<td>';
+tr +='<label class="w-text text-m">';
+tr +='<input class="text-input" name="p_name[]" placeholder="参数名" required="" type="text">';
+tr +='</label>';
+tr +='</td>';
+tr +='<td>';
+tr +='<label class="w-text text-m">';
+tr +='<input class="text-input" name="p_type[]" placeholder="参数类型" required="" type="text">';
+tr +='</label>';
+tr +='</td>';
+tr +='<td>';
+tr +='<label class="w-text text-m">';
+tr +='<select class="text-input" name="p_must[]">';
+tr +='<option value="Y">Y</option>';
+tr +='<option value="N">N</option>';
+tr +='</select>';
+tr +='</label>';
+tr +='</td>';
+tr +='<td>';
+tr +='<label class="w-text text-m">';
+tr +='<input class="text-input" name="p_default[]" placeholder="缺省值" type="text">';
+tr +='</label>';
+tr +='</td>';
+tr +='<td>';
+tr +='<label class="w-textarea textarea-m">';
+tr +='<textarea name="p_desc[]" rows="1" class="textarea-input" placeholder="描述" style="height: 35px;"></textarea>';
+tr +='</label>';
+tr +='</td>';
+tr +='<td>';
+tr +='<label class="w-text text-m">';
+tr +='<button type="button" onclick="del(this)">删除</button>';
+tr +='</label>';
+tr +='</td>';
+tr +='</tr>';
+function add(){
+	$("#parameter").append(tr);
+}
+function del(e){
+	$(e).parent().parent().parent().remove();
+}
+function addGroup(){
+	var name = $("input[name='group_name']").val();
+	$.post("/API/Index/addGroup",{name:name},function(res){
+		if(res != 0){
+			$("select[name='gid']").append('<option value="'+res+'" selected="selected">'+name+'</option>');
+		}else{
+			alert('添加失败');
+		}
+	})
+}
+
+
+
+
+</script>

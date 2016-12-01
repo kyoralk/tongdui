@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<include file="Public:head"/>
+</head>
+<body>
+<header class="bar bar-nav">
+<a class="icon icon-me pull-left open-panel" href="{:U('Member/index')}"></a>
+  <h1 class='title'>个人资料</h1>
+</header>
+
+<div class="content">
+  <div class="list-block">
+  <form name="form1" id="form1" class="form-inline" action="{:U('Member/update')}" method="post">
+    <ul>
+      <!-- Text inputs -->
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-name"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">用户名</div>
+            <div class="item-input">
+              <input type="text" name="username" value="{$mi.username}" disabled="disabled">
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">姓名</div>
+            <div class="item-input">
+              <input type="text" name="real_name" value="{$mi.real_name}" disabled="disabled">
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">开户行</div>
+            <div class="item-input">
+              			<select name="bank_id" id="bank_id">
+						<volist name="bank_list" id="bl"> 
+						<option  
+							<if condition="$mi['member_account']['bank_id'] eq $key">selected</if>
+							 value="{$key}">{$bl}
+							</option>
+						</volist>
+					</select>
+            </div>
+          </div>
+        </div>
+      </li>   
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">银行卡号</div>
+            <div class="item-input">
+              <input name="bank_num" type="text" value="{$mi.member_account.bank_num}"/>
+            </div>
+          </div>
+        </div>
+      </li> 
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">开户名</div>
+            <div class="item-input">
+              <input name="account_name" type="text" value="{$mi.member_account.account_name}"/>
+            </div>
+          </div>
+        </div>
+      </li> 
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-email"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">Email</div>
+            <div class="item-input">
+              <input name="email" type="text" value="{$mi.email}"/>
+            </div>
+          </div>
+        </div>
+      </li>                  
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">密码</div>
+            <div class="item-input">
+              <input name="password" type="password" value=""/>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">重复密码</div>
+            <div class="item-input">
+              <input name="repassword" type="text" value=""/>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">二级密码</div>
+            <div class="item-input">
+             <input name="password_2" type="text" value=""/>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-form-password"></i></div>
+          <div class="item-inner">
+            <div class="item-title label">重复二级密码</div>
+            <div class="item-input">
+              <input name="repassword_2" type="text" value=""/>
+            </div>
+          </div>
+        </div>
+      </li>                  
+    </ul>
+    <input name="uid" type="hidden" value="{$mi.uid}"/>
+    </form>
+  </div>
+  <div class="content-block">
+    <div class="row">
+      <div class="col-50"><a href="{:U('Member/index')}" class="back button button-big button-fill button-danger">取消</a></div>
+      <div class="col-50"><a href="javascript:formSubmit();" class="button button-big button-fill button-success">保存</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function formSubmit() {
+	document.form1.submit();
+}
+</script>
+</body>
+</html>

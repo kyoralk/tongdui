@@ -1,0 +1,91 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-8">
+			<h4>
+				<small>订单详情</small>
+			</h4>
+		</div>
+		<div class="col-md-4 right_menu"></div>
+	</div>
+</section>
+<section class="content">
+	<div class="box">
+		<div class="box-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="table-textcenter">基本信息</th>
+						<th colspan="4" class="table-textcenter">订单号：{$oi.order_sn}
+							收货人：{$oi.consignee} 电话：{$oi.mobile} 详细地址：{$oi.address}</th>
+					</tr>
+					<tr>
+						<th class="table-textcenter">物流公司</th>
+						<th colspan="4" class="table-textcenter">{$oi.shipping_name}
+						</th>
+					</tr>
+					<tr>
+						<th class="table-textcenter">备注信息</th>
+						<th colspan="4" class="table-textcenter">{$oi.value}</th>
+					</tr>
+					<tr>
+						<th class="table-textcenter">缩略图</th>
+						<th class="table-textcenter">产品名称</th>
+						<th class="table-textcenter">单价</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="oi.order_goods" id="og">
+					<tr>
+						<td class="table-textcenter"><a
+							href="/product/{$og.goods_id}.html" target="_blank"><img
+								width="100px;"
+								src="/Public/Upload/Mall/Seller/0/{$og.goods_img}"></a></td>
+						<td class="table-textcenter"><a
+							href="/product/{$og.goods_id}.html" target="_blank">{$og.goods_name}</a></td>
+						<td class="table-textcenter">￥{$og.price}</td>
+					</tr>
+					</volist>
+					<tr>
+						<td class="table-textcenter">合计</td>
+						<td class="table-textcenter" colspan="2">￥{$oi.total}</td>
+					</tr>
+				</tbody>
+			</table>
+			<if
+				condition="($oi['pay_status'] eq 0) AND ($oi['shipping_status'] eq 0) AND ($oi['order_status'] eq 0) ">
+			未付款，未发货 <elseif
+				condition="($oi['pay_status'] eq 1) AND ($oi['shipping_status'] eq 0) AND ($oi['order_status'] eq 0) " />
+			<form class="form-horizontal"
+				action="__URL__/deliver" method="post">
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">物流公司</label>
+					<div class="col-sm-4">
+						<select name="shipping_id" class="form-control">
+							<volist name="shipping_list" id="vo">
+							<option value="{$vo.shipping_id}">{$vo.shipping_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">物流编号</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" name="shipping_sn">
+						<input name="order_sn" type="hidden" value="{$oi.order_sn}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-4">
+						<button type="submit" class="btn btn-default">发货</button>
+					</div>
+				</div>
+			</form>
+			<elseif
+				condition="($oi['pay_status'] eq 1) AND ($oi['shipping_status'] eq 1) AND ($oi['order_status'] eq 0) " />
+			已付款，已发货 <elseif
+				condition="($oi['pay_status'] eq 1) AND ($oi['shipping_status'] eq 1) AND ($oi['order_status'] eq 1) " />
+			交易成功 </if>
+		</div>
+	</div>
+</section>
+

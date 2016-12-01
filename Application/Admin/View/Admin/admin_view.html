@@ -1,0 +1,32 @@
+<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<notempty name="right_menu">
+  					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+  				</notempty>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+	<div class="box box-info">
+		<div class="alert alert-error" style="display: none;">两次密码输入不一致</div>
+		<form name="myform" id="myform" class="form-horizontal"
+			action="{:U('Admin/adminAdd')}" method="post">
+			<div class="box-body">
+				{:fastModule('form-group',array('管理员名称'),array('text','admin_name',$ai['admin_name']))}
+				{:fastModule('form-group',array('手机号'),array('text','mobile',$ai['mobile']))}
+				{:fastModule('form-group',array('密码'),array('password','password'))}
+				{:fastModule('form-group',array('重复密码'),array('password','re_password'))}
+				{:fastModule('form-group',array('角色'),array('select','role_id',array($role_list,$brand_info['gc_id'],array('role_id','role_name'))))}
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4">
+					<button type="button" class="btn btn-primary"
+						onclick="formSubmit();">保存</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>

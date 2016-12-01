@@ -1,0 +1,107 @@
+<section class="content-header">
+    <div class="row">
+        <div class="col-md-8">
+            <form action="{:U('Finance/deliveryDetail')}" method="get">
+                <h4>
+                    <small>用户提现明细</small>
+                </h4>
+            </form>
+        </div>
+        <div class="col-md-4 right_menu">
+
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="box">
+        <form action="" method="get" id="form">
+        <div class="box-body">
+            <input type="hidden" name="apply_no" value="{$model.apply_no}">
+            <table class="table table-bordered table-striped">
+
+                <tr>
+                    <th width="10%">提现编号</th>
+                    <td>{$model.apply_no}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">收款人名称</th>
+                    <td>{$model.account_name}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">收款机构</th>
+                    <td>{$model.bank_name}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">收款账号</th>
+                    <td>{$model.bank_num}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">取现金额</th>
+                    <td>{$model.withdraw_money}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">取现手续费</th>
+                    <td>{$model.withdraw_fee}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">取现类型</th>
+                    <td>{$model.withdraw_type}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">申请用户</th>
+                    <td>
+                        <?php $user = M('Member')->where('uid='.$model['uid'])->find();
+                        if ($user)
+                            echo $user['username'];
+                        else
+                            echo $model['uid'];
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">目前状态</th>
+                    <td>{$status}</td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">处理意见</th>
+                    <td>
+                        <input type="text" name="examine_opinion" value="{$model.examine_opinion}" >
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">申请时间</th>
+                    <td><?php echo $model['apply_time']?date('Y-m-d H:i:s', $model['apply_time']):"暂无";?></td>
+                </tr>
+                <tr>
+                    <th class="table-textcenter">处理时间</th>
+                    <td><?php echo $model['examine_time']?date('Y-m-d H:i:s', $model['examine_time']):"暂无";?></td>
+                </tr>
+
+                <tr>
+                    <th class="table-textcenter">操作</th>
+                    <td>
+                        <input type="hidden" name="status" id="withdraw_status" value="{$model.status}">
+                        <?php if ($model['status'] == 1) {?>
+                        <button type="button" onclick="makeStatus(2);">通过</button>
+                        <button type="button" onclick="makeStatus(3);">驳回</button>
+                        <?php } else { ?>
+                        <button type="submit" >提交</button>
+                        <?php } ?>
+                        <button type="button" onclick="getback();">返回列表</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </form>
+    </div>
+</section>
+<script>
+    function getback() {
+        window.location.href = "<?php echo U('Admin/Finance/withdrawlist'); ?>";
+    }
+
+    function makeStatus(_status) {
+        $("#withdraw_status").val(_status);
+        $("#form").submit();
+    }
+</script>

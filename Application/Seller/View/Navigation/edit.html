@@ -1,0 +1,56 @@
+<div class="main-content" id="mainContent">
+<div class="tabmenu">
+	<ul class="tab pngFix">
+		<li>
+			<a href="#">导航信息</a>
+		</li>
+	</ul>
+</div>
+<div class="ncsc-form-default">
+	<form method="post" action="{:U('Navigation/update')}" id="my_store_form">
+		<dl>
+			<dt>名称：</dt>
+			<dd>
+				<input class="w200 text" name="nav_name" type="text" value="{$nav_info.nav_name}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>链接地址：</dt>
+			<dd>
+				<input class="text w200" name="nav_url" type="text" value="{$nav_info.nav_url}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>排序：</dt>
+			<dd>
+				<input class="text w200" name="nav_sort" type="text" value="{$nav_info.nav_sort}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>SEO关键字：</dt>
+			<dd>
+				<p>
+					<input class="text w400" name="nav_keywords" type="text"value="{$nav_info.nav_keywords}" />
+				</p>
+				<p class="hint">用于店铺搜索引擎的优化，关键字之间请用英文逗号分隔</p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>SEO描述：</dt>
+			<dd>
+				<p>
+					<textarea name="nav_description" rows="3" class="textarea w400" id="remark_input">{$nav_info.nav_description}</textarea>
+				</p>
+				<p class="hint">用于店铺搜索引擎的优化，建议120字以内</p>
+			</dd>
+		</dl>
+		<div class="bottom">
+			<label class="submit-border">
+				<input type="submit"
+								class="submit" value="提交" />
+			</label>
+		</div>
+		<input name="id" type="hidden" value="{$nav_info.id}"/>
+	</form>
+</div>
+</div>

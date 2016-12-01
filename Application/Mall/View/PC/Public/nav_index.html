@@ -1,0 +1,78 @@
+<script>
+function get_ad(adl_id,class_name,id){
+	$.get('/AD/ajax_get_ad',{adl_id:adl_id,class_name:class_name},function(res){
+		$("#"+id).html(res);
+	},'text');
+}
+</script>
+<nav class="public-nav-layout ">
+	<div class="wrapper">
+		<div class="all-category">
+			<div class="title"> <i></i>
+				<h3><a href="javascript:;">全部分类</a></h3>
+			</div>
+			<div class="category">
+				<ul class="menu">
+					<volist name="left_menu" id="lm" key="index">
+					<li class="odd" >
+						<div class="class">
+							<span class="arrow"></span>
+							<span class="ico"><img src="__PMALL__/Images/Nav/{$key}.png"></span>
+							<h4><a href="/product_list/{$lm.gc_id}">{$lm.gc_name}</a></h4>
+						</div>
+						<div class="sub-class" style="top:-{$key*34+3}px">
+							<div class="sub-class-content">
+								<div class="recommend-class">
+									<volist name="lm.hotkey" id="hot">
+									<span><a href="/Search/search?keyword={$hot}" title="{$hot}">{$hot}</a></span>
+									</volist>
+								</div>
+								<volist name="lm._child" id="lmc">
+								<dl>
+									<dt>
+										<h3><a href="/product_list/{$lmc.gc_id}">{$lmc.gc_name}</a></h3>
+									</dt>
+									<dd class="goods-class">
+										<volist name="lmc._child" id="lmcc">
+										<a href="/product_list/{$lmcc.gc_id}">{$lmcc.gc_name}</a>
+										</volist>
+									</dd>
+								</dl>
+								</volist>
+							</div>
+							<div class="sub-class-right">
+								<div class="brands-list">
+									<ul>
+										<volist name="lm.brand_list" id="bl">
+										<li> <a href="product_list/{$lm.gc_id}|{$bl.brand_id}" title="HTC"><img src="/Public/Upload/Mall/Brand/{$bl.brand_logo}"/> <span>{$bl.brand_name}</span> </a></li>
+										</volist>
+									</ul>
+								</div>
+								<div class="adv-promotions" > 
+									<ul id="menu_ad_{$index}"></ul>
+								</div>
+								<script>get_ad({$index},'','menu_ad_{$index}');</script>
+							</div>
+						</div>
+					</li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+		<ul class="site-menu">
+		<volist name="nav_list" id="nl" key="i">
+			<li><a href="{$nl.nav_url}" <if condition="$i eq 1">class="current"</if> >{$nl.nav_name}</a></li>
+		</volist>
+		</ul>
+	</div>
+</nav>
+<script>
+$(".odd").hover(function(){
+	$(this).addClass("hover");
+	$(this).find(".sub-class").show();
+},function(){
+	$(this).removeClass("hover");
+	$(this).find(".sub-class").hide();
+});
+
+</script>

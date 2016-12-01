@@ -1,0 +1,160 @@
+<div class="main-content" id="mainContent">
+<div class="tabmenu">
+	<ul class="tab pngFix">
+		<li>
+			<a href="{:U('Store/setting')}">店铺设置</a>
+		</li>
+	</ul>
+</div>
+<div class="ncsc-form-default">
+	<form method="post" action="{:U('Store/settingSave')}" id="my_store_form">
+		<dl>
+			<dt>店铺等级：</dt>
+			<dd>
+				<p>系统默认</p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>店铺名称：</dt>
+			<dd>
+				<input class="w200 text" name="store_name" type="text" id="store_name" value="{$store_info.store_name}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>主营商品：</dt>
+			<dd>
+				<textarea name="store_zy" rows="2" class="textarea w400" maxlength="50">{$store_info.store_zy}</textarea>
+				<p class="hint"> 主营商品关键字（Tag）有助于搜索店铺时找到您的店铺<br />
+					关键字最多可输入50字，请用","进行分隔，例如”男装,女装,童装” </p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>店铺logo：</dt>
+			<dd>
+				<div class="ncsc-upload-thumb store-logo">
+					<p id="store_logo" onclick="file_click('store_logo')">
+						<empty name="store_info['store_logo']">
+							<i class="icon-picture"></i>
+						<else/>
+							<img src="/Uploads/Mall/Seller/{$store_info.store_id}/Store/{$store_info.store_logo}"/>
+							<input name="old_store_logo" type="hidden" value="{$store_info.store_logo}"/>
+						</empty>
+					</p>
+				</div>
+				<div class="ncsc-upload-btn" style="display: none;">
+					<input type="file" size="1" class="input-file" name="store_logo_btn"/>
+				</div>
+				<p class="hint"> 此处为您的店铺logo，将显示在店铺Logo栏里；<br />
+					<span style="color: orange;">建议使用宽200像素-高60像素内的GIF或PNG透明图片；点击下方"提交"按钮后生效。</span> </p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>店铺条幅：</dt>
+			<dd>
+				<input type="hidden" name="store_old_banner" value="" />
+				<div class="ncsc-upload-thumb store-banner">
+					<p id="store_banner" onclick="file_click('store_banner')">
+						<empty name="store_info['store_banner']"> 
+							<i class="icon-picture"></i>
+						<else/>
+							<img src="/Uploads/Mall/Seller/{$store_info.store_id}/Store/{$store_info.store_banner}"/> 
+							<input name="old_store_banner" type="hidden" value="/Uploads/Mall/Seller/{$store_info.store_id}/Store/{$store_info.store_logo}"/>
+						</empty>
+					</p>
+				</div>
+				<div class="ncsc-upload-btn" style="display: none;">
+					<input type="file" size="1" class="input-file" name="store_banner_btn"/>
+				</div>
+				<p class="hint"> 此处为您的店铺条幅，将显示在店铺导航上方的banner位置；<br />
+					<span style="color: orange;">建议使用宽1000像素*高250像素的图片；点击下方"提交"按钮后生效。</span> </p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>QQ：</dt>
+			<dd>
+				<input class="w200 text" name="store_qq" type="text" id="store_qq" value="{$store_info.store_qq}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>阿里旺旺：</dt>
+			<dd>
+				<input class="text w200" name="store_ww" type="text" id="store_ww" value="{$store_info.store_ww}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>公司电话：</dt>
+			<dd>
+				<input class="text w200" name="contacts_phone" type="text" id="store_ww" value="{$store_info.contacts_phone}" />
+			</dd>
+		</dl>
+		<dl>
+			<dt>SEO关键字：</dt>
+			<dd>
+				<p>
+					<input class="text w400" name="store_keywords" type="text"value="{$store_info.store_keywords}" />
+				</p>
+				<p class="hint">用于店铺搜索引擎的优化，关键字之间请用英文逗号分隔</p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>SEO店铺描述：</dt>
+			<dd>
+				<p>
+					<textarea name="store_description" rows="3" class="textarea w400" id="remark_input">{$store_info.store_description}</textarea>
+				</p>
+				<p class="hint">用于店铺搜索引擎的优化，建议120字以内</p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>商家介绍：</dt>
+			<dd>
+				<p>
+					<textarea name="company_description" rows="3" class="textarea w400" id="remark_input">{$store_info.company_description}</textarea>
+				</p>
+				<p class="hint">用于店铺搜索引擎的优化，建议120字以内</p>
+			</dd>
+		</dl>
+		<dl>
+			<dt>退货购物卷最大返还率：</dt>
+			<dd>
+				<p>
+					<input class="text w400" name="gwq_max" type="text"value="{$store_info.gwq_max}" />%
+				</p>
+				<p class="hint">用于退货时返还购物券的最大比率</p>
+			</dd>
+		</dl>
+		<include file="Store:baidu_map"/>
+		<div class="bottom">
+			<label class="submit-border">
+				<input type="submit"
+								class="submit" value="提交" />
+			</label>
+		</div>
+		<input name="store_logo" type="hidden" value=""/>
+		<input name="store_banner" type="hidden" value=""/>
+	</form>
+</div>
+</div>
+
+<script src="/Static/Common/Js/localResizeIMG.js"></script>
+<script type="text/javascript">
+function file_click(id){
+	return $("input[name='"+id+"_btn']").click();
+}
+$("input[name='store_logo_btn']").localResizeIMG({
+	//width : 800,
+	quality : 1,
+	success : function(result) {
+		$("input[name='store_logo']").val(result.base64);
+		$('#store_logo').html('<img src="'+result.base64+'"/>');
+	}
+});
+$("input[name='store_banner_btn']").localResizeIMG({
+	//width : 800,
+	quality : 1,
+	success : function(result) {
+		$("input[name='store_banner']").val(result.base64);
+		$('#store_banner').html('<img src="'+result.base64+'"/>');
+	}
+});
+</script>

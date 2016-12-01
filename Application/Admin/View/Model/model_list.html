@@ -1,0 +1,64 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<form name="form1" id="form1" action="{:U('Model/add')}" method="post">
+	<div class="box">
+		<div class="box-body no-padding">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模型名称</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="model_list" id="ml">
+						<tr>
+							<td>
+							<div class="col-xs-5">
+							<input class="form-control input-sm" name="model_name_update[]" value="{$ml.model_name}" readonly>
+							</div>
+							</td>
+							<td>
+								<a href="{:U('Model/attrList?mid='.$ml['mid'])}" class="btn btn-small btn-info btn-xs" type="button">属性</a>&nbsp;
+								<a href="{:U('Model/edit?mid='.$ml['mid'])}" class="btn btn-small btn-primary btn-xs" type="button">编辑</a>&nbsp;
+								<a href="{:U('Model/delete?mid='.$ml['mid'])}" class="btn btn-small btn-danger btn-xs" type="button">删除</a>
+							</td>
+						</tr>
+					</volist>
+					<tr>
+						<td colspan="2" style="color: #333;">
+							<a href="javascript:;" onclick="addRow(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-plus"></i>&nbsp;&nbsp;添加模型</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="box-footer">
+				<div class="col-sm-1"><button class="btn btn-primary" type="submit">保存</button></div>
+			</div>
+		</div>
+	</div>
+	
+</form>
+</section>
+<script type="text/javascript">
+
+function addRow(current){
+   var	html =' <tr>';
+		html+='<td><div class="col-xs-5"><input class="form-control input-sm" name="model_name[]" value=""></div></td>';
+		html+='<td><a onclick="delRow(this)" href="javascript:;"><i title="减少" class="fa fa-remove"></i>&nbsp;&nbsp;删除</a></td>';
+		html+='</tr>';
+	$(current).parent().parent().before(html);
+}
+function delRow(current){
+	$(current).parent().parent().remove();
+}
+</script>

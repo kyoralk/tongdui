@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<include file="Public:head" />
+<link rel="stylesheet" href="/Static/Mall/WAP/Css/user.min.css">
+</head>
+<body>
+<header class="bar bar-nav">
+	<a class="icon icon-me pull-left open-panel" href="{:U('Member/index')}"></a>
+	<h1 class="title">个人中心</h1>
+</header>
+<div class="box content">
+	<div class="id_box user_bg"> 
+	<a href="{:U('Member/info')}">
+		<img src="/Static/Mall/Wap/Images/head_photo.png" width="120" height="120" />
+		<span class="name">{$member_info.username}</span>
+		<div class="name_edit" id="div_about">
+				<span class="name_sm"></span><span class="dji">用户等级：
+					<switch name="member_info.rank">
+						<case value="0">未激活</case>
+						<case value="1">VIP</case>
+						<case value="2">县级代理</case>
+						<case value="3">市级代理</case>
+						<case value="4">省级代理</case>
+						<case value="4">激活中</case>
+					</switch>
+					
+				</span>
+		</div>
+		<div class="name_edit1" id="div_aboutedit" style="display: none;"> <span class="name_sm1">
+			<input name="" type="text" value=""
+					id="txtAbout" class="edit_qm" />
+			</span> <span id="span_info" class="editqm">修改签名</span> <span
+					class="really">
+			<input type="submit" id="btneditabout"
+					value="确定" class="button_style3" />
+			</span> </div>
+		</a> 
+	</div>
+	<div class="id_jf">
+		<ul>
+			<li>余额<span>￥{$member_info.member_account.cash}</span></li>
+			<li><a href="{:U('Account/withdraw')}">提现<span>￥{$member_info.member_account.withdraw}</span></a></li>
+			<li><a href="{:U('Account/recharge')}">充值<span>￥{$member_info.member_account.recharge}</span></a></li>
+		</ul>
+	</div>
+	  <div class="content-block">
+    <div class="row">
+      <div class="col-50"><a href="{:U('Relation/register',array('referrer_id'=>$member_info['uid'],'lorr'=>'l'))}" class="button button-big button-fill button-warning">A左注册</a></div>
+      <div class="col-50"><a href="{:U('Relation/register',array('referrer_id'=>$member_info['uid'],'lorr'=>'r'))}" class="button button-big button-fill button-success">B左注册</a></div>
+    </div>
+  </div>
+	<div class="userlist">
+		<ul>
+			<li class="user_bg"><a href="{:U('Account/accountLog')}" class="t1">账户流水</a></li>
+			<li class="user_bg"><a href="{:U('Account/withdrawLog')}"class="t2">提现记录</a></li>
+			<li class="user_bg"><a href="{:U('Account/rechargeLog')}" class="t3">充值记录</a></li>
+			<li class="user_bg"><a href="{:U('BC/MemberList?type=2')}" class="t4">协助购买</a></li>
+			<li class="user_bg"><a href="{:U('BC/MemberList?type=1')}" class="t4">会员激活</a></li>
+		</ul>
+	</div>
+	<div class="content-block">
+		<p><a href="{:U('Public/logout')}" class="button button-big button-fill button-danger" id="btnSubmitLogin">注销</a></p>
+	</div>
+</div>
+</body>
+</html>

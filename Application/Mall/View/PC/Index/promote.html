@@ -1,0 +1,119 @@
+<div class="w1210 index-sale">
+	<ul class="tabs-nav">
+		<li class=""><i class="arrow"></i>
+			<h3>疯狂抢购</h3>
+		</li>
+		<li class=""><i class="arrow"></i>
+			<h3>热销排行</h3>
+		</li>
+		<li class=""><i class="arrow"></i>
+			<h3>商城热卖</h3>
+		</li>
+		<li class=""><i class="arrow"></i>
+			<h3>商城推荐</h3>
+		</li>
+		<li class="tabs-selected"><i class="arrow"></i>
+			<h3>新品上市</h3>
+		</li>
+	</ul>
+	<div class="tabs-panel sale-goods-list tabs-hide">
+		<ul>
+			<volist name="promote_list" id="goods">
+			<li>
+				<dl>
+					<dt class="goods-name"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}">{$goods.goods_name}</a>
+					</dt>
+					<dd class="goods-thumb"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}"> <img
+							src="/Uploads/{$goods.save_path}Thumb/m_{$goods.save_name}"
+							alt="{$goods.goods_name}"> </a> </dd>
+					<dd class="goods-price"> 商城价： <em> ¥{$goods.shop_price} </em> </dd>
+				</dl>
+			</li>
+			</volist>
+		</ul>
+	</div>
+	<div class="tabs-panel sale-goods-list tabs-hide">
+		<ul>
+			<volist name="sales_list" id="goods">
+			<li>
+				<dl>
+					<dt class="goods-name"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}">{$goods.goods_name}</a>
+					</dt>
+					<dd class="goods-thumb"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}"> <img
+							src="/Uploads/{$goods.save_path}Thumb/m_{$goods.save_name}"
+							alt="{$goods.goods_name}"> </a> </dd>
+					<dd class="goods-price"> 商城价： <em> ¥{$goods.shop_price} </em> </dd>
+				</dl>
+			</li>
+			</volist>
+		</ul>
+	</div>
+	<div class="tabs-panel sale-goods-list tabs-hide">
+		<ul>
+			<volist name="hot_list" id="goods">
+			<li>
+				<dl>
+					<dt class="goods-name"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}">{$goods.goods_name}</a>
+					</dt>
+					<dd class="goods-thumb"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}"> <img
+							src="/Uploads/{$goods.save_path}Thumb/m_{$goods.save_name}"
+							alt="{$goods.goods_name}"> </a> </dd>
+					<dd class="goods-price"> 商城价： <em> ¥{$goods.shop_price} </em> </dd>
+				</dl>
+			</li>
+			</volist>
+		</ul>
+	</div>
+	<div class="tabs-panel sale-goods-list tabs-hide">
+		<ul>
+		<volist name="best_list" id="goods">
+			<li>
+				<dl>
+					<dt class="goods-name"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}">{$goods.goods_name}</a>
+					</dt>
+					<dd class="goods-thumb"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}"> <img
+							src="/Uploads/{$goods.save_path}Thumb/m_{$goods.save_name}"
+							alt="{$goods.goods_name}"> </a> </dd>
+					<dd class="goods-price"> 商城价： <em> ¥{$goods.shop_price} </em> </dd>
+				</dl>
+			</li>
+			</volist>
+		</ul>
+	</div>
+	<div class="tabs-panel sale-goods-list">
+		<ul>
+			<volist name="new_list" id="goods">
+			<li>
+				<dl>
+					<dt class="goods-name"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}">{$goods.goods_name}</a>
+					</dt>
+					<dd class="goods-thumb"> 
+						<a target="_blank" href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}"
+							title="{$goods.goods_name}"> <img
+							src="/Uploads/{$goods.save_path}Thumb/m_{$goods.save_name}"
+							alt="{$goods.goods_name}"> </a> </dd>
+					<dd class="goods-price"> 商城价： <em> ¥{$goods.shop_price} </em> </dd>
+				</dl>
+			</li>
+			</volist>			
+		</ul>
+	</div>
+</div>

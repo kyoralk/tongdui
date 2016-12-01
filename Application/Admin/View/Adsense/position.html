@@ -1,0 +1,27 @@
+<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<notempty name="right_menu">
+  					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+  				</notempty>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Adsense/savePosition')}" method="post">
+		<input name="position_id" type="hidden" value="{$info.position_id}"/>
+		<div class="box-body"> 
+			{:fastModule('form-group',array('广告位描述'),array('text','position_name',$info['position_name']))}
+			{:fastModule('form-group',array('宽'),array('text','position_width',$info['position_width'],'','px'))}
+			{:fastModule('form-group',array('高'),array('text','position_height',$info['position_height'],'','px'))}
+			{:fastModule('form-group',array('启用'),array('checkbox',array('enabled'),array(array('',1,$info['enabled'],1)),'','','checkbox'))}
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="submit" class="btn btn-primary" >保存</button></div>
+		</div>
+	</form>
+</div>
+</section>

@@ -1,0 +1,118 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11">		
+			<h4><small>店铺详情</small></h4>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box">
+	<div class="box-body">
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th colspan="20">公司及联系人信息</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+			<th width="10%">公司名称：</th>
+			<td colspan="20">{$si.company_name}</td>
+		</tr>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+			<th>公司所在地：</th>
+			<td>{$si.company_location}</td>
+			<th>公司详细地址：</th>
+			<td colspan="20">{$si.company_address}</td>
+		</tr>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+			<th>公司电话：</th>
+			<td>{$si.company_phone}</td>
+			<th>员工总数：</th>
+			<td>{$si.employees_count}&nbsp;人</td>
+			<th>注册资金：</th>
+			<td>{$si.registered_capital}&nbsp;万元 </td>
+		</tr>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+			<th>联系人姓名：</th>
+			<td>{$si.contacts_name}</td>
+			<th>联系人电话：</th>
+			<td>{$si.contacts_phone}</td>
+			<th>电子邮箱：</th>
+			<td>{$si.contacts_email}</td>
+		</tr>
+	</tbody>
+</table>
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th colspan="20">营业执照信息（副本）</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+			<th width="10%">营业执照号：</th>
+			<td>{$si.business_licence_number}</td>
+		</tr>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;"> </tr>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+			<th>法定经营范围：</th>
+			<td colspan="20">{$si.business_scope}</td>
+		</tr>
+		<tr style="background: rgb(255, 255, 255) none repeat scroll 0% 0%;">
+			<th>营业执照号<br>
+				电子版：</th>
+			<td colspan="20"><a href="/Uploads/Member/{$si.business_licence_pic}"  target="_blank"> <img alt="" width="200px" src="/Uploads/Member/{$si.business_licence_pic}"> </a></td>
+		</tr>
+	</tbody>
+</table>
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Store/save')}" method="post">
+	<input name="store_id" type="hidden" value="{$si.store_id}"/>
+		<div class="box-body"> 
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">店铺名称</label>
+				<div class="col-sm-4">
+					<input name="store_name" type="text" class="form-control"  value="{$si.store_name}"/>
+				</div>
+			</div>
+<!-- 			<div class="form-group"> -->
+<!-- 				<label for="" class="col-sm-2 control-label">平台占比</label> -->
+<!-- 				<div class="col-sm-4"> -->
+<!-- 					<div class="input-group"> -->
+<!--                 		<input name="proportion" type="text" class="form-control"  value="{$si.proportion}" /> -->
+<!--                 		<span class="input-group-addon">%</span> -->
+<!--               		</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="form-group"> -->
+<!-- 				<label for="" class="col-sm-2 control-label">店铺等级</label> -->
+<!-- 				<div class="radio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!-- 					<label><input name="enabled" value="1" checked="checked" type="radio" <if condition="($ci['enabled'] eq 1)">checked="checked" </if> >启用&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+<!-- 					<label><input name="enabled" value="0" type="radio" <if condition="($ci['enabled'] eq 0)">checked="checked" </if> >不启用&nbsp;&nbsp;&nbsp;</label> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			<div class="form-group">
+				<label for="" class="col-sm-2 control-label">店铺状态</label>
+				<div class="radio">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input name="store_status" type="radio" class="span4" value="0" <if condition="$si.store_status eq 0">checked</if>/>关闭&nbsp;&nbsp;&nbsp;</label>
+					<label><input name="store_status" type="radio" class="span4" value="1" <if condition="$si.store_status eq 1">checked</if>/>开启&nbsp;&nbsp;&nbsp;</label>
+					<label><input name="store_status" type="radio" class="span4" value="2" <if condition="$si.store_status eq 2">checked</if>/>待审核&nbsp;&nbsp;&nbsp;</label>
+				</div>
+			</div>			
+		</div>
+		<if condition="$apply neq 0">
+		<div class="form-group">
+				<label for="" class="col-sm-2 control-label">加盟费</label>
+				<div class="col-sm-4">
+                	<input name="join_fee" type="text" class="form-control"  value="0" />
+				</div>
+		</div>
+		</if>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="submit" class="btn btn-primary">保存</button></div>
+		</div>
+	</form>
+	</div>
+</div>
+</section>

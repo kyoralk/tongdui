@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<title>{$sitename}</title>
+<include file="Public:head"/>
+</head>
+<body>
+<header class="bar bar-nav">
+<a class="icon icon-me pull-left open-panel" href="{:U('Member/index')}"></a>
+	<h1 class="title">提现记录</h1>
+</header>
+<div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
+	<div class="list-block">
+		<ul class="list-container">
+			<volist name="list" id="log">
+				<li class="item-content">
+					<div class="item-inner row">
+						<div class="col-33">{$log.id}</div>
+						<div class="col-33">
+						<switch name="log['status']">
+							<case value="1">未审核</case>
+							<case value="2">通过</case>
+							<case value="3">驳回</case>
+						</switch>
+						</div>
+						<div class="col-33">
+							{$log.withdraw_money}
+						</div>
+					</div>
+				</li>
+			</volist>
+		</ul>
+	</div>
+	<input id="p" type="hidden" value="1">
+	<!-- 加载提示符 -->
+	<div class="infinite-scroll-preloader" style="display:none;">
+		<div class="preloader"></div>
+	</div>
+</div>
+</body>
+</html>

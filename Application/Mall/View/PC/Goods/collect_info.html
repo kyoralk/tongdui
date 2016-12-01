@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$sitename}</title>
+<meta name="description" content="{$description}" />
+<meta name="keywords" content="{$keywords}" />
+<link type="text/css" rel="stylesheet"  href="../Public/css/base.min.css">
+<link type="text/css" rel="stylesheet"  href="../Public/css/goods_info.css">
+<script src="../Public/js/jquery-1.9.1.min.js" ></script>
+<script src="../Public/js/jquery.lazyload.min.js" ></script>
+<script type="text/javascript"> 
+$(function() {
+    $("img.lazy").lazyload({effect: "fadeIn"});
+});
+</script> 
+</head>
+<body>
+<include file="Public:header"/>
+	<div class="goods-detail container">
+	<include file="Collect:goods_detail_info"/>
+
+	<div class="row goods-detail-desc">
+<include file="Collect:goods_tonglei"/>
+
+<include file="Collect:goods_desc"/>
+
+</div> 
+	</div>
+<include file="Collect:goods_subar"/>
+
+
+
+
+<include file="Public:footer"/>
+
+
+<script>
+
+$.fn.smartFloat = function() { 
+    var position = function(element) { 
+        var top = element.position().top; //当前元素对象element距离浏览器上边缘的距离 
+        var pos = element.css("position"); //当前元素距离页面document顶部的距离 
+        $(window).scroll(function() { //侦听滚动时 
+            var scrolls = $(this).scrollTop(); 
+            if (scrolls > top) { //如果滚动到页面超出了当前元素element的相对页面顶部的高度 
+                $("#goodsSubBar").css("display","block");
+            }else { 
+            	  $("#goodsSubBar").css("display","none");
+            } 
+        }); 
+    }; 
+    return $(this).each(function() { 
+        position($(this));                          
+    }); 
+}; 
+$(function(){ 
+    $(".goods-detail-desc").smartFloat(); 
+}); 
+
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<div class="main-content" id="mainContent">
+	<form method="get" action="{:U('Goods/goodsList')}">
+		<input name="display" type="hidden" value="store"/>
+		<include file="Goods:search"/>
+	</form>
+	<table class="ncsc-table-style">
+		<thead>
+			<tr>
+				<th class="w30">&nbsp;</th>
+				<th class="w50">&nbsp;</th>
+				<th style="text-align: left;">商品名称</th>
+				<th class="w100">价格</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="goods_list" id="gl">
+				<tr class="goods_tr">
+					<td class="trigger">
+						<input name="goods_id[]" type="checkbox" value="{$gl.goods_id}"/>
+					</td>
+					<td data-value="{$gl.goods_id}" class="goods_td">
+						<div class="pic-thumb">
+							<img src="/Uploads/Mall/Seller/{$gl.store_id}/Goods/Thumb/s_{$gl.save_name}" />
+						</div>
+					</td>
+					<td class="tl goods_td" data-value="{$gl.goods_id}">
+						<dl class="goods-name">
+							<dt>
+								<if condition="$gl.store_tuijian eq 1"> 
+									<span>荐</span> 
+								</if>
+								<a href="" target="_blank">{$gl.goods_name}</a> 
+							</dt>
+						</dl>
+					</td>
+					<td data-value="{$gl.goods_id}" class="goods_td"><span>&yen;{$gl.shop_price}</span></td>
+				</tr>
+			</volist>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="tc">
+					<input type="checkbox" id="all2" class="checkall" />
+				</th>
+				<th colspan="10">
+					<label for="all2">全选</label>
+					<a href="javascript:void(0);" class="ncsc-btn-mini ok-select"><i class="icon-ok"></i>确认选择</a>
+				</th>
+			</tr>
+		</tfoot>
+	</table>
+	<div class="g-pagination"> <ul>{$page}</ul> </div>
+</div>
+<input name="id" type="hidden" value="{$id}"/>
+<script>
+$(".checkall").click(function(){
+	ms.checkAll(this,"input[name='goods_id[]']");
+});
+function del(goods_id){
+	var r=confirm("确认删除");
+	if(r==true){
+		self.location.href = '/Seller/Goods/delete/goods_id/'+goods_id;
+	}
+}
+$(".ok-select").click(function(){
+	var id = $("input[name='id']").val();
+	var goods_id_str = $("#"+id,window.parent.document).val();
+	if(goods_id_str != ""){
+		goods_id_str += ",";
+	}
+	$("input[name='goods_id[]']").each(function(){
+		if($(this).is(":checked")){
+			goods_id_str += $(this).val()+",";
+		}
+		
+	});
+	goods_id_str = goods_id_str.substring(0,goods_id_str.length-1);
+	$("#"+id,window.parent.document).val(goods_id_str);
+	var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+	parent.layer.close(index); //再执行关闭   
+});
+$(".goods_td").click(function(){
+	
+	var id = $("input[name='id']").val();
+	var goods_id_str = $("#"+id,window.parent.document).val();
+	if(goods_id_str != ""){
+		goods_id_str += ",";
+	}
+	goods_id_str += $(this).attr("data-value");
+	$("#"+id,window.parent.document).val(goods_id_str);
+	var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+	parent.layer.close(index); //再执行关闭   
+});
+</script>

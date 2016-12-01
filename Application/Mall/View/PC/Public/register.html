@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户注册-{$set.sitename}</title>
+<meta name="description" content="{$description}" />
+<meta name="keywords" content="{$keywords}" />
+<link rel="stylesheet" type="text/css" href="__PMALL__/Css/Login/common.css" />
+<link rel="stylesheet" type="text/css" href="__PMALL__/Css/Login/layout.css" />
+</head>
+<body>
+<div class="header-wrap">
+	<header class="public-head-layout wrapper">
+		<h1 class="site-logo"><a href="/index.php"><img src="../Public/images/logo.png" class="pngFix"></a></h1>
+		<div class="nc-login-now">我已经注册，现在就<a href="/Seller" title="" class="register">登录</a></div>
+	</header>
+</div>
+<div style="clear:both;"></div>
+<div class="wrapper nc-register-bg">
+	<form id="register" name="register" method="post" action="{:U('Public/registerDo')}">
+		<div class="nc-register-box clrfix">
+			<div class="g-contentCon">
+				<div class="m-main  clrfix">
+					<h2 class="gray3">新用户注册</h2>
+					                <div class="register-form-con clrfix">
+                    <ul>
+                        <li>
+                            <input type="text" maxlength="100" id="username" name="username" placeholder="用户名">
+                            <b class="passport-icon user-name transparent-png"></b>
+							<span id="username_warn" class="orange"></span>
+                        </li>
+                        <li>
+                            <input type="password" maxlength="20" id="password" name="password" placeholder="设置登录密码" >
+                            <b class="passport-icon login-password transparent-png"></b>
+                            
+                            <span id="password_warn" class="orange"></span>
+                            <span style="display: none;" id="pwdStrength"></span>
+
+                        </li>
+                        <li>
+                            <input type="password" maxlength="20" id="repwd" name="repwd" placeholder="确认密码">
+                            <b class="passport-icon login-password transparent-png"></b>
+                            <span id="repwd_warn" class="orange"></span>
+                        </li>
+                        <li>
+                    	    <div class="z-code clrfix">
+                        	    <input type="text" maxlength="6" name="code" id="code" placeholder="验证码">
+                                <b class="passport-icon verification-code transparent-png"></b>
+								<img onclick="this.src='/General/General/verifyCode?'+(new Date()).getTime()" id="verify" src="/General/General/verifyCode">
+                                <a id="btnChangeCode" href="javascript:;"onclick="document.getElementById('verify').src='/General/General/verifyCode?'+(new Date()).getTime()">换一张</a>
+                            </div>
+                            <span id="code_warn"class="orange"></span>
+                        </li>
+                    </ul>
+                    <ul id="j-tips-wrap" class="j-tips-wrap"></ul>
+                </div>
+					<div class="link-con clrfix">
+						<button class="z-agreeBtn" id="btnAgreeBtn" type="button" >同意协议并注册</button>
+						<a class="z-agreement" target="_blank" href="/Article/detail/article_id/43.html" id="btnAgreement">《商城服务协议》</a> </div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<!--底部 Start--> 
+<!-- 底部版权 -->
+<div class="g-copyrightCon clrfix" style="margin-bottom: 20px;">
+	<div class="g-links">
+<!-- 	<a target="_blank" href="/index.php" title="首页"></a> -->
+	</div>
+	<div class="g-copyright">Copyright &copy; {$Think.const.NOW_TIME|date="Y",###}, 版权所有{$set.siteright}{$domain} {$set.icp}
+	<br/>
+	<p style="font-style: italic;color:#eee;">Powered by <a style="color:#eee;" href="http://www.minshop.net" target="_blank">minshop</a></p>
+	</div>
+</div>
+<script src="/Static/Common/jQuery/jquery.js" ></script>
+<script src="/Static/Common/jQuery/jquery.validate.js"></script> 
+<script src="__PMALL__/Js/register.js"></script>
+</body>
+</html>

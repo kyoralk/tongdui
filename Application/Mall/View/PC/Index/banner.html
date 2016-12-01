@@ -1,0 +1,71 @@
+<div class="banner">
+	<ul id="fullScreenSlides" class="full-screen-slides">
+		<volist name="slide_list" id="sl">
+			<li style=" background:url(/Uploads/{$sl.save_path}{$sl.save_name}) center no-repeat; display:list-item"> <a href="{$sl.url}" target="_blank" title="">&nbsp;</a> </li>
+		</volist>
+	</ul>
+	<ul class="full-screen-slides-pagination">
+		<volist name="slide_list" id="il" key="key"> <li 
+			<if condition="$key eq 1">class="current" </if>
+			><a href="javascript:;">{$key}</a>
+			</li>
+		</volist>
+	</ul>
+	<div class="focus-trigeminy">
+		<div class="carousel">
+			<ul class="box">
+				{:R('AD/output',array(15,''))}
+			</ul>
+		</div>
+		<a href="javascript:void(0);" class="prev" title="上一个">&lt;</a> <a href="javascript:void(0);" class="next" title="下一个">&gt;</a> 
+	</div>
+	<script type="text/javascript">
+	$(function(){
+		$('.focus-trigeminy').hover(function(){
+				$('.prev,.next').fadeTo('fast',0.4);
+			},function(){
+				$('.prev,.next').fadeTo('fast',0);
+		})
+		Move(".next",".prev",".box",".focus-trigeminy","3");
+	})
+	</script>
+	<div class="right-sidebar">
+		<div class="sale-discount">
+			<h3>限时抢购</h3>
+			<ul class="saleDiscount">
+				<volist name="promote_list" id="goods">
+					<li>
+						<div class="sale-con">
+							<p class="time-remain" > <span id="leftTime0"> <em time_id="d" class="main-bg-color"></em> 天 <em time_id="h" class="main-bg-color"></em> 小时 <em time_id="m" class="main-bg-color"></em> 分 <em time_id="s" class="main-bg-color"></em> 秒 </span> </p>
+							<p class="goods-thumb"> <a href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}" title="{$goods.goods_name}"> <img src="/Uploads/{$goods.save_path}Thumb/m_{$goods.save_name}" alt="{$goods.goods_name}"></a> </p>
+							<p class="goods-name"> <a href="{:U('Goods/info',array('goods_id'=>$goods['goods_id']))}" title="{$goods.goods_name}">{$goods.goods_name}</a> </p>
+							<p class="goods-price"> <span class="main-color"> ¥{$goods.promote_price} </span> <span class="goods-discount main-color">9990折</span> </p>
+						</div>
+					</li>
+				</volist>
+			</ul>
+			<div class="arrow pre" style="opacity: 0;"></div>
+			<div class="arrow next" style="opacity: 0;"></div>
+		</div>
+		<script type="text/javascript">
+		Move(".next",".pre",".saleDiscount",".sale-discount","1");
+		</script>
+		<div class="proclamation">
+			<ul class="tabs-nav">
+				<li class="tabs-selected">
+					<h3>商城公告</h3>
+				</li>
+				<li>
+					<h3>招商入驻</h3>
+				</li>
+			</ul>
+			<div class="tabs-panel">
+				<ul class="mall-news">
+					<li><a target="_blank" href="article.php?id=79" title="商家帮助指南">商家帮助指南 </a> </li>
+					<li><a target="_blank" href="article.php?id=78" title="供货商(入驻商文章标题)">供货商(入驻商文章标题) </a> </li>
+				</ul>
+			</div>
+			<div class="tabs-panel tabs-hide"> <a href="apply_index.php" title="申请商家入驻；已提交申请，可查看当前审核状态。" class="store-join-btn" target="_blank">&nbsp;</a> <a href="supplier" target="_blank" class="store-join-help"> <i class="icon-cog"></i> 登录商家管理中心 </a> </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,98 @@
+<div class="main-content" id="mainContent">
+	<div class="tabmenu">
+		<ul class="tab pngFix">
+			<li class="active"><a href="#">订单详情</a></li>
+		</ul>
+	</div>
+
+	<div class="ncsc-form-goods">
+		<h3>订单详情</h3>
+		<dl>
+			<dt>发货单</dt>
+			<dd>
+				<table
+					style="width: 100%; text-align: center; font-family: Yahei; line-height: 20px; margin: 0 auto;">
+					<tr>
+						<td colspan="6" style="border: 1px solid black;">{$sitename}发货单</td>
+					</tr>
+					<tr>
+						<td style="width: 50px; border: 1px solid black;">收货人</td>
+						<td style="border: 1px solid black;">{$oi.consignee}</td>
+						<td style="border: 1px solid black;">联系电话</td>
+						<td style="border: 1px solid black;">{$oi.mobile}</td>
+						<td style="border: 1px solid black;">订单编号</td>
+						<td style="border: 1px solid black;">{$oi.order_sn}</td>
+					</tr>
+					<tr>
+						<td style="border: 1px solid black;">送货地址</td>
+						<td colspan="5" style="border: 1px solid black;">{$oi.address}</td>
+					</tr>
+					<tr>
+						<td style="border: 1px solid black;">商品ID</td>
+						<td colspan="2" style="border: 1px solid black;">商品名称</td>
+						<td style="border: 1px solid black;">数量</td>
+						<td style="border: 1px solid black;">单价</td>
+						<td style="border: 1px solid black;">小计</td>
+					</tr>
+					<volist name="oi.order_goods" id="goods">
+					<tr>
+						<td style="border: 1px solid black;">{$goods.goods_id}</td>
+						<td colspan="2" style="border: 1px solid black;">{$goods.goods_name}</td>
+						<td style="border: 1px solid black;">{$goods.prosum}</td>
+						<td style="border: 1px solid black;">￥{$goods.price}</td>
+						<td style="border: 1px solid black;">￥{$goods['prosum']*$goods['price']}</td>
+					</tr>
+					</volist>
+					<tr>
+						<td style="border: 1px solid black;">运费</td>
+						<td style="border-bottom: 1px solid black;" colspan="4"></td>
+						<td
+							style="border-bottom: 1px solid black; border-right: 1px solid black;">￥{$oi.freight}</td>
+					</tr>
+					<tr>
+						<td style="border: 1px solid black;">合计</td>
+						<td style="border-bottom: 1px solid black;" colspan="4"></td>
+						<td
+							style="border-bottom: 1px solid black; border-right: 1px solid black;">￥{$oi.total}</td>
+					</tr>
+				</table>
+			</dd>
+		</dl>
+		<if
+			condition="($oi['pay_status'] eq 0) AND ($oi['shipping_status'] eq 0) AND ($oi['order_status'] eq 0) ">
+		未付款，未发货 <elseif
+			condition="($oi['pay_status'] eq 1) AND ($oi['shipping_status'] eq 0) AND ($oi['order_status'] eq 0) " />
+		<form class="form-horizontal" action="__URL__/deliver" method="post">
+			<dl>
+				<dt>物流公司</dt>
+				<dd>
+					<select name="shipping_id" class="w200">
+						<volist name="shipping_list" id="vo">
+						<option value="{$vo.shipping_id}">{$vo.shipping_name}</option>
+						</volist>
+					</select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>物流编号</dt>
+				<dd>
+					<input type="text" class="w200" name="shipping_sn">
+					<input name="order_sn" type="hidden" value="{$oi.order_sn}" />
+				</dd>
+			</dl>
+			<div class="bottom tc hr32">
+				<label class="submit-border">
+					<input class="submit" value="发货" type="submit">
+				</label>
+			</div>
+		</form>
+		<elseif
+			condition="($oi['pay_status'] eq 1) AND ($oi['shipping_status'] eq 1) AND ($oi['order_status'] eq 0) " />
+		已付款，已发货 <elseif
+			condition="($oi['pay_status'] eq 1) AND ($oi['shipping_status'] eq 1) AND ($oi['order_status'] eq 1) " />
+		交易成功 </if>
+
+	</div>
+	<div class="bottom tc hr32"></div>
+</div>
+

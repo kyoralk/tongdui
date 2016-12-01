@@ -1,0 +1,99 @@
+<div class="m-article">
+	<div class="article-head">
+		<div class="head-tool">
+			<div class="item font-setting w-drop drop-hover"> <span class="drop-show"><i class="icon icon-font"></i><b class="text">文字</b></span>
+				<div class="drop-hide drop-hide-left"> <b class="drop-arrow-outer"><i class="drop-arrow-inner"></i></b>
+					<div class="drop-hide-inner">
+						<div class="buttons size-list">
+							<button type="button" id="reduce-font-size" class="button size-2">A</button>
+							<button type="button" id="enlarge-font-size" class="button size-2">A</button>
+						</div>
+						<div class="buttons theme-list">
+							<button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">默认</button>
+							<button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">护眼</button>
+							<button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">夜间</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="head-util">
+			<div class="item w-drop drop-hover"><span class="drop-show"><i class="icon icon-share"></i><b class="text">分享</b></span>
+				<div class="drop-hide drop-hide-right"><b class="drop-arrow-outer" style="margin-left: 88px;"><i class="drop-arrow-inner"></i></b>
+					<div class="drop-hide-inner">
+						<div class="m-share-list"><a class="weixin icon-weixin" data-sharing="wechat"></a><a class="qq icon-qq" data-sharing="qq"></a><a class="weibo icon-sina" data-sharing="weibo"></a></div>
+					</div>
+				</div>
+			</div>
+			<a class="collect item" title="收藏" href="{:U('Index/info',array('id'=>$info['id']))}"><i class="icon icon-heart"></i><b class="text">编辑</b></a></div>
+		<h1>{$info.name}</h1>
+	</div>
+	<div class="article-wrap">
+		<div class="article-view">
+			<div class="view-body think-editor-content">
+				<notempty name="info.desc">
+				<h2 id="u63A5u53E3u8BF4u660E">接口说明</h2>
+				<blockquote class="default">
+					<p>{$info.desc}</p>
+				</blockquote>
+				</notempty>
+				<h2 id="u63A5u53E3u5B9Au4E49">接口定义</h2>
+				<div class="api-content">
+					<div class="api-header"><span class="api-type type-{$info.type|strtolower}">{$info.type}</span>{$info.url}</div>
+					<hr>
+					<div class="api-body">
+						<notempty name="params">
+						<div class="api-params">
+						<table class="w-table">
+							<thead>
+								<tr>
+									<th width="220">参数名</th>
+									<th width="100">参数类型</th>
+									<th width="50">必传</th>
+									<th>缺省值</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody id="parameter">
+								<volist name="params" id="p">
+								<tr>
+									<td>{$p.p_name}</td>
+									<td>{$p.p_type}</td>
+									<td>{$p.p_must}</td>
+									<td>{$p.p_default}</td>
+									<td>{$p.p_desc}</td>
+								</tr>
+								</volist>
+							</tbody>
+						</table>
+						</div>
+						</notempty>
+						<notempty name="info.result">
+						<div class="api-results">
+							<h3>返回结果</h3>
+							<div class="result-tab">
+								<div class="tab-nav">
+									<div class="tab-nav-item active"><a data-internal="1" href="">success </a></div>
+									<div class="tab-nav-item">·<a data-internal="1" href="">error </a></div>
+								</div>
+								<div class="tab-wrap">
+									<div class="tab-wrap-item active">
+										<pre><code>{$info.result}</code></pre>
+									</div>
+								</div>
+							</div>
+						</div>
+						</notempty>
+						<include file="Index:test"/>
+					</div>
+				</div>
+			</div>
+			<div class="view-foot">
+				<div class="article-jump"> <span class="jump-up" style="display: block;">上一篇：<a data-articleid="67295" href="/shuai/api_demo/67295">车站搜索</a></span> <span class="jump-down">下一篇：<a data-articleid="67276" href="/shuai/api_demo/67276">成语查询Api</a></span> </div>
+				<a class="view-backtop"><i class="icon-arrow-up2"></i></a> </div>
+		</div>
+	</div>
+	<div class="think-loading loading-ripple"><span class="loading-inner"><i class="loading-image"></i><b class="loading-text"></b></span></div>
+</div>
+<link rel="stylesheet" href="/Static/API/Css/style.css">
+<script>hljs.initHighlightingOnLoad();</script>

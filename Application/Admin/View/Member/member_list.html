@@ -1,0 +1,77 @@
+<section class="content-header">
+		<div class="row">
+  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+  			<div class="col-md-1">
+  				<a class="btn btn-info" href="{:U('Member/view')}">添加会员</a>
+  			</div>
+  		</div>
+</section>
+<section class="content">
+	<div class="box">
+		<div class="box-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="table-textcenter">ID</th>
+						<th class="table-textcenter">用户名</th>
+						<th class="table-textcenter">身份</th>
+						<th class="table-textcenter">手机</th>
+						<th class="table-textcenter">推荐人</th>
+						<th class="table-textcenter">一卷通</th>
+						<th class="table-textcenter">赠出一卷通</th>
+						<th class="table-textcenter">购物券</th>
+						<th class="table-textcenter">资产包</th>
+						<th class="table-textcenter">总积分</th>
+						<th class="table-textcenter">可用积分</th>
+						<th class="table-textcenter">冻结积分</th>
+						<th class="table-textcenter">黑金</th>
+						<th class="table-textcenter">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="member_list" id="ml">
+						<tr>
+							<td class="table-textcenter">{$ml.uid}</td>
+							<td class="table-textcenter">{$ml.username}</td>
+							<td class="table-textcenter">
+							<switch name="ml.rank">
+								<case value="1">消费商</case>
+								<case value="2">合格的消费商</case>
+								<case value="3">合作商{$ml.star_level}星</case>
+								<case value="4">特殊合作商</case>
+							</switch>
+							<if condition="$ml.store_id neq 0">（商家）</if>
+							<switch name="ml.agent_level">
+								<case value="1">（县代理）</case>
+								<case value="2">（市代理）</case>
+								<case value="3">（省代理）</case>
+							</switch>
+							</td>
+							<td class="table-textcenter">{$ml.mobile}</td>
+							<td class="table-textcenter"><empty name="ml.referrer_name">无<else/>{$ml.referrer_name}</empty></td>
+							<td class="table-textcenter">{$ml.member_account.yjt_fee}</td>
+							<td class="table-textcenter">{$ml.member_account.yjt_grant}</td>
+							<td class="table-textcenter">{$ml.member_account.gwq_fee}</td>
+							<td class="table-textcenter">{$ml.member_account.zcb_fee}</td>
+							<td class="table-textcenter">{$ml.member_account.jf_sum}</td>
+							<td class="table-textcenter">{$ml.member_account.jf_sum}</td>
+							<td class="table-textcenter">{$ml.member_account.jf_feeze}</td>
+							<td class="table-textcenter">{$ml.member_account.hj_fee}</td>
+							<td class="table-textcenter">
+								<a href="{:U('Member/info?uid='.$ml['uid'])}">编辑</a> 
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+		<div class="box-footer clearfix">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div>
+	</div>
+</section>
+
+
+

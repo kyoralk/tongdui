@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" href="/Static/API/Css/api.min.css">
+<link rel="stylesheet" href="/Static/API/Css/font.css">
+<script src="/Static/API/Js/jquery.js"></script>
+</head>
+<body>
+<div class="m-manual manual-reader manual-mode-view font-size-1 manual-active font-theme-0">
+	<div class="manual-head">
+		<div class="left">
+			<span class="slidebar"><i class="icon-menu"></i></span>
+			<a class="manual-title" href="/API" title="返回文档首页"> <b class="text">minshop API文档</b> </a> 
+		</div>
+	</div>
+	<div class="manual-body">
+		<div class="manual-left">
+			<div class="manual-tab" style="bottom: 59px;">
+				<div class="tab-navg"> 
+					<span data-mode="view" class="navg-item active"><i class="icon icon-menu"></i><b class="text">目录</b></span>
+					<span data-mode="search" class="navg-item"><i class="icon icon-search"></i><b class="text">搜索</b></span>
+				</div>
+				<div class="tab-util"> 
+					<span class="manual-fullscreen-switch"> <b class="open icon-chevron-right" title="展开"></b> <b class="close icon-chevron-left" title="关闭"></b> </span> </div>
+				<div class="tab-wrap">
+					<include file="Index:catalog"/>
+					<include file="Index:search"/>
+				</div>
+			</div>
+			<div class="m-copyright">
+				<p> ©minshop出品<br>
+					本文档使用 <a href="http://www.minshop.net" target="_blank" onClick="window.open('http://www.minshop.net')">minshop</a> 发布 </p>
+			</div>
+		</div>
+		<div class="manual-right">
+			<iframe id="myframe" name="myframe" src="" frameborder="0" scrolling="no" onload="this.height=100" width="100%"></iframe>
+		</div>
+		<div class="manual-progress"><b class="progress-bar" style="width: 25.9615%;"></b></div>
+	</div>
+	<div class="manual-mask"></div>
+</div>
+
+<div class="atwho-container">
+	<div id="atwho-ground-73a0354d1469671396612">
+		<div class="atwho-view" id="at-view-64">
+			<ul class="atwho-view-ul">
+			</ul>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+  	$(document).bind("keydown",function(e){
+  		e = e ? e : window.event;
+  		actualCode = e.keyCode ? e.keyCode : e.charCode;
+  		if(actualCode == 116 && parent.myframe) {
+  			parent.myframe.location.reload();
+  			if(document.all) {
+  				e.keyCode = 0;
+  				e.returnValue = false;
+  			} else {
+  				e.cancelBubble = true;
+  				e.preventDefault();
+  			}
+  		}
+  	});
+  });
+function reinitIframe(){
+ 
+var iframe = document.getElementById("myframe");
+ 
+try{
+ 
+var bHeight = iframe.contentWindow.document.body.scrollHeight;
+ 
+var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+ 
+var height = Math.max(bHeight, dHeight);
+ 
+iframe.height =  height;
+ 
+}catch (ex){}
+ 
+}
+window.setInterval("reinitIframe()",200);
+$(".tab-navg span").click(function(){
+	$(".tab-navg span").prop("class","navg-item");
+	$(this).addClass("active");
+	var index = $(this).index();
+	if(index == 0){
+		$(".manual-catalog").show();
+		$(".manual-search").hide();
+	}else{
+		$(".manual-catalog").hide();
+		$(".manual-search").show();
+	}
+});
+</script>
+</body>
+</html>

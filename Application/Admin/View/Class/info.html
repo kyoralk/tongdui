@@ -1,0 +1,30 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box box-info">
+	<form name="myform" id="myform" class="form-horizontal" action="{:U('Class/save')}" method="post">
+		<input name="gc_id" type="hidden" value="{$class_info.gc_id}"/>
+		<div class="box-body"> 
+			{:fastModule('form-group',array('分类名称'),array('text','gc_name',$class_info['gc_name']))}
+			{:fastModule('form-group',array('上级分类'),array('select','gc_parent_id',array($class_list,$gc_parent_id,array('gc_id','gc_name'))))}
+			{:fastModule('form-group',array('商品模型'),array('select','mid',array($model_list,$class_info['mid'],array('mid','model_name'))))}
+			{:fastModule('form-group',array('字体ICON'),array('text','gc_icon',$class_info['gc_icon']))}
+			{:fastModule('form-group',array('排序'),array('text','gc_sort',$class_info['gc_sort']))}
+			{:fastModule('form-group',array('SEO关键词'),array('text','gc_keywords',$class_info['gc_keywords']))}
+			{:fastModule('form-group',array('SEO描述'),array('textarea','gc_description',$class_info['gc_description']))} 
+		</div>
+		<div class="box-footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-4"><button type="submit" class="btn btn-primary" onclick="formSubmit();">保存</button></div>
+		</div>
+	</form>
+</div>
+</section>

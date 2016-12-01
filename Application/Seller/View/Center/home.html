@@ -1,0 +1,138 @@
+
+<div class="main-content" id="mainContent">
+	<div class="ncsc-index">
+		<div class="top-container">
+			<div class="basic-info">
+				<dl class="ncsc-seller-info">
+					<dt class="seller-name">
+						<h3>{$seller_name}</h3>
+					</dt>
+					<dd class="store-logo">
+						<p>
+							<empty name="store_info['store_logo']"> <img src="__PUBLIC__/Upload/Mall/Seller/default.gif"/>
+								<else />
+								<img src="/Uploads/Mall/Seller/{$store_info.store_id}/Store/{$store_info.store_logo}"/> </empty>
+						</p>
+					</dd>
+					<dd class="seller-permission">管理权限：<strong>管理员</strong></dd>
+					<dd class="seller-last-login">最后登录：<strong>{$Think.NOW_TIME|date="Y-m-d H:i",###}</strong>
+					</dd>
+					<dd class="seller-store_state">店铺状态：<strong>
+						<switch name="Think.session.store_status">
+							<case value="0"><span style="color:#da542e;">关闭</span></case>
+							<case value="1">开启</case>
+							<case value="2"><span style="color:#da542e;">审核中</span></case>
+						</switch>
+						</strong> </dd>
+					<dd class="store-name">店铺名称：<a href="/shop/{$store_info.store_id}" target="_blank">{$store_info.store_name}</a></dd>
+					<dd class="store-grade">店铺等级：<strong>系统默认</strong></dd>
+					<dd class="store-validity">有效期：<strong>不限制</strong></dd>
+				</dl>
+				<div class="detail-rate">
+					<h5> <strong>店铺动态评分：</strong> 与行业相比 </h5>
+					<ul>
+						<li> 描述相符<span class="credit">5 分</span> <span class="equal"><i></i>持平<em>----</em></span> </li>
+						<li> 服务态度<span class="credit">5 分</span> <span class="equal"><i></i>持平<em>----</em></span> </li>
+						<li> 发货速度<span class="credit">5 分</span> <span class="equal"><i></i>持平<em>----</em></span> </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="seller-cont">
+			<div class="container type-a">
+				<div class="hd">
+					<h3>店铺及商品提示</h3>
+					<h5>您需要关注的店铺信息以及待处理事项</h5>
+				</div>
+				<div class="content">
+					<dl class="focus">
+						<dt>店铺商品发布情况：</dt>
+						<dd title="已发布/可传商品"><em id="nc_goodscount">0</em>&nbsp;/&nbsp;100</dd>
+						<dt>图片空间使用：</dt>
+						<dd><em id="nc_imagecount">0</em>&nbsp;/&nbsp;500</dd>
+					</dl>
+					<ul>
+						<li><a href="index.php?act=store_goods_online&op=index">出售中 <strong id="nc_online"></strong></a></li>
+						<li><a href="index.php?act=store_goods_offline&op=index">仓库中已审待 <strong id="nc_offline"></strong></a></li>
+						<li><a href="index.php?act=store_goods_offline&op=index&type=lock_up">违规下架 <strong id="nc_lockup"></strong></a></li>
+						<li><a href="index.php?act=store_consult&op=consult_list&type=to_reply">待回复咨询 <strong id="nc_consult"></strong></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="container type-a">
+				<div class="hd">
+					<h3>交易提示</h3>
+					<h5>您需要立即处理的交易订单</h5>
+				</div>
+				<div class="content">
+					<dl class="focus">
+						<dt>近期售出：</dt>
+						<dd><a href="index.php?act=store_order">交易中的订单 <strong id="nc_progressing"></strong></a></dd>
+						<dt>维权提示：</dt>
+						<dd><a href="index.php?act=store_complain&select_complain_state=1">收到维权投诉 <strong id="nc_complain"></strong></a></dd>
+					</dl>
+					<ul>
+						<li><a href="{:U('Order/orderList?active=3&pay_status=0&shipping_status=0&order_status=0')}">待付款
+							<if condition="$pay_count gt 0"><strong id="nc_payment">{$pay_count}</strong></if>
+							</a></li>
+						<li><a href="{:U('Order/orderList?active=2&pay_status=1&shipping_status=0&order_status=0')}">待发货
+							<if condition="$shipping_count gt 0"> <strong id="nc_delivery">{$shipping_count}</strong></if>
+							</a></li>
+						<li><a href="{:U('Order/orderList?active=3&pay_status=1&shipping_status=1&order_status=0')}">待确认账单
+							<if condition="$makesure_count gt 0"> <strong id="nc_bill_confirm">{$makesure_count}</strong></if>
+							</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="container type-c">
+				<div class="hd">
+					<h3>销售情况统计</h3>
+					<h5>按周期统计商家店铺的订单量和订单金额</h5>
+				</div>
+				<div class="content">
+					<table class="ncsc-table-style">
+						<thead>
+							<tr>
+								<th class="w50">项目</th>
+								<th>订单量</th>
+								<th class="w100">订单金额</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="bd-line">
+								<td>日销量</td>
+								<td>--</td>
+								<td>--</td>
+							</tr>
+							<tr class="bd-line">
+								<td>月销量</td>
+								<td>--</td>
+								<td>--</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="container type-c h500">
+				<div class="hd">
+					<h3>单品销售排名</h3>
+					<h5>掌握最热销的商品及时补充货源</h5>
+				</div>
+				<div class="content">
+					<table class="ncsc-table-style">
+						<thead>
+							<tr>
+								<th class="w50">排名</th>
+								<th class="w70"></th>
+								<th class="tl">商品信息</th>
+								<th class="w60">销量</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

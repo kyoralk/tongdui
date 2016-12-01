@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>商家中心</title>
+<link href="__SELLER__/Css/base.css" rel="stylesheet" type="text/css">
+<link href="__SELLER__/Css/seller_center.css" rel="stylesheet" type="text/css">
+<link href="__SELLER__/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/Static/Common/jQuery/jquery.js"></script>
+</head>
+<body>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<include file="Center:header"/>
+<div class="ncsc-layout wrapper">
+	<div id="layoutLeft" class="ncsc-layout-left">
+		<div id="sidebar" class="sidebar">
+			<div class="column-title" id="main-nav"><span class="ico-index"></span>
+				<h2>首页</h2>
+			</div>
+			<div class="column-menu">
+				<ul id="seller_center_left_menu">
+					<div class="add-quickmenu"><a href="javascript:void(0);"><i class="icon-plus"></i>添加常用功能菜单</a></div>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="layoutLeft" class="ncsc-layout-left">
+	<div id="sidebar" class="sidebar">
+	<div class="add-quickmenu"><a href="javascript:void(0);"><i class="icon-plus"></i>添加常用功能菜单</a></div>
+		<div class="column-menu">
+		
+			<ul id="seller_center_left_menu" >
+				<volist name="menu_list" id="menu">
+				<li <if condition="$menu.current eq 1"> class="current" </if>><a href="{$menu.url}" target="myframe"> {$menu.lang} </a></li>
+				</volist>
+			</ul>
+		</div>
+	</div>
+</div>
+	<div id="layoutRight" class="ncsc-layout-right">
+	<iframe id="myframe" name="myframe" src="{$default_page}" frameborder="0" scrolling="no" onload="this.height=100" width="100%" style="background-color: #fff;"></iframe>
+	</div>
+</div>
+<script>
+$("#seller_center_left_menu li").click(function(){
+	$("#seller_center_left_menu li").removeClass("current");
+	$(this).addClass("current");
+});
+$(function(){
+  	$(document).bind("keydown",function(e){
+  		e = e ? e : window.event;
+  		actualCode = e.keyCode ? e.keyCode : e.charCode;
+  		if(actualCode == 116 && parent.myframe) {
+  			parent.myframe.location.reload();
+  			if(document.all) {
+  				e.keyCode = 0;
+  				e.returnValue = false;
+  			} else {
+  				e.cancelBubble = true;
+  				e.preventDefault();
+  			}
+  		}
+  	});
+  });
+// function reinitIframe(){
+// 	var iframe = document.getElementById("myframe");
+// 	var height = window.screen.availHeight
+// 	iframe.height =  height-144;
+// }
+function reinitIframe(){
+ 
+var iframe = document.getElementById("myframe");
+ 
+try{
+ 
+var bHeight = iframe.contentWindow.document.body.scrollHeight;
+ 
+var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+ 
+var height = Math.max(bHeight, dHeight);
+var _availHeight = window.screen.availHeight;
+_availHeight -=144;
+iframe.height =   _availHeight > height ?_availHeight : height;;
+ 
+}catch (ex){}
+ 
+}
+window.setInterval("reinitIframe()",200);
+</script>
+</body>
+</html>

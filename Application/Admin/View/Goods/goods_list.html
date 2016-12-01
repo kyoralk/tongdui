@@ -1,0 +1,170 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-8">
+			<form action="{:U('Goods/goodsList')}" method="get">
+				<h4><small>{$content_header}</small></h4>
+				<ul class="nav nav-pills">
+					<if condition="$seller eq 1">
+						<li data-name="all_goods" data-value="1" <if condition="$all_goods eq 1"> class="active" </if> ><a class="ng-binding" href="javascript:;" >所有商品</a></li>
+						<li data-name="examine_status" data-value="3" <if condition="$examine_status eq 3"> class="active" </if> ><a class="ng-binding" href="javascript:;" >违规下架</a></li>
+						<li data-name="examine_status" data-value="2" <if condition="$examine_status eq 2"> class="active" </if> ><a class="ng-binding" href="javascript:;" >等待审核</a></li>
+						<li data-name="examine_status" data-value="3" <if condition="$examine_status eq 3"> class="active" </if> ><a class="ng-binding" href="javascript:;" >违规下架</a></li>
+						<li data-name="consumption_type" data-value="2" <if condition="$consumption_type eq 2"> class="active" </if> ><a class="ng-binding" href="javascript:;" >一卷通消费</a></li>
+						<li data-name="consumption_type" data-value="3" <if condition="$consumption_type eq 3"> class="active" </if> ><a class="ng-binding" href="javascript:;" >购物券消费</a></li>
+						<li data-name="consumption_type" data-value="1" <if condition="$consumption_type eq 1"> class="active" </if> ><a class="ng-binding" href="javascript:;" >现金消费</a></li>
+					</if>
+				</ul>
+				<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+				    <input class="form-control" type="text" name="keywords" value="{$keywords}" placeholder="商品关键字">
+	                <input name="seller" type="hidden" value="{$seller}"/>
+	                <input name="all_goods" type="hidden" value="{$all_goods}"/>
+	                <input name="examine_status" type="hidden" value="{$examine_status}"/>
+	                <span class="input-group-btn">
+	                     <button type="submit" class="btn btn-info btn-flat">搜索</button>
+	                </span>
+	            </div>
+	        </form>
+		</div>
+		<div class="col-md-4 right_menu">
+			<a class="btn btn-warning" href="javascript:onekey('{:U(\'Goods/consumption\')}',1);">现金消费</a>
+			<a class="btn btn-warning" href="javascript:onekey('{:U(\'Goods/consumption\')}',2);">一卷通消费</a>
+			<a class="btn btn-warning" href="javascript:onekey('{:U(\'Goods/consumption\')}',3);">购物券消费</a>
+			<if condition="$seller eq 1">
+				<a class="btn btn-info" href="javascript:onekey('{:U(\'Goods/examine\')}',1);">一键通过</a>
+				<a class="btn btn-danger" href="javascript:onekey('{:U(\'Goods/examine\')}',3);">一键下架</a>
+			<else/>
+				<a class="btn btn-info" href="javascript:onekey('{:U(\'Goods/onsale\')}',1);">一键上架</a>
+				<a class="btn btn-danger" href="javascript:onekey('{:U(\'Goods/onsale\')}',0);">一键下架</a>
+			</if>
+			
+		</div>
+	</div>
+</section>
+<section class="content">
+<div class="box">
+	<div class="box-body">
+	<form name="goods_form" id="goods_form" action="{:U('Goods/examine')}" method="post">
+		<input name="examine_status" type="hidden" value=""/>
+		<table class="table table-bordered table-striped">
+            	<thead>
+                	<tr>
+                    	<th width="5%" class="table-textcenter"><input name="check_all" type="checkbox" /></th>
+                        <th>名称</th>
+                        <th class="table-textcenter">消费类型</th>
+                        <th class="table-textcenter"><if condition="$seller eq 1">审核状态<else/>上架</if></th>
+                        <th class="table-textcenter">精品</th>
+                        <th class="table-textcenter">新品</th>
+                        <th class="table-textcenter">热销</th>
+                        <th class="table-textcenter">楼层展示</th>
+<!--                         <th class="table-textcenter">预售</th> -->
+<!--                         <th class="table-textcenter">自提</th> -->
+                        <th class="table-textcenter" width="15%">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <volist name="goods_list" id="gl">
+            		<tr>
+                		<td align="center" class="table-textcenter"><input name="goods_id[]" type="checkbox" value="{$gl.goods_id}"/></td>
+                        <td>{$gl.goods_name}</td>
+                        <td class="table-textcenter">
+                        	<switch name="gl.consumption_type">
+								<case value="1">现金</case>
+								<case value="2">一卷通</case>
+								<case value="3">购物券</case>
+							</switch>
+                        </td>
+						<td class="table-textcenter">
+							<if condition="$seller eq 1">
+							<switch name="gl.examine_status">
+								<case value="1">审核通过</case>
+								<case value="2">审核中</case>
+								<case value="3">违规下架</case>
+							</switch>
+							<else/>
+							<img onclick="update_status(this,{$gl.goods_id},'is_on_sale',{$gl.is_on_sale})" <if condition="($gl['is_on_sale']) eq 1"> src="/Static/Admin/Images/yes.gif" <else/> src="/Static/Admin/Images/no.gif" </if>> 
+							</if>
+						</td>
+						<td class="table-textcenter">
+							<img onclick="update_status(this,{$gl.goods_id},'is_best',{$gl.is_best})" <if condition="($gl['is_best']) eq 1"> src="/Static/Admin/Images/yes.gif" <else/> src="/Static/Admin/Images/no.gif" </if>> 
+						</td>
+						<td class="table-textcenter">
+							<img onclick="update_status(this,{$gl.goods_id},'is_new',{$gl.is_new})" <if condition="($gl['is_new']) eq 1"> src="/Static/Admin/Images/yes.gif" <else/> src="/Static/Admin/Images/no.gif" </if>> 
+						</td>
+						<td class="table-textcenter">
+							<img onclick="update_status(this,{$gl.goods_id},'is_hot',{$gl.is_hot})" <if condition="($gl['is_hot']) eq 1"> src="/Static/Admin/Images/yes.gif" <else/> src="/Static/Admin/Images/no.gif" </if>> 
+						</td>
+						<td class="table-textcenter">
+							<img onclick="update_status(this,{$gl.goods_id},'floor_show',{$gl.floor_show})" <if condition="($gl['floor_show']) eq 1"> src="/Static/Admin/Images/yes.gif" <else/> src="/Static/Admin/Images/no.gif" </if>> 
+						</td>
+<!-- 						<td class="table-textcenter"> -->
+<!-- 							<img onclick="update_status(this,{$gl.goods_id},'is_yushou',{$gl.is_yushou})" <if condition="($gl['is_yushou']) eq 1"> src="/Static/Admin/Images/yes.gif" <else/> src="/Static/Admin/Images/no.gif" </if>>  -->
+<!-- 						</td> -->
+<!-- 						<td class="table-textcenter"> -->
+<!-- 							<img onclick="update_status(this,{$gl.goods_id},'is_ziti',{$gl.is_ziti})" <if condition="($gl['is_ziti']) eq 1"> src="/Static/Admin/Images/yes.gif" <else/> src="/Static/Admin/Images/no.gif" </if>>  -->
+<!-- 						</td> -->
+                        <td class="table-textcenter">
+<!--                         	<a class="btn btn-success btn-xs" href="" target="blank" >规格</a>&nbsp;&nbsp; -->
+                        	<if condition="$seller neq 1">
+                        	<a class="btn btn-info btn-xs" href="{:U('Goods/edit?goods_id='.$gl['goods_id'])}">编辑</a>&nbsp;&nbsp;
+                        	<a class="btn btn-danger btn-xs" href="{:U('Goods/delete?goods_id='.$gl['goods_id'])}">删除</a>
+                        	<else/>
+							<a class="btn btn-primary btn-xs" href="{:U('Goods/edit?goods_id='.$gl['goods_id'])}">编辑</a>&nbsp;
+                        	<a class="btn btn-info btn-xs" href="{:U('Goods/examine?examine_status=1&goods_id='.$gl['goods_id'])}">审核通过</a>&nbsp;&nbsp;
+                        	<a class="btn btn-danger btn-xs" href="{:U('Goods/examine?examine_status=3&goods_id='.$gl['goods_id'])}">违规下架</a>
+                        	</if>
+							
+                       </td>
+                	</tr>
+                    </volist>
+                </tbody>
+            </table>  
+           	</form>
+	</div>
+	<div class="box-footer clearfix">
+		<ul class="pagination pagination-sm no-margin pull-right">
+			{$page}
+		</ul>
+	</div>
+</div>
+</section>
+<script>
+$("input[name='check_all']").click(function(){
+	ms.checkAll(this,"input[name='goods_id[]']");
+});
+function update_status(obj,goods_id,type,value){
+	$.get("{:U('Goods/updateStatus')}",
+		{
+			goods_id:goods_id,
+			type:type,
+			value:value
+		},
+		function(ret){
+			if(ret.status==1){
+				$(obj).attr("onclick","update_status(this,"+ret.result.goods_id+",'"+type+"',"+ret.result.value+")");
+				if(ret.result.value==1){
+					$(obj).attr("src","/Static/Admin/Images/yes.gif");
+				}else{
+					$(obj).attr("src","/Static/Admin/Images/no.gif");
+				}
+			}
+		}
+	);
+}
+function onekey(action,value){
+	$("#goods_form").prop("action",action);
+	$("input[name='examine_status']").val(value);
+	$("#goods_form").submit();
+}
+$(function(){
+	$(".nav-pills li").click(function(){
+		
+		$(".nav-pills li").removeClass("active");
+		$(this).addClass("active");
+		var seller = $("input[name='seller']").val();
+		var name = $(this).attr("data-name");
+		var value = $(this).attr("data-value");
+		$("input[name='"+name+"']").val(value);
+		window.location.href="/Admin/Goods/goodsList/seller/"+seller+"/"+name+"/"+value;
+	});
+});
+</script>

@@ -1,0 +1,117 @@
+<style>
+.left {
+    float: left;
+}
+.h36 {
+    height: 36px;
+}
+.w20pre {
+    width: 20%;
+    color: #333;
+}
+</style>
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+		<div class="col-md-1">
+			<notempty name="right_menu">
+				<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>
+			</notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info">
+		<form name="myform" id="myform" class="form-horizontal" action="{:U('Shipping/templSave')}" method="post">
+			<input name="templ_id" type="hidden" value="{$templ_info.templ_id}"/>
+			<div class="box-body"> 
+				{:fastModule('form-group',array('模板名称'),array('text','templ_name',$templ_info['templ_name']))}
+				{:fastModule('form-group',array('费用计算方式'),array('radio','type',array(array('按重量计算',1,$templ_info['type'],1),array('按商品件数计算 ',2,$templ_info['type'],1)),'','','radio'))}
+				{:fastModule('form-group',array('首重/首件费用'),array('text','first_fee',$templ_info['first_fee']))}
+				{:fastModule('form-group',array('续重（1kg）/续件费用 '),array('text','next_fee',$templ_info['next_fee']))}
+				<notempty name="area_list">
+				<div class="form-group">
+					<label for="shipping_all" class="col-sm-2 control-label">已选区域</label>
+					<div class="col-sm-10">
+						<ul class="list-inline">
+							<volist name="area_list" id="area">
+								<li class="left w20pre h36">
+									<label style="font-weight: normal;">{$area}</label>
+								</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+				</notempty>
+				<div class="form-group">
+					<label for="shipping_all" class="col-sm-2 control-label">物流公司<br/><br/><input id="shipping_all" name="shipping_all" class="span4" value="" type="checkbox"> &nbsp;全选</label>
+					<div class="col-sm-10">
+						<ul class="list-inline">
+							<volist name="shipping_list" id="sl">
+								<li class="left w20pre h36">
+									<input id="shipping_{$sl.shipping_id}" name="shipping_id[]" class="span4" value="{$sl.shipping_id}" type="checkbox" <if condition="$sl.checked eq 1 ">checked="checked"</if>>
+									<label for="shipping_{$sl.shipping_id}" style="font-weight: normal;">{$sl.shipping_name}</label>
+								</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-sm-2 control-label">配送区域<br/><br/><input name="region_all" class="span4" value="" type="checkbox"> &nbsp;全选</label>
+					<div class="col-sm-10">
+						<ul class="list-inline">
+						<volist name="region_list" id="rl">
+						<li class="left w20pre h36">
+							<input id="province_{$rl.id}" name="province[]" class="span4" value="{$rl.id}" type="checkbox" <if condition="$rl.checked eq 1 ">checked="checked"</if>>
+							<label for="province_{$rl.id}" style="font-weight: normal;">{$rl.name}</label>
+							<a href="#child_{$rl.id}" data-toggle="modal" title="下级地区"><i class="fa fa-fw fa-child"></i></a>
+							<div class="modal fade" id="child_{$rl.id}" style="top:200px;">
+								<div class="modal-dialog" style="width: 60%;">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<h4 class="modal-title">{$rl.name}</h4>
+										</div>
+										<div class="form-group modal-body" style="margin: 0 auto;">
+											<ul class="list-inline">
+												<volist name="rl.child" id="rlc">
+													<li class="left w20pre h36">
+														<input id="region_{$rlc.id}" name="region_id[]" class="span4" value="{$rlc.id}" type="checkbox" <if condition="$rlc.checked eq 1 ">checked="checked"</if>>
+														<label for="region_{$rlc.id}" style="font-weight: normal;">{$rlc.name}</label>
+													</li>
+												</volist>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						</volist>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4"><button type="submit" class="btn btn-primary">保存</button></div>
+			</div>
+		</form>
+	</div>
+</section>
+<script type="text/javascript">
+$("input[name='shipping_all']").click(function(){
+	ms.checkAll(this,"input[name='shipping_id[]']");
+});
+$("input[name='region_all']").click(function(){
+	ms.checkAll(this,"input[name='province[]']");
+	ms.checkAll(this,"input[name='region_id[]']");
+});
+$("input[name='province[]']").click(function(){
+	var id = $(this).val();
+	if($(this).is(":checked")){
+		$("#child_"+id).find("input").prop("checked", true);
+	}else{
+		$("#child_"+id).find("input").prop("checked", false);
+	}
+});
+</script>

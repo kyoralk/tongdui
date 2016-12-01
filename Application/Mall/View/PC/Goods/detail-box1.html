@@ -1,0 +1,443 @@
+<script>
+function lxfEndtime(endtime){
+	endtime=endtime*1000;
+	//var endtime = new Date($(this).attr("endtime")).getTime();//取结束日期(毫秒值)
+	var nowtime = new Date().getTime(); //今天的日期(毫秒值)
+	var youtime = endtime-nowtime;//还有多久(毫秒值)
+	var seconds = youtime/1000;
+	var minutes = Math.floor(seconds/60);
+	var hours = Math.floor(minutes/60);
+	var days = Math.floor(hours/24);
+	var CDay= days ;
+	var CHour= hours % 24;
+	var CMinute= minutes % 60;
+	var CSecond= Math.floor(seconds%60);//"%"是取余运算，可以理解为60进一后取余数，然后只要余数。
+	
+	//alert(endtime);
+	
+	if(endtime<=nowtime){
+		$("#leftTime").html("已过期")//如果结束日期小于当前日期就提示过期啦
+	}else{
+
+	 		$("#leftTime").html("<span class='tim-shi'>&nbsp;"+days+"&nbsp;</span>&nbsp;天&nbsp;<span class='tim-shi'>"+CHour+"</span>&nbsp;时&nbsp;<span class='tim-shi'>"+CMinute+"</span>&nbsp;分&nbsp;<span class='tim-shi'>"+CSecond+"</span>&nbsp;秒&nbsp;");   //输出有天数的数据
+	  	
+	 }
+ setTimeout("lxfEndtime("+endtime/1000+")",1000);
+};
+
+</script>
+
+<div class="detail-box1">
+	<div class="detail-show"> 
+		<!-- 显示大图 开始 -->
+		<div id="preview" class="show-pic jqzoom">
+			<volist name="gi.goods_img" id="img" offset="0" length="1">
+				<input id="goods_img" type="hidden" value="{$img.goods_img}"/>
+				<img width="400" height="400" jqimg="/Uploads/{$img.save_path}{$img.save_name}" src="/Uploads/{$img.save_path}Thumb/l_{$img.save_name}" /> </volist>
+		</div>
+		<!-- 显示大图 结束 -->
+		<div class="show-list"> <a href="javascript:;" class="show-list-prev"></a>
+			<div class="show-list-con">
+				<ul>
+					<volist name="gi.goods_img" id="img" key="k"> <li data-img="/Uploads/{$img.save_path}Thumb/l_{$img.save_name}" data-zoom="/Uploads/{$img.save_path}{$img.save_name}"
+						
+						<if condition="$k eq 1">class="sList-on"</if>
+						> <img width="60px" height="60px"
+						src="/Uploads/{$img.save_path}Thumb/s_{$img.save_name}">
+						</li>
+					</volist>
+				</ul>
+			</div>
+			<a href="javascript:;" class="show-list-next"></a>
+			<div class="clear"></div>
+		</div>
+		<script src="/Static/Common/zoom/jquery.jqzoom.js"></script> 
+		<script src="/Static/Common/zoom/zoom.js"></script> 
+		
+		<!-- 显示大图 结束 -->
+		
+		<div class="show-share">
+			<div class="u-cell"> <span></span> <a onClick="collect({$gi.goods_id})" href="javascript:;">收藏商品</a> <em>+1</em> </div>
+			<div class="sShare-list"> <i></i> <span>分享到：</span>
+				<div class="bshare-custom"><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-sharethis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div>
+				<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script> 
+			</div>
+		</div>
+	</div>
+	<div id="_nomal_div" style="" class="detail-depict">
+		<div class="depict-name">
+			<h1>{$gi.goods_name}</h1>
+			<p style="" id="_proadvstr" class="dName-Buy">{$gi.small_name}</p>
+			<!-- 葡萄酒评分开始 --> 
+			<!-- 葡萄酒评分结束 --> 
+		</div>
+		<div class="depict-price">
+			<switch name="gi.promote" >
+				<case value="1">
+					<div class="dPrice-pri">
+						<p class="pri"> <span id="_jxjgmc">促&nbsp;销&nbsp;价</span><i>￥</i> <em
+						id="_nowPriceStr">{$gi.shop_price}</em>
+							<input type="hidden"
+						value="{$gi.shop_price}" id="_baknowPriceStr">
+						</p>
+						<p style="" class="tim _leaveTimeLen"> <i></i> 距离<span class="tim-shi">￥{$gi.promote_price}</span>购买还有 <strong id="leftTime"class="t"> </strong> </p>
+						<script>lxfEndtime("{$gi.promote_start_date}");</script>
+						<div class="clear"></div>
+					</div>
+				</case>
+				<case value="2">
+					<div class="dPrice-pri">
+						<p class="pri"> <span id="_jxjgmc">促&nbsp;销&nbsp;价</span><i>￥</i> <em
+						id="_nowPriceStr">{$gi.promote_price}</em>
+							<input type="hidden"
+						value="{$gi.promote_price}" id="_baknowPriceStr">
+						</p>
+						<p style="" class="tim _leaveTimeLen"> <i></i> 剩余 <strong id="leftTime"class="t"> </strong> </p>
+						<script>lxfEndtime("{$gi.promote_end_date}");</script>
+						<div class="clear"></div>
+					</div>
+				</case>
+				<default />
+				<div class="dPrice-pri">
+					<p class="pri"> <span id="_jxjgmc">促&nbsp;销&nbsp;价</span><i>￥</i> <em
+						id="_nowPriceStr">{$gi.shop_price}</em>
+						<input type="hidden"
+						value="{$gi.shop_price}" id="_baknowPriceStr">
+					</p>
+					<div class="clear"></div>
+				</div>
+			</switch>
+			<div style="" id="_nowactstr" class="dPrice-pricing">
+				<div class="pricing-tit">优&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;惠</div>
+				<div class="pricing-con">
+					<div class="pri-con-act">
+						<div class="pri-con-bg"> <i></i><em>网站专享</em> </div>
+						<div class="pri-con-pre">已优惠￥{$gi['market_price']-$gi['shop_price']}元</div>
+						<div class="pri-con-view"> <a target="_blank" href=""></a> </div>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div style="" id="_nowactstr" class="dPrice-pricing">
+				<div class="pricing-tit">销&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</div>
+				<div class="pricing-con">
+					<div class="pri-con-act">
+						<div class="pri-con-pre">{$gi.sales}件</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div style="display: none;" id="_pur" class="dPrice-premiums"> </div>
+			<div style="display: none;" id="_lartgessprostr"
+				class="dPrice-premiums"></div>
+		</div>
+		<div id="_shdzdiv" class="depict-order"> 
+			
+			<!-- 套装 -->
+			<div style="display: none;" id="_dmdyhtz" class="dOrder-set"></div>
+			<div style="display: none;" id="_dmdyhtzyxz" class="u-selected"></div>
+			<include file="Goods:sku"/> 
+			
+			<!-- 购买数量 -->
+			<div id="_gmsl" class="dOrder-buyNub">
+				<div class="buyNub-tit">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</div>
+				<div class="buyNub-nub">
+					<div class="buyNub-nub-wrap"> <i id="jian" class="buyNub-nub-blus-c buyNub-nub-blus"></i>
+						<input
+							type="text" value="1" onKeyUp="gv_renum();" id="prosum" name="">
+						<i id="jia" class="buyNub-nub-top"></i> </div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<!--<div class="handBag">此商品无原厂手提袋</div>  --> 
+			
+		</div>
+		<div class="buyNub-buy-wrap">
+			<div class="buyNub-buy">
+				<if condition="$gi.is_on_sale eq 1">
+					<if condition="$gi.is_yushou eq 1"> <a id="_orderbuy" class="u-buy-orderbuy" href="#"> <i></i> <span>立即预约</span> </a>
+						<else/>
+						<div class="tb-action tm-clear">
+							<div class="tb-btn-buy tb-btn-sku"> <a title="点击此按钮，到下一步确认购买信息。" data-addfastbuy="true" rel="nofollow" href="#" id="J_LinkBuy">立即购买</a> </div>
+							<div class="tb-btn-basket tb-btn-sku "> <a id="J_LinkBasket" rel="nofollow" href="#"><i></i>加入购物车</a> </div>
+						</div>
+					</if>
+					<else/>
+					<a style="" id="_nosale" class="u-buy-over" href="javascript:;">商品下架了</a> </if>
+				<a style="display:none;" id="_orderbuyover" class="u-buy-over" href="javascript:;">预约结束</a> <a style="display:none;" id="_buyover" class="u-buy-over" href="javascript:;">到货通知</a> <a style="display:none;" id="_nosupportsh" class="u-buy-over" href="javascript:;">商品不支持配送</a> <a style="display:none;" id="_tmpnosale" class="u-buy-over" href="javascript:;">暂不销售</a>
+				<div style="display: none;" id="u-buy-layId" class="u-buy-lay">
+					<div class="u-buy-con">
+						<div class="u-buy-fail"> <i></i><span>购物车商品种类已达上限，快去结算吧~</span> </div>
+						<div class="u-buy-ok"> <i></i> <span>添加成功!</span> </div>
+						<div class="u-buy-gon"> <a class="u-buy-go" target="_blank"
+								href="/Cart/info">去结算</a> <a class="u-buy-g"
+								href="javascript:;">继续购物</a> </div>
+						<!--<div class="u-buy-tit">买过该商品的用户还买了</div>
+						<div class="u-collect-list">
+							<ul id="finalsales">
+								<li>
+									<div class="u-notice-pic"> <a target="_blank"
+											href="http://www.jiuxian.com/goods-18522.html?src=4824"><img
+											width="80" height="80" alt="52°五粮国宾酒中国红500ml*6"
+											src="http://img07.jximage.com/2015/0106/df4a809e227b4efbaa55fbe6de9495f52.jpg"></a> </div>
+									<div class="u-notice-name"> <a title="52°五粮国宾酒中国红500ml*6" target="_blank"
+											href="http://www.jiuxian.com/goods-18522.html">52°五粮国宾酒中国红500ml*6</a> </div>
+									<div goodid="data[i].iid" class="u-notice-price"></div>
+								</li>
+							</ul>
+						</div>--> 
+					</div>
+					<a class="u-buy-close" href="javascript:;"></a> <s></s> </div>
+			</div>
+			<div class="dLeft-weixin">
+				<div class="dLeft-weiboPic"> <img width="80" height="80"
+						src="http://misc.jiuxian.com/img/detailImg/DB328B7A-7109-4A20-A3CC-094425EDCB71.jpg"> </div>
+				<div class="dLeft-weiboCon">
+					<div style="padding-left: 20px; padding-top: 10px;"> 下载酒仙客户端<br>
+						美酒随时抢 </div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="depict-other">
+			<div class="other-payment"> 支付方式<span style="" id="_isCashOnDelivery" class="payment-hdfk"><i></i>货到付款（部分地区）</span> <span class="payment-zxzf"> <i></i> 在线支付 </span> </div>
+			<div style="display: none" id="_isDisableBonus" class="other-point"></div>
+		</div>
+	</div>
+	
+	<!-- 店铺开始 -->
+	<empty name="store_info">
+	<div id="supp_info">
+		<div id="brand-bar-pop">
+			<input id="chat_supp_id" value="5" type="hidden">
+			<dl id="ghs_shop" style="border-bottom:1px solid #ddd; padding-bottom:5px; text-align:center;padding-top:13px;padding-bottom:12px;*padding-top:12px;*padding-bottom:9px;">
+				<dt class="shop_title">{$zy_store_name}</dt>
+				<dd> </dd>
+				<div class="ghs_clear"></div>
+			</dl>
+			<dl id="hotline">
+				<dt>客 服 QQ&nbsp;&nbsp;&nbsp;&nbsp;<em><a href="http://wpa.qq.com/msgrd?v=3&amp;uin={$kefu_qq}&amp;site=qq&amp;menu=yes" target="_blank" alt="点击这里联系我" title="点击这里联系我"><img src="http://wpa.qq.com/pa?p=1:{$kefu_qq}:4" alt="QQ" height="16" border="0"></a></em></dt>
+				<dd> </dd>
+				<div class="ghs_clear"></div>
+			</dl>
+			<dl id="hotline">
+				<dt>客服旺旺&nbsp;&nbsp;&nbsp;&nbsp;<em> <a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid={$kefu_ww}&amp;s=2" target="_blank"> <img src="http://amos1.taobao.com/online.ww?v=2&amp;uid={$kefu_ww}&amp;s=2" alt="淘宝旺旺" height="16" border="0" width="16"></a> </em></dt>
+				<dd> </dd>
+				<div class="ghs_clear"></div>
+			</dl>
+			<!-- -->
+			<dl id="hotline">
+				<dt>客服电话&nbsp;&nbsp;&nbsp;&nbsp;</dt>
+				<dd>{$telphone}</dd>
+				<dd class="ghs_clear"></dd>
+			</dl>
+			<dl id="hotline">
+				<dt>所在地区&nbsp;&nbsp;&nbsp;&nbsp;</dt>
+				<dd>{$address}</dd>
+				<dd class="ghs_clear"></dd>
+			</dl>
+		</div>
+	</div>
+</div>
+<else />
+<div id="supp_info">
+	<div id="brand-bar-pop">
+		<input id="chat_supp_id" value="5" type="hidden">
+		<dl id="ghs_shop" style="border-bottom:1px solid #ddd; padding-bottom:5px; text-align:center;padding-top:13px;padding-bottom:12px;*padding-top:12px;*padding-bottom:9px;">
+			<dt class="shop_title">卖家：<a href="/shop/{$store_info.store_id}" target="_blank" style="color:#333333">{$store_info.seller_name}</a></dt>
+			<dd> </dd>
+			<div class="ghs_clear"></div>
+		</dl>
+		<dl id="hotline">
+			<dt>好评率&nbsp;&nbsp;&nbsp;&nbsp;</dt>
+			<dd><span class="hot_grey"><span class="hot_red" style="width:{$gi['hpl']*100}%;"></span></span></dd>
+			<dd class="ghs_clear"></dd>
+		</dl>
+		<ul class="score_detail">
+			<li style="border-left:0;"> <span>描述</span> <span class="scores">{$store_info.store_desccredit}</span> </li>
+			<li> <span>服务</span> <span class="scores">{$store_info.store_servicecredit}</span> </li>
+			<li> <span>物流</span> <span class="scores">{$store_info.store_deliverycredit}</span> </li>
+		</ul>
+		<dl id="hotline" style="padding-top:10px;">
+			<dt>商家名称&nbsp;&nbsp;&nbsp;&nbsp;{$store_info.store_name}</dt>
+			<dd> </dd>
+			<div class="ghs_clear"></div>
+		</dl>
+		<dl id="hotline">
+			<dt>商店等级：中级店铺</dt>
+			<dd> </dd>
+			<div class="ghs_clear"></div>
+		</dl>
+		<dl id="hotline">
+			<dt>客 服 QQ&nbsp;&nbsp;&nbsp;&nbsp;<em><a href="http://wpa.qq.com/msgrd?v=3&amp;uin={$store_info.store_qq}&amp;site=qq&amp;menu=yes" target="_blank" alt="点击这里联系我" title="点击这里联系我"><img src="http://wpa.qq.com/pa?p=1:2697133333:4" alt="QQ" height="16" border="0"></a></em></dt>
+			<dd> </dd>
+			<div class="ghs_clear"></div>
+		</dl>
+		<dl id="hotline">
+			<dt>客服旺旺&nbsp;&nbsp;&nbsp;&nbsp;<em> <a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid={$store_info.store_ww}&amp;s=2" target="_blank"> <img src="http://amos1.taobao.com/online.ww?v=2&amp;uid={$store_info.store_ww}&amp;s=2" alt="淘宝旺旺" height="16" border="0" width="16"></a> </em></dt>
+			<dd> </dd>
+			<div class="ghs_clear"></div>
+		</dl>
+		<!-- -->
+		<dl id="hotline">
+			<dt>客服电话&nbsp;&nbsp;&nbsp;&nbsp;</dt>
+			<dd>{$store_info.contacts_phone}</dd>
+			<dd class="ghs_clear"></dd>
+		</dl>
+		<dl id="hotline">
+			<dt>所在地区&nbsp;&nbsp;&nbsp;&nbsp;</dt>
+			<dd>{$store_info.company_address}{$store_info.company_address_detail}</dd>
+			<dd class="ghs_clear"></dd>
+		</dl>
+		<!--  <dl id="hotline">
+    <dt>创店时间：</dt>
+    <dd>2015-07-22</dd>
+    <dd class="ghs_clear"></dd>
+  </dl>
+  -->
+		<div id="enter-shop">
+			<div class="shop_follow_item clearfix"> <a class="btn_flat1 btn_goto_shop" href="/shop/{$store_info.store_id}" target="_blank"> 进入商店 </a> <a class="btn_flat1 btn_shop_add" href="javascript:guanzhu({$store_info.store_id});"> 关注本店 </a> </div>
+			<!-- 				<div id="attention-shop"> --> 
+			<!-- 					<p>扫一扫，手机访问店铺</p> --> 
+			<!-- 					<img src="erweima_supplier.php?sid=5" height="120" width="120"> </div> --> 
+		</div>
+	</div>
+</div>
+</empty>
+
+<!-- 店铺结束 --> 
+<!--<div class="credit-jyScore">
+			<p class="jyScore-pic">
+
+				<a target="_blank" href="#"><img width="165" height="70"
+					src="__PUBLIC__/Upload/Mall/Brand/{$gi.brand.brand_logo}"> <span>{$gi.brand.brand_name}</span>
+				</a>
+
+
+			</p>
+			<p class="jyScore-strip"></p>
+			<p class="jyScore-fra">
+				酒友评分 <span> <em style="width: 65.28px;"></em>
+				</span> <b>4.8</b>
+			</p>
+			<p class="jyScore-com">
+				酒友点评（<a href="#answerArea">共438条评论</a>）
+			</p>
+		</div>
+		<div class="credit-gold">
+			赠送金币：<b id="_goldCoinNubStr">94</b>
+		</div>
+		<div class="credit-proNum">
+			产品编号<span>{$gi.goods_sn}</span>
+		</div>--> 
+<!--
+		<div class="credit-question">
+			<span> <a target="_blank"
+				href="http://www.jiuxian.com/pro/editAsk.htm?prodId=17164">商品纠错</a>
+				<i></i>
+			</span> <span> <a target="_blank"
+				href="http://special.jiuxian.com/goldPlan.htm">什么是金币</a> <i></i>
+			</span>
+		</div>
+		<div class="credit-antifake">
+			<p>商品辨真伪</p>
+			<div class="codeBox">
+				<img width="176" height="85"
+					src="http://img06.jiuxian.com/bill/2015/0514/5ea65158c767419b9207e44cb4697a72.jpg"
+					alt="商品辨真伪">
+			</div>
+			<div class="scanTip">
+				酒仙APP扫一扫条形码慧眼帮您辨真伪！<b></b>
+			</div>
+		</div>-->
+
+<div class="clear"></div>
+</div>
+<input id="goods_id" type="hidden" value="{$gi.goods_id}"/>
+<input id="store_id" type="hidden" value="{$gi.store_id}"/>
+<input id="goods_name" type="hidden" value="{$gi.goods_name}"/>
+<script>
+$("#jian").click(function(){
+	var prosum=$("#prosum").val();
+	if(prosum>1){
+		$("#prosum").val(prosum-1);
+	}
+});
+$("#jia").click(function(){
+	var prosum=$("#prosum").val();
+	
+	$("#prosum").val(prosum*1+1);
+	
+});
+$(".u-buy-g").click(function(){
+	
+	$("#u-buy-layId").hide();
+	
+});
+$(".u-buy-close").click(function(){
+	
+	$("#u-buy-layId").hide();
+	
+});
+
+
+$("#J_LinkBasket").click(function(){
+	var goods_id = $("#goods_id").val();
+	var prosum  = $("#prosum").val();
+	var store_id= $("#store_id").val();
+	var goods_name = $("#goods_name").val();
+	var goods_img = $("#goods_img").val();
+	$.post("/Cart/add",{
+			    goods_id:goods_id,
+			    prosum:prosum,
+			    store_id:store_id,
+			    goods_name:goods_name,
+			    goods_img:goods_img,
+			  },
+			  function(ret){
+					if(ret.status==1){
+						$("#u-buy-layId").show();
+					}else if(ret.status==3){
+						alert('不能购买自己店铺的商品');
+					}else{
+						alert("添加失败");
+					}
+					if(ret.status==2){
+						var his_url= top.location.href;
+						window.location='/Public/login?his_url='+his_url;
+					}
+			  }
+	);
+})
+function add_cart(){
+	var goods_id = $("#goods_id").val();
+	var prosum  = $("#prosum").val();
+	var store_id= $("#store_id").val();
+	var goods_name = $("#goods_name").val();
+	var goods_img = $("#goods_img").val();
+	 $.post("/Cart/add",
+			  {
+			    goods_id:goods_id,
+			    prosum:prosum,
+			    store_id:store_id,
+			    goods_name:goods_name,
+			    goods_img:goods_img,
+			  },
+			  function(ret){
+					if(ret.status==1){
+						window.location='/Cart/info';
+					}else if(ret.status==3){
+						alert('不能购买自己店铺的商品');
+					}
+					if(ret.status==2){
+						var his_url= top.location.href;
+						window.location='/Public/login?his_url='+his_url;
+					}
+			  }
+	);
+}
+$("#J_LinkBuy").click(function(){
+	add_cart();
+});
+
+</script> 

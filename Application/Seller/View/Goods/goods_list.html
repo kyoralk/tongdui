@@ -1,0 +1,101 @@
+<div class="main-content" id="mainContent">
+	<div class="tabmenu">
+		<ul class="tab pngFix">
+			<li class="active">
+				<a href="#">出售中的商品</a>
+			</li>
+		</ul>
+		<a href="{:U('Goods/selectClass')}" class="ncsc-btn ncsc-btn-green" title="发布新商品"> 发布新商品</a> 
+	</div>
+<form method="get" action="{:U('Goods/goodsList')}">
+		<include file="Goods:search"/>
+</form>
+	<table class="ncsc-table-style">
+		<thead>
+			<tr>
+				<th class="w30">&nbsp;</th>
+				<th class="w50">&nbsp;</th>
+				<th style="text-align: left;">商品名称</th>
+				<th class="w100">浏览次数</th>
+				<th class="w100">销量</th>
+				<th class="w100">上架状态</th>
+				<th class="w100">审核状态</th>
+				<th class="w100">价格</th>
+				<th class="w200">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="goods_list" id="gl">
+				<tr>
+					<td class="trigger">
+						<input name="goods_id[]" type="checkbox" value="{$gl.goods_id}"/>
+					</td>
+					<td>
+						<div class="pic-thumb">
+							<a href="{:U('Goods/info',array('goods_id'=>$gl['goods_id']))}">
+							<img src="/Uploads/Mall/Seller/{$gl.store_id}/Goods/Thumb/s_{$gl.save_name}" />
+							</a> 
+						</div>
+					</td>
+					<td class="tl">
+						<dl class="goods-name">
+							<dt>
+								<if condition="$gl.store_tuijian eq 1"> 
+									<span>荐</span> 
+								</if>
+								<a href="{:U('Goods/info',array('goods_id'=>$gl['goods_id']))}" target="_blank">{$gl.goods_name}</a> 
+							</dt>
+							<dd>商家货号：{$gl.goods_sn}</dd>
+						</dl>
+					</td>
+					<td>{$gl.click_count}</td>
+					<td>{$gl.sales}</td>
+					<td>
+						<if condition="$gl.is_on_sale eq 1" >
+						已上架
+						<else/>
+						未上架
+						</if>
+					</td>
+					<td>
+						<switch name="gl.examine_status">
+							<case value="1">通过</case>
+							<case value="2">未审核</case>
+							<case value="3">驳回</case>
+						</switch>
+					</td>
+					<td><span>&yen;{$gl.shop_price}</span></td>
+					<td class="nscs-table-handle">
+<!-- 						<span><a target="_blank" href="/product/{$gl.goods_id}" class="btn-blue"><i class="icon-eye-open"></i><p>查看</p></a></span> -->
+						<span><a href="{:U('Goods/info',array('goods_id'=>$gl['goods_id']))}"class="btn-blue"><i class="icon-edit"></i><p>编辑</p></a></span>
+						<span><a href="javascript:del({$gl.goods_id});" class="btn-red"><i class="icon-trash"></i><p>删除</p></a></span>
+					</td>
+				</tr>
+			</volist>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="tc">
+					<input type="checkbox" id="all2" class="checkall" />
+				</th>
+				<th colspan="10">
+					<label for="all2">全选</label>
+					<a href="javascript:void(0);" class="ncsc-btn-mini"><i class="icon-trash"></i>删除</a>
+					<a href="javascript:void(0);" class="ncsc-btn-mini"><i class="icon-level-down"></i>下架</a>
+				</th>
+			</tr>
+		</tfoot>
+	</table>
+	<div class="g-pagination"> <ul>{$page}</ul> </div>
+</div>
+<script>
+$(".checkall").click(function(){
+	ms.checkAll(this,"input[name='goods_id[]']");
+});
+function del(goods_id){
+	var r=confirm("确认删除");
+	if(r==true){
+		self.location.href = '/Seller/Goods/delete/goods_id/'+goods_id;
+	}
+}
+</script>

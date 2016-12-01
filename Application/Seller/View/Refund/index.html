@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="/Static/Seller/Css/olist.css">
+
+<div class="main-content" id="mainContent">
+    <div class="tabmenu">
+        <ul class="tab pngFix">
+            <li class="active"> <a href="#">{$content_header}</a> </li>
+        </ul>
+    </div>
+    <div class="uc-order-list-box">
+        <ul class="uc-order-detail-list">
+            <empty name="order_list">
+                <li>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </li>
+                <else/>
+                <volist name="order_list" id="ol">
+                    <li class="uc-order-detail-item">
+                        <table class="order-detail-table">
+                            <thead>
+                            <tr>
+                                <?php $order = M('OrderInfo')->where('order_sn='.$ol['order_sn'])->find();
+                                 ?>
+                                <th colspan="6" class="column-info column-t"> <div class="column-content"> 订单号：<a href="">{$order.order_sn}</a><span class="sep">|</span>联系人：{$order.consignee}<span class="sep">|</span>收货地址：{$order.address}<span class="sep">|</span>联系电话：{$order.mobile}<span class="sep">|</span>预定时间：{$order.order_time|date="Y-m-d h:i:s",###} </div>
+                                </th>
+                                <th class="column-info column-t">
+                                    <div class="operates">
+                                    </div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                                <td class="column-detail column-l">
+                                    <ul class="order-goods-list">
+                                        <?php $og = M('OrderGoods')->where('order_sn ='.$ol['order_sn'])->find(); ?>
+                                        <li>
+                                            <a href="javascript:;" target="_blank">
+                                                <img  src="/Uploads/{$og.goods_img}" class="goods-thumb">
+                                            </a>
+                                            <div class="desc"style="width:400px;">
+                                                <p class="baobei-name"> <a href="/product/{$og.goods_id}.html" target="_blank">{$og.goods_name}</a> </p>
+                                            </div>
+                                            <div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">单价：{$og.price}</i><br>
+                                                <i class="special-num">数量：{$og.prosum}</i><br>
+
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class="column-price"><div  class="order-info order-price">退款现金：￥{$ol.cash}</div></td>
+                                <td class="column-price"><div  class="order-info order-price">退款一券通：￥{$ol.yqt}</div></td>
+                                <td class="column-price"><div  class="order-info order-price">退款购物卷：￥{$ol.gwq}</div></td>
+                                <td class="column-price"><div  class="order-info order-price">退款合计：￥{$ol.amount}</div></td>
+                                <td class="column-action">
+                                    <?php echo $status_array[$ol['status']]; ?>
+                                </td>
+                                <td class="column-action">
+                                    <a href="<?php echo U('Seller/Refund/judge/refund_id/'.$ol['refund_id']); ?>"  class="btn">编辑</a>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                </volist>
+            </empty>
+        </ul>
+    </div>
+    <div class="g-pagination">
+        <ul>
+            {$page}
+        </ul>
+    </div>
+</div>

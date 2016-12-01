@@ -1,0 +1,72 @@
+<div class="main-content" id="mainContent">
+	<div class="tabmenu">
+		<ul class="tab pngFix">
+			<li class="active">
+				<a href="#">申请列表</a></li>
+		</ul>
+		<a href="{:U('Brand/apply')}" class="ncsc-btn ncsc-btn-green" title="发布新商品"> 添加申请</a> </div>
+	<table class="ncsc-table-style">
+		<thead>
+			<tr>
+				<th class="w30">品牌名称</th>
+				<th class="w50">logo</th>
+				<th class="w100">状态</th>
+				<th class="w200">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="goods_list" id="gl">
+				<tr>
+					<td class="trigger"><i class="tip icon-plus-sign"
+								title="点击展开查看此商品全部规格；规格值过多时请横向拖动区域内的滚动条进行浏览。"></i></td>
+					<td><div class="pic-thumb"> <a
+										href="/product/{$gl.goods_id}"
+										target="_blank">
+							<volist name="gl['goods_img']" id="img" offset="0" length='1'> <img
+										src="__PUBLIC__/Upload/Mall/Seller/{$img.store_id}/s_{$img.goods_img}" /> </volist>
+							</a> </div></td>
+					<td class="tl"><dl class="goods-name">
+							<dt>
+								<if condition="$gl.store_tuijian eq 1"> <span>荐</span> </if>
+								<a href="/product/{$gl.goods_id}" target="_blank">{$gl.goods_name}</a> </dt>
+							<dd>商家货号：{$gl.goods_sn}</dd>
+						</dl></td>
+					<td><span>&yen;{$gl.shop_price}</span></td>
+					<td class="nscs-table-handle"><span> <a target="_blank"
+									href="/product/{$gl.goods_id}"
+									class="btn-blue"><i class="icon-eye-open"></i>
+						<p>查看</p>
+						</a></span> <span> <a 
+									href="__APP__/Goods/goodsInfo/goods_id/{$gl.goods_id}"
+									class="btn-blue"><i class="icon-edit"></i>
+						<p>编辑</p>
+						</a></span> <span><a href="javascript:void(0);"
+									onclick="ajax_get_confirm('您确定要删除吗?', 'http://192.168.1.168:9017/shop/index.php?act=store_goods_online&op=drop_goods&commonid=100087');"
+									class="btn-red"><i class="icon-trash"></i>
+						<p>删除</p>
+						</a></span></td>
+				</tr>
+			</volist>
+			<tr style="display: none;">
+				<td colspan="20"><div class="ncsc-goods-sku ps-container"></div></td>
+			</tr>
+		</tbody>
+		<!--<tfoot>
+						<tr>
+							<th class="tc"><input type="checkbox" id="all2"
+								class="checkall" /></th>
+							<th colspan="10"><label for="all2">全选</label> <a
+								href="javascript:void(0);" nc_type="batchbutton"
+								uri="http://192.168.1.168:9017/shop/index.php?act=store_goods_online&op=drop_goods"
+								name="commonid" confirm="您确定要删除吗?" class="ncsc-btn-mini"><i
+									class="icon-trash"></i>删除</a> <a href="javascript:void(0);"
+								nc_type="batchbutton"
+								uri="http://192.168.1.168:9017/shop/index.php?act=store_goods_online&op=goods_unshow"
+								name="commonid" class="ncsc-btn-mini"><i
+									class="icon-level-down"></i>下架</a>
+							</th>
+						</tr>
+					</tfoot>-->
+	</table>
+	<div class="g-pagination"> {$page} </div>
+</div>

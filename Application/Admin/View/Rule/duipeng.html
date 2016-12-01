@@ -1,0 +1,172 @@
+<section class="content-header">
+	<div class="row">
+		<div class="col-md-11">
+			<h4><small>{$content_header}</small></h4>
+		</div>
+		<div class="col-md-1">
+			<notempty name="right_menu"> <a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a> </notempty>
+		</div>
+	</div>
+</section>
+<section class="content">
+	<div class="box box-info form-inline">
+		<form name="myform" id="myform" class="form-horizontal" action="{:U('Rule/duipeng')}" method="post">
+			<div class="box-body">
+				<volist name="list" id="vo">
+					<div class="panel panel-default">
+						<div class="panel-heading">对碰奖</div>
+						<div class="panel-body">
+							<volist name="vo.config" id="co" offset="1" length='1'> <input id="opend1" name="open_d" type="radio" value="1" 
+								<if condition="$co['DUIPENG']['open'] eq 1 ">checked="checked"</if>
+								/>
+								<label for="opend1">开启&nbsp;&nbsp;</label>
+								<input id="opend2" name="open_d" type="radio" value="0" 
+								<if condition="$co['DUIPENG']['open'] eq 0 ">checked="checked"</if>
+								/>
+								<label for="opend2">关闭&nbsp;&nbsp;</label>
+								<br/>
+								<volist name="co['DUIPENG']['bobi']" id="coo">
+									<div class="input-group" style="margin-left: 10px;">
+										<input name="bobi[]" class="form-control" type="text"  style="width: 50px;" value="{$coo}">
+										<span class="input-group-addon" style="background: #eee;">%</span> </div>
+								</volist>
+							</volist>
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th width="300px">业绩区间</th>
+										<th width="100px">对碰比值</th>
+										<th width="350px">封顶类型</th>
+										<th>封顶金额：一星&nbsp;|&nbsp;二星&nbsp;|&nbsp;三星&nbsp;|&nbsp;四星</th>
+									</tr>
+								</thead>
+								<tbody>
+									<volist name="vo.config" id="co" offset="0" length='1'>
+										<volist name="co" id="coo" key="k">
+											<tr>
+												<td><input name="min_fee_{$k}" class="form-control" style="width: 100px;" type="text" value="{$coo.min_fee}"/>
+													&nbsp;&nbsp;&nbsp;到&nbsp;&nbsp;&nbsp;
+													<input name="max_fee_{$k}" class="form-control" style="width: 100px;" type="text" value="{$coo.max_fee}"/></td>
+												<td><input name="bi_{$k}" class="form-control" style="width: 50px;" type="text" value="{$coo.bi}"/></td>
+												<td><input id="r1{$k}" name="cap_type_{$k}" type="radio" value="no_cap" 
+													<if condition="$coo.cap_type eq 'no_cap' ">checked="checked"</if>
+													/>
+													<label for="r1{$k}">不封顶&nbsp;&nbsp;</label>
+													<input id="r2{$k}" name="cap_type_{$k}" type="radio" value="day" 
+													<if condition="$coo.cap_type eq 'day' ">checked="checked"</if>
+													/>
+													<label for="r2{$k}">日封顶&nbsp;&nbsp;</label>
+													<input id="r3{$k}" name="cap_type_{$k}" type="radio" value="week" 
+													<if condition="$coo.cap_type eq 'week' ">checked="checked"</if>
+													/>
+													<label for="r3{$k}">周封顶&nbsp;&nbsp;</label>
+													<input id="r4{$k}" name="cap_type_{$k}" type="radio" value="month" 
+													<if condition="$coo.cap_type eq 'month' ">checked="checked"</if>
+													/>
+													<label for="r4{$k}">月封顶</label>
+													<input id="r5{$k}" name="cap_type_{$k}" type="radio" value="permanent" 
+													<if condition="$coo.cap_type eq 'permanent' ">checked="checked"</if>
+													/>
+													<label for="r5{$k}">永久封顶</label></td>
+												<td><foreach name="coo.cap_fee" item="fee">
+														<input name="cap_fee_{$k}[]" class="form-control" style="width: 80px;" type="text" value="{$fee}"/>
+													</foreach></td>
+											</tr>
+										</volist>
+									</volist>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">见点奖</div>
+						<div class="panel-body">
+							<volist name="vo.config" id="co" offset="2" length='1'> <input id="open1" name="open_j" type="radio" value="1" 
+								<if condition="$co['JIANDIAN']['open'] eq 1 ">checked="checked"</if>
+								/>
+								<label for="open1">开启&nbsp;&nbsp;</label>
+								<input id="open2" name="open_j" type="radio" value="0" 
+								<if condition="$co['JIANDIAN']['open'] eq 0 ">checked="checked"</if>
+								/>
+								<label for="open2">关闭&nbsp;&nbsp;</label>
+								<br/>
+								<input id="r1jiandian" name="cap_type_j" type="radio" value="no_cap" 
+								<if condition="$co['JIANDIAN']['cap_type'] eq 'no_cap' ">checked="checked"</if>
+								/>
+								<label for="r1jiandian">不封顶&nbsp;&nbsp;</label>
+								<input id="r2jiandian" name="cap_type_j" type="radio" value="day" 
+								<if condition="$co['JIANDIAN']['cap_type'] eq 'day' ">checked="checked"</if>
+								/>
+								<label for="r2jiandian">日封顶&nbsp;&nbsp;</label>
+								<input id="r3jiandian" name="cap_type_j" type="radio" value="week" 
+								<if condition="$co['JIANDIAN']['cap_type'] eq 'week' ">checked="checked"</if>
+								/>
+								<label for="r3jiandian">周封顶&nbsp;&nbsp;</label>
+								<input id="r4jiandian" name="cap_type_j" type="radio" value="month" 
+								<if condition="$co['JIANDIAN']['cap_type'] eq 'month' ">checked="checked"</if>
+								/>
+								<label for="r4jiandian">月封顶</label>
+								<input id="r5jiandian" name="cap_type_j" type="radio" value="permanent" 
+								<if condition="$co['JIANDIAN']['cap_type'] eq 'permanent' ">checked="checked"</if>
+								/>
+								<label for="r5jiandian">永久封顶</label>
+								<input name="cap_fee_j" class="form-control" style="width: 80px;" type="text" value="{$co.JIANDIAN.cap_fee}"/>
+								<br/>
+								<div class="input-group" style="margin-left: 10px;">
+									<input name="bobi_j" class="form-control" type="text"  style="width: 50px;" value="{$co.JIANDIAN.bobi}">
+									<span class="input-group-addon" style="background: #eee;">%</span> </div>
+							</volist>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">重消奖：扣除对碰奖和见点奖的N%生成购物券</div>
+						<div class="panel-body">
+							<volist name="vo.config" id="co" offset="3" length='1'>
+								<div class="input-group" style="margin-left: 10px;">
+									<input name="chongxiao" class="form-control" type="text"  style="width: 50px;" value="{$co.CHONGXIAO}">
+									<span class="input-group-addon" style="background: #eee;">%</span> </div>
+							</volist>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">积分</div>
+						<div class="panel-body">
+						<volist name="vo.config" id="co" offset="4" length='1'>
+							<label for="r5jiandian">锁定资产包</label>
+							<div class="input-group" style="margin-left: 10px;">
+								<input name="zcb" class="form-control" type="text"  style="width: 50px;" value="{$co['JF']['zcb']}">
+								<span class="input-group-addon" style="background: #eee;">%</span> </div>
+							<label for="r5jiandian">&nbsp;&nbsp;&nbsp;增值积分</label>
+							<div class="input-group" style="margin-left: 10px;">
+								<input name="zzjf" class="form-control" type="text"  style="width: 50px;" value="{$co['JF']['zzjf']}">
+								<span class="input-group-addon" style="background: #eee;">%</span> </div>
+							<label for="r5jiandian">&nbsp;&nbsp;&nbsp;单次释放</label>
+							<div class="input-group" style="margin-left: 10px;">
+								<input name="dcsf" class="form-control" type="text"  style="width: 50px;" value="{$co['JF']['dcsf']}">
+								<span class="input-group-addon" style="background: #eee;">%</span> 
+							</div>
+							<label for="r5jiandian">&nbsp;&nbsp;&nbsp;增值比例</label>
+							<div class="input-group" style="margin-left: 10px;">
+								<input name="zzb" class="form-control" type="text"  style="width: 50px;" value="{$co['JF']['zzb']}">
+								<span class="input-group-addon" style="background: #eee;">%</span> 
+							</div>
+							<label for="r5jiandian">&nbsp;&nbsp;&nbsp;增值月数</label>
+							<div class="input-group" style="margin-left: 10px;">
+								<input name="zzys" class="form-control" type="text"  style="width: 50px;" value="{$co['JF']['zzys']}">
+								<span class="input-group-addon" style="background: #eee;">个月</span> 
+							</div>
+							</volist>
+						</div>
+					</div>
+				</volist>
+				
+			</div>
+			<div class="box-footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4">
+					<button type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
