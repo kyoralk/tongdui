@@ -238,29 +238,33 @@ class FinanceController extends CommonController{
      */
     public function rechargelist() {
 
-        $recharge_sn = I('get.recharge_sn');
-        if ($recharge_sn) {
-            $condition['recharge_sn'] = $recharge_sn;
-            $this->assign('recharge_sn', $recharge_sn);
-        }
+        
+		// $recharge_sn = I('get.account_type');
+		// if ($recharge_sn) {
+			$condition['trade_type'] = 1;
+			$this->assign('account_type', 1);
+		// }
 
-        $recharge_num = I('get.recharge_num');
-        if ($recharge_num) {
-            $condition['recharge_num'] = $recharge_num;
-            $this->assign('recharge_num', $recharge_num);
-        }
+		// $recharge_num = I('get.reward_code');
+		// if ($recharge_num) {
+		// 	$condition['reward_code'] = $recharge_num;
+		// 	$this->assign('reward_code', $recharge_num);
+		// }
 
-        $user_name = I('get.recharge_name');
-        if ($user_name) {
-            $condition['recharge_name'] = $user_name;
-            $this->assign('recharge_name', $user_name);
-        }
+		$status = I('get.trade_status');
+		if ($status) {
+			$condition['trade_status'] = $status;
+			$this->assign('trade_status', $status);
+		}
 
-        $data = page(M('ApplyRecharge'), $condition, 20,'view','apply_time DESC','*');
-
-        $this->assign('goods_list',$data['list']);
-        $this->assign('page',$data['page']);
-        $this->display('recharge_list');
+		$data = page(M('MemberAccountLog'), $condition, 20,'view','time_start DESC','*');
+		$this->assign('account_types', $this->account_type());
+		$this->assign('reward_types', $this->reward_type());
+		$this->assign('trade_statuss', $this->trade_status());
+		$this->assign('goods_list',$data['list']);
+		$this->assign('page',$data['page']);
+		$this->display('_account_list');
+        // $this->display('recharge_list');
     }
 
 	public function accountlist() {

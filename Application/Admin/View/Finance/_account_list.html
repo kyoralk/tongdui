@@ -1,0 +1,88 @@
+<section class="content-header">
+    <div class="row">
+        <div class="col-md-8">
+            <form action="{:U('Finance/rechargeList')}" method="get">
+                <h4><small>充值明细列表</small></h4>
+                <div class="form-group">
+                 
+
+                   
+
+                    <select name="trade_status" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+                        <option value="0">交易状态</option>
+                        <?php foreach ($trade_statuss as $k=>$v){ ?>
+                        <option value="{$k}" <if condition="$k eq $trade_status">selected</if>>{$v}</option>
+                        <?php } ?>
+                    </select>
+
+                    <div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+                        <input class="form-control" type="text" name="user_name" value="{$user_name}" placeholder="用户">
+                        <span class="input-group-btn">
+						<button type="submit" class="btn btn-info btn-flat">搜索</button>
+						</span> </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4 right_menu">
+
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>交易流水号</th>
+                    <th width="10%" class="table-textcenter">用户名</th>
+                    <th class="table-textcenter">最终金额</th>
+                    <th class="table-textcenter">交易金额</th>
+                    <th class="table-textcenter">交易类型</th>
+                    <th class="table-textcenter">奖金类型</th>
+                    <th class="table-textcenter">描述</th>
+                    <th class="table-textcenter">交易状态</th>
+                    <th class="table-textcenter">创建时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="goods_list" id="gl">
+                    <tr>
+                        <td>{$gl.out_trade_no}</td>
+                        <td class="table-textcenter">
+                            <?php $user = M('Member')->where('uid='.$gl['uid'])->find();
+                            if ($user)
+                            echo $user['username'];
+                            else
+                            echo $gl['uid'];
+                            ?>
+                        </td>
+
+                        <td class="table-textcenter">{$gl.final_fee}</td>
+                        <td class="table-textcenter">{$gl.trade_fee}</td>
+                        <td class="table-textcenter">
+                            <?php  echo $account_types[$gl['trade_type']]; ?>
+                        </td>
+                        <td class="table-textcenter">
+                            <?php  echo $reward_types[$gl['reward_code']]; ?>
+                        </td>
+
+                        <td class="table-textcenter">{$gl.desc}</td>
+                        <td class="table-textcenter">
+                            <?php  echo $trade_statuss[$gl['trade_status']]; ?>
+                             </td>
+                        <td class="table-textcenter"><?php echo date('Y-m-d H:i:s', $gl['time_start']); ?></td>
+
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer clearfix">
+            <ul class="pagination pagination-sm no-margin pull-right">
+                {$page}
+            </ul>
+        </div>
+    </div>
+</section>
+
