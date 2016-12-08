@@ -53,8 +53,9 @@
 							<td class="table-textcenter">{$ml.member_account.yjt_grant}</td>
 							<td class="table-textcenter">{$ml.member_account.gwq_fee}</td>
 							<td class="table-textcenter">{$ml.member_account.zcb_fee}</td>
-							<td class="table-textcenter">{$ml.member_account.jf_sum}</td>
-							<td class="table-textcenter">{$ml.member_account.jf_sum}</td>
+							<td class="table-textcenter">
+								<?php echo $ml['member_account']['jf_fee'] + $ml['member_account']['jf_feeze']; ?></td>
+							<td class="table-textcenter">{$ml.member_account.jf_fee}</td>
 							<td class="table-textcenter">{$ml.member_account.jf_feeze}</td>
 							<td class="table-textcenter">{$ml.member_account.hj_fee}</td>
 							<td class="table-textcenter">

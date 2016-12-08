@@ -4,17 +4,17 @@
             <form action="{:U('Finance/withdrawlist')}" method="get">
                 <h4><small>提现列表</small></h4>
                 <div class="form-group">
-                    <select name="store_id" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+                    <select name="withdraw_type" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
                         <option value="0">选择类型</option>
                         <?php foreach ($withdrawTypes as $k=>$v){ ?>
                             <option value="{$k}" <if condition="$k eq $withdraw_type">selected</if>>{$v}</option>
                         <?php } ?>
                     </select>
 
-                    <select name="store_id" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+                    <select name="status" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
                         <option value="0">目前状态</option>
                         <?php foreach ($withdrawStatus as $k=>$v){ ?>
-                        <option value="{$k}" <if condition="$k eq $withdraw_type">selected</if>>{$v}</option>
+                        <option value="{$k}" <if condition="$k eq $status">selected</if>>{$v}</option>
                         <?php } ?>
                     </select>
 

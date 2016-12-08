@@ -189,7 +189,8 @@ class GeneralController extends Controller{
 		}
 		$sql.=' WHERE '.$condition_key.' IN ('.$condition_str.')';
 		$Model = new Model();
-		$Model->execute($sql);
+		$Model->execute($sql); 
+		file_put_contents("sql.log", $sql."\r\n", FILE_APPEND);
 // 		writeTXT($Model->getLastSql());
 	}
 	/**

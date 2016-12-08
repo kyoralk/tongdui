@@ -488,6 +488,12 @@ return array (
 												'lang' => '结算统计',
 												'icon' => '',
 										),
+										'account_list' => array (
+											'url' => U('Finance/accountList'),
+											'lang' => '会员资金明细',
+											'icon' => '',
+										),
+
 										
 								),
 								'url' => '',

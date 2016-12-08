@@ -94,6 +94,7 @@ class FinanceController extends CommonController{
 		$condition['oi.settlement_status'] = 0;
 		$field = 'order_sn,settlement_no,bank_account_number,bank_account_name';
 		$settlement_list = M('OrderInfo',C('DB_PREFIX_MALL'))->alias('oi')->join(C('DB_PREFIX_MALL').'store s on oi.store_id = s.store_id')->where($condition)->field($field)->select();
+
 		$order_sn = implode(',', array_column($settlement_list, 'order_sn'));
 // 		$batch_fee = array_sum(array_column($settlement_list, 'settlement_no'));
 		$batch_fee = 1;
@@ -112,6 +113,22 @@ class FinanceController extends CommonController{
 		);
 		$Alipay =  new AlipayController();
 		$Alipay->send($data);
+	}
+
+	/*
+	 * 结算明细
+	 */
+	public function settlement_detail() {
+		$condition['oi.store_id'] = I('get.store_id');
+		$condition['oi.settlement_status'] = 0;
+		$store = M('MallStore', 'ms_')->where('store_id ='.$condition['oi.store_id'])->select();
+		$this->assign('store', $store[0]);
+
+		$field = 'order_sn,settlement_no,bank_account_number,bank_account_name,order_time';
+		$settlement_list = M('OrderInfo',C('DB_PREFIX_MALL'))->alias('oi')->join(C('DB_PREFIX_MALL').'store s on oi.store_id = s.store_id')->where($condition)->field($field)->select();
+		$this->assign('settlement_list', $settlement_list);
+
+		$this->display('settlement_detail');
 	}
 
     /**
@@ -210,7 +227,7 @@ class FinanceController extends CommonController{
             'detail_data'=>$detail_data,
         );
         $Alipay =  new AlipayController();
-        $content =  $Alipay->send($data, 'http://tongdui.hulianwangdai.com/withdraw_trans_notify-PHP-UTF-8/notify_url.php');
+        $content =  $Alipay->send($data, 'http://tongdui.yingrongkeji.com/withdraw_trans_notify-PHP-UTF-8/notify_url.php');
         $this->assign('content', $content);
         $this->display('pay');
     }
@@ -245,4 +262,46 @@ class FinanceController extends CommonController{
         $this->assign('page',$data['page']);
         $this->display('recharge_list');
     }
+
+	public function accountlist() {
+
+		$recharge_sn = I('get.account_type');
+		if ($recharge_sn) {
+			$condition['trade_type'] = $recharge_sn;
+			$this->assign('account_type', $recharge_sn);
+		}
+
+		$recharge_num = I('get.reward_code');
+		if ($recharge_num) {
+			$condition['reward_code'] = $recharge_num;
+			$this->assign('reward_code', $recharge_num);
+		}
+
+		$status = I('get.trade_status');
+		if ($status) {
+			$condition['trade_status'] = $status;
+			$this->assign('trade_status', $status);
+		}
+
+		$data = page(M('MemberAccountLog'), $condition, 20,'view','time_start DESC','*');
+		$this->assign('account_types', $this->account_type());
+		$this->assign('reward_types', $this->reward_type());
+		$this->assign('trade_statuss', $this->trade_status());
+		$this->assign('goods_list',$data['list']);
+		$this->assign('page',$data['page']);
+		$this->display('account_list');
+	}
+
+	private function account_type(){
+		return ['1'=>'充值', '2'=>'提现', '3'=>'消费', '4'=>'赠送', '5'=>'手续费', '6'=>'捐款'];
+	}
+
+	private function reward_type() {
+		return ['DPJ'=>'对碰奖', 'JDJ'=>'见点奖', 'CXJ'=>'重消奖', 'ZZJF'=>'增值积分', 'HJ'=>'黑金', 'JMF'=>'加盟费', 'GHJ'=>'供货价'];
+	}
+
+	private function trade_status() {
+		return ['1'=>'支付成功', '0'=>'未完成'];
+	}
+
 }

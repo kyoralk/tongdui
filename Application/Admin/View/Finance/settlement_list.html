@@ -49,6 +49,7 @@
                     <td class="table-textcenter">{$vo.settlement_already}</td>
                     <td class="table-textcenter">{$vo.settlement_no}</td>
                     <td class="table-textcenter">
+						<a class="btn btn-warning btn-xs" href="{:U('Finance/settlement_detail?store_id='.$vo['store_id'])}" target="_blank">明细</a>
                     	<a class="btn btn-info btn-xs" href="{:U('Finance/settlement?store_id='.$vo['store_id'])}" target="_blank">结算</a>
                    </td>
                	</tr>
