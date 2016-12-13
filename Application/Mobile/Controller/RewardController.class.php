@@ -49,6 +49,16 @@ class RewardController extends CommonController{
 		$proportion = $rc['CZ']['CZ_GWQ_S_GWQ']/100;
 		AccountController::change($this->member_info['uid'], $trade_fee*$proportion, 'GWQ', 4,false,'充值购物券赠送购物券');
 	}
+
+	/**
+	 * 购物赠送购物券
+	 * @param float $trade_fee
+	 */
+	public function sendGWQ($trade_fee, $order_sn=""){
+		$rc = $this->ruleConfig(1);
+		$proportion = $rc['CZ']['CZ_GWQ_S_GWQ']/100;
+		AccountController::change($this->member_info['uid'], $trade_fee*$proportion, 'GWQ', 4,false,'购物赠送购物券,订单号：'.$order_sn);
+	}
 	/**
 	 * 九代结算
 	 * @param float $base 基数

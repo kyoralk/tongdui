@@ -59,6 +59,17 @@ class CommonController extends InitController{
 		}
 		return $price;
 	}
+
+	/**
+	 * 处理赠送的购物券
+	 */
+	protected function sendGWJ($goods_info){
+		//处理商品价格
+		$price = $goods_info['gwq_send'] + $goods_info['gwq_extra'];
+		return $price;
+	}
+
+
 	/**
 	 * 处理扩展价格【 冗余方法后期删除】
 	 * @param string $atv_id_str

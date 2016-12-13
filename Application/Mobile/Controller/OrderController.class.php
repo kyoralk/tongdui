@@ -25,6 +25,7 @@ class OrderController extends CommonController{
 		}else{
 			//处理商品价格
 			$price = $this->promotePrice($goods_info);
+			$sendGWJ = $this->sendGWJ($goods_info);
 			//根据属性处理价格
 			$add_price = $this->extendPrice($atv_id_str);
 			$price += $add_price;
@@ -45,6 +46,7 @@ class OrderController extends CommonController{
 					'market_price' => $goods_info['market_price'],
 					'cost_price'=>$goods_info['cost_price'],
 					'spec_id'=>$spec_id,
+ 					'send_gwj'=>$sendGWJ * $prosum,
 			);
 			$data['total'] = $price*$prosum;
 			$data['settlement_total'] = $goods_info['cost_price']*$prosum;
@@ -74,6 +76,7 @@ class OrderController extends CommonController{
 			$PayTemporary['yjt'] = $yjt;
 			$PayTemporary['gwq'] = $gwq;
 			$PayTemporary['total'] = $total;
+			$PayTemporary['send_gwj'] = $data['send_gwj'];
 			
 			if(M('PayTemporary')->add($PayTemporary)){
 				if(D('OrderInfo')->relation('order_goods')->add($data)){
@@ -94,6 +97,7 @@ class OrderController extends CommonController{
 		$cart_info = $Cart->groupByStore($cart_id);
 		$i = 0;
 		$order_ip = get_client_ip();
+		$totalSendGwj = 0;
 		foreach ($cart_info['store'] as $store){
 			$data[$i] = array(
 					'order_sn' => serialNumber(),
@@ -113,6 +117,8 @@ class OrderController extends CommonController{
 				$data[$i]['settlement_total'] += $goods_info['cost_price']*$goods_info['prosum'];
 				$data[$i]['settlement_already'] = 0;
 				$data[$i]['settlement_no'] = $data[$i]['settlement_total'];
+				$data[$i]['send_gwj']+= $goods_info['send_gwj']*$goods_info['prosum'];
+				$totalSendGwj += $goods_info['send_gwj']*$goods_info['prosum'];
 				$order_goods[]=array(
 						'order_sn'=> $data[$i]['order_sn'],
 						'goods_id' => $goods_info['goods_id'],
@@ -123,6 +129,7 @@ class OrderController extends CommonController{
 						'cost_price'=>$goods_info['cost_price'],
 						'market_price' => $goods_info['market_price'],
 						'spec_id' => $goods_info['spec_id'],
+						'send_gwj' => $goods_info['send_gwj'],
 				);
 			}
 			$i++;
@@ -132,6 +139,7 @@ class OrderController extends CommonController{
 		$PayTemporary['yjt'] = $yjt;
 		$PayTemporary['gwq'] = $gwq;
 		$PayTemporary['total'] = $total;
+		$PayTemporary['send_gwj'] = $totalSendGwj;
 		if(M('PayTemporary')->add($PayTemporary)){
 			$M = M();
 			$M->startTrans();

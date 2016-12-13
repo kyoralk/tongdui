@@ -137,6 +137,9 @@ class NotifyController extends InitController{
 			if(!empty($this->order_sn)){
 				$condition['order_sn'] = array('in',$this->order_sn);
 				$Order->where($condition)->setField('pay_status',1);
+				if($res['gwq']>0){ // 购物赠送购物券
+					R('Reward/sendGWQ', array($res['send_gwj'], $res['order_sn']));
+				}
 				R('Upgrade/hgxfs',array(true));//升级合格消费商
 				if($res['yjt']>0){
 					R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
