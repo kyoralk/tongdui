@@ -85,7 +85,7 @@ class AccountController extends CommonController{
 	 */
 	private function assemblyLog($uid,$trade_fee,$trade_code,$trade_type,$desc,$reward_code,$proportion){
 		$code_array = array('YJT'=>'一卷通','GWQ'=>'购物券','BDB'=>'报单币','DZB'=>'电子币','ZCB'=>'资产包','JF'=>'积分','HJ'=>'黑金');
-		$type_array = array('','充值','提现','消费','赠送','提现手续费');
+		$type_array = array('','充值','提现','消费','赠送','提现手续费','','系统');
 		$heijin_data = array();
 		if(is_array($uid)){
 			$data['bulk'] = 1;
@@ -101,6 +101,7 @@ class AccountController extends CommonController{
 						'time_start'=>time(),
 						'desc'=>empty($desc[$i]) ? $code_array[$trade_code].$type_array[$trade_type] : $desc[$i],
 						'reward_code'=>$reward_code,
+						'trade_status' => $trade_type == 7? 1:0,
 				);
 				$heijin_data[] = AccountController::checkHeijin($uid[$i], $trade_fee[$i], $trade_code, $trade_type);
 				$i++;
@@ -116,6 +117,7 @@ class AccountController extends CommonController{
 					'final_fee'=>$trade_fee*$proportion,
 					'time_start'=>time(),
 					'desc'=>empty($desc) ? $code_array[$trade_code].$type_array[$trade_type] : $desc,
+					'trade_status' => $trade_type == 7? 1:0,
 			);
 			$heijin_data[] = AccountController::checkHeijin($uid, $trade_fee, $trade_code, $trade_type);
 		}
@@ -168,9 +170,11 @@ class AccountController extends CommonController{
 		if($minus){
 			$fee = $Account->where('uid = '.$uid)->getField($field);
 			if($fee-$trade_fee<0){
-				jsonReturn('','01024');
+				$trade_fee = 0;
 			}
 			$change_fee = -$trade_fee;
+		} else {
+			$change_fee = $trade_fee;
 		}
 		if($trans){
 			$M = M();

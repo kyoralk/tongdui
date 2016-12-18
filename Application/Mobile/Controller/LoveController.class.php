@@ -80,4 +80,26 @@ class LoveController extends CommonController{
 		}
 		jsonReturn($data);
 	}
+ 	
+	// 获得捐献的购物卷总计
+	public function totalgwq() {
+		$model = new \Think\Model();
+		if (I('post.current')) {
+			$where = ' and uid ='.$this->member_info['uid'];
+		}
+		$res = $model->query('select sum(fee) as total from ms_mall_love where type = 1'.$where);
+
+		jsonReturn(['total'=>$res[0]['total']]);
+	}
+
+	// 获得捐献的一卷通总计
+	public function totalyqt() {
+		$model = new \Think\Model();
+		if (I('post.current')) {
+			$where = ' and uid ='.$this->member_info['uid'];
+		}
+		$res = $model->query('select sum(fee) as total from ms_mall_love where type = 2'.$where);
+
+		jsonReturn(['total'=>$res[0]['total']]);
+	}
 }

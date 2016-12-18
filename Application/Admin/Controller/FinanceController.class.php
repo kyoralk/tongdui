@@ -2,6 +2,7 @@
 namespace Admin\Controller;
 use Admin\Controller\CommonController;
 use General\Controller\AlipayController;
+use Admin\Controller\AccountController;
 
 class FinanceController extends CommonController{
 
@@ -261,6 +262,7 @@ class FinanceController extends CommonController{
 		$this->assign('account_types', $this->account_type());
 		$this->assign('reward_types', $this->reward_type());
 		$this->assign('trade_statuss', $this->trade_status());
+		$this->assign('trade_types', $this->trade_types());
 		$this->assign('goods_list',$data['list']);
 		$this->assign('page',$data['page']);
 		$this->display('_account_list');
@@ -290,6 +292,7 @@ class FinanceController extends CommonController{
 		$data = page(M('MemberAccountLog'), $condition, 20,'view','time_start DESC','*');
 		$this->assign('account_types', $this->account_type());
 		$this->assign('reward_types', $this->reward_type());
+		$this->assign('trade_types', $this->trade_types());
 		$this->assign('trade_statuss', $this->trade_status());
 		$this->assign('goods_list',$data['list']);
 		$this->assign('page',$data['page']);
@@ -297,7 +300,8 @@ class FinanceController extends CommonController{
 	}
 
 	private function account_type(){
-		return ['1'=>'充值', '2'=>'提现', '3'=>'消费', '4'=>'赠送', '5'=>'手续费', '6'=>'捐款'];
+		return ['1'=>'充值', '2'=>'提现', '3'=>'消费', '4'=>'赠送', '5'=>'手续费', '6'=>'捐款'
+		, '7'=>'系统'];
 	}
 
 	private function reward_type() {
@@ -308,4 +312,29 @@ class FinanceController extends CommonController{
 		return ['1'=>'支付成功', '0'=>'未完成'];
 	}
 
+	private function trade_types() {
+		return ['YJT'=>'一券通', 'GWQ'=>'购物券'];
+	}
+
+	
+
+	// 账户变更
+	public function account() {
+
+		if (I('post.user_name')) {
+			$user = M('Member')->where('username ="'.I('post.user_name').'"')->find();
+			if (empty($user)) {
+				$this->error('没有该会员');
+			} else {
+				$amount = I('post.amount');
+				$type = I('post.type');
+				$minus = I('post.htype')==1?true:false;
+
+				AccountController::change($user['uid'], $amount, $type, 7, $minus, '平台调整操作');
+				$this->success('操作成功');
+			}
+		}
+
+		$this->display('account');
+	}
 }

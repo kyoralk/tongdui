@@ -92,41 +92,80 @@ class RewardController extends CommonController{
 			$user_list = $this->getTop($node_id);
 			if(!empty($user_list)){
 				foreach ($user_list as $user){
-					$bi = intval($user['lyj']/$user['ryj']);
-					$cap_type = null;
-					$cap_fee = 0;
-					if($user['lyj'] >= $rc[0][0]['min_fee'] && $user['lyj'] < $rc[0][0]['max_fee'] && $bi >= $rc[0][0]['bi']){
-						$ljz = $user['ryj'] * $rc[0][0]['bi'];
-						$rjz = $user['ryj'];
-						$cap_type = $rc[0][0]['cap_type'];
-						$cap_fee = $rc[0][0]['cap_fee'];
+					if ($user['lyj'] >= $user['ryj']) {
+						$bi = intval($user['lyj']/$user['ryj']);
+						$cap_type = null;
+						$cap_fee = 0;
+						if($user['lyj'] >= $rc[0][0]['min_fee'] && $user['lyj'] < $rc[0][0]['max_fee'] && $bi >= $rc[0][0]['bi']){
+							$ljz = $user['ryj'] * $rc[0][0]['bi'];
+							$rjz = $user['ryj'];
+							$cap_type = $rc[0][0]['cap_type'];
+							$cap_fee = $rc[0][0]['cap_fee'];
+						}
+						if($user['lyj'] >= $rc[0][1]['min_fee'] && $user['lyj'] < $rc[0][1]['max_fee'] && $bi >= $rc[0][1]['bi']){
+							$ljz = $user['ryj'] * $rc[0][1]['bi'];
+							$rjz = $user['ryj'];
+							$cap_type = $rc[0][1]['cap_type'];
+							$cap_fee = $rc[0][1]['cap_fee'];
+						}
+						if($user['lyj']>=$rc[0][2]['min_fee'] && $bi >= $rc[0][2]['bi']){
+							$ljz = $user['ryj'] * $rc[0][2]['bi'];
+							$rjz = $user['ryj'];
+							$cap_type = $rc[0][2]['cap_type'];
+							$cap_fee = $rc[0][2]['cap_fee'];
+						}
+						if($ljz>0){
+							/***********组装封顶待检测数据-start***************/
+							$cap_data[$cap_type][] = array(
+									'uid'=>$user['uid'],
+									'cap_fee'=>$cap_fee[$user['star_level']-1],
+									'reward_fee'=>$ljz * $dp['bobi'][$user['star_level']]/100,//对碰人员的对碰奖金
+							);
+							/***********组装封顶待检测数据-end***************/
+							$data['lyj'][] = 'lyj - '.$ljz;//减少第一市场业绩
+							$data['ryj'][] = 'ryj - '.$rjz;//减少第二市场业绩
+							$data['ljz'][] = 'ljz + '.$ljz;//增加第一市场结转
+							$data['rjz'][] = 'rjz + '.$rjz;//增加第二市场结转
+							$condition['uid'][] = $user['uid']; //参加对碰的用户id
+						}
+					} else {
+						$bi = intval($user['ryj']/$user['lyj']);
+						$cap_type = null;
+						$cap_fee = 0;
+						if($user['ryj'] >= $rc[0][0]['min_fee'] && $user['ryj'] < $rc[0][0]['max_fee'] && $bi >= $rc[0][0]['bi']){
+							$rjz = $user['lyj'] * $rc[0][0]['bi'];
+							$ljz = $user['lyj'];
+							$cap_type = $rc[0][0]['cap_type'];
+							$cap_fee = $rc[0][0]['cap_fee'];
+						}
+						if($user['ryj'] >= $rc[0][1]['min_fee'] && $user['ryj'] < $rc[0][1]['max_fee'] && $bi >= $rc[0][1]['bi']){
+							$rjz = $user['lyj'] * $rc[0][1]['bi'];
+							$ljz = $user['lyj'];
+							$cap_type = $rc[0][1]['cap_type'];
+							$cap_fee = $rc[0][1]['cap_fee'];
+						}
+						if($user['ryj']>=$rc[0][2]['min_fee'] && $bi >= $rc[0][2]['bi']){
+							$rjz = $user['lyj'] * $rc[0][2]['bi'];
+							$ljz = $user['lyj'];
+							$cap_type = $rc[0][2]['cap_type'];
+							$cap_fee = $rc[0][2]['cap_fee'];	
+						}
+						if($rjz>0){
+							/***********组装封顶待检测数据-start***************/
+							$cap_data[$cap_type][] = array(
+									'uid'=>$user['uid'],
+									'cap_fee'=>$cap_fee[$user['star_level']-1],
+									'reward_fee'=>$rjz * $dp['bobi'][$user['star_level']]/100,//对碰人员的对碰奖金
+							);
+							/***********组装封顶待检测数据-end***************/
+							$data['ryj'][] = 'ryj - '.$rjz;//减少第一市场业绩
+							$data['lyj'][] = 'lyj - '.$ljz;//减少第二市场业绩
+							$data['rjz'][] = 'rjz + '.$rjz;//增加第一市场结转
+							$data['ljz'][] = 'ljz + '.$ljz;//增加第二市场结转
+							$condition['uid'][] = $user['uid']; //参加对碰的用户id
+						}
 					}
-					if($user['lyj'] >= $rc[0][1]['min_fee'] && $user['lyj'] < $rc[0][1]['max_fee'] && $bi >= $rc[0][1]['bi']){
-						$ljz = $user['ryj'] * $rc[0][1]['bi'];
-						$rjz = $user['ryj'];
-						$cap_type = $rc[0][1]['cap_type'];
-						$cap_fee = $rc[0][1]['cap_fee'];
-					}
-					if($user['lyj']>=$rc[0][2]['min_fee'] && $bi >= $rc[0][2]['bi']){
-						$ljz = $user['ryj'] * $rc[0][2]['bi'];
-						$rjz = $user['ryj'];
-						$cap_type = $rc[0][2]['cap_type'];
-						$cap_fee = $rc[0][2]['cap_fee'];
-					}
-					if($ljz>0){
-						/***********组装封顶待检测数据-start***************/
-						$cap_data[$cap_type][] = array(
-								'uid'=>$user['uid'],
-								'cap_fee'=>$cap_fee[$user['star_level']-1],
-								'reward_fee'=>$ljz * $dp['bobi'][$user['star_level']]/100,//对碰人员的对碰奖金
-						);
-						/***********组装封顶待检测数据-end***************/
-						$data['lyj'][] = 'lyj - '.$ljz;//减少第一市场业绩
-						$data['ryj'][] = 'ryj - '.$rjz;//减少第二市场业绩
-						$data['ljz'][] = 'ljz + '.$ljz;//增加第一市场结转
-						$data['rjz'][] = 'rjz + '.$rjz;//增加第二市场结转
-						$condition['uid'][] = $user['uid']; //参加对碰的用户id
-					}
+					
 				}
 				if(!empty($data)){
 					$this->saveAll('__MEMBER_NODE__', $data, $condition,1);

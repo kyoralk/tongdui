@@ -190,6 +190,10 @@ class GoodsController extends InitController{
 		$count = M('Goods g')->join('__STORE__ s on g.store_id = s.store_id')->where($condition)->count();
 		$Goods = D('GoodsView');
 		$data = appPage($Goods, $condition, I('get.num'), I('get.p'),'view',$order_array[$order_index],'goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,store_id,evaluate_count,click_count,sales,consumption_type','goods_id',$count);
+
+		// 升级增加补差额功能
+		$data = $this->handleGoods($data);
+
 		jsonReturn($data);
 	}
 	/**
@@ -213,10 +217,10 @@ class GoodsController extends InitController{
 			$spec_them[$spec['spec_value']] = $spec;
 		}
 		$data['goods_info']['goods_spec'] = $spec_them;
+		$data['goods_info'] = $this->handleGood($data['goods_info']);
 		unset($data['goods_info']['goods_desc']);
 		jsonReturn($data);
-	}
-	
+	}	
 	
 	/**
 	 * 商品介绍
@@ -249,4 +253,34 @@ class GoodsController extends InitController{
 		$filter_list['brand'] = M('Brand')->where('brand_id in ('.$model_info['brand_list'].')')->order('brand_sort')->select();
 		jsonReturn($filter_list);
 	}
+
+	function handleGoods($data) {
+		if ($this->member_info) {
+			$fee = $this->member_info['upgrade_fee'];
+			if ($data['list']) {
+				foreach ($data['list'] as $k=>$v) {
+					if (strstr($v['goods_name'], '套餐') && $v['store_id'] == 1) {
+						$data['list'][$k]['shop_price'] = $v['shop_price'] - $fee;
+						$data['list'][$k]['shop_price'] = $data['list'][$k]['shop_price']<0?0:$data['list'][$k]['shop_price'];	
+					}
+				}
+			}
+		} 
+
+		return $data;
+		
+	}
+
+	function handleGood($data) {
+		if ($this->member_info) {
+			$fee = $this->member_info['upgrade_fee'];
+			if (strstr($data['goods_name'], '套餐') && $data['store_id'] == 1) {
+				$data['shop_price'] = $data['shop_price'] - $fee;
+				$data['shop_price'] = $data['shop_price']<0?0:$data['shop_price'];	
+			}
+		} 
+
+		return $data;
+	}
+
 }

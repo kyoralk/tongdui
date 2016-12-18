@@ -164,8 +164,9 @@ class NotifyController extends InitController{
 			$this->setMemberInfo(array('uid'=>$order_info['uid']));
 			if($order_info['pay_status'] != 1){
 				R('Upgrade/hzs',array($this->order_sn));//升级合作商
+
 				$Order->where('order_sn = "'.$this->order_sn.'"')->setField('pay_status',1);
-					
+				
 			}
 		}
 		

@@ -145,6 +145,12 @@ class UpgradeController extends InitController{
 			$Node->where('uid = '.$uid)->setField('star_level',$star_level);
 		}
 		M('Member')->where('uid = '.$uid)->save(array('rank'=>3,'star_level'=>$star_level));
+
+		// // 增加对应的费用记录和次数记录【bug】
+		// M('Member')->where('uid = '.$order_info['uid'])->save(array('upgrade_times'=> 'upgrade_times + 1',
+		// 	'upgrade_fee' => 'upgrade_fee + '.$yj
+		// 	));
+
 		if($node_id){
 			R('Reward/duipeng',array($node_id));//对碰奖
 			R('Reward/jiandian',array($node_id,$yj));//见点奖

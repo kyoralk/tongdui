@@ -285,5 +285,77 @@ class MemberController extends CommonController{
 			jsonReturn('','00000');
 		}
 	}
-	
+
+	/**
+	* 计算和谐兄弟，直接推荐的数量
+	*
+	*/	
+	public function countBrother() {
+		$response['count'] = M('Member')->where('referrer_id ='.  $this->member_info['uid'])
+		->count();
+
+		jsonReturn($response);
+	}
+
+	public $countFamilyNums = 0;
+
+	/**
+	* 计算和谐家人的数量
+	*
+	*/
+	public function countFamily() {
+		$node =  M('MemberNode')->where('uid ='. $this->member_info['uid'])->find();
+
+		if ($node) {
+			$position = $this->member_info['position']?$this->member_info['position']:'left'; 
+			$root = $this->getTop($node['node_id']); 
+			$this->preorder($root['node_id']);	
+		}
+		
+		jsonReturn(['count' => $this->countFamilyNums]);
+	}
+
+
+	//前序遍历，访问根节点->遍历子左树->遍历右左树
+	private function preorder($root){
+	    $stack = array();
+	    array_push($stack, $root);
+	    while(!empty($stack)){
+	        $center_node = array_pop($stack);
+	        // echo $center_node.' ';
+	        $this->countFamilyNums++;
+	        $centerModel = M('MemberNode')->where('node_id ='.$center_node)->find();
+	        if($centerModel['right_node_id'] != null) {
+	        	array_push($stack, $centerModel['right_node_id']);	
+	        } 
+	        if($centerModel['left_node_id'] != null) {
+	        	array_push($stack, $centerModel['left_node_id']);
+	        }
+	    }
+	}
+ 
+	private function getTop($node_id,$floor = 0){
+		$Node = M('MemberNode',C('DB_PREFIX_C'));
+		$top_list = array();
+		$i = 1;
+		do{
+			$node_info = $Node->where('left_node_id = '.$node_id.' OR right_node_id = '.$node_id)->field('node_id,uid,lyj,ryj,star_level')->find();
+			if(!empty($node_info)){
+				$node_id = $node_info['node_id'];
+				$top_list[] = array(
+						'node_id' => $node_info['node_id'],
+						'uid'=>$node_info['uid'],
+						'lyj'=>$node_info['lyj'],
+						'ryj'=>$node_info['ryj'],
+						'star_level'=>$node_info['star_level'],
+						'floor'=>$i,
+				);
+			}
+			$i++;
+			if($floor && $i > $floor){
+				$node_info = null;
+			}
+		}while (!empty($node_info));
+		return $top_list[0];
+	} 
 }

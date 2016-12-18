@@ -108,6 +108,7 @@ class CartController extends CommonController{
 			$data['price'] = $this->promotePrice($this->goods_info);
 			//根据规格处理价格
 			$data['price'] += $this->specPrice($data['spec_id']);
+			$data['price'] = $this->upgradePrice($this->goods_info);
 			$data['market_price'] = $this->goods_info['market_price'];
 			//处理产品价格结束
 			if($cart->add($data)){
@@ -159,5 +160,17 @@ class CartController extends CommonController{
 	public function info(){
 		$data = $this->groupByStore(I('get.cart_id'));
 		jsonReturn((object)$data);
+	}
+
+	public function upgradePrice($data) {
+		if ($this->member_info) {
+			$fee = $this->member_info['upgrade_fee'];
+			if (strstr($data['goods_name'], '套餐') && $data['store_id'] == 1) {
+				$data['shop_price'] = $data['shop_price'] - $fee;
+				$data['shop_price'] = $data['shop_price']<0?0:$data['shop_price'];	
+			}
+		} 
+
+		return $data['shop_price'];
 	}
 }

@@ -494,6 +494,12 @@ return array (
 											'icon' => '',
 										),
 
+										'account' => array (
+											'url' => U('Finance/account'),
+											'lang' => '会员资金变更',
+											'icon' => '',
+										),
+
 										
 								),
 								'url' => '',
