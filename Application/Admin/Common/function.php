@@ -92,9 +92,16 @@ function fastModule($module_name,$label,$input,$help){
 					for($i = 0;$i<$count;$i++){
 						$html.='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input name="'.$input[1][$i].'" value="'.$input[2][$i][1].'"';
 						if(empty($input[2][$i][2])){
-							if($input[2][$i][1] == $input[2][$i][3]){
-								$html.=' checked="checked" ';
-							}
+						    if ($input[2][$i][2] == 0) {
+                                if($input[2][$i][2]==$input[2][$i][1]){
+                                    $html.=' checked="checked" ';
+                                }
+                            } else {
+                                if($input[2][$i][1] == $input[2][$i][3]){
+                                    $html.=' checked="checked" ';
+                                }
+                            }
+
 						}else{
 							if($input[2][$i][2]==$input[2][$i][1]){
 								$html.=' checked="checked" ';

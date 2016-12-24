@@ -79,10 +79,17 @@ class GoodsController extends MallController{
 		$data['examine_status'] = 1;//1：审核通过,  2：未审核 ,3： 审核不通过
 		$data['goods_tag'] = implode(',', I('post.goods_tag_checkbox')).I('post.goods_tag_radio');//商品标签
 		$data['consumption_type'] = I('post.consumption_type');
-// 		$data['yjt_can'] = implode(',', I('post.yjt_can'));//可使用的一卷通数量
-// 		$data['gwq_can'] = implode(',', I('post.gwq_can'));//可使用的购物券数量
+ 		$data['yjt_can'] =  I('post.yjt_can');//可使用的一卷通数量
+ 		$data['gwq_can'] = I('post.gwq_can');//可使用的购物券数量
+        $data['gwq_send'] =  I('post.gwq_send');//可使用的购物券数量
+        $data['gwq_extra'] =  I('post.gwq_extra');//可使用的购物券数量
 		$data['give_integral'] = I('post.give_integral');//赠送多少积分
 		$data['promote_price'] = empty(I('post.promote_price')) ? 0 : I('post.promote_price');//促销价格
+
+        $data['is_cash'] = isset($_POST['is_cash']) ? 1: 0;//是否允许现金
+        $data['is_yqt'] =  isset($_POST['is_yqt']) ? 1: 0;//是否允许一券通
+        $data['is_gwq'] = isset($_POST['is_gwq']) ? 1: 0;//是否允许购物券
+
 		//处理促销时间
 		$promote_start_date = empty(I('post.promote_start_date')) ? 0 : I('post.promote_start_date');
 		$promote_end_date = empty(I('post.promote_end_date'))? 0 : I('post.promote_end_date');
