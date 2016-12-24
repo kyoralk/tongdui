@@ -83,6 +83,7 @@ class CartController extends CommonController{
 		$this->isBuySelf();//检测是否是购买自己的产品
 		$cart = M('Cart'); 
 		$condition['uid']=$this->member_info['uid'];
+	 
 		if(empty($this->goods_info['spec_id'])){
 			$condition['goods_id']=$this->goods_info['goods_id'];
 		}else{
@@ -103,6 +104,9 @@ class CartController extends CommonController{
 					'store_id'=>$this->goods_info['store_id'],
 					'spec_id'=>I('post.spec_id'),
 					'consumption_type'=>$this->goods_info['consumption_type'],
+					'is_cash' =>$this->goods_info['is_cash'],
+					'is_gwq' =>$this->goods_info['is_gwq'],
+					'is_yqt' =>$this->goods_info['is_yqt'],
 			);
 			//处理产品价格
 			$data['price'] = $this->promotePrice($this->goods_info);
