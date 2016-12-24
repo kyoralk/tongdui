@@ -43,6 +43,7 @@ class BrandController extends MallController{
 	public function save(){
 		$Brand = M('Brand');
 		$data = $Brand->create();
+
 		$brand_id = I('post.brand_id',0);
 		if($_FILES['brand_logo']){
 			$res = Image::upload('brand_logo', 'MALL_BRAND');

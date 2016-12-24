@@ -201,16 +201,17 @@ class GoodsController extends MallController{
 		if($data['examine_status'] == 3){
 			$data['is_on_sale'] = 0;
 		}
+        if($data['examine_status'] == 1){
+            $data['is_on_sale'] = 1;
+        }
 		if(is_array(I('param.goods_id'))){
 			$condition['goods_id'] = array('in',I('param.goods_id'));
 		}else{
 			$condition['goods_id'] = I('param.goods_id');
 		}
-		if(M('Goods')->where($condition)->save($data)){
-			$this->success('设置成功');
-		}else{
-			$this->error('设置失败');
-		}
+
+		M('Goods')->where($condition)->save($data);
+        $this->success('设置成功');
 	}
 	/**
 	 * 上架/下架

@@ -68,9 +68,15 @@ function fastModule($module_name,$label,$input,$help){
 					foreach ($input[2] as $item){
 						$html.='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input name="'.$input[1].'" value="'.$item[1].'"';
 						if(empty($item[2])){
-							if($item[1]==$item[3]){
-								$html.=' checked="checked" ';
-							}
+						    if ($item[2] == 0) {
+                                if($item[1]==$item[2]){
+                                    $html.=' checked="checked" ';
+                                }
+                            } else {
+                                if($item[1]==$item[3]){
+                                    $html.=' checked="checked" ';
+                                }
+                            }
 						}else{
 							if($item[1]==$item[2]){
 								$html.=' checked="checked" ';
