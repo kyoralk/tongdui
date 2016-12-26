@@ -250,6 +250,7 @@ class GoodsController extends InitController{
 		$filter_list['attr'] = $Attr->relation(true)->where('mid = '.$mid)->select();
 		$model_info = M('Model')->where('mid = '.$mid)->field('range,keywords,brand_list')->find();
 		$filter_list['range'] = explode(',', $model_info['range']);
+        $model_info['brand_list'] = !empty($model_info['brand_list'])?$model_info['brand_list']:'0';
 		$filter_list['brand'] = M('Brand')->where('brand_id in ('.$model_info['brand_list'].')')->order('brand_sort')->select();
 		jsonReturn($filter_list);
 	}

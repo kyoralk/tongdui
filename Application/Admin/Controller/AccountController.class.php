@@ -181,7 +181,7 @@ class AccountController extends CommonController{
 			$M->startTrans();
 			try {
 				$Account->where('uid = '.$uid)->setInc($field,$change_fee);
-				AccountController::addLog($uid, $trade_fee, $trade_code, $trade_type,$desc,$reward_code);
+				AccountController::addLog($uid, $change_fee, $trade_code, $trade_type,$desc,$reward_code);
 			} catch (Exception $e) {
 				$M->rollback();
 				return false;
@@ -190,7 +190,7 @@ class AccountController extends CommonController{
 			return true;
 		}else{
 			$Account->where('uid = '.$uid)->setInc($field,$change_fee);
-			AccountController::addLog($uid, $trade_fee, $trade_code, $trade_type,$desc,$reward_code);
+			AccountController::addLog($uid, $change_fee, $trade_code, $trade_type,$desc,$reward_code);
 		}
 		
 	}

@@ -328,7 +328,7 @@ class FinanceController extends CommonController{
 			} else {
 				$amount = I('post.amount');
 				$type = I('post.type');
-				$minus = I('post.htype')==1?true:false;
+				$minus = (I('post.htype')==1)?true:false;
 
 				AccountController::change($user['uid'], $amount, $type, 7, $minus, '平台调整操作');
 				$this->success('操作成功');

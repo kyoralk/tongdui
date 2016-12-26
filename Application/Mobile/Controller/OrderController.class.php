@@ -113,12 +113,13 @@ class OrderController extends CommonController{
 			);
 			$data[$i]['total'] = 0;
 			foreach ($store['goods_list'] as $goods_info){
+                $sendGWJ = $this->sendGWJ($goods_info);
 				$data[$i]['total'] += $goods_info['price']*$goods_info['prosum'];
 				$data[$i]['settlement_total'] += $goods_info['cost_price']*$goods_info['prosum'];
 				$data[$i]['settlement_already'] = 0;
 				$data[$i]['settlement_no'] = $data[$i]['settlement_total'];
-				$data[$i]['send_gwj']+= $goods_info['send_gwj']*$goods_info['prosum'];
-				$totalSendGwj += $goods_info['send_gwj']*$goods_info['prosum'];
+				$data[$i]['send_gwj']+= $sendGWJ*$goods_info['prosum'];
+				$totalSendGwj += $sendGWJ *$goods_info['prosum'];
 				$order_goods[]=array(
 						'order_sn'=> $data[$i]['order_sn'],
 						'goods_id' => $goods_info['goods_id'],

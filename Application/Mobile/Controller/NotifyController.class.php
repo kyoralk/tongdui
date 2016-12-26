@@ -113,6 +113,7 @@ class NotifyController extends InitController{
 		
 		$PayTemporary = M('PayTemporary',C('DB_PREFIX_MALL'));
 		$res = $PayTemporary->where('status = 0 AND out_trade_no = "'.$out_trade_no.'"')->find();
+
 		if($res){
 			$order_sn = explode(',', $res['order_sn']);
 			if(count($order_sn)>1){
@@ -124,12 +125,13 @@ class NotifyController extends InitController{
 			$Order = M('OrderInfo',C('DB_PREFIX_MALL'));
 			//查询符合条件的订单支付状态，并且判断，防止重复通知
 			$list = $Order->where($condition)->field('order_sn,uid')->select();
+
 			$this->order_sn = array_column($list, 'order_sn');
 			$this->setMemberInfo(array('uid'=>$list[0]['uid']));
 			if($res['yjt']>0){
 				AccountController::change($list[0]['uid'], $res['yjt'], 'YJT', 3,true);//减少消费的一卷通
 			}
-			
+
 			if($res['gwq']>0){
 				AccountController::change($list[0]['uid'], $res['gwq'], 'GWQ', 3,true);//减少消费的购物券
 			}
@@ -137,9 +139,9 @@ class NotifyController extends InitController{
 			if(!empty($this->order_sn)){
 				$condition['order_sn'] = array('in',$this->order_sn);
 				$Order->where($condition)->setField('pay_status',1);
-				if($res['gwq']>0){ // 购物赠送购物券
+//				if($res['gwq']>0){ // 购物赠送购物券
 					R('Reward/sendGWQ', array($res['send_gwj'], $res['order_sn']));
-				}
+//				}
 				R('Upgrade/hgxfs',array(true));//升级合格消费商
 				if($res['yjt']>0){
 					R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
@@ -211,4 +213,8 @@ class NotifyController extends InitController{
 
 		}
 	}
+
+	public function test() {
+	    $this->buy(I('get.sn'));
+    }
 }

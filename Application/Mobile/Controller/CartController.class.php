@@ -75,7 +75,7 @@ class CartController extends CommonController{
 	 */
 	public function _before_add(){
 		//获取产品信息
-		$this->goods_info = $this->goods(I('post.goods_id'),I('post.spec_id'));   
+		$this->goods_info = $this->goods(I('post.goods_id'),I('post.spec_id'));
 	}
 	public function add(){
 		$prosum = I('post.prosum',1);
@@ -107,6 +107,8 @@ class CartController extends CommonController{
 					'is_cash' =>$this->goods_info['is_cash'],
 					'is_gwq' =>$this->goods_info['is_gwq'],
 					'is_yqt' =>$this->goods_info['is_yqt'],
+                    'gwq_send' => $this->goods_info['gwq_send'],
+                    'gwq_extra' => $this->goods_info['gwq_extra'],
 			);
 			//处理产品价格
 			$data['price'] = $this->promotePrice($this->goods_info);

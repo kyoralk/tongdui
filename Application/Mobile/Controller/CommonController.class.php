@@ -21,16 +21,17 @@ class CommonController extends InitController{
 			$goods_info = M('Goods g')
 			->join('__GOODS_IMG__ img on g.goods_id = img.goods_id')
 			->join('__GOODS_SPEC__ gs on g.goods_id = gs.goods_id')
-			->where('g.goods_id = '.$goods_id)->field('g.is_cash, g.is_gwq, g.is_yqt, g.goods_id,g.goods_name,g.max_buy,g.store_id,g.promote_price,g.promote_start_date,g.promote_end_date,g.shop_price,g.market_price,g.consumption_type,cost_price,img.save_name,img.save_path,spec_name')
+			->where('g.goods_id = '.$goods_id)->field('g.gwq_send, g.gwq_extra, g.is_cash, g.is_gwq, g.is_yqt, g.goods_id,g.goods_name,g.max_buy,g.store_id,g.promote_price,g.promote_start_date,g.promote_end_date,g.shop_price,g.market_price,g.consumption_type,cost_price,img.save_name,img.save_path,spec_name')
 			->group('g.goods_id')
 			->find();
 		}else {
 			$goods_info = M('Goods g')
 			->join('__GOODS_IMG__ img on g.goods_id = img.goods_id')
-			->where('g.goods_id = '.$goods_id)->field('g.is_cash, g.is_gwq, g.is_yqt, g.goods_id,g.goods_name,g.max_buy,g.store_id,g.promote_price,g.promote_start_date,g.promote_end_date,g.shop_price,g.market_price,g.consumption_type,cost_price,img.save_name,img.save_path')
+			->where('g.goods_id = '.$goods_id)->field('g.gwq_send, g.gwq_extra, g.is_cash, g.is_gwq, g.is_yqt, g.goods_id,g.goods_name,g.max_buy,g.store_id,g.promote_price,g.promote_start_date,g.promote_end_date,g.shop_price,g.market_price,g.consumption_type,cost_price,img.save_name,img.save_path')
 			->group('g.goods_id')
 			->find();
 		}
+
 		return $goods_info;
 	}
 	/**
@@ -64,8 +65,12 @@ class CommonController extends InitController{
 	 * 处理赠送的购物券
 	 */
 	protected function sendGWJ($goods_info){
-		//处理商品价格
-		$price = $goods_info['gwq_send'] + $goods_info['gwq_extra'];
+        $goods = M('Goods')->where('goods_id ="'.$goods_info['goods_id'].'"')->find();
+        if ($goods) {
+            //处理商品价格
+            $price = intval($goods['gwq_send']*$goods['shop_price']/100) + $goods['gwq_extra'];
+        }
+
 		return $price;
 	}
 

@@ -8,43 +8,42 @@
 	<table class="ncsc-table-style">
 		<thead>
 			<tr>
-				<th class="w30">品牌名称</th>
-				<th class="w50">logo</th>
-				<th class="w100">状态</th>
-				<th class="w200">操作</th>
+				<th class="">品牌名称</th>
+				<th class="">logo</th>
+				<th class="">状态</th>
+				<th class="">操作</th>
 			</tr>
 		</thead>
 		<tbody>
-			<volist name="goods_list" id="gl">
+			<volist name="list" id="gl">
 				<tr>
-					<td class="trigger"><i class="tip icon-plus-sign"
-								title="点击展开查看此商品全部规格；规格值过多时请横向拖动区域内的滚动条进行浏览。"></i></td>
-					<td><div class="pic-thumb"> <a
-										href="/product/{$gl.goods_id}"
-										target="_blank">
-							<volist name="gl['goods_img']" id="img" offset="0" length='1'> <img
-										src="__PUBLIC__/Upload/Mall/Seller/{$img.store_id}/s_{$img.goods_img}" /> </volist>
-							</a> </div></td>
-					<td class="tl"><dl class="goods-name">
-							<dt>
-								<if condition="$gl.store_tuijian eq 1"> <span>荐</span> </if>
-								<a href="/product/{$gl.goods_id}" target="_blank">{$gl.goods_name}</a> </dt>
-							<dd>商家货号：{$gl.goods_sn}</dd>
-						</dl></td>
-					<td><span>&yen;{$gl.shop_price}</span></td>
-					<td class="nscs-table-handle"><span> <a target="_blank"
-									href="/product/{$gl.goods_id}"
-									class="btn-blue"><i class="icon-eye-open"></i>
-						<p>查看</p>
-						</a></span> <span> <a 
-									href="__APP__/Goods/goodsInfo/goods_id/{$gl.goods_id}"
-									class="btn-blue"><i class="icon-edit"></i>
-						<p>编辑</p>
-						</a></span> <span><a href="javascript:void(0);"
-									onclick="ajax_get_confirm('您确定要删除吗?', 'http://192.168.1.168:9017/shop/index.php?act=store_goods_online&op=drop_goods&commonid=100087');"
-									class="btn-red"><i class="icon-trash"></i>
-						<p>删除</p>
-						</a></span></td>
+					<td class="trigger">
+						{$gl.brand_name}
+					</td>
+					<td>
+						<div class="pic-thumb">
+							<img  src="/Uploads/Mall/Brand/{$gl.brand_logo}" />
+						</div>
+					</td>
+					<td class="tl">
+						<?php
+							switch($gl['status']) {
+								case "0":
+									$status = "审核中";
+								break;
+								case "1":
+									$status = "审核通过";
+								break;
+								case "2":
+									$status = "审核驳回";
+								break;
+							}
+						?>
+						<?php echo $status; ?>
+					</td>
+					<td>
+						&nbsp;
+					</td>
 				</tr>
 			</volist>
 			<tr style="display: none;">

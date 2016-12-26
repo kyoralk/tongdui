@@ -7,7 +7,7 @@
 	</ul>
 </div>
 <div class="ncsc-form-default">
-	<form method="post" action="{:U('Brand/apply')}" id="my_store_form">
+	<form method="post" action="{:U('Brand/apply')}" id="my_store_form" novalidate>
 		<dl>
 			<dt>品牌分类：</dt>
 			<dd>
@@ -36,7 +36,7 @@
 		<dl>
 			<dt>品牌介绍：</dt>
 			<dd>
-				<textarea name="store_zy" rows="2" class="textarea w400" maxlength="50">{$store_info.store_zy}</textarea>
+				<textarea name="brand_desc" rows="2" class="textarea w400" maxlength="50">{$store_info.store_zy}</textarea>
 			</dd>
 		</dl>
 		<dl>
@@ -54,8 +54,7 @@
 		</dl>
 		<div class="bottom">
 			<label class="submit-border">
-				<input type="submit"
-								class="submit" value="提交" />
+				<input type="submit" class="submit" value="提交" />
 			</label>
 		</div>
 		<input name="brand_logo" type="hidden" value=""/>
@@ -68,7 +67,7 @@ $(function(){
 	$("select[name='gc_id']").focus();
 });
 $("select[name='gc_id']").blur(function(){
-	alert($("select[name='gc_id'] option:selected").val());
+//	alert($("select[name='gc_id'] option:selected").val());
 	if($("select[name='gc_id'] option:selected").val() == 0){
 		
 		$("#gc_id").show();
