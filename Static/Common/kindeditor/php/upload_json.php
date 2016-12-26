@@ -13,7 +13,7 @@ if($module == 'Mall'){
 	$module = 'Mall/Seller/'.$store_id;
 }
 //文件保存目录路径
-$save_path = str_replace('\\','/',str_replace('\Static\Common\kindeditor\php', '', getcwd())).'/Uploads/'.$module.'/Content/';
+$save_path = str_replace('/Static/Common/kindeditor/php', '', getcwd()).'/Uploads/'.$module.'/Content/';
 //文件保存目录URL
 $save_url = '/Uploads/'.$module.'/Content/';
 //定义允许上传的文件扩展名
@@ -25,9 +25,9 @@ $ext_arr = array(
 );
 //最大文件大小
 $max_size = 10000000;
+
 $save_path = realpath($save_path) . '/';
-// var_dump($_FILES);
-// exit();
+ 
 //PHP上传失败
 if (!empty($_FILES['imgFile']['error'])) {
 	switch($_FILES['imgFile']['error']){
@@ -71,6 +71,7 @@ if (empty($_FILES) === false) {
 	if (!$file_name) {
 		alert("请选择文件。");
 	}
+
 	//检查目录
 	if (@is_dir($save_path) === false) {
 		alert("上传目录不存在。");
@@ -106,23 +107,28 @@ if (empty($_FILES) === false) {
 		$save_path .= $dir_name . "/";
 		$save_url .= $dir_name . "/";
 		if (!file_exists($save_path)) {
-			mkdir($save_path);
+			@mkdirs($save_path);
+		}
+		if (!file_exists($save_url)) {
+			@mkdirs($save_url);
 		}
 	}
 	$ymd = date("Ymd");
 	$save_path .= $ymd . "/";
 	$save_url .= $ymd . "/";
 	if (!file_exists($save_path)) {
-		mkdir($save_path);
+		@mkdirs($save_path);
 	}
 	//新文件名
 	$new_file_name = date("YmdHis") . '_' . rand(10000, 99999) . '.' . $file_ext;
 	//移动文件
 	$file_path = $save_path . $new_file_name;
-	if (move_uploaded_file($tmp_name, $file_path) === false) {
+ 
+ 	 
+	if (@move_uploaded_file($tmp_name, $file_path) === false) {
 		alert("上传文件失败。");
 	}
-	@chmod($file_path, 0644);
+	// @chmod($file_path, 0644);
 	$file_url = $save_url . $new_file_name;
 
 	header('Content-type: text/html; charset=UTF-8');
@@ -136,4 +142,8 @@ function alert($msg) {
 	$json = new Services_JSON();
 	echo $json->encode(array('error' => 1, 'message' => $msg));
 	exit;
+}
+
+function mkdirs($dir) {
+    return is_dir($dir) or ( mkdirs(dirname($dir)) and mkdir($dir, 0777));
 }
