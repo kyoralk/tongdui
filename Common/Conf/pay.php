@@ -1,10 +1,10 @@
 <?php return array (
   'alipay' => 
   array (
-    'seller_email' => '1186499968@qq.com',
+    'seller_email' => '118118@qq.com',
     'partner' => '2088421846023985',
     'key' => 'otq5uhalknrt7z1fu0ovur1v4bhpgive',
-    'private_key' => 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAODT6wCpl4hWv+Ov6uVtyJtcUYToLQd7jx4JovQjDtcLrC1s7d342z60w5AE6lCQ4NxB8ESLNlaGxUEOwWlbWbcCAwEAAQ==+KhZifPV0BaC5Ccb+c8SLFwnlyNS8iCUgIhCNgnbUjnLdtrAJG/Io8LYbx995yQIDAQABAkAKSCG/ngXUgCBQNU2BXcf5SMscbg2FrRW1wzAZoov1Z4FaOQiWYVduGeEB35uXGf3d6JwC/BLlcditcSttnQURAiEA67LaJpnXWgagFJ+DNbDnlf6AIHWkurZuflAKCXJVDV8CIQDctdX55uOdONlq8zf/6JkNKTvHKs21a6ITDxT/l0gh1wIhAJukbnQhENlNGLaloxJ4cGVXOyq0JQR65boZhpc4XbvHAiBDJUa9ylKA6GSstuXYgwjdCihXhVwjz2T1a2c2Au487QIgVE4W8yghzqhqRunxFirAms/v3n0Ma4+caCCjAFtd02I=',
+    'private_key' => 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAODT6wCpl4hWv+Ov6uVtyJtcUYToLQd7jx4JovQjDtcLrC1s7d342z60w5AE6lCQ4NxB8ESLNlaGxUEOwWlbWbcCAwEAAQ==',
   ),
   'unionpay' => 
   array (

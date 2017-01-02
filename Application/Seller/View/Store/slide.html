@@ -27,6 +27,7 @@
 							</empty>
 						</div>
 						<input name="old_img_{$key}" type="hidden" value="{$sl.img}"/>
+						<input name="slide_id_{$key}" type="hidden" value="{$sl.slide_id}"/>
 						<a href="{:U('Store/deleteSlide',array('slide_id'=>$sl['slide_id'],'img'=>$sl['img']))}" class="del" title="移除">X </a> </div>
 					<div class="url">
 						<input name="slide_id[]" type="hidden" value="{$sl.slide_id}"/>
@@ -116,7 +117,8 @@ $("input[name='goods_id[]']").dblclick(function(){
 });
 function update(id,new_img){
 	var old_img = $("input[name='old_img_"+id+"']").val();
-	$.post("{:U('Store/updateSlide')}",{old_img:old_img,new_img:new_img},function(res){
+	var id =  $("input[name='slide_id_"+id+"']").val();
+	$.post("{:U('Store/updateSlide')}",{old_img:old_img,new_img:new_img, id:id},function(res){
 		if(res.result == 0){
 			alert("上传失败");
 		}

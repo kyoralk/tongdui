@@ -6,12 +6,10 @@ return array (
 		'SESSION_PREFIX' => 'ms_', // session 前缀
 		/* 数据库设置 */
 		'DB_TYPE' => 'mysqli', // 数据库类型
-//		'DB_HOST' => '114.215.159.21', // 服务器地址
-        'DB_HOST' => '127.0.0.1', // 服务器地址
+		'DB_HOST' => '127.0.0.1', // 服务器地址
 		'DB_NAME' => 'tongdui', // 数据库名
 		'DB_USER' => 'root', // 用户名
-//		'DB_PWD' => 'jycf20150805@', // 密码'
-        'DB_PWD' => '',
+		'DB_PWD' => 'root', // 密码'
 		'DB_PREFIX' => 'ms_common_', // 数据库表前缀
 		'DB_PREFIX_G' => 'ms_',
 		'DB_PREFIX_C' => 'ms_common_',

@@ -4,7 +4,7 @@
     0 => 
     array (
       'min_fee' => '1',
-      'max_fee' => '1000000',
+      'max_fee' => '100000',
       'bi' => '3',
       'cap_type' => 'no_cap',
       'cap_fee' => 
@@ -18,7 +18,7 @@
     1 => 
     array (
       'min_fee' => '1000000',
-      'max_fee' => '3000000',
+      'max_fee' => '300000',
       'bi' => '2',
       'cap_type' => 'no_cap',
       'cap_fee' => 
@@ -63,7 +63,7 @@
     'JIANDIAN' => 
     array (
       'open' => '1',
-      'bobi' => '66',
+      'bobi' => '0.5',
       'cap_type' => 'no_cap',
       'cap_fee' => '0',
     ),
@@ -80,7 +80,7 @@
       'zcb' => '50',
       'dcsf' => '10',
       'zzb' => '10',
-      'zzys' => '24',
+      'zzys' => '10',
     ),
   ),
 );

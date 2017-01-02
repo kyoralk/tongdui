@@ -3,7 +3,7 @@
   array (
     'GWQ' => '1',
     'YJT' => '1',
-    'CZ_GWQ_S_GWQ' => '50',
+    'CZ_GWQ_S_GWQ' => '0',
   ),
   'TX' => 
   array (
@@ -16,7 +16,7 @@
   'HJ' => 
   array (
     'YJT_H' => '100',
-    'GWQ_H' => '1',
+    'GWQ_H' => '100',
     'FXZSYJT_H' => '50',
     'HJS' => '100',
     'TX_FEE_H' => '5',

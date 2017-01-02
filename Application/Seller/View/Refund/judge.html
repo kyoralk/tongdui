@@ -101,6 +101,7 @@
             if($model['status'] == 0 && $model['type'] == '退货') {
         ?>
         <button onclick="tuihuo();" class="btn">同意退货</button>
+        <button onclick="ntuihuo();" class="btn">不同意退货</button>
         <?php } ?>
 
         <?php
@@ -113,6 +114,7 @@
             if($model['status'] == 0 && $model['type'] == '换货') {
         ?>
         <button onclick="huanhuo();" class="btn" >同意换货</button>
+        <button onclick="nhuanhuo();" class="btn">不同意换货</button>
         <?php } ?>
 
         <?php
@@ -164,6 +166,22 @@
             }
         })
     }
+    function ntuihuo() {
+        $.ajax({
+            type: "POST",
+            url : "/Seller/Refund/ndohuo",
+            data: {type:"退货", refund_id:"{$model.refund_id}", reason:"$('#reason').val()"},
+            dataType: 'json',
+            success:function(msg){
+                if (msg.status == 1) {
+                    alert("操作成功！");
+                    window.location.href = "/Seller/Refund/index";
+                } else {
+                    alert(msg.content);
+                }
+            }
+        })
+    }
 
     function huanhuo() {
         $.ajax({
@@ -174,6 +192,23 @@
             success:function(msg){
                 if (msg.status == 1) {
                     alert("已经生成新订单！");
+                    window.location.href = "/Seller/Refund/index";
+                } else {
+                    alert(msg.content);
+                }
+            }
+        })
+    }
+
+    function nhuanhuo() {
+        $.ajax({
+            type: "POST",
+            url : "/Seller/Refund/ndohuo",
+            data: {type:"换货", refund_id:"{$model.refund_id}", order_sn:"{$model.order_sn}", reason:"$('#reason').val()"},
+            dataType: 'json',
+            success:function(msg){
+                if (msg.status == 1) {
+                    alert("操作成功！");
                     window.location.href = "/Seller/Refund/index";
                 } else {
                     alert(msg.content);

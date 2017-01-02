@@ -498,7 +498,7 @@ label.error i { margin-right: 4px;}
 .tabmenu .tab a { font: 14px/19px "microsoft yahei"; color: #7B6B6B; display: inline-block; height: 20px; padding-left:5px; cursor: default;border-left: 2px solid #27A9E3;}
 .tabmenu .tab .active a:hover { text-decoration: none; cursor: default;}
 .tabmenu .text-intro { line-height: 20px; color: #999; position: absolute; z-index: 99; top:5px; right:5px;}
-.tabmenu a.ncsc-btn { position: absolute; z-index: 1; top: -2px; right: 60px;}
+.tabmenu a.ncsc-btn { position: absolute; z-index: 1; top: -2px; right: 0px;}
 .sticky .tabmenu { width: 960px; padding-top: 10px; padding-bottom: 10px; position: fixed; top: 0; }
 .sticky .tabmenu a.ncsc-btn { top: 8px;}
 /* 通用页内表单提交类型样式 */

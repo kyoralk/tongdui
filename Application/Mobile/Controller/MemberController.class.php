@@ -169,6 +169,7 @@ class MemberController extends CommonController{
 		} catch (Exception $e) {
 			jsonReturn('','01017');
 		}
+		 
 		$data['real_name_auth'] = 2;
 		if(M('Member')->where('uid = '.$this->member_info['uid'])->save($data)){
 			jsonReturn();
@@ -364,11 +365,12 @@ class MemberController extends CommonController{
      */
 	public function info() {
 	    $apply_agent = M('ApplyAgent')->where('uid ='.$this->member_info['uid'].' and (status = 1 or status = 2)' )->count();
-
+	
 	    $res = [
 	        'real_name_auth' => $this->member_info['real_name_auth'],
             'store_id' => $this->member_info['store_id'],
-            'applay_agent' => $apply_agent
+            'applay_agent' => $apply_agent,
+			'info'=> $this->member_info,
         ];
 
         jsonReturn($res);

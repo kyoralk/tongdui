@@ -2,16 +2,16 @@
 	<div class="wrapper">
 		<div class="ncsc-admin">
 			<dl class="ncsc-admin-info">
-				<dt class="admin-avatar"> 
+				<dt class="admin-avatar">
 					<img src="/Static/Seller/Images/default_user_portrait.gif" width="32" class="pngFix" alt="" />
 				</dt>
 				<dd class="admin-permission">当前用户</dd>
 				<dd class="admin-name">{$Think.session.username}</dd>
 			</dl>
-			<div class="ncsc-admin-function"> 
+			<div class="ncsc-admin-function">·
 				<a href="/" target="_blank" title=""><i class="icon-home"></i></a>
-				<a href="" title="站内消息" class="pr" target="_blank"><i class="icon-envelope-alt"></i><em>0</em></a>
-				<a href="" title="修改密码"><i class="icon-wrench"></i></a>
+				<!--<a href="" title="站内消息" class="pr" target="_blank"><i class="icon-envelope-alt"></i><em>0</em></a>-->
+				<a target="_blank" href="{:U('Store/setting')}" title="店铺设置"><i class="icon-wrench"></i></a>
 				<a href="{:U('Public/logout')}" title="安全退出"><i class="icon-signout"></i></a>
 			</div>
 		</div>

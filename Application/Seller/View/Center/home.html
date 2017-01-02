@@ -47,9 +47,9 @@
 				<div class="content">
 					<dl class="focus">
 						<dt>店铺商品发布情况：</dt>
-						<dd title="已发布/可传商品"><em id="nc_goodscount">0</em>&nbsp;/&nbsp;100</dd>
-						<dt>图片空间使用：</dt>
-						<dd><em id="nc_imagecount">0</em>&nbsp;/&nbsp;500</dd>
+						<dd title="已发布/可传商品"><em id="nc_goodscount">0</em></dd>
+						<!--<dt>图片空间使用：</dt>-->
+						<!--<dd><em id="nc_imagecount">0</em>&nbsp;/&nbsp;500</dd>-->
 					</dl>
 					<ul>
 						<li><a href="index.php?act=store_goods_online&op=index">出售中 <strong id="nc_online"></strong></a></li>
@@ -67,18 +67,18 @@
 				<div class="content">
 					<dl class="focus">
 						<dt>近期售出：</dt>
-						<dd><a href="index.php?act=store_order">交易中的订单 <strong id="nc_progressing"></strong></a></dd>
-						<dt>维权提示：</dt>
-						<dd><a href="index.php?act=store_complain&select_complain_state=1">收到维权投诉 <strong id="nc_complain"></strong></a></dd>
+						<dd><a target="_blank" href="{:U('Order/olist')}">交易中的订单 <strong id="nc_progressing"></strong></a></dd>
+						<!--<dt>维权提示：</dt>-->
+						<!--<dd><a href="index.php?act=store_complain&select_complain_state=1">收到维权投诉 <strong id="nc_complain"></strong></a></dd>-->
 					</dl>
 					<ul>
-						<li><a href="{:U('Order/orderList?active=3&pay_status=0&shipping_status=0&order_status=0')}">待付款
+						<li><a target="_blank" href="{:U('Order/olist?type=1')}">待付款
 							<if condition="$pay_count gt 0"><strong id="nc_payment">{$pay_count}</strong></if>
 							</a></li>
-						<li><a href="{:U('Order/orderList?active=2&pay_status=1&shipping_status=0&order_status=0')}">待发货
+						<li><a target="_blank" href="{:U('Order/olist?type=2')}">待发货
 							<if condition="$shipping_count gt 0"> <strong id="nc_delivery">{$shipping_count}</strong></if>
 							</a></li>
-						<li><a href="{:U('Order/orderList?active=3&pay_status=1&shipping_status=1&order_status=0')}">待确认账单
+						<li><a target="_blank" href="{:U('Order/olist?type=3')}">待收货
 							<if condition="$makesure_count gt 0"> <strong id="nc_bill_confirm">{$makesure_count}</strong></if>
 							</a></li>
 					</ul>

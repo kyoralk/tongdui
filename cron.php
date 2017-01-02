@@ -1,7 +1,7 @@
 <?php
 
 
-http('http://tongdui.hulianwangdai.com/Mobile/Release/todo', $params,'GET');
+http('http://tongdui.yingrongkeji.com/Mobile/Release/todo', $params,'GET');
 
 /**
  * 发送HTTP请求方法，目前只支持CURL发送请求

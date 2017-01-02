@@ -85,6 +85,20 @@ class StoreController extends CommonController{
 	 * 幻灯片设置
 	 */
 	public function slide(){
+
+	    // 避免没有幻灯片，优先创建
+        $hasNum = M('StoreSlide')->where('store_id ='.session('store_id'))->count();
+        if (empty($hasNum)) {
+            foreach ([1,2,3,4,5] as $key) {
+                $StoreSlide = M('StoreSlide');
+                $StoreSlide->add(array(
+                        'store_id'=>session('store_id')
+                    )
+                );
+            }
+        }
+
+
 		$slide = M('StoreSlide');
 		$slide_list=$slide->where('store_id = '.session('store_id'))->select();
 		if(empty($slide_list)){
@@ -98,12 +112,14 @@ class StoreController extends CommonController{
 	 */
 	public function updateSlide(){
 		$old_img = I('post.old_img');
+		$slide_id = I('post.id');
 		$file_path = './Uploads/'.C('MALL_SELLER').session('store_id').'/Store/'.$old_img;
 		if(file_exists($file_path)){
 			unlink($file_path);
 		}
 		$res = Image::createImg(array(I('post.new_img')), 'MALL_SELLER',false,session('store_id').'/Store/');
-		if(M('StoreSlide')->where('store_id = '.session('store_id').' AND img = "'.$old_img.'"')->setField('img',$res[0])){
+
+		if(M('StoreSlide')->where('store_id = '.session('store_id').' AND slide_id = "'.$slide_id.'"')->setField('img',$res[0])){
 			$this->ajaxReturn(1,'JSON');
 		}else{
 			$this->ajaxReturn(0,'JSON');
@@ -120,10 +136,24 @@ class StoreController extends CommonController{
 		$count = count($url);
 		$StoreSlide = M('StoreSlide');
 		$error = 0;
+
 		for($i = 0;$i<$count;$i++){
-			if(!is_numeric($StoreSlide->where('slide_id = '.$slide_id[$i])->save(array('url'=>$url[$i],'sort'=>$sort[$i],'goods_id'=>$goods_id[$i])))){
-				$error++;
-			}
+		    if ($slide_id[$i]) {
+		        $StoreSlide->where('slide_id = '.$slide_id[$i]);
+                if(!is_numeric($StoreSlide->save(array('url'=>$url[$i],'sort'=>$sort[$i],'goods_id'=>$goods_id[$i])))){
+                    $error++;
+                }
+            } else {
+                if(!is_numeric($StoreSlide->add(array(
+                        'url'=>$url[$i],
+                        'sort'=>$sort[$i],
+                        'goods_id'=>$goods_id[$i],
+                        'store_id'=>session('store_id')
+                    )
+                ))){
+                    $error++;
+                }
+            }
 		}
 		if($error>0){
 			$this->error('更新失败');

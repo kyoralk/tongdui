@@ -71,6 +71,17 @@ class RefundController extends CommonController{
         }
     }
 
+    public function ndohuo() {
+        $type = I('post.type');
+        $where = 'refund_id ='.I('post.refund_id');
+        $refund = M("Refund");
+        $refund->sure_time = time();
+        $refund->status = 1;
+        $refund->where($where)->save();
+
+        echo json_encode(['status'=>1]);
+    }
+
     public function tuikuan() {
         $refund_id = I('post.refund_id');
         $refund = M('Refund')->where('refund_id ='.$refund_id)->find();
