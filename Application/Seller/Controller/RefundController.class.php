@@ -65,18 +65,22 @@ class RefundController extends CommonController{
                 $refund->status = 4;
                 $refund->where($where)->save();
                 echo json_encode(['status'=>1]);
-            }else{
+            } else {
                 echo json_encode(['status'=>2, 'content'=>'保存出错']);
             }
         }
     }
 
+    /**
+     * 退货换货不同意返回
+     */
     public function ndohuo() {
         $type = I('post.type');
         $where = 'refund_id ='.I('post.refund_id');
         $refund = M("Refund");
+        $refund->remark = I('post.remark');
         $refund->sure_time = time();
-        $refund->status = 1;
+        $refund->status = 5;
         $refund->where($where)->save();
 
         echo json_encode(['status'=>1]);
@@ -100,8 +104,10 @@ class RefundController extends CommonController{
             
             // 如果是购物券商品, 则删除赠送的购物券，全部以购物券返回
             if ($goods['consumption_type'] == 3) {
-                $extra = $orderGoods['gwq_send'] + $orderGoods['gwq_extra'];
-                if ($orderGoods['comsuption_type'] == 3) { 
+                // 獲取贈送的購物券
+                $extra = $this->sendGWJ($goods) * $orderGoods['prosum'];
+                if ($orderGoods['comsuption_type'] == 3) {
+                    // 按商品金額來算
                     $finalGWQ = $refund['cash'] + $refund['yqt'] + $refund['gwq'] - $extra;
                     // 返还购物券回购物券
                     AccountController::change($refund['user_id'], $finalGWQ, 'YJT', 7, false, '订单'.$refund['order_sn'].'退货购物券');
@@ -111,10 +117,7 @@ class RefundController extends CommonController{
                     // 返还购物券回购物券
                     AccountController::change($refund['user_id'], $refund['gwq'], 'YJT', 7, false, '订单'.$refund['order_sn'].'退货购物券');
                 }
-            }  
-
-            
-            
+            }
 
             $refund = M("Refund");
             $refund->status = 3;

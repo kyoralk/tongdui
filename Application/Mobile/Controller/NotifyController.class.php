@@ -97,7 +97,7 @@ class NotifyController extends InitController{
 			$M->commit();
 			$this->setMemberInfo(array('uid'=>$log_info['uid']));
 			if($log_info['trade_code'] == 'GWQ'){
-				R('Reward/giveGWQ',array($log_info['trade_fee']));//充值购物券赠送购物券
+//				R('Reward/giveGWQ',array($log_info['trade_fee']));//充值购物券赠送购物券
 				R('Upgrade/hgxfs');//升级合格消费商
 				R('Reward/jdjs',array($log_info['trade_fee'],'CZGWQ'));//充值购物券送一卷通
 				R('Reward/heijin',array($log_info['trade_fee'],'CZ'));//赠送黑金
@@ -135,7 +135,24 @@ class NotifyController extends InitController{
 			if($res['gwq']>0){
 				AccountController::change($list[0]['uid'], $res['gwq'], 'GWQ', 3,true);//减少消费的购物券
 			}
-			
+
+			// 判断是否有购物券商品, 购物券商品的一卷通作为充值进行九代结算
+            $order = M("Order")->where('order_sn ="'.$this->order_sn.'"')->find();
+            $orderGoods = M('OrderGoods')->where('order_sn = "'.$this->order_sn.'"')->select();
+            if ($orderGoods) {
+                $goods = M("Goods")->where('goods_id ='.$orderGoods['goods_id'])->find();
+                if ($goods) {
+                    if ($goods->consumption_type == 3) {
+                        if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$order['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$order['yqt'])))) {
+                            R('Upgrade/hgxfs');//升级合格消费商
+                            R('Reward/jdjs',array($order['yqt'],'CZGWQ'));//充值购物券送一卷通
+                            R('Reward/heijin',array($order['yqt'],'CZ'));//赠送黑金
+                            R('Reward/jdjs',array($order['yqt'],'CZJDJS'));
+                        }
+                    }
+                }
+            }
+
 			if(!empty($this->order_sn)){
 				$condition['order_sn'] = array('in',$this->order_sn);
 				$Order->where($condition)->setField('pay_status',1);
@@ -144,7 +161,7 @@ class NotifyController extends InitController{
 //				}
 				R('Upgrade/hgxfs',array(true));//升级合格消费商
 				if($res['yjt']>0){
-					R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
+					// R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
 					R('Reward/heijin',array($res['yjt'],'XF'));//赠送黑金
 				}
 			}

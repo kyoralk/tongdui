@@ -70,7 +70,7 @@
 				<div class="tab-pane" id="tab_3">
 					{:fastModule('form-group',array('消费类型'),array('radio','consumption_type',array(array('现金',1,$goods_info['consumption_type'],1),array('一卷通',2,$goods_info['consumption_type'],1),array('购物券',3,$goods_info['consumption_type'],1)),'','','radio'))}
 					{:fastModule('form-group',array('支付类型'),array('checkbox',['is_cash','is_yqt','is_gwq'],array(array('现金',1,$goods_info['is_cash'],1),array('一卷通',1,$goods_info['is_yqt'],1),array('购物券',1,$goods_info['is_gwq'],1)),'','','checkbox'))}
-					{:fastModule('form-group',array('赠送购物券[比率%]'),array('text','gwq_send',$goods_info['gwq_send']))}
+					{:fastModule('form-group',array('赠送购物券'),array('text','gwq_send',$goods_info['gwq_send']))}
 					{:fastModule('form-group',array('额外赠送购物券'),array('text','gwq_extra',$goods_info['gwq_extra']))}
 					{:fastModule('form-group',array('可用一卷通数额[购买此商品能用最大值]'),array('text','yjt_can',$goods_info['yjt_can']))}
  					{:fastModule('form-group',array('可用购物券数额[购买此商品能用最大值]'),array('text','gwq_can',$goods_info['gwq_can']))}
@@ -279,4 +279,19 @@ function submitForm(){
 	}
 	document.myform.submit();	
 }
+
+$(function(){
+    $("input[name='consumption_type']").click(function(){
+        var _type =  $(this).val();
+        if (_type == 3) {
+            $("input[name='gwq_send']").val('0');
+            $("input[name='gwq_send']").prop('disabled', 'disabled');
+            $("input[name='gwq_send']").prop('readonly', true);
+		} else {
+            $("input[name='gwq_send']").val('0');
+            $("input[name='gwq_send']").prop('disabled', false);
+            $("input[name='gwq_send']").prop('readonly', false);
+		}
+	});
+})
 </script>

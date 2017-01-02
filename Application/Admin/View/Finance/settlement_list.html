@@ -1,8 +1,9 @@
 <section class="content-header">
 	<div class="row">
 		<div class="col-md-8">
-			<form action="{:U('Finance/glist')}" method="get">
-				<h4><small>商品列表</small></h4>
+			<form action="{:U('Finance/settlementList')}" method="get">
+
+				<h4><small>结算统计</small></h4>
 				<div class="form-group">
 					<select name="store_id" class="form-control inline-block" style="width: 150px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
 						<option value="0">选择店铺</option>
@@ -10,12 +11,13 @@
 							<option value="{$sl.store_id}" <if condition="$store_id eq $sl['store_id']">selected</if>>{$sl.store_name}</option>
 						</volist>
 					</select>
-					<input name="goods_sn" size="13" class=" form-control" type="text" placeholder="商品编号" value="{$goods_sn}" style="margin-left:2px;width: 150px; float: left;height:30px;border-radius:3px;border-color: #d2d6de;font-size:12px;">
+
 					<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
-						<input class="form-control" type="text" name="goods_name" value="{$goods_name}" placeholder="商品名称">
+						<input class="form-control" type="text" name="store_name" value="{$store_name}" placeholder="店铺名称">
 						<span class="input-group-btn">
 						<button type="submit" class="btn btn-info btn-flat">搜索</button>
-						</span> </div>
+						</span>
+					</div>
 				</div>
 	        </form>
 		</div>

@@ -41,10 +41,11 @@ class RewardController extends CommonController{
 		
 	}
 	/**
-	 * 充值购物券赠送购物券
+	 * 充值购物券赠送购物券[不赠送]
 	 * @param float $trade_fee
 	 */
 	public function giveGWQ($trade_fee){
+	    return '';
 		$rc = $this->ruleConfig(1);
 		$proportion = $rc['CZ']['CZ_GWQ_S_GWQ']/100;
 		AccountController::change($this->member_info['uid'], $trade_fee*$proportion, 'GWQ', 4,false,'充值购物券赠送购物券');

@@ -21,5 +21,5 @@ class RefundModel extends RelationModel {
         ),
     );
 
-    public static $status = ['0'=>'提交', '1'=>'已确认', '2'=>'已发货', '3'=>'已退款', '4'=>'已换货'];
+    public static $status = ['0'=>'提交', '1'=>'已确认', '2'=>'已发货', '3'=>'已退款', '4'=>'已换货', '5'=>'已驳回'];
 }

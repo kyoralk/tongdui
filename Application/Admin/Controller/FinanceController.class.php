@@ -81,7 +81,22 @@ class FinanceController extends CommonController{
 			$condition['store_id'] = array('gt',1);
 			$this->assign('store_id',0);
 		}
+		$store_name = I('get.store_name');
+
+		if ($store_name) {
+            $condition['store_name'] = I('get.store_name');
+            $store = M('Store')->where('store_name ="'.$store_name.'"')->find();
+
+            if ($store) {
+                $store_id = $store['store_id'];
+                $condition['store_id'] = $store_id;
+                $this->assign('store_id', $store_id);
+                $this->assign('store_name',$store_name);
+            }
+        }
+
 		$data = page(D('SettlementView'), $condition,20,'view',$order,'store_id,store_name,bank_account_number,bank_account_name,sum(settlement_total) settlement_total,sum(settlement_already) settlement_already,sum(settlement_no) settlement_no,settlement_status,settlement_time','store_id');
+
 		$this->assign('list',$data['list']);
 		$this->assign('page',$data['page']);
 		$this->assign('store_list',$this->store());
@@ -127,6 +142,9 @@ class FinanceController extends CommonController{
 
 		$field = 'order_sn,settlement_no,bank_account_number,bank_account_name,order_time';
 		$settlement_list = M('OrderInfo',C('DB_PREFIX_MALL'))->alias('oi')->join(C('DB_PREFIX_MALL').'store s on oi.store_id = s.store_id')->where($condition)->field($field)->select();
+
+        $data = page(M('OrderInfo',C('DB_PREFIX_MALL'))->alias('oi')->join(C('DB_PREFIX_MALL').'store s on oi.store_id = s.store_id'), $condition, 20,'view','','*');
+        var_dump($data);exit;
 		$this->assign('settlement_list', $settlement_list);
 
 		$this->display('settlement_detail');
@@ -252,11 +270,25 @@ class FinanceController extends CommonController{
 		// 	$this->assign('reward_code', $recharge_num);
 		// }
 
+        $user_name = I('get.user_name');
+        if ($user_name) {
+            $member = M('Member')->where('username = "'.$user_name.'"')->find();
+            if ($member) {
+                $condition['uid'] = $member['uid'];
+            }
+            $this->assign('user_name', $user_name);
+        }
+
+
 		$status = I('get.trade_status');
-		if ($status) {
+        $status = ($status == -1)? false:$status;
+		if ($status !== false) {
 			$condition['trade_status'] = $status;
 			$this->assign('trade_status', $status);
-		}
+		} else {
+            $this->assign('trade_status', -1);
+        }
+
 
 		$data = page(M('MemberAccountLog'), $condition, 20,'view','time_start DESC','*');
 		$this->assign('account_types', $this->account_type());
@@ -284,7 +316,9 @@ class FinanceController extends CommonController{
 		}
 
 		$status = I('get.trade_status');
-		if ($status) {
+
+		if ($status !== false) {
+
 			$condition['trade_status'] = $status;
 			$this->assign('trade_status', $status);
 		}

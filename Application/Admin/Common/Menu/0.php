@@ -210,7 +210,7 @@ return array (
 								'menu' => array (
 										'basic_info' => array (
 												'url' => U ( 'Setting/info?item=1' ),
-												'lang' => '基本信息',
+												'lang' => '基本设置',
 												'icon' => '' 
 										),
 										'rule_setting' => array (

@@ -147,6 +147,8 @@
 				</select> 
 				</dd> 
 				</dl>
+
+				<?php if ($goods_info && $goods_info['examine_status'] == 1) { ?>
 				<dl>
 					<dt>商品发布：</dt>
 					<dd>
@@ -164,6 +166,7 @@
 						</ul>
 					</dd>
 				</dl>
+				<?php } ?>
 				<dl>
 					<dt>商品推荐：</dt>
 					<dd>

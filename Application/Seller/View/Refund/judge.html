@@ -49,7 +49,7 @@
 
             <li>
                 <label>上传凭证</label>
-                <span><img src="{$model.refund_img}" ></span>
+                <span><img src="Uploads/{$model.refund_img}" ></span>
             </li>
 
             <?php if ($model['type']== "退货") { ?>
@@ -94,14 +94,29 @@
             </li>
             <?php  } ?>
 
+            <?php
+                if($model['status'] == 0 ) {
+            ?>
+            <li>
+                <label>不同意理由</label>
+                <span><textarea id="remark"></textarea></span>
+            </li>
+            <?php } else if ($model['remark']) {?>
+            <li>
+                <label>不同意理由</label>
+                <span><?php echo $model['remark']; ?></span>
+            </li>
+            <?php } ?>
 
         </ul>
 
         <?php
-            if($model['status'] == 0 && $model['type'] == '退货') {
+            if(($model['status'] == 0 || $model['status'] == 5) && $model['type'] == '退货') {
         ?>
         <button onclick="tuihuo();" class="btn">同意退货</button>
-        <button onclick="ntuihuo();" class="btn">不同意退货</button>
+        <?php if ($model['status'] !=  5 ) { ?>
+             <button onclick="notallow();" class="btn">不同意退货</button>
+        <?php } ?>
         <?php } ?>
 
         <?php
@@ -111,10 +126,12 @@
         <?php } ?>
 
         <?php
-            if($model['status'] == 0 && $model['type'] == '换货') {
+            if(($model['status'] == 0 || $model['status'] == 5) && $model['type'] == '换货') {
         ?>
         <button onclick="huanhuo();" class="btn" >同意换货</button>
-        <button onclick="nhuanhuo();" class="btn">不同意换货</button>
+        <?php if ($model['status'] !=  5 ) { ?>
+            <button onclick="notallow();" class="btn">不同意换货</button>
+        <?php } ?>
         <?php } ?>
 
         <?php
@@ -166,11 +183,11 @@
             }
         })
     }
-    function ntuihuo() {
+    function notallow() {
         $.ajax({
             type: "POST",
             url : "/Seller/Refund/ndohuo",
-            data: {type:"退货", refund_id:"{$model.refund_id}", reason:"$('#reason').val()"},
+            data: {refund_id:"{$model.refund_id}", remark:$('#remark').val()},
             dataType: 'json',
             success:function(msg){
                 if (msg.status == 1) {
@@ -200,21 +217,5 @@
         })
     }
 
-    function nhuanhuo() {
-        $.ajax({
-            type: "POST",
-            url : "/Seller/Refund/ndohuo",
-            data: {type:"换货", refund_id:"{$model.refund_id}", order_sn:"{$model.order_sn}", reason:"$('#reason').val()"},
-            dataType: 'json',
-            success:function(msg){
-                if (msg.status == 1) {
-                    alert("操作成功！");
-                    window.location.href = "/Seller/Refund/index";
-                } else {
-                    alert(msg.content);
-                }
-            }
-        })
-    }
 
 </script>

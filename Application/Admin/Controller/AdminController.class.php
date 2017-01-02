@@ -118,7 +118,7 @@ class AdminController extends CommonController{
 					$this->ajaxJsonReturn('','两次密码输入不一致',0);
 					exit();
 				}
-				if($Admin->where('admin_id = '.session('admin_id'))->setField('password',md5(I('post.password')))){
+				if($Admin->where('admin_id = '.session('admin_id'))->setField('password',md5(I('post.password'))) !== false){
 					$this->ajaxJsonReturn('','修改成功',1);
 				}else{
 					$this->ajaxJsonReturn('','修改失败',0);

@@ -256,4 +256,54 @@ class GeneralController extends Controller{
 		}
 		return $set;
 	}
+
+    /**
+     * 检测图片是否存在
+     */
+	public function checkpic() {
+        $url = I('get.imgurl');
+        if ($url[0] == '/') {
+            $url = substr($url, 1);
+        }
+
+        if (!is_file($url)) {
+            $res = [
+                'error' => 1,
+                'imgurl' => '/Uploads/no.jpg' ,
+            ];
+        } else {
+            $res = [
+                'error' => 0,
+                'imgurl' => 'http://'.$_SERVER['HTTP_HOST'].'/'.$url,
+            ];
+        }
+
+        echo json_encode($res);
+    }
+
+    /**
+     * 自动收货
+     */
+    public function autosure() {
+        $set = M('Setting',C('DB_PREFIX_C'))->where('item_key = "autoday" ')->find();
+        $day = $set['item_value'] * 86400;
+        $orders = M("OrderInfo")->where('order_time <= '.(time() - $day).' and receipt_status != 1 and shipping_status = 1 and pay_status = 1 and refund_status !=1 ')->select();
+
+        if ($orders) {
+            foreach ($orders as $order) {
+                if(M('OrderInfo')->where('order_sn = "'.$order['order_sn'].'"')->setField('receipt_status',1)){
+                    $orderGoods = M('OrderGoods')->where('order_sn = "'.$order['order_sn'].'"')->select();
+                    if ($orderGoods) {
+                        $goods = M("Goods")->where('goods_id ='.$orderGoods['goods_id'])->find();
+                        if ($goods) {
+                            // 一券通商品收货进行九代结算
+                            if ($goods->consumption_type == 2) {
+                                R('Reward/jdjs',array($orderGoods['price'] * $orderGoods['prosum'],'XFYJT'));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

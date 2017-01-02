@@ -299,7 +299,13 @@ function getWeekTime(){
 }
 
 
-
+function pic($url) {
+    if (is_file($url)) {
+        echo 1;
+    } else {
+        echo 0;
+    }
+}
 
 
 ?>

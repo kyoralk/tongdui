@@ -325,7 +325,7 @@ class OrderController extends CommonController{
                 $amount = $this->getRefundMax($orderInfo, $orderGoods);
                 $data['amount'] = $amount['max'];
                 $data['cash'] = $amount['max_cash'];
-                $data['yqt'] = $amount['max_yqt'];
+                $data['yqt'] = $amount['max_yjt'];
                 $data['gwq'] = $amount['max_gwq'];
                 $data['reason'] = I('post.reason');
                 $data['store_id'] = $orderInfo['store_id'];
@@ -337,11 +337,12 @@ class OrderController extends CommonController{
                     $upload->maxSize   =     3145728 ;// 设置附件上传大小
                     $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
                     $upload->rootPath  =      './Uploads/'; // 设置附件上传根目录
-                    $upload->savePath  =      'Refund'; // 设置附件上传（子）目录
+                    $upload->savePath  =      'Refund/'; // 设置附件上传（子）目录
                     // 上传文件
                     $info   =   $upload->upload();
-                    if($info) {// 上传错误提示错误信息
-                        $this->error($upload->getError());
+                    if(!$info) {// 上传错误提示错误信息
+                        var_dump($upload->getError());
+                        exit;
                     }else{// 上传成功 获取上传文件信息
                         foreach($info as $file){
                             $data['refund_img'] =  $file['savepath'].$file['savename'];
@@ -377,16 +378,12 @@ class OrderController extends CommonController{
         $uid = $this->member_info['uid'];
         $orderInfo = M("OrderInfo")->where("uid = $uid and order_sn =".I('get.order_sn'))->find();
         if ($orderInfo) {
-            if ($orderInfo['total']) {
-                $orderGoods = M('OrderGoods')->where("order_sn = ".I('get.order_sn')." and goods_id = ".I('get.goods_id'))->find();
-                if ($orderGoods) {
-                    $data = $this->getRefundMax($orderInfo, $orderGoods);
-                    jsonReturn($data);
-                } else {
-                    jsonReturn('', '00000');
-                }
+            $orderGoods = M('OrderGoods')->where("order_sn = ".I('get.order_sn')." and goods_id = ".I('get.goods_id'))->find();
+            if ($orderGoods) {
+                $data = $this->getRefundMax($orderInfo, $orderGoods);
+                jsonReturn($data);
             } else {
-                $data = ['max_cash' => 0, 'max_gwq'=>0, 'max_yjt'=>0, "max"=>0];
+                jsonReturn('', '00000');
             }
          } else {
             jsonReturn('', '00000');
@@ -396,15 +393,20 @@ class OrderController extends CommonController{
 
     protected function getRefundMax($orderInfo, $orderGoods) {
         $defaultMax = $orderGoods['price'] * $orderGoods['prosum'];
-        $data['max_cash'] = $defaultMax * $orderInfo['cash'] / $orderInfo['total'];
+
+        $cash = $orderInfo['total'];
+        $total = $orderInfo['total'] +  $orderInfo['yjt'] + $orderInfo['gwq'];
+
+        $data['max_cash'] = $defaultMax * $cash/ $total;
         $store = M('Store')->where('store_id ='.$orderInfo['store_id'])->find();
         if ($store && $store['gwq_max']) {
-            $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $orderInfo['total'] * $store['gwq_max'] / 100;
+            $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $total * $store['gwq_max'] / 100;
         } else {
-            $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $orderInfo['total'];
+            $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $total;
         }
         $data['max_yjt'] = $defaultMax * $orderInfo['yjt'] / $orderInfo['total'];
         $data['max'] = $data['max_yjt'] + $data['max_gwq'] + $data['max_cash'];
+
         return $data;
     }
 

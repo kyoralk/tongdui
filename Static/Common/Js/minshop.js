@@ -61,3 +61,27 @@ function isExists(variable) {
 		return false;
 	}
 }
+
+/**
+ * 检测图片是否存在
+ */
+$(function(){
+    $("img").each(function(){
+        var _obj = $(this);
+        if (_obj) {
+
+            if (_obj.attr('src').indexOf('yes') > 0 || _obj.attr('src').indexOf('no') > 0) {
+                return false;
+            }
+            $.ajax({
+                type: "get",
+                url: "/General/General/checkpic",
+                data:{ imgurl : $(this).attr('src') },
+                dataType: "json",
+                success:function(msg){
+					_obj.attr('src', msg.imgurl);
+                }
+            })
+		}
+    });
+})

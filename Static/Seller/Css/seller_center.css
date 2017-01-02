@@ -354,7 +354,7 @@ label.error i { margin-right: 4px;}
 /* 布局 */
 .ncsc-layout {overflow: hidden;}
 .ncsc-layout-left { width: 13%; max-width:200px;  float: left; position: fixed; z-index: 2;margin-top: 72px;height: 1000px; background: #F4F4F4;overflow: hidden;}
-.ncsc-layout-right { background-color: #FFF; position: relative; z-index: 1;width: 87%;float: left;margin-top: 72px;margin-left: 200px;}
+.ncsc-layout-right { background-color: #FFF; position: relative; z-index: 1;width: 87%;float: left;margin-top: 72px;margin-left: 165px;}
 /* 内容其余左侧边栏 */
 .ncsc-layout-left .sidebar { width: 100%;}
 .ncsc-layout-left.sticky .sidebar { position:fixed; _position: relative; top: 0; z-index:999;}

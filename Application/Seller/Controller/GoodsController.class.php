@@ -213,6 +213,13 @@ class GoodsController extends CommonController{
 		$examine = 0;
 		//通用信息
 		$goods_id = empty(I('post.goods_id'))? 0 : I('post.goods_id');
+		if ($goods_id) {
+		    $goods = M('Goods')->where('goods_id ='.$goods_id)->find();
+		    if ($goods) {
+		        $examine = $goods['examine_status'];
+            }
+        }
+
 		$data['goods_name'] = I('post.goods_name');
 		$data['small_name'] = I('post.small_name');
 		$data['spec_type'] = empty(I('post.spec_type'))? 1 : I('post.spec_type');
@@ -227,7 +234,7 @@ class GoodsController extends CommonController{
 		$data['goods_weight'] = empty(I('post.goods_weight')) ? 0 : I('post.goods_weight');//商品种类
 		$data['is_on_sale'] = I('post.is_on_sale',0);//是否上架
 		$data['freight_type'] = I('post.freight_type');//运费计算方式
-		$data['freight'] = empty(I('post.freight_type'))? 0 : I('post.freight_type');//运费
+		$data['freight'] = empty(I('post.freight_type'))? 0 : I('post.freighft_type');//运费
 		$data['keywords'] = I('post.keywords');//seo关键字
 		$data['description'] = I('post.description');//seo描述
 		$data['mid'] = empty(I('post.mid')) ? 0 : I('post.mid');//商品模型id
@@ -269,6 +276,16 @@ class GoodsController extends CommonController{
 			}
 		}
 		$Goods = D('Goods');
+        if ($examine) {
+            if ($examine == '3') {
+                $data['examine_status'] = 2;
+            } else {
+                $data['examine_status'] = $examine;
+            }
+        } else {
+            $data['examine_status'] =  $examine == 0 ? 2 : 1; //处理审核状态
+        }
+
 		if($goods_id){
 			$data['goods_id'] = $goods_id;
 			//删除扩展信息
@@ -286,9 +303,7 @@ class GoodsController extends CommonController{
 				$this->error('更新失败');
 			}
 		}else{
-			//新增
-			$data['examine_status'] =  $examine == 0 ? 1 : 2;//处理审核状态
-			$data['goods_sn'] = 'MS_'.serialNumber();//商品货号
+			$data['goods_sn'] = 'MS_'.serialNumber(); //商品货号
 			if($Goods->relation(true)->add($data)){
 				$this->success('添加成功');
 			}else{
