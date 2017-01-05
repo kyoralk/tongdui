@@ -288,4 +288,139 @@ class GoodsController extends MallController{
 		}
 		return $data;
 	}
+
+    /**
+     * 当前分类下的模型
+     */
+    private function modelList($gc_id_array){
+        $Model = M('Model');
+        $i = count($gc_id_array) - 1;
+        while (!empty($gc_id_array[$i])){
+            $model_list = M('Model')->where('gc_id = '.$gc_id_array[$i])->field('mid,model_name')->select();
+            if(empty($model_list)){
+                $i--;
+            }else{
+                break;
+            }
+        }
+        return $model_list;
+    }
+
+    /**
+     * 把常用分类保存的cookie中
+     * @param array $gc_name_array
+     */
+    private function lastClassToCookie($gc_name_array){
+        $str = I('get.gc_id_path').'||'.implode('>', $gc_name_array);
+        $gc_id_history = empty(cookie('gc_id_history'))? array(): cookie('gc_id_history');
+        array_unshift($gc_id_history, $str);
+        $gc_id_history = array_unique($gc_id_history);//插入元素到数组首位
+        cookie('gc_id_history',$gc_id_history);
+    }
+    /**
+     * 规格信息
+     */
+    private function goodsSpec(){
+        $spec_id = I('post.spec_id');
+        $spec_name = I('post.spec_name');
+        $spec_cover = I('post.spec_cover');
+        $spec_cost_price = I('post.spec_cost_price');
+        $spec_add_price = I('post.spec_add_price');
+        $spec_inventory = I('post.spec_inventory');
+        $spec_name_array = array();
+        $spec_value_array = array();
+        foreach ($spec_name as $item){
+            $spec_name_temp = array();
+            $spec_value_temp = array();
+            foreach ($item as $loop){
+                $temp = explode('@', $loop);
+                $spec_name_temp[] = $temp[1];
+                $spec_value_temp[] = $temp[0];
+                $data['goods_extend'][]['atv_id'] = $temp[0];
+            }
+            $spec_name_array[] = implode(' ', $spec_name_temp);
+            asort($spec_value_temp);//排序
+            $spec_value_array[] = implode(',', $spec_value_temp);
+        }
+        $i = 0;
+        while (!empty($spec_name_array[$i])){
+            if($spec_id[$i]){
+                $data['goods_spec'][$i]['spec_id'] = $spec_id[$i];
+            }
+            if(strlen($spec_cover[$i])>50){
+                $res = Image::createImg(array($spec_cover[$i]), 'MALL_SELLER',true,session('store_id').'/Goods/');
+                $data['goods_spec'][$i]['spec_cover'] = $res[0];
+            }else{
+                $data['goods_spec'][$i]['spec_cover'] = $spec_cover[$i];
+            }
+            $data['goods_spec'][$i]['spec_name'] = $spec_name_array[$i];
+            $data['goods_spec'][$i]['spec_value'] = $spec_value_array[$i];
+            $data['goods_spec'][$i]['spec_cost_price'] = empty($spec_cost_price[$i])? 0 : $spec_cost_price[$i];
+            $data['goods_spec'][$i]['spec_add_price'] = empty($spec_add_price[$i])? 0 : $spec_add_price[$i];
+            $data['goods_spec'][$i]['spec_inventory'] = empty($spec_inventory[$i])? 0 : $spec_inventory[$i];
+            $data['goods_spec'][$i]['store_id'] = session('store_id');
+            $i++;
+        }
+        return $data;
+    }
+    /**
+     * 设置封面图片
+     */
+    public function setCover(){
+        try {
+            $condition['goods_id'] = I('get.goods_id');
+            $GoodsImg = M('GoodsImg');
+            $GoodsImg->where($condition)->setField('is_cover',0);
+            $condition['save_name'] = I('get.img_name');
+            M('GoodsImg')->where($condition)->setField('is_cover',1);
+        } catch (Exception $e) {
+            $this->ajaxReturn(0,'JSON');
+            exit();
+        }
+        $this->ajaxReturn(1,'JSON');
+    }
+
+    /**
+     * 商品信息【商家商品-新】
+     */
+    public function info(){
+        layout('seller_layout');
+        $gc_id_path = empty(I('get.gc_id_path')) ? false : I('get.gc_id_path');
+        if(!empty(I('get.goods_id'))){
+            $goods_info = D('Goods')->relation(true)->where('goods_id = '.I('get.goods_id'))->find();
+            if(!$gc_id_path){
+                $gc_id_path = $goods_info['gc_id_path'];
+            }
+            $this->assign('goods_info',$goods_info);
+            $this->assign('brand_name',M('Brand')->where('brand_id = '.$goods_info['brand_id'])->getField('brand_name'));
+        }
+        $gc_id_array = explode('-', $gc_id_path);
+        $condition['gc_id'] = array('IN',$gc_id_array);
+        $gc_name_array = M('GoodsClass')->where($condition)->order('gc_id')->getField('gc_name',true);
+        $this->lastClassToCookie($gc_name_array);//把常用分类保存的cookie中
+        $this->assign('gc_id',end($gc_id_array));
+        $this->assign('gc_id_path',$gc_id_path);
+        $this->assign('gc_name_path',implode('>', $gc_name_array));
+        $this->assign('model_list',$this->modelList($gc_id_array));
+        $this->assign('class_list', $this->getClass('sc_id,sc_parent_id,sc_name'));
+        $this->display('newinfo');
+    }
+
+    /**
+     * 获取店铺分类
+     * @param string $sc_parent_id 取出某一种分类
+     * @param string $field 要查询的字段
+     * @param string $list_to_tree 是否转换成树状结构
+     */
+    public function getClass($field = '*',$sc_parent_id = '',$list_to_tree = true){
+        $condition['store_id'] = session('store_id');
+        if(is_numeric($sc_parent_id)){
+            $condition['sc_parent_id'] = $sc_parent_id;
+        }
+        $goods_class_list = M('GoodsClass',C('DB_PREFIX_MALL').'store_')->where($condition)->field($field)->select();
+        if($list_to_tree){
+            $goods_class_list = list_to_tree($goods_class_list,'sc_id','sc_parent_id');
+        }
+        return $goods_class_list;
+    }
 }

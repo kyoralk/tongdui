@@ -1,0 +1,55 @@
+ <dl style="overflow: visible;">
+	<dt>商品品牌：</dt>
+	<dd>
+		<div class="ncsc-brand-select">
+			<div class="selection">
+				<input name="brand_name" value="{$brand_name}" class="text w180" readonly type="text">
+				<input name="brand_id" value="{$goods_info.brand_id}" type="hidden">
+				<em class="add-on" id="brand_collapse"><i class="icon-collapse"></i></em>
+			</div>
+			<div class="ncsc-brand-select-container" style="display: none;">
+				<div class="brand-index">
+					<div class="letter">
+						<ul>
+							<li><a href="javascript:void(0);" data-letter="0">全部</a></li>
+							<li><a href="javascript:void(0);" data-letter="A">A</a></li>
+							<li><a href="javascript:void(0);" data-letter="B">B</a></li>
+							<li><a href="javascript:void(0);" data-letter="C">C</a></li>
+							<li><a href="javascript:void(0);" data-letter="D">D</a></li>
+							<li><a href="javascript:void(0);" data-letter="E">E</a></li>
+							<li><a href="javascript:void(0);" data-letter="F">F</a></li>
+							<li><a href="javascript:void(0);" data-letter="G">G</a></li>
+							<li><a href="javascript:void(0);" data-letter="H">H</a></li>
+							<li><a href="javascript:void(0);" data-letter="I">I</a></li>
+							<li><a href="javascript:void(0);" data-letter="J">J</a></li>
+							<li><a href="javascript:void(0);" data-letter="K">K</a></li>
+							<li><a href="javascript:void(0);" data-letter="L">L</a></li>
+							<li><a href="javascript:void(0);" data-letter="M">M</a></li>
+							<li><a href="javascript:void(0);" data-letter="N">N</a></li>
+							<li><a href="javascript:void(0);" data-letter="O">O</a></li>
+							<li><a href="javascript:void(0);" data-letter="P">P</a></li>
+							<li><a href="javascript:void(0);" data-letter="Q">Q</a></li>
+							<li><a href="javascript:void(0);" data-letter="R">R</a></li>
+							<li><a href="javascript:void(0);" data-letter="S">S</a></li>
+							<li><a href="javascript:void(0);" data-letter="T">T</a></li>
+							<li><a href="javascript:void(0);" data-letter="U">U</a></li>
+							<li><a href="javascript:void(0);" data-letter="V">V</a></li>
+							<li><a href="javascript:void(0);" data-letter="W">W</a></li>
+							<li><a href="javascript:void(0);" data-letter="X">X</a></li>
+							<li><a href="javascript:void(0);" data-letter="Y">Y</a></li>
+							<li><a href="javascript:void(0);" data-letter="Z">Z</a></li>
+							<li><a href="javascript:void(0);" data-letter="0-9">其他</a></li>
+							<li><a href="javascript:void(0);" data-empty="0">清空</a></li>
+						</ul>
+					</div>
+					<div class="search">
+						<input name="search_brand_keyword" id="search_brand_keyword" class="text" placeholder="品牌名称关键字查找" type="text">
+						<a href="javascript:void(0);" class="ncsc-btn-mini" style="vertical-align: top;">Go</a>
+					</div>
+				</div>
+				<div class="brand-list ps-container" id="brand_list"><ul><li></li></ul></div>
+				<div class="no-result" style="display: none;">没有符合"<strong>搜索关键字</strong>"条件的品牌</div>
+			</div>
+		</div>
+	</dd>
+</dl>

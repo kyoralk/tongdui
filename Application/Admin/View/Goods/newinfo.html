@@ -1,0 +1,201 @@
+<div class="main-content" id="mainContent">
+    <ul class="add-goods-step">
+        <li><i class="icon icon-list-alt"></i>
+            <h6>STEP.1</h6>
+            <h2>选择商品分类</h2>
+            <i class="arrow icon-angle-right"></i></li>
+        <li class="current"><i class="icon icon-edit"></i>
+            <h6>STEP.2</h6>
+            <h2>填写商品详情</h2>
+            <i class="arrow icon-angle-right"></i></li>
+        <li><i class="icon icon-camera-retro "></i>
+            <h6>STEP.3</h6>
+            <h2>上传商品图片</h2>
+            <i class="arrow icon-angle-right"></i></li>
+        <li><i class="icon icon-ok-circle"></i>
+            <h6>STEP.4</h6>
+            <h2>商品发布成功</h2>
+        </li>
+    </ul>
+
+    <div class="item-publish">
+        <form method="post" id="myform" name="myform" action="{:U('Goods/save')}">
+            <div class="ncsc-form-goods">
+                <h3>商品基本信息</h3>
+                <dl>
+                    <dt>商品分类：</dt>
+                    <dd id="gcategory">{$gc_name_path}
+                        <a class="ncsc-btn" href="{:U('Goods/selectClass',array('goods_id'=>$goods_info['goods_id']))}">编辑</a>
+                        <input name="gc_id" value="{$gc_id}" class="text" type="hidden">
+                        <input name="gc_id_path" value="{$gc_id_path}" class="text" type="hidden">
+                    </dd>
+                </dl>
+                <!--<dl>-->
+                <!--<dt class="required"><i class="required">*</i>商品属性：</dt>-->
+                <!--<dd id="attr_values_div"> </dd>-->
+                <!--</dl>-->
+                <dl>
+                    <dt class="required"><i class="required">*</i>商品名称：</dt>
+                    <dd>
+                        <input name="goods_name" type="text" class="text w400" value="{$goods_info.goods_name}" />
+                        <span></span>
+                        <p class="hint">商品标题名称长度至少3个字符，最长50个汉字</p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="required">广告词：</dt>
+                    <dd>
+                        <input name="small_name" type="text" class="text w400" value="{$goods_info.small_name}" />
+                        <span></span>
+                        <p class="hint">广告词最长不能超过50个汉字</p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><i class="required">*</i>市场价：</dt>
+                    <dd>
+                        <input name="market_price" type="text" class="text w60" value="{$goods_info.market_price}" />
+                        <em class="add-on"><i class="icon-renminbi"></i></em> <span></span>
+                        <p class="hint">价格必须是0.01~9999999之间的数字，此价格仅为市场参考售价，请根据该实际情况认真填写。</p>
+                    </dd>
+                </dl>
+
+                <!-- 				<dl> -->
+                <!-- 					<dt>商家货号：</dt> -->
+                <!-- 					<dd> -->
+                <!-- 						<p> -->
+                <!-- 							<input name="goods_sn" value="" type="text"  class="text"  /> -->
+                <!-- 						</p> -->
+                <!-- 						<p class="hint">商家货号是指商家管理商品的编号，买家不可见<br/> -->
+                <!-- 							最多可输入20个字符，支持输入中文、字母、数字、_、/、-和小数点</p> -->
+                <!-- 					</dd> -->
+                <!-- 				</dl> -->
+                <include file="Goods:extend"/>
+                <include file="Goods:images"/>
+                <h3>商品详情描述</h3>
+                <include file="Goods:brand2"/>
+                <dl>
+                    <dt>商品描述：</dt>
+                    <dd> {:R('General/Editor/kindEditor',array('','goods_desc','goods_desc',$goods_info['goods_desc'],'module=Mall'))} </dd>
+                </dl>
+
+                <!--transport info begin-->
+                <h3>商品物流信息</h3>
+                <dl>
+                    <dt>商品重量：</dt>
+                    <dd>
+                        <p>
+                            <input name="goods_weight" type="text" class="text w60" value="{$goods_info.goods_weight}" />
+                            <em class="add-on"><i class="">kg</i></em> <span></span> </p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>运费：</dt>
+                    <dd>
+                        <ul class="ncsc-form-radio-list">
+                            <li>
+                                <input id="freight_1" name="freight_type" class="radio" type="radio" <empty name="goods_info.freight_type">checked="checked" <else/> <if condition="$goods_info.freight_type eq 1">checked="checked"</if> </empty> value="1" >
+                                <label for="freight_1">固定运费</label>
+                                <div >
+                                    <input class="w50 text" name="freight" type="text" value="{$goods_info.freight}" >
+                                    <em class="add-on"><i class="icon-renminbi"></i></em> </div>
+                            </li>
+                            <li>
+                                <input id="freight_2" name="freight_type" class="radio" type="radio"  <if condition="$goods_info.freight_type eq 2"> checked="checked" </if> value="2">
+                                <label for="freight_2">使用运费模板</label>
+                                <!-- 								<div> -->
+                                <!-- 									<input id="transport_id" type="hidden" value="" name="transport_id"> -->
+                                <!-- 									<input id="transport_title" type="hidden" value="" name="transport_title"> -->
+                                <!-- 									<span id="postageName" class="transport-name" ></span><a href="JavaScript:void(0);" onClick="window.open('index.php?act=store_transport&type=select')" class="ncsc-btn" id="postageButton"><i class="icon-truck"></i>选择运费模板</a> -->
+                                <!-- 								</div> -->
+                            </li>
+                        </ul>
+                        <p class="hint">运费设置为 0 元，前台商品将显示为免运费。</p>
+                    </dd>
+                </dl>
+                <!--transport info end-->
+                <!-- 				<h3>发票信息</h3> -->
+                <!-- 				<dl> -->
+                <!-- 					<dt>是否开增值税发票：</dt> -->
+                <!-- 					<dd> -->
+                <!-- 						<ul class="ncsc-form-radio-list"> -->
+                <!-- 							<li> -->
+                <!-- 								<label> -->
+                <!-- 									<input name="g_vat" value="1"  type="radio" /> -->
+                <!-- 									是</label> -->
+                <!-- 							</li> -->
+                <!-- 							<li> -->
+                <!-- 								<label> -->
+                <!-- 									<input name="g_vat" value="0" checked="checked"  type="radio"/> -->
+                <!-- 									否</label> -->
+                <!-- 							</li> -->
+                <!-- 						</ul> -->
+                <!-- 						<p class="hint"></p> -->
+                <!-- 					</dd> -->
+                <!-- 				</dl> -->
+                <h3>其他信息</h3>
+                <dl>
+                    <dt>本店分类：</dt>
+                    <dd>
+                        <select name="store_class_id">
+                            <option value="">请选择...</option>
+                            <volist name="class_list" id="sc">
+                                <option value="{$sc.sc_id}" <if condition="$goods_info.store_class_id eq $sc['sc_id']"> selected="selected" </if> >{$sc.sc_name}</option>
+                                <volist name="sc._child" id="scc">
+                                    <option value="{$scc.sc_id}" <if condition="$goods_info.store_class_id eq $scc['sc_id']"> selected="selected" </if> >|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|——{$scc.sc_name}</option>
+                                </volist>
+                            </volist>
+                        </select>
+                    </dd>
+                </dl>
+
+                <?php if ($goods_info && $goods_info['examine_status'] == 1) { ?>
+                <dl>
+                    <dt>商品发布：</dt>
+                    <dd>
+                        <ul class="ncsc-form-radio-list">
+                            <li>
+                                <label>
+                                    <input name="is_on_sale" value="1" type="radio" <empty name="goods_info.is_on_sale">checked="checked" <else/> <if condition="$goods_info.is_on_sale eq 1">checked="checked"</if> </empty> />
+                                    立即发布 </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input name="is_on_sale" value="0" type="radio"  <if condition="$goods_info.is_on_sale heq 0">checked="checked"</if>/>
+                                    放入仓库 </label>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+                <?php } ?>
+                <dl>
+                    <dt>商品推荐：</dt>
+                    <dd>
+                        <ul class="ncsc-form-radio-list">
+                            <li>
+                                <label>
+                                    <input name="store_tuijian" value="1" checked="checked"  type="radio" <empty name="goods_info.store_tuijian">checked="checked" <else/> <if condition="$goods_info.store_tuijian eq 1">checked="checked"</if> </empty> />
+                                    是</label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input name="store_tuijian" value="0"  type="radio" <if condition="$goods_info.store_tuijian heq 0">checked="checked"</if> />
+                                    否</label>
+                            </li>
+                        </ul>
+                        <p class="hint">被推荐的商品会显示在店铺首页</p>
+                    </dd>
+                </dl>
+            </div>
+            <div class="bottom tc hr32">
+                <label class="submit-border">
+                    <input type="button" class="submit" value="保存" onclick="submitForm()"/>
+                </label>
+            </div>
+            <input name="goods_id" value="{$goods_info.goods_id}" type="hidden"/>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/Static/Common/jQuery/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/Static/Common/Js/perfect-scrollbar.min.js"></script>
+<script src="/Static/Common/Js/localResizeIMG.js"></script>
+<script type="text/javascript" src="/Static/Seller/Js/step.js"></script>

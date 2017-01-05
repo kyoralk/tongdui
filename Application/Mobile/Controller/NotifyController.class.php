@@ -137,10 +137,10 @@ class NotifyController extends InitController{
 			}
 
 			// 判断是否有购物券商品, 购物券商品的一卷通作为充值进行九代结算
-            $order = M("Order")->where('order_sn ="'.$this->order_sn.'"')->find();
-            $orderGoods = M('OrderGoods')->where('order_sn = "'.$this->order_sn.'"')->select();
+            $order = M('OrderInfo',C('DB_PREFIX_MALL'))->where('order_sn ="'.$this->order_sn.'"')->find();
+            $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where('order_sn = "'.$this->order_sn.'"')->select();
             if ($orderGoods) {
-                $goods = M("Goods")->where('goods_id ='.$orderGoods['goods_id'])->find();
+                $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id ='.$orderGoods['goods_id'])->find();
                 if ($goods) {
                     if ($goods->consumption_type == 3) {
                         if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$order['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$order['yqt'])))) {

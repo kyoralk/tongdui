@@ -1,0 +1,46 @@
+<h3>商品规格 &nbsp; &nbsp; &nbsp;<input name="spec_type" type="checkbox" value="2" <if condition="$goods_info.spec_type eq 2">checked="checked"</if>> &nbsp;多规格</h3>
+<div id="duoguige" <empty name="goods_info.spec_type">style="display: none;"<else/><if condition="$goods_info.spec_type eq 1">style="display: none;"</if></empty>>
+	<dl>
+		<dt>
+		<input name="init_mid" type="hidden" value="{$goods_info.mid}"/>
+		<select name="mid">
+				<option value="0">选择模型</option>
+				<volist name="model_list" id="ml">
+				<option value="{$ml.mid}" <if condition="$ml.mid eq $goods_info['mid']">selected="selected"</if> >{$ml.model_name}</option>
+				</volist>
+			</select></dt>
+		<dd id="extend">
+		</dd>
+		<dd id="spec_remove" style="display:none;"></dd>
+	</dl>
+</div>
+<div id="danyiguige">
+	<dl>
+		<dt><i class="required">*</i>销售价：</dt>
+		<dd>
+			<input name="shop_price" type="text"  class="text w60" value="{$goods_info.shop_price}" />
+			<em class="add-on"><i class="icon-renminbi"></i></em> <span></span>
+			<p class="hint">价格必须是0.01~9999999之间的数字，且不能高于市场价。<br>
+				此价格为商品实际销售价格，如果商品存在规格，该价格显示最低价格。</p>
+		</dd>
+	</dl>
+	<dl>
+		<dt><i class="required">*</i>供货价：</dt>
+		<dd>
+			<input name="cost_price" value="{$goods_info.cost_price}" type="text" class="text w60" />
+			<em class="add-on"><i class="icon-renminbi"></i></em> <span></span>
+			<p class="hint">价格必须是0.00~9999999之间的数字，此价格为商户对所销售的商品实际成本价格进行备注记录，不会在前台销售页面中显示。</p>
+		</dd>
+	</dl>
+</div>
+<script>
+	$("input[name='spec_type']").click(function(){
+		if($(this).is(":checked")){
+			$("#duoguige").show();
+//			$("#danyiguige").hide();
+		}else{
+			$("#duoguige").hide();
+//			$("#danyiguige").show();
+		}
+	});
+</script>

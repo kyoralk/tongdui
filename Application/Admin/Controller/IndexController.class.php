@@ -21,7 +21,7 @@ class IndexController extends CommonController {
     public function home(){
     	$this->assign('server_info',$this->getServerInfo());
     	$this->assign('content_header','欢迎使用');
-    	$this->display();
+    	$this->display();   
     }
   
     public function makemenu($data,$pId){
