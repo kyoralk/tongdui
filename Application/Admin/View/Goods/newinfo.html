@@ -1,3 +1,38 @@
+<style>
+    .ncsc-form-goods .form-group {
+        font-size: 0;
+        line-height: 20px;
+        clear: both;
+        padding: 0;
+        margin: 0;
+        border-bottom: solid 1px #E6E6E6;
+        overflow: hidden;
+    }
+    .ncsc-form-goods .form-group label {
+        font-size: 12px;
+        line-height: 30px;
+        color: #333;
+        vertical-align: top;
+        letter-spacing: normal;
+        word-spacing: normal;
+        text-align: right;
+        display: inline-block;
+        width: 13%;
+        padding: 8px 1% 8px 0;
+        margin: 0;
+    }
+    .ncsc-form-goods .form-group .radio,.ncsc-form-goods .form-group .checkbox, .ncsc-form-goods .form-group .col-sm-4  {
+        font-size: 12px;
+        line-height: 30px;
+        vertical-align: top;
+        letter-spacing: normal;
+        word-spacing: normal;
+        display: inline-block;
+        width: 84%;
+        padding: 8px 0 8px 1%;
+        border-left: solid 1px #E6E6E6;
+    }
+</style>
 <div class="main-content" id="mainContent">
     <ul class="add-goods-step">
         <li><i class="icon icon-list-alt"></i>
@@ -19,7 +54,7 @@
     </ul>
 
     <div class="item-publish">
-        <form method="post" id="myform" name="myform" action="{:U('Goods/save')}">
+        <form method="post" id="myform" name="myform" action="{:U('Goods/savenew')}">
             <div class="ncsc-form-goods">
                 <h3>商品基本信息</h3>
                 <dl>
@@ -30,6 +65,13 @@
                         <input name="gc_id_path" value="{$gc_id_path}" class="text" type="hidden">
                     </dd>
                 </dl>
+
+                {:fastModule('form-group',array('消费类型'),array('radio','consumption_type',array(array('现金',1,$goods_info['consumption_type'],1),array('一卷通',2,$goods_info['consumption_type'],1),array('购物券',3,$goods_info['consumption_type'],1)),'','','radio'))}
+                {:fastModule('form-group',array('支付类型'),array('checkbox',['is_cash','is_yqt','is_gwq'],array(array('现金',1,$goods_info['is_cash'],1),array('一卷通',1,$goods_info['is_yqt'],1),array('购物券',1,$goods_info['is_gwq'],1)),'','','checkbox'))}
+                {:fastModule('form-group',array('赠送购物券'),array('text','gwq_send',$goods_info['gwq_send']))}
+                {:fastModule('form-group',array('额外赠送购物券'),array('text','gwq_extra',$goods_info['gwq_extra']))}
+                {:fastModule('form-group',array('可用一卷通数额[购买此商品能用最大值]'),array('text','yjt_can',$goods_info['yjt_can']))}
+                {:fastModule('form-group',array('可用购物券数额[购买此商品能用最大值]'),array('text','gwq_can',$goods_info['gwq_can']))}
                 <!--<dl>-->
                 <!--<dt class="required"><i class="required">*</i>商品属性：</dt>-->
                 <!--<dd id="attr_values_div"> </dd>-->
@@ -192,10 +234,11 @@
                 </label>
             </div>
             <input name="goods_id" value="{$goods_info.goods_id}" type="hidden"/>
+            <input name="store_id" id="store_id" value="{$goods_info.store_id}" type="hidden"/>
         </form>
     </div>
 </div>
 <script type="text/javascript" src="/Static/Common/jQuery/jquery.mousewheel.js"></script>
 <script type="text/javascript" src="/Static/Common/Js/perfect-scrollbar.min.js"></script>
 <script src="/Static/Common/Js/localResizeIMG.js"></script>
-<script type="text/javascript" src="/Static/Seller/Js/step.js"></script>
+<script type="text/javascript" src="/Static/Seller/Js/step2.js"></script>

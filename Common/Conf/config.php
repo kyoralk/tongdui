@@ -9,7 +9,7 @@ return array (
 		'DB_HOST' => '127.0.0.1', // 服务器地址
 		'DB_NAME' => 'tongdui', // 数据库名
 		'DB_USER' => 'root', // 用户名
-		'DB_PWD' => 'root', // 密码'
+		'DB_PWD' => '', // 密码'
 		'DB_PREFIX' => 'ms_common_', // 数据库表前缀
 		'DB_PREFIX_G' => 'ms_',
 		'DB_PREFIX_C' => 'ms_common_',

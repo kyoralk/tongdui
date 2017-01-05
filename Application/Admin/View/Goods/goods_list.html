@@ -106,7 +106,7 @@
                         <td class="table-textcenter">
 <!--                         	<a class="btn btn-success btn-xs" href="" target="blank" >规格</a>&nbsp;&nbsp; -->
                         	<if condition="$seller neq 1">
-                        	<a class="btn btn-info btn-xs" href="{:U('Goods/info?goods_id='.$gl['goods_id'])}">编辑</a>&nbsp;&nbsp;
+                        	<a class="btn btn-info btn-xs" href="{:U('Goods/oldinfo?goods_id='.$gl['goods_id'])}">编辑</a>&nbsp;&nbsp;
                         	<a class="btn btn-danger btn-xs" href="{:U('Goods/delete?goods_id='.$gl['goods_id'])}">删除</a>
                         	<else/>
 							<a class="btn btn-primary btn-xs" href="{:U('Goods/info?goods_id='.$gl['goods_id'])}">编辑</a>&nbsp;

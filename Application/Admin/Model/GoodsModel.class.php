@@ -22,6 +22,12 @@ class GoodsModel extends RelationModel{
 					'foreign_key'=>'store_id',
 					'as_fields'=>'uid,username,store_name,company_name',
 			),
+            'goods_spec' =>array(
+                'mapping_type'=>self::HAS_MANY,
+                'class_name'=>'goods_spec',
+                'foreign_key'=>'goods_id',
+                'mapping_name'=>'goods_spec',
+            ),
 	
 	);
 }

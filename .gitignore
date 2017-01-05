@@ -27,3 +27,5 @@ Runtime/
 Runtime/Logs/Seller/16_12_02.log
 Uploads/
 .phpintel
+.htaccess
+Common/Conf/config.php

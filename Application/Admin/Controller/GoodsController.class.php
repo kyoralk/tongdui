@@ -151,7 +151,8 @@ class GoodsController extends MallController{
 	public function removeImg(){
 		$goods_id = I('get.goods_id');
 		$img_name = I('get.img_name');
-		$general_path = './Uploads/'.C('MALL_SELLER').$this->system_store_id.'/Goods/';
+		$store_id = I('get.store_id')?I('get.store_id'):$this->system_store_id;
+		$general_path = './Uploads/'.C('MALL_SELLER').$store_id.'/Goods/';
 		$file_0 = $general_path.$img_name;
 		$file_l = $general_path.'Thumb/l_'.$img_name;
 		$file_m = $general_path.'Thumb/m_'.$img_name;
@@ -348,7 +349,7 @@ class GoodsController extends MallController{
                 $data['goods_spec'][$i]['spec_id'] = $spec_id[$i];
             }
             if(strlen($spec_cover[$i])>50){
-                $res = Image::createImg(array($spec_cover[$i]), 'MALL_SELLER',true,session('store_id').'/Goods/');
+                $res = Image::createImg(array($spec_cover[$i]), 'MALL_SELLER',true,cookie('fake_store_id').'/Goods/');
                 $data['goods_spec'][$i]['spec_cover'] = $res[0];
             }else{
                 $data['goods_spec'][$i]['spec_cover'] = $spec_cover[$i];
@@ -358,7 +359,7 @@ class GoodsController extends MallController{
             $data['goods_spec'][$i]['spec_cost_price'] = empty($spec_cost_price[$i])? 0 : $spec_cost_price[$i];
             $data['goods_spec'][$i]['spec_add_price'] = empty($spec_add_price[$i])? 0 : $spec_add_price[$i];
             $data['goods_spec'][$i]['spec_inventory'] = empty($spec_inventory[$i])? 0 : $spec_inventory[$i];
-            $data['goods_spec'][$i]['store_id'] = session('store_id');
+            $data['goods_spec'][$i]['store_id'] = cookie('fake_store_id');
             $i++;
         }
         return $data;
@@ -381,6 +382,34 @@ class GoodsController extends MallController{
     }
 
     /**
+     * 商品信息【商家商品-旧】
+     */
+    public function oldinfo(){
+        $gc_id_path = empty(I('get.gc_id_path')) ? false : I('get.gc_id_path');
+        if(!empty(I('get.goods_id'))){
+            $goods_info = D('Goods')->relation(true)->where('goods_id = '.I('get.goods_id'))->find();
+            cookie('fake_store_id', $goods_info['store_id']);
+
+            if(!$gc_id_path){
+                $gc_id_path = $goods_info['gc_id_path'];
+            }
+            $this->assign('goods_info',$goods_info);
+            $this->assign('store_id', $goods_info['store_id']);
+            $this->assign('brand_name',M('Brand')->where('brand_id = '.$goods_info['brand_id'])->getField('brand_name'));
+        }
+        $gc_id_array = explode('-', $gc_id_path);
+        $condition['gc_id'] = array('IN',$gc_id_array);
+        $gc_name_array = M('GoodsClass')->where($condition)->order('gc_id')->getField('gc_name',true);
+        $this->lastClassToCookie($gc_name_array);//把常用分类保存的cookie中
+        $this->assign('gc_id',end($gc_id_array));
+        $this->assign('gc_id_path',$gc_id_path);
+        $this->assign('gc_name_path',implode('>', $gc_name_array));
+        $this->assign('model_list',$this->modelList($gc_id_array));
+        $this->assign('class_list', $this->getClass('sc_id,sc_parent_id,sc_name'));
+        $this->display('info');
+    }
+
+    /**
      * 商品信息【商家商品-新】
      */
     public function info(){
@@ -388,10 +417,13 @@ class GoodsController extends MallController{
         $gc_id_path = empty(I('get.gc_id_path')) ? false : I('get.gc_id_path');
         if(!empty(I('get.goods_id'))){
             $goods_info = D('Goods')->relation(true)->where('goods_id = '.I('get.goods_id'))->find();
+            cookie('fake_store_id', $goods_info['store_id']);
+
             if(!$gc_id_path){
                 $gc_id_path = $goods_info['gc_id_path'];
             }
             $this->assign('goods_info',$goods_info);
+            $this->assign('store_id', $goods_info['store_id']);
             $this->assign('brand_name',M('Brand')->where('brand_id = '.$goods_info['brand_id'])->getField('brand_name'));
         }
         $gc_id_array = explode('-', $gc_id_path);
@@ -413,7 +445,7 @@ class GoodsController extends MallController{
      * @param string $list_to_tree 是否转换成树状结构
      */
     public function getClass($field = '*',$sc_parent_id = '',$list_to_tree = true){
-        $condition['store_id'] = session('store_id');
+        $condition['store_id'] = cookie('fake_store_id');
         if(is_numeric($sc_parent_id)){
             $condition['sc_parent_id'] = $sc_parent_id;
         }
@@ -423,4 +455,142 @@ class GoodsController extends MallController{
         }
         return $goods_class_list;
     }
+
+    /**
+     * 添加产品第一步选择分类
+     */
+    public function selectClass(){
+        layout('seller_layout');
+        $gc_parent_id = I('get.gc_id',0);
+        $goods_id = I('get.goods_id');
+        $class_list = M('GoodsClass')->where('gc_parent_id = '.$gc_parent_id)->field('gc_id,gc_name')->select();
+        if(IS_AJAX){
+            $this->ajaxJsonReturn($class_list,'',1);
+        }else{
+            $gc_id_histroy = cookie('gc_id_history');
+            foreach ($gc_id_histroy as $item){
+                $temp = explode('||', $item);
+                $gc_id_path[] = array('path_id_str'=>$temp[0],'path_name_str'=>$temp[1]);
+            }
+            $this->assign('gc_id_path',$gc_id_path);
+            $this->assign('class_list',$class_list);
+            $this->assign('goods_id',I('get.goods_id'));
+            $this->display('Goods/class_list');
+        }
+    }
+
+    public function savenew() {
+        $examine = 0;
+        //通用信息
+        $goods_id = empty(I('post.goods_id'))? 0 : I('post.goods_id');
+        if ($goods_id) {
+            $goods = M('Goods')->where('goods_id ='.$goods_id)->find();
+            if ($goods) {
+                $examine = $goods['examine_status'];
+            }
+        }
+
+        $data['goods_name'] = I('post.goods_name');
+        $data['small_name'] = I('post.small_name');
+        $data['spec_type'] = empty(I('post.spec_type'))? 1 : I('post.spec_type');
+        $data['gc_id'] = empty(I('post.gc_id')) ? 0 : I('post.gc_id');//商品分类id
+        $data['gc_id_path'] = empty(I('post.gc_id_path')) ? 0 : I('post.gc_id_path');//商品分类id_path
+        $data['brand_id'] = empty(I('post.brand_id')) ? 0 : I('post.brand_id');//商品分类id
+        $data['market_price'] = empty(I('post.market_price')) ? 0: I('post.market_price');//市场价
+        $data['shop_price'] = empty(I('post.shop_price')) ? 0 : I('post.shop_price');//本店售价
+        $data['cost_price'] = empty(I('post.cost_price')) ? 0 : I('post.cost_price');//成本价
+        $data['max_buy'] = empty(I('post.max_buy')) ? 0 : I('post.max_buy');//最大购买量
+        $data['goods_desc'] = I('post.goods_desc');//商品描述
+        $data['goods_weight'] = empty(I('post.goods_weight')) ? 0 : I('post.goods_weight');//商品种类
+        $data['is_on_sale'] = I('post.is_on_sale',0);//是否上架
+        $data['freight_type'] = I('post.freight_type');//运费计算方式
+        $data['freight'] = empty(I('post.freight_type'))? 0 : I('post.freighft_type');//运费
+        $data['keywords'] = I('post.keywords');//seo关键字
+        $data['description'] = I('post.description');//seo描述
+        $data['mid'] = empty(I('post.mid')) ? 0 : I('post.mid');//商品模型id
+        $data['store_id'] = I('post.store_id');//商品模型id
+        $data['store_tuijian'] = I('post.store_tuijian');//店铺推荐
+        $data['store_class_id'] = I('post.store_class_id');//店铺中分类
+        $data['promote_price'] = empty(I('post.promote_price')) ? 0 : I('post.promote_price');//促销价格
+        $data['consumption_type'] = I('post.consumption_type');
+        $data['yjt_can'] =  I('post.yjt_can');//可使用的一卷通数量
+        $data['gwq_can'] = I('post.gwq_can');//可使用的购物券数量
+        $data['gwq_send'] =  I('post.gwq_send');//可使用的购物券数量
+        $data['gwq_extra'] =  I('post.gwq_extra');//可使用的购物券数量
+        $data['give_integral'] = I('post.give_integral');//赠送多少积分
+        $data['promote_price'] = empty(I('post.promote_price')) ? 0 : I('post.promote_price');//促销价格
+
+        $data['is_cash'] = isset($_POST['is_cash']) ? 1: 0;//是否允许现金
+        $data['is_yqt'] =  isset($_POST['is_yqt']) ? 1: 0;//是否允许一券通
+        $data['is_gwq'] = isset($_POST['is_gwq']) ? 1: 0;//是否允许购物券
+        //处理促销时间
+        $promote_start_date = empty(I('post.promote_start_date')) ? 0 : I('post.promote_start_date');
+        $promote_end_date = empty(I('post.promote_end_date'))? 0 : I('post.promote_end_date');
+        $data['promote_start_date'] = $promote_start_date == 0 ? 0 : strtotime($promote_start_date);//促销开始时间
+        $data['promote_end_date'] = $promote_end_date == 0 ? 0 : strtotime($promote_end_date);//促销结束时间
+        //处理上传图片
+        if($_FILES['goods_img']){
+            $_FILES['goods_img'] = $this->unsetFile($_FILES['goods_img'], I('post.unset_file'));
+            if(!empty($_FILES['goods_img'])){
+                $res = Image::upload('goods_img', 'MALL_SELLER', true, I('post.store_id').'/Goods/');
+                if($res){
+                    foreach ($res as $item){
+                        $data['goods_img'][] = array(
+                            'save_name' => $item['savename'],
+                            'save_path' => $item['savepath'],
+                        );
+                    }
+                }
+            }
+        }
+        //规格信息
+        //如果是单一规格删除所有规格
+        if($data['spec_type']==1){
+            M('GoodsSpec')->where('goods_id = '.$goods_id)->delete();
+        }else{
+            $spec_info = $this->goodsSpec();
+            if(!empty($spec_info['goods_spec'])){
+                $data['goods_spec'] = $spec_info['goods_spec'];
+                $data['goods_extend'] = $spec_info['goods_extend'];
+            }else{
+                $data['spec_type']=1;
+            }
+        }
+        $Goods = D('Goods');
+        if ($examine) {
+            if ($examine == '3') {
+                $data['examine_status'] = 2;
+            } else {
+                $data['examine_status'] = $examine;
+            }
+        } else {
+            $data['examine_status'] =  $examine == 0 ? 2 : 1; //处理审核状态
+        }
+
+        if($goods_id){
+            $data['goods_id'] = $goods_id;
+            //删除扩展信息
+            M('GoodsExtend')->where('goods_id = '.$goods_id)->delete();
+            $spec_id_remove = I('post.spec_id_remvoe');
+            //判断是否存需要删除的规格
+            if(!empty($spec_id_remove)){
+                M('GoodsSpec')->where(array('spec_id'=>array('in',$spec_id_remove)))->delete();
+            }
+
+            //更新
+            if(is_numeric($Goods->relation(true)->save($data))){
+                $this->success('更新成功');
+            }else{
+                $this->error('更新失败');
+            }
+        }else{
+            $data['goods_sn'] = 'MS_'.serialNumber(); //商品货号
+            if($Goods->relation(true)->add($data)){
+                $this->success('添加成功');
+            }else{
+                $this->error('添加失败');
+            }
+        }
+    }
 }
+

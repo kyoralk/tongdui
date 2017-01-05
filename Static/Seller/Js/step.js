@@ -13,7 +13,7 @@ $(function(){
 		getAttr(mid,goods_id);
 	}
 	//初始化品牌
-	getBrand({});
+	getBrand({force:1});
 	
 });
 

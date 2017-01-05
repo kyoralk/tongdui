@@ -171,7 +171,7 @@ $("select[name='gc_id']").change(function(){
 	getInit(gc_id);
 });
 function getInit(gc_id,brand_id,mid){
-	$.get("{:U('Brand/getBrand')}",{gc_id:gc_id},function(res){
+	$.get("{:U('Brand/getBrand')}",{gc_id:gc_id, force:1},function(res){
 		if(res.status == 1){
 			var data = res.result;
 			var html = '<option value="">选择品牌</option>';

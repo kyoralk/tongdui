@@ -10,9 +10,11 @@ class ModelController extends GeneralController{
 	public function getAttr(){
 		$mid = I('get.mid');
 		$goods_id = I('get.goods_id');
+
 		if(!empty($goods_id)){
 			$spec_list = M('GoodsSpec')->where('goods_id = '.$goods_id)->select();
 		}
+
 		$ModelAttr = D('ModelAttr');
 		$attr_list = $ModelAttr->relation(true)->where('mid = '.$mid)->select();
 		$attr_value_list = array_column($attr_list,'model_attr_value');
