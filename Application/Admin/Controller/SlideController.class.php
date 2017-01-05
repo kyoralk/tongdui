@@ -100,7 +100,7 @@ class SlideController extends CommonController{
 	 */
 	public function delete(){
 		$slide = M('Slide');
-		$img = $slide->where('id = '.I('get.id'))->getField('img');
+		$img = $slide->where('id = '.I('get.id'))->find();
 		unlink('./Uploads/'.C('SLIDE').$img);
 		if($slide->where('id = '.I('get.id'))->delete()){
 			$this->success('删除成功',U('Slide/slist'));

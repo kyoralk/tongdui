@@ -48,6 +48,7 @@
             	<thead>
                 	<tr>
                     	<th width="5%" class="table-textcenter"><input name="check_all" type="checkbox" /></th>
+						<th>ID</th>
                         <th>名称</th>
                         <th class="table-textcenter">消费类型</th>
                         <th class="table-textcenter"><if condition="$seller eq 1">审核状态<else/>上架</if></th>
@@ -64,6 +65,7 @@
                     <volist name="goods_list" id="gl">
             		<tr>
                 		<td align="center" class="table-textcenter"><input name="goods_id[]" type="checkbox" value="{$gl.goods_id}"/></td>
+						<td>{$gl.goods_id}</td>
                         <td>{$gl.goods_name}</td>
                         <td class="table-textcenter">
                         	<switch name="gl.consumption_type">

@@ -7,7 +7,7 @@ use Admin\Controller\AccountController;
 class FinanceController extends CommonController{
 
 	private function store(){
-		return M('Store',C('DB_PREFIX_MALL'))->where('store_id > 1')->field('store_id,store_name')->select();
+		return M('Store',C('DB_PREFIX_MALL'))->where('store_id > 1 and store_status =1')->field('store_id,store_name')->select();
 	}
 	public function glist(){
 		C('DB_PREFIX',C('DB_PREFIX_MALL'));
@@ -84,12 +84,20 @@ class FinanceController extends CommonController{
 		$store_name = I('get.store_name');
 
 		if ($store_name) {
-            $condition['store_name'] = I('get.store_name');
-            $store = M('Store')->where('store_name ="'.$store_name.'"')->find();
+
+         //   $condition['store_name'] = I('get.store_name');
+            $store = M('Store')->where('store_name like "%'.$store_name.'%"')->select();
+
 
             if ($store) {
+                foreach ($store as $v)
+                {
+                    $store_id_list=$v['store_id'].',';
+                }
+                $store_id_list=trim($store_id_list,',');
+
                 $store_id = $store['store_id'];
-                $condition['store_id'] = $store_id;
+                $condition['store_id'] = array("in",$store_id_list);
                 $this->assign('store_id', $store_id);
                 $this->assign('store_name',$store_name);
             }
@@ -314,7 +322,24 @@ class FinanceController extends CommonController{
 			$condition['reward_code'] = $recharge_num;
 			$this->assign('reward_code', $recharge_num);
 		}
+        $user_name=I("get.user_name");
+		if($user_name)
+        {
+            $member['username'] = array('like','%'.$user_name.'%');
+            $member_id=M("member")->field("uid")->where($member)->select();
 
+            foreach ($member_id as $v)
+            {
+                $memberlist.=$v['uid'].',';
+            }
+            $memberlist=trim($memberlist,',');
+            $condition['uid']=array("in",$memberlist);
+            $this->assign('user_name', $user_name);
+        }
+        if ($recharge_num) {
+            $condition['reward_code'] = $recharge_num;
+            $this->assign('reward_code', $recharge_num);
+        }
 		$status = I('get.trade_status');
 
 		if ($status !== false) {

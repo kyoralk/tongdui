@@ -33,6 +33,17 @@ class MemberController extends CommonController{
 		if(!empty(I('get.user_status'))){
 			$condition['user_status'] = I('get.user_status');
 		}
+        if(!empty(I('get.member_name'))){
+		    if(intval(I('get.select'))==1)
+            {
+                $condition['username'] = array("like","%".I('get.member_name')."%");
+
+            }else{
+                $condition['mobile'] = array("like","%".I('get.member_name')."%");
+            }
+            $this->assign("member_name",I('get.member_name'));
+            $this->assign("select",I('get.select'));
+        }
 		$data = page($Member, $condition,20,'relation','uid desc');
 		$this->assign('member_list',$data['list']);
 		$this->assign('page',$data['page']);

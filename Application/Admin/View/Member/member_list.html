@@ -1,9 +1,29 @@
 <section class="content-header">
 		<div class="row">
-  			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
-  			<div class="col-md-1">
-  				<a class="btn btn-info" href="{:U('Member/view')}">添加会员</a>
-  			</div>
+			<div class="col-md-8">
+				<form action="{:U('Member/memberList/','rank='.$rank)}" method="get">
+
+					<h4><small>结算统计</small></h4>
+					<div class="form-group">
+
+						<select name="select" class="form-control inline-block" style="width: 150px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+							<option value="1" <if condition="$select eq 1">selected</if>>用户名</option>
+							<option value="2" <if condition="$select eq 2">selected</if>>手机号码</option>
+						</select>
+						<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+							<input class="form-control" type="text" name="member_name" value="{$member_name}" placeholder="用户名或手机号">
+							<span class="input-group-btn">
+						<button type="submit" class="btn btn-info btn-flat">搜索</button>
+						</span>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-4 right_menu">
+				<a class="btn btn-info" href="{:U('Member/view')}">添加会员</a>
+			</div>
+
+
   		</div>
 </section>
 <section class="content">

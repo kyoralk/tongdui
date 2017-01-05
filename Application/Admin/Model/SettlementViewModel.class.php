@@ -4,7 +4,8 @@ use Think\Model\ViewModel;
 
 class SettlementViewModel extends ViewModel{
 	public $viewFields = array(
-			'OrderInfo'=>array('*','_as'=>'oi'),
-			'Store'=>array('*','_on'=>'oi.store_id = s.store_id','_as'=>'s'),
+
+			'Store'=>array('*','_as'=>'s'),
+        'OrderInfo'=>array('*','_on'=>'oi.store_id = s.store_id','_as'=>'oi'),
 	);
 }
