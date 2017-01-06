@@ -234,7 +234,7 @@ class GoodsController extends CommonController{
 		$data['goods_weight'] = empty(I('post.goods_weight')) ? 0 : I('post.goods_weight');//商品种类
 		$data['is_on_sale'] = I('post.is_on_sale',0);//是否上架
 		$data['freight_type'] = I('post.freight_type');//运费计算方式
-		$data['freight'] = empty(I('post.freight_type'))? 0 : I('post.freighft_type');//运费
+		$data['freight'] = empty(I('post.freight'))? 0 : I('post.freight');//运费
 		$data['keywords'] = I('post.keywords');//seo关键字
 		$data['description'] = I('post.description');//seo描述
 		$data['mid'] = empty(I('post.mid')) ? 0 : I('post.mid');//商品模型id
