@@ -640,4 +640,37 @@ class RewardController extends CommonController{
 		}
 		return $data;
 	}
+
+	public function love($orderGoods, $uid) {
+
+	    if ($orderGoods) {
+            foreach ($orderGoods as $og) {
+                $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id = '.$og['goods_id'])->find();
+                if ($goods) {
+                    $amount =$goods['love_amount'];
+                    if ($amount) {
+                        $trade_code = $goods['consumption_type'] == 2? "YJT":"GWQ";
+                        $data = array(
+                            'out_trade_no'=>serialNumber(),
+                            'uid'=> $uid,
+                            'fee'=>I('post.fee'),
+                            'type'=>I('post.type'),
+                            'grant_time'=>time(),
+                        );
+                        $M = M();
+                        $M->startTrans();
+                        try {
+                            M('Love')->add($data);
+                            AccountController::change($data['uid'], $data['fee'], $trade_code, 6,true,'','',false);
+                        } catch (Exception $e) {
+                            $M->rollback();
+                        }
+                        $M->commit();
+                    }
+                }
+            }
+        }
+
+
+    }
 }

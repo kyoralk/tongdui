@@ -26,6 +26,7 @@ class OrderController extends CommonController{
 			//处理商品价格
 			$price = $this->promotePrice($goods_info);
 			$sendGWJ = $this->sendGWJ($goods_info);
+
 			//根据属性处理价格
 			$add_price = $this->extendPrice($atv_id_str);
 			$price += $add_price;
@@ -52,6 +53,9 @@ class OrderController extends CommonController{
 			$data['settlement_total'] = $goods_info['cost_price']*$prosum;
 			$data['settlement_already'] = 0;
 			$data['settlement_no'] = $data['settlement_total'];
+			$data['send_gwj'] = $sendGWJ * $prosum;
+
+
 			//组装订单数据结束
 			return $data;
 		}
@@ -161,6 +165,9 @@ class OrderController extends CommonController{
 	 * 创建订单
 	 */
 	public function create(){
+
+	    file_put_contents('log', print_r($_POST, true), FILE_APPEND);
+
 		$goods_id = I('post.goods_id');
 		$prosum = I('post.prosum',1);
 		$atv_id_str = I('post.atv_id_str');

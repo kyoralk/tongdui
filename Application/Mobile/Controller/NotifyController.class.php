@@ -164,6 +164,8 @@ class NotifyController extends InitController{
 					// R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
 					R('Reward/heijin',array($res['yjt'],'XF'));//赠送黑金
 				}
+
+				R('Reward/love', array($orderGoods, $order['uid'])); // 捐献一卷通和购物卷
 			}
 			$PayTemporary->where('out_trade_no = "'.$out_trade_no.'"')->setField('status',1);
 			
@@ -206,19 +208,19 @@ class NotifyController extends InitController{
 				if(!empty($raw_data)){
 					$integral= array_column($raw_data,'give_integral');//积分
 					$goods_name = array_column($raw_data,'goods_name');//商品名称
-					$gwj = array();//购物券
-					foreach ($raw_data as $item){
-						//如果是一卷通消费
-						if($item['consumption_type'] == 2 ){
-							$gwq_fee = $item['shop_price'] * $bi;
-							$gwj['uid'][] = $this->member_info['uid'];
-							$gwj['fee'][] = $item['shop_price'];
-							$gwj['desc'][] = '购买'.$item['goods_name'].'赠送'.$gwq_fee.'购物券';
-						}
-					}
-					if(!empty($gwj)){
-						AccountController::changeALL($gwj['uid'], $gwj['fee'], 'GWQ', 4, $desc, $reward_code);
-					}
+//					$gwj = array();//购物券
+//					foreach ($raw_data as $item){
+//						//如果是一卷通消费
+//						if($item['consumption_type'] == 2 ){
+//							$gwq_fee = $item['shop_price'] * $bi;
+//							$gwj['uid'][] = $this->member_info['uid'];
+//							$gwj['fee'][] = $item['shop_price'];
+//							$gwj['desc'][] = '购买'.$item['goods_name'].'赠送'.$gwq_fee.'购物券';
+//						}
+//					}
+//					if(!empty($gwj)){
+//						AccountController::changeALL($gwj['uid'], $gwj['fee'], 'GWQ', 4, $desc, $reward_code);
+//					}
 					if($integral){
 						R('Reward/integral',array($integral,$goods_name));//把积分分配成增值积分和资产包
 					}

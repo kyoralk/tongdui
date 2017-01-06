@@ -20,8 +20,8 @@ class CommonController extends GeneralController{
         $goods = M('Goods')->where('goods_id ="'.$goods_info['goods_id'].'"')->find();
         if ($goods) {
             if ($goods['consumption_type'] == 3) {
-                $rate = M('Setting')->where('item_key = gwqrate')->find();
-                $price = intval($rate*$goods['shop_price']/100) + $goods['gwq_extra'];
+                $rate = M('Setting', C("DB_PREFIX_C"))->where('item_key = "gwqrate"')->find();
+                $price = intval($rate['item_value']*$goods['shop_price']/100) + $goods['gwq_extra'];
             } else {
                 // 一券通商品不佔比率
                 $price = $goods['gwq_send'] + $goods['gwq_extra'];

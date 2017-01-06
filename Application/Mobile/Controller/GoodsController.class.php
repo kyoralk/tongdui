@@ -20,7 +20,7 @@ class GoodsController extends InitController{
 		$path[] = $gc_id;
 		$GoodsClass = M('GoodsClass');
 		do{
-			$gc_parent_id = $GoodsClass->where('gc_id = '.$gc_id)->getField('gc_parent_id');
+			$gc_parent_id = $GoodsClass->where('gc_id in ('.$gc_id.')')->getField('gc_parent_id');
 			if($gc_parent_id){
 				$path[] = $gc_parent_id;
 				$gc_id = $gc_parent_id;

@@ -154,7 +154,7 @@ class CartController extends CommonController{
 	public function update(){
 		$data['prosum'] = explode(',', I('post.prosum'));
 		$condition['cart_id'] = explode(',', I('post.cart_id'));
-		if(is_numeric($this->saveAll('__CART__', $data, $condition))){
+		if($this->saveAll('__CART__', $data, $condition) !== false){
 			jsonReturn();
 		}else {
 			jsonReturn('','00000');
