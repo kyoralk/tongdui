@@ -73,12 +73,16 @@ class MemberController extends CommonController{
 	 */
 	public function uploadHeadPhoto(){
 		try {
+            file_put_contents('param_get', print_r($_GET, true), FILE_APPEND);
+            file_put_contents('param_post', print_r($_POST['type'], true), FILE_APPEND);
 			switch (I('post.type')){
 				case 'BASE64':
 					$res = Image::createImg(array(I('post.head_photo')),'MEMBER');
+                    file_put_contents('base_log', print_r($res, true));
 					$head_photo = $res[0];
 					break;
-				default: 
+				default:
+				    file_put_contents('upload_log', print_r($_FILES, true), FILE_APPEND);
 					$res = Image::upload('head_photo', 'MEMBER');
 					$head_photo = $res['savename'];
 			}

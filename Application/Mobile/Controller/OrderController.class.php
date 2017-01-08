@@ -75,6 +75,7 @@ class OrderController extends CommonController{
 			$data['freight'] = 0;//暂时写0
 			$data['is_love'] = $address['is_love'];
 			$data['upgrade'] = I('post.upgrade',0);
+            $data['yjt'] = I('post.upgrade',0);
 			$PayTemporary['out_trade_no'] = serialNumber();
 			$PayTemporary['order_sn'] = $data['order_sn'];
 			$PayTemporary['yjt'] = $yjt;
@@ -258,14 +259,48 @@ class OrderController extends CommonController{
 		}
 		$condition ['uid'] = $this->member_info['uid'];
 		$data = appPage(D('OrderInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
+
+		if ($data['list']) {
+		    foreach ($data['list'] as $kk=>$l) {
+
+                foreach ($l['order_goods'] as $k=>$og) {
+                    if ($og['spec_id']) {
+                        $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
+                        if ($spec)
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] = $spec['spec_name'];
+                        else
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    } else {
+                        $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    }
+                }
+            }
+        }
+
 		jsonReturn($data);
 	}
 	/**
 	 * 订单详情
 	 */
 	public function info(){
-		$info = D('OrderInfo')->relation(true)->where('order_sn = "'.I('get.order_sn').'"')->find();
-		jsonReturn($info);
+		$data = D('OrderInfo')->relation(true)->where('order_sn = "'.I('get.order_sn').'"')->find();
+
+        if ($data) {
+
+            foreach ($data['order_goods'] as $k=>$og) {
+                if ($og['spec_id']) {
+                    $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
+                    if ($spec)
+                        $data['order_goods'][$k]['spec_name'] = $spec['spec_name'];
+                    else
+                        $data['order_goods'][$k]['spec_name'] =  '';
+                } else {
+                    $data['order_goods'][$k]['spec_name'] =  '';
+                }
+            }
+
+        }
+		jsonReturn($data);
 	}
 	/**
 	 * 删除订单
@@ -282,7 +317,27 @@ class OrderController extends CommonController{
 	 * 确认收货
 	 */
 	public function confirm(){
-		if(M('OrderInfo')->where('order_sn = "'.I('post.order_sn').'"')->setField('receipt_status',1)){
+        $amount = 0;
+		if(M('OrderInfo')->where('order_sn = "'.I('post.order_sn').'"')->setField('receipt_status',1) !== false){
+            $orderGoods = M('OrderGoods')->where('order_sn = "'.I('post.order_sn').'"')->select();
+            if ($orderGoods) {
+                foreach ($orderGoods as $og) {
+                    $goods = M("Goods")->where('goods_id ='.$og['goods_id'])->find();
+                    if ($goods) {
+                        // 一券通商品收货进行九代结算
+                        if ($goods['consumption_type'] == 2) {
+                            $amount+= $og['price'] * $og['prosum'];
+                        }
+                    }
+                }
+
+
+                if ($amount > 0) {
+                    R('Reward/jdjs',array($amount,'XFYJT'));
+                }
+
+            }
+
 			jsonReturn();
 		}else{
 			jsonReturn('','00000');
@@ -400,9 +455,12 @@ class OrderController extends CommonController{
 
     protected function getRefundMax($orderInfo, $orderGoods) {
         $defaultMax = $orderGoods['price'] * $orderGoods['prosum'];
+        $payTemp = M("PayTemporary")->where("order_sn = '".$orderInfo['order_sn']."'")->find();
 
-        $cash = $orderInfo['total'];
-        $total = $orderInfo['total'] +  $orderInfo['yjt'] + $orderInfo['gwq'];
+        $total = $orderInfo['total'];
+        $cash = $payTemp['cash'];
+        $orderInfo['yjt'] = $payTemp['yjt'];
+        $orderInfo['gwq'] = $payTemp['gwq'];
 
         $data['max_cash'] = $defaultMax * $cash/ $total;
         $store = M('Store')->where('store_id ='.$orderInfo['store_id'])->find();

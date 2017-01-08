@@ -137,21 +137,34 @@ class NotifyController extends InitController{
 			}
 
 			// 判断是否有购物券商品, 购物券商品的一卷通作为充值进行九代结算
-            $order = M('OrderInfo',C('DB_PREFIX_MALL'))->where('order_sn ="'.$this->order_sn.'"')->find();
             $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where('order_sn = "'.$this->order_sn.'"')->select();
+            $otherFee = 0;
             if ($orderGoods) {
-                $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id ='.$orderGoods['goods_id'])->find();
-                if ($goods) {
-                    if ($goods->consumption_type == 3) {
-                        if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$order['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$order['yqt'])))) {
-                            R('Upgrade/hgxfs');//升级合格消费商
-                            R('Reward/jdjs',array($order['yqt'],'CZGWQ'));//充值购物券送一卷通
-                            R('Reward/heijin',array($order['yqt'],'CZ'));//赠送黑金
-                            R('Reward/jdjs',array($order['yqt'],'CZJDJS'));
+                foreach ($orderGoods as $og) {
+                    $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id ='.$og['goods_id'])->find();
+                    if ($goods) {
+                        if ($goods['consumption_type'] == 3) {
+
+                        } else {
+                            // 计算一卷通商品用的一卷通
+                            $otherFee += $og['price'] * $og['prosum'];
                         }
                     }
                 }
             }
+
+            // 获得使用一卷通购买购物卷使用的一卷通
+            $yqtUseGWQ= $res['yjt'] -$otherFee;
+
+            if ($yqtUseGWQ) {
+                // 充值
+                if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$list[0]['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$yqtUseGWQ))) !== false) {
+                    R('Upgrade/hgxfs');//升级合格消费商
+                    R('Reward/jdjs',array($yqtUseGWQ,'CZGWQ'));//充值购物券送一卷通
+                    R('Reward/heijin',array($yqtUseGWQ,'CZ'));//赠送黑金
+                }
+            }
+
 
 			if(!empty($this->order_sn)){
 				$condition['order_sn'] = array('in',$this->order_sn);
@@ -162,10 +175,11 @@ class NotifyController extends InitController{
 				R('Upgrade/hgxfs',array(true));//升级合格消费商
 				if($res['yjt']>0){
 					// R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
-					R('Reward/heijin',array($res['yjt'],'XF'));//赠送黑金
+                    if ($res['yjt'] - $yqtUseGWQ > 0)
+					    R('Reward/heijin',array(($res['yjt'] - $yqtUseGWQ),'XF'));//赠送黑金
 				}
 
-				R('Reward/love', array($orderGoods, $order['uid'])); // 捐献一卷通和购物卷
+				R('Reward/love', array($orderGoods, $list[0]['uid'])); // 捐献一卷通和购物卷
 			}
 			$PayTemporary->where('out_trade_no = "'.$out_trade_no.'"')->setField('status',1);
 			

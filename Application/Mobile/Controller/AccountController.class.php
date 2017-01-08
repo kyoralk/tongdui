@@ -176,7 +176,7 @@ class AccountController extends CommonController{
 		$M = M();
 		$M->startTrans();
 		try {
-			GeneralController::saveAll('__MEMBER_ACCOUNT__', $data, $condition,1);
+			GeneralController::saveAll('ms_common_member_account', $data, $condition,1);
 			AccountController::addLog($uid_array, $trade_fee_array, $trade_code, $trade_type, $desc,$reward_code);
 		} catch (Exception $e) {
 			$M->rollback();
