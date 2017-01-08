@@ -45,6 +45,7 @@
 						<th class="table-textcenter">可用积分</th>
 						<th class="table-textcenter">冻结积分</th>
 						<th class="table-textcenter">黑金</th>
+						<th class="table-textcenter">状态</th>
 						<th class="table-textcenter">操作</th>
 					</tr>
 				</thead>
@@ -79,6 +80,46 @@
 							<td class="table-textcenter">{$ml.member_account.jf_feeze}</td>
 							<td class="table-textcenter">{$ml.member_account.hj_fee}</td>
 							<td class="table-textcenter">
+								<script type="text/javascript">
+                                    function change_user_status(uid,obj)
+									{
+									    thisobj=$(obj);
+									    change_status=thisobj.attr('status')==0?1:0;
+									    $.ajax({
+									       url:'{:U("Member/change_user_status")}',
+										   data:{
+									           uid:uid,
+											   user_status:change_status
+									},
+											dataType:'json',
+											type:'post',
+											success:function(re)
+											{
+											    if(re.msgcode==0)
+												{
+                                                    thisobj.attr('status',change_status);
+											        if(change_status==1)
+													{
+                                                        $(obj).attr('src',"/Static/Admin/Images/yes.gif");
+													}else{
+                                                        $(obj).attr('src',"/Static/Admin/Images/no.gif");
+													}
+												}else{
+                                                    alert("修改失败");
+												}
+											}
+
+										});
+									}
+								</script>
+								<if condition="$ml.user_status eq 1">
+									<img onclick="change_user_status({$ml.uid},this)" src="/Static/Admin/Images/yes.gif" status="{$ml.user_status}"/>
+									<else/>
+									<img  onclick="change_user_status({$ml.uid},this)" src="/Static/Admin/Images/no.gif" status="{$ml.user_status}"/>
+								</if>
+							</td>
+							<td class="table-textcenter">
+								<a href="{:U('Finance/lp_account/','rank='.$rank.'&uid='.$ml['uid'])}">资金</a>
 								<a href="{:U('Member/info?uid='.$ml['uid'])}">编辑</a> 
 							</td>
 						</tr>

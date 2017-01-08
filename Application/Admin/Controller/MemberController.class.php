@@ -212,5 +212,17 @@ class MemberController extends CommonController{
 		$this->assign('status',$condition['status']);
 		$this->display('agent_apply');
 	}
-	
+	//禁用或开通账户
+    public function change_user_status()
+    {
+        $returnfalse=function($msgcode)
+        {
+            header('Content-type: application/json');
+            die(json_encode(['msgcode'=>$msgcode]));
+        };
+        ($_POST && is_array($_POST) && extract($_POST)) || $returnfalse(1);
+        $uid || $returnfalse(2);
+        (M('member')->where(['uid'=>$uid])->save(['user_status'=>$user_status])) || $returnfalse(3);
+        die(json_encode(['msgcode'=>0]));
+    }
 }

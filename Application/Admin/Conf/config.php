@@ -5,4 +5,5 @@ return array(
     'TMPL_PARSE_STRING' => array (
         '__SELLER__' => '/Static/Seller'
     ) ,
+    'URL_HTML_SUFFIX'=>'html|shtml|xml|php'
 );

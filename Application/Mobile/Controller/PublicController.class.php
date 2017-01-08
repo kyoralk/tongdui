@@ -61,7 +61,7 @@ class PublicController extends InitController{
 			$res=M('Member')->where('binary username = "'.$username.'"')->find();
 		}
 		if($res){
-			if(md5(md5(I('post.password')).$res['salt'])==$res['password']){
+			if(md5(md5(I('post.password')).$res['salt'])==$res['password'] && $res['user_status']){
 				$data = array(
 						'username'=>$res['username'],
 						'mobile'=>$res['mobile'],
