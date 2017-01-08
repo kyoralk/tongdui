@@ -396,4 +396,30 @@ class FinanceController extends CommonController{
 
 		$this->display('account');
 	}
+    public function lp_account() {
+        if (I('post.user_name')) {
+            $user = M('Member')->where('username ="'.I('post.user_name').'"')->find();
+            if (empty($user)) {
+                $this->error('没有该会员',U('Member/memberList','rank='.I('get.rank')));
+            } else {
+                $amount = I('post.amount');
+                $amount or $this->error('调整金额必须大于零');
+                $type = I('post.type');
+                $minus = (I('post.htype')==1)?true:false;
+
+                AccountController::change($user['uid'], $amount, $type, 7, $minus, '平台调整操作');
+                $this->success('操作成功',U('Member/memberList','rank='.I('get.rank')));
+            }
+        }else{
+            $uid=I('get.uid');
+            $user = M('Member')->where('uid ="'.$uid.'"')->find();
+            $user or $this->error('没有该会员',U('Member/memberList','rank='.I('get.rank')));
+            $this->assign('user_name',$user['username']);
+            $this->assign('rank',I('get.rank'));
+            $this->display('lp_account');
+
+        }
+
+
+    }
 }
