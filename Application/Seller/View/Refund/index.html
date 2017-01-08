@@ -45,7 +45,17 @@
                                                 <img  src="/Uploads/{$og.goods_img}" class="goods-thumb">
                                             </a>
                                             <div class="desc"style="width:400px;">
-                                                <p class="baobei-name"> <a href="javascript:void(0);" target="_blank">{$og.goods_name}</a> <em style="color:#ff2222">x {$og.prosum}</em> </p>
+                                                <p class="baobei-name"> <a href="javascript:void(0);" target="_blank">{$og.goods_name}</a> <em style="color:#ff2222">x {$og.prosum}</em>
+                                                    <?php
+											 if ($og['spec_id']) { ?>
+                                                    <b class="attr-name">【<?php
+														$spec = M("GoodsSpec")->where('spec_id ='.$og['spec_id'])->find();
+                                                        if ($spec) {
+                                                        echo str_replace("\r\n", "", $spec['spec_name']);
+                                                        }
+                                                        ?>】</b>
+                                                    <?php } ?>
+                                                </p>
                                             </div>
                                             <div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">单价：{$og.price}</i><br>
                                                 <i class="special-num">数量：{$og.prosum}</i><br>

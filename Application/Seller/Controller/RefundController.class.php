@@ -110,12 +110,12 @@ class RefundController extends CommonController{
                     // 按商品金額來算
                     $finalGWQ = $refund['cash'] + $refund['yqt'] + $refund['gwq'] - $extra;
                     // 返还购物券回购物券
-                    AccountController::change($refund['user_id'], $finalGWQ, 'YJT', 7, false, '订单'.$refund['order_sn'].'退货购物券');
+                    AccountController::change($refund['user_id'], $finalGWQ, 'GWQ', 7, false, '订单'.$refund['order_sn'].'退货购物券');
                 } else {
                     // 返回现金和一券通到一券通
                     AccountController::change($refund['user_id'], $refund['cash']+$refund['yqt'], 'YJT', 7, false, '订单'.$refund['order_sn'].'退货返还一券通');
                     // 返还购物券回购物券
-                    AccountController::change($refund['user_id'], $refund['gwq'], 'YJT', 7, false, '订单'.$refund['order_sn'].'退货购物券');
+                    AccountController::change($refund['user_id'], $refund['gwq'], 'GWQ', 7, false, '订单'.$refund['order_sn'].'退货购物券');
                 }
             }
 

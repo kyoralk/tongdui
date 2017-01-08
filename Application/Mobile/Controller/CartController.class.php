@@ -30,11 +30,13 @@ class CartController extends CommonController{
 		$freight = 0;
 		while (!empty($cart_list[$i])){
 		    $goods = M('Goods')->where('goods_id = '.$cart_list[$i]['goods_id'] )->find();
+            $cart_list[$i]['freight'] = $goods['freight'];
 			$cart_list[$i]['extend'] =  $this->goodsExtend($cart_list[$i]['atv_id_str']);
 			$cart_list[$i]['extend_str'] = empty($cart_list[$i]['extend']) ? '' : serialize($cart_list[$i]['extend']);
 			$total += $cart_list[$i]['price'] * $cart_list[$i]['prosum'];
-			if ($goods)
-			    $freight += $goods['freight'] * $cart_list[$i]['prosum'];
+			if ($goods) {
+                $freight += $goods['freight'] * $cart_list[$i]['prosum'];
+            }
 
 			$data_0[$cart_list[$i]['store_id']][] = $cart_list[$i];
 			$i++;
