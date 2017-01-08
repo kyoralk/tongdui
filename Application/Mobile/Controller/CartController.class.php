@@ -27,10 +27,15 @@ class CartController extends CommonController{
 								->select();
 		$i = 0;
 		$total = 0;
+		$freight = 0;
 		while (!empty($cart_list[$i])){
+		    $goods = M('Goods')->where('goods_id = '.$cart_list[$i]['goods_id'] )->find();
 			$cart_list[$i]['extend'] =  $this->goodsExtend($cart_list[$i]['atv_id_str']);
 			$cart_list[$i]['extend_str'] = empty($cart_list[$i]['extend']) ? '' : serialize($cart_list[$i]['extend']);
 			$total += $cart_list[$i]['price'] * $cart_list[$i]['prosum'];
+			if ($goods)
+			    $freight += $goods['freight'] * $cart_list[$i]['prosum'];
+
 			$data_0[$cart_list[$i]['store_id']][] = $cart_list[$i];
 			$i++;
 		}	
@@ -40,7 +45,9 @@ class CartController extends CommonController{
 					'store_name'=>$v[0]['store_name'],
 					'goods_list'=>$v,
 			);
+
 			$data['total'] = $total;
+			$data['freight'] = $freight;
 		}
 		return $data;
 	}

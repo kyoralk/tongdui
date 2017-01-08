@@ -740,3 +740,6 @@
 .btn:hover {
 	background:#00a7d0;
 }
+b.attr-name {
+	color: #ff2222;
+}

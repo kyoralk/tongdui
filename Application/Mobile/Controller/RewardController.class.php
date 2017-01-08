@@ -661,7 +661,7 @@ class RewardController extends CommonController{
                         $M->startTrans();
                         try {
                             M('Love')->add($data);
-                            AccountController::change($data['uid'], $data['fee'], $trade_code, 6,true,'','',false);
+//                            AccountController::change($data['uid'], $data['fee'], $trade_code, 6,true,'','',false);
                         } catch (Exception $e) {
                             $M->rollback();
                         }

@@ -17,7 +17,7 @@ class StoreController extends InitController{
 		$data = D('Store')->relation(true)->where($condition)->find();
 		$data['goods_count'] = M('Goods')->where($condition)->count();
 		$condition['store_tuijian'] = 1;
-		$data['goods_list'] = D('GoodsView')->where($condition)->field('goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,evaluate_count,click_count')->limit(20)->order('goods_id')->group('goods_id')->select();
+		$data['goods_list'] = D('GoodsView')->where($condition)->field('goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,evaluate_count,click_count,consumption_type,gwq_send,gwq_extra,love_amount')->limit(20)->order('goods_id')->group('goods_id')->select();
 		jsonReturn($data);
 	}
 	/**

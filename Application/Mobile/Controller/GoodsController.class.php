@@ -189,7 +189,7 @@ class GoodsController extends InitController{
 		$condition['examine_status'] = 1;
 		$count = M('Goods g')->join('__STORE__ s on g.store_id = s.store_id')->where($condition)->count();
 		$Goods = D('GoodsView');
-		$data = appPage($Goods, $condition, I('get.num'), I('get.p'),'view',$order_array[$order_index],'goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,store_id,evaluate_count,click_count,sales,consumption_type','goods_id',$count);
+		$data = appPage($Goods, $condition, I('get.num'), I('get.p'),'view',$order_array[$order_index],'goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,store_id,evaluate_count,click_count,sales,consumption_type,gwq_send,gwq_extra,love_amount','goods_id',$count);
 
 		// 升级增加补差额功能
 		$data = $this->handleGoods($data);
