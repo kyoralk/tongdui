@@ -30,3 +30,4 @@ Uploads/
 .htaccess
 Common/Conf/config.php
 /Common/Conf/config.php
+/.htaccess
