@@ -103,20 +103,18 @@ class RefundController extends CommonController{
             $goods = M('Goods')->where('goods_id = '.$refund['goods_id'])->find();
             
             // 如果是购物券商品, 则删除赠送的购物券，全部以购物券返回
+            // 獲取贈送的購物券
+            $extra = $this->sendGWJ($goods) * $orderGoods['prosum'];
             if ($goods['consumption_type'] == 3) {
-                // 獲取贈送的購物券
-                $extra = $this->sendGWJ($goods) * $orderGoods['prosum'];
-                if ($orderGoods['comsuption_type'] == 3) {
-                    // 按商品金額來算
-                    $finalGWQ = $refund['cash'] + $refund['yqt'] + $refund['gwq'] - $extra;
-                    // 返还购物券回购物券
-                    AccountController::change($refund['user_id'], $finalGWQ, 'GWQ', 7, false, '订单'.$refund['order_sn'].'退货购物券');
-                } else {
-                    // 返回现金和一券通到一券通
-                    AccountController::change($refund['user_id'], $refund['cash']+$refund['yqt'], 'YJT', 7, false, '订单'.$refund['order_sn'].'退货返还一券通');
-                    // 返还购物券回购物券
-                    AccountController::change($refund['user_id'], $refund['gwq'], 'GWQ', 7, false, '订单'.$refund['order_sn'].'退货购物券');
-                }
+                // 按商品金額來算
+                $finalGWQ = $refund['cash'] + $refund['yqt'] + $refund['gwq'] - $extra;
+                // 返还购物券回购物券
+                AccountController::change($refund['user_id'], $finalGWQ, 'GWQ', 7, false, '订单'.$refund['order_sn'].'退货购物券');
+            } else {
+                // 返回现金和一券通到一券通
+                AccountController::change($refund['user_id'], $refund['cash']+$refund['yqt'], 'YJT', 7, false, '订单'.$refund['order_sn'].'退货返还一券通');
+                // 返还购物券回购物券
+                AccountController::change($refund['user_id'], $refund['gwq'], 'GWQ', 7, false, '订单'.$refund['order_sn'].'退货购物券');
             }
 
             $refund = M("Refund");

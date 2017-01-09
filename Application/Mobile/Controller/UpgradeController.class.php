@@ -43,7 +43,7 @@ class UpgradeController extends InitController{
 					array('%四星%'),
 			);
 			if($this->member_info['star_level']<4 && $this->member_info['upgrade_times']<2){
-				$condition['goods_tag'] = array('like',$star_level_map[$this->member_info['star_level']],'OR');
+//				$condition['goods_tag'] = array('like',$star_level_map[$this->member_info['star_level']],'OR');
 				$condition['store_id'] = 1;
 				$condition['is_on_sale'] = 1;
 				$field = 'goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,store_id,evaluate_count,click_count,sales';
@@ -144,7 +144,29 @@ class UpgradeController extends InitController{
 		}else{
 			$Node->where('uid = '.$uid)->setField('star_level',$star_level);
 		}
-		M('Member')->where('uid = '.$uid)->save(array('rank'=>3,'star_level'=>$star_level));
+
+		/* 判断是几星和AB组成字符串 start */
+        $_goods = M('Goods',C('DB_PREFIX_MALL'))->alias('g')->join(C('DB_PREFIX_MALL').'order_goods og on g.goods_id = og.goods_id')->where('og.order_sn = "'.$order_sn.'"')->find();
+		if ($_goods) {
+		    $_arr = ['合作商一', '合作商二', '合作商三', '合作商四'];
+		    foreach ($_arr as $v) {
+		        if (strstr($_goods['goods_name'], $_arr)!==false) {
+		            $text = $v[3];
+		            if (strstr($_goods['goods_name'], 'A')!==false) {
+                        $text.='A';
+                    } else {
+                        $text.='B';
+                    }
+                }
+            }
+        }
+        /* 判断是几星和AB组成字符串 end */
+        $saveData = ['rank'=>3,'star_level'=>$star_level];
+        if ($text) {
+            $saveData['star_level_text'] = $text;
+        }
+
+		M('Member')->where('uid = '.$uid)->save($saveData);
 
 		// // 增加对应的费用记录和次数记录【bug】
 		// M('Member')->where('uid = '.$order_info['uid'])->save(array('upgrade_times'=> 'upgrade_times + 1',
@@ -238,7 +260,7 @@ class UpgradeController extends InitController{
 // 		jsonReturn($goods_tag_array);
 // 		foreach ($goods_tag_array as $needle){
 // 			if (in_array($needle, $haystack)){
-// 				$star_level = $star_level_info[$needle];
+// 				$star_level = $star_level_info[$needle];g
 // 				break;
 // 			}
 // 		}

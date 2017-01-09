@@ -127,6 +127,7 @@ class NotifyController extends InitController{
 			$list = $Order->where($condition)->field('order_sn,uid')->select();
 
 			$this->order_sn = array_column($list, 'order_sn');
+
 			$this->setMemberInfo(array('uid'=>$list[0]['uid']));
 			if($res['yjt']>0){
 				AccountController::change($list[0]['uid'], $res['yjt'], 'YJT', 3,true);//减少消费的一卷通
@@ -137,7 +138,9 @@ class NotifyController extends InitController{
 			}
 
 			// 判断是否有购物券商品, 购物券商品的一卷通作为充值进行九代结算
-            $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where('order_sn = "'.$this->order_sn.'"')->select();
+            $_condition['order_sn'] = array('in',$this->order_sn);
+            $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where($_condition)->select();
+
             $otherFee = 0;
             if ($orderGoods) {
                 foreach ($orderGoods as $og) {
@@ -158,11 +161,11 @@ class NotifyController extends InitController{
 
             if ($yqtUseGWQ) {
                 // 充值
-                if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$list[0]['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$yqtUseGWQ))) !== false) {
+//                if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$list[0]['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$yqtUseGWQ))) !== false) {
                     R('Upgrade/hgxfs');//升级合格消费商
                     R('Reward/jdjs',array($yqtUseGWQ,'CZGWQ'));//充值购物券送一卷通
                     R('Reward/heijin',array($yqtUseGWQ,'CZ'));//赠送黑金
-                }
+//                }
             }
 
 
@@ -199,9 +202,7 @@ class NotifyController extends InitController{
 			$this->setMemberInfo(array('uid'=>$order_info['uid']));
 			if($order_info['pay_status'] != 1){
 				R('Upgrade/hzs',array($this->order_sn));//升级合作商
-
 				$Order->where('order_sn = "'.$this->order_sn.'"')->setField('pay_status',1);
-				
 			}
 		}
 		

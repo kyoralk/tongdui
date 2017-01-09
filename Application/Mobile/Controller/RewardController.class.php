@@ -649,28 +649,20 @@ class RewardController extends CommonController{
                 if ($goods) {
                     $amount =$goods['love_amount'];
                     if ($amount) {
-                        $trade_code = $goods['consumption_type'] == 2? "YJT":"GWQ";
+                        $trade_code = $goods['consumption_type'] == 2? "1":"2";
                         $data = array(
                             'out_trade_no'=>serialNumber(),
                             'uid'=> $uid,
-                            'fee'=>I('post.fee'),
-                            'type'=>I('post.type'),
+                            'fee'=>$amount * $og['prosum'],
+                            'type'=>$trade_code,
+                            'order_sn'=>$og['order_sn'],
                             'grant_time'=>time(),
                         );
-                        $M = M();
-                        $M->startTrans();
-                        try {
-                            M('Love')->add($data);
-//                            AccountController::change($data['uid'], $data['fee'], $trade_code, 6,true,'','',false);
-                        } catch (Exception $e) {
-                            $M->rollback();
-                        }
-                        $M->commit();
+                        M('Love',C('DB_PREFIX_MALL'))->add($data);
                     }
                 }
             }
         }
-
 
     }
 }

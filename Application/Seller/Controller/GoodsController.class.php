@@ -232,7 +232,7 @@ class GoodsController extends CommonController{
 		$data['max_buy'] = empty(I('post.max_buy')) ? 0 : I('post.max_buy');//最大购买量
 		$data['goods_desc'] = I('post.goods_desc');//商品描述
 		$data['goods_weight'] = empty(I('post.goods_weight')) ? 0 : I('post.goods_weight');//商品种类
-		$data['is_on_sale'] = I('post.is_on_sale',0);//是否上架
+		$data['is_on_sale'] = 0;//是否上架
 		$data['freight_type'] = I('post.freight_type');//运费计算方式
 		$data['freight'] = empty(I('post.freight'))? 0 : I('post.freight');//运费
 		$data['keywords'] = I('post.keywords');//seo关键字
@@ -280,7 +280,7 @@ class GoodsController extends CommonController{
             if ($examine == '3') {
                 $data['examine_status'] = 2;
             } else {
-                $data['examine_status'] = $examine;
+                $data['examine_status'] = 2;
             }
         } else {
             $data['examine_status'] =  $examine == 0 ? 2 : 1; //处理审核状态

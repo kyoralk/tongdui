@@ -122,6 +122,9 @@ class GoodsController extends InitController{
 	 * 商品列表
 	 */
 	public function glist(){
+	    if ($this->member_info) {
+
+        }
 		$order_array = array('shop_price,sales desc','shop_price','shop_price desc','sales','sales desc');
 		$order_index = I('get.order_index',0);
 		$gc_id = I('get.gc_id',false);

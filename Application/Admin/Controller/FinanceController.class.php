@@ -148,11 +148,16 @@ class FinanceController extends CommonController{
 		$store = M('MallStore', 'ms_')->where('store_id ='.$condition['oi.store_id'])->select();
 		$this->assign('store', $store[0]);
 
+		if (I('get.order_sn')) {
+		    $condition['oi.order_sn'] = I('get.order_sn');
+		    $this->assign('order_sn', I('get.order_sn'));
+        }
+
 		$field = 'order_sn,settlement_no,bank_account_number,bank_account_name,order_time';
 		$settlement_list = M('OrderInfo',C('DB_PREFIX_MALL'))->alias('oi')->join(C('DB_PREFIX_MALL').'store s on oi.store_id = s.store_id')->where($condition)->field($field)->select();
 
-        $data = page(M('OrderInfo',C('DB_PREFIX_MALL'))->alias('oi')->join(C('DB_PREFIX_MALL').'store s on oi.store_id = s.store_id'), $condition, 20,'view','','*');
-        var_dump($data);exit;
+//        $data = page(M('OrderInfo',C('DB_PREFIX_MALL'))->alias('oi')->join(C('DB_PREFIX_MALL').'store s on oi.store_id = s.store_id'), $condition, 20,'view','','*');
+
 		$this->assign('settlement_list', $settlement_list);
 
 		$this->display('settlement_detail');
@@ -417,9 +422,30 @@ class FinanceController extends CommonController{
             $this->assign('user_name',$user['username']);
             $this->assign('rank',I('get.rank'));
             $this->display('lp_account');
+        }
+    }
 
+    public function love_list() {
+
+        $user_name=I("get.user_name");
+        if($user_name)
+        {
+            $member['username'] = array('like','%'.$user_name.'%');
+            $member_id=M("member")->field("uid")->where($member)->select();
+
+            foreach ($member_id as $v)
+            {
+                $memberlist.=$v['uid'].',';
+            }
+            $memberlist=trim($memberlist,',');
+            $condition['uid']=array("in",$memberlist);
+            $this->assign('user_name', $user_name);
         }
 
+        $data = page(M('Love', C("DB_PREFIX_MALL")), $condition, 20,'view','grant_time DESC','*');
 
+        $this->assign('goods_list',$data['list']);
+        $this->assign('page',$data['page']);
+        $this->display('love_list');
     }
 }

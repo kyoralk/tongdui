@@ -273,9 +273,12 @@ class OrderController extends CommonController{
                     } else {
                         $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
                     }
+                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:"";
+
                 }
             }
         }
+
 
 		jsonReturn($data);
 	}
@@ -296,7 +299,9 @@ class OrderController extends CommonController{
                         $data['order_goods'][$k]['spec_name'] =  '';
                 } else {
                     $data['order_goods'][$k]['spec_name'] =  '';
+
                 }
+                $data['order_goods'][$k]['goods_img'] =  $data['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['order_goods'][$k]['goods_img']:"";
             }
 
         }
