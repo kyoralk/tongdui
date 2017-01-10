@@ -47,6 +47,20 @@ class OrderController extends CommonController{
 		}
 		$condition ['store_id'] = session('store_id');
 		$data = page(D('OrderInfo'), $condition,16,'relation','order_time desc');
+        if ($data['list']) {
+            foreach ($data['list'] as $kk=>$l) {
+
+                foreach ($l['order_goods'] as $k=>$og) {
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                    if (!$goods) {
+                        $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                    }
+                    $link = '/Uploads/'.$goods['save_path'].$goods['save_name'];
+                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:$link;
+
+                }
+            }
+        }
 		$this->assign('order_list',$data['list']);
 		$this->assign('page',$data['page']);
 		$this->assign('content_header',$content_header);

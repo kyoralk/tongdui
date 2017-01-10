@@ -273,7 +273,12 @@ class OrderController extends CommonController{
                     } else {
                         $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
                     }
-                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:"";
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                    if (!$goods) {
+                        $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                    }
+                    $link = "http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$goods['save_path'].$goods['save_name'];
+                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:$link;
 
                 }
             }
@@ -301,7 +306,13 @@ class OrderController extends CommonController{
                     $data['order_goods'][$k]['spec_name'] =  '';
 
                 }
-                $data['order_goods'][$k]['goods_img'] =  $data['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['order_goods'][$k]['goods_img']:"";
+                $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                if (!$goods) {
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                }
+                $link = "http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$goods['save_path'].$goods['save_name'];
+
+                $data['order_goods'][$k]['goods_img'] =  $data['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['order_goods'][$k]['goods_img']:$link;
             }
 
         }
@@ -461,7 +472,24 @@ class OrderController extends CommonController{
     protected function getRefundMax($orderInfo, $orderGoods) {
         $defaultMax = $orderGoods['price'] * $orderGoods['prosum'];
         $payTemp = M("PayTemporary")->where("order_sn = '".$orderInfo['order_sn']."'")->find();
+        $goods = M("Goods")->where('goods_id ="'.$orderGoods['goods_id'].'"')->find();
 
+//        $orderGoods = M("OrderGoods")->where("order_sn ='".$orderInfo['order_sn']."'")->select();
+//        $gwqAmount = 0;
+//        $otherAmount = 0;
+//        if ($orderGoods) {
+//            foreach ($orderGoods as $og) {
+//                $goods = M("Goods")->where('goods_id ="'.$og['goods_id'].'"')->find();
+//                if ($goods) {
+//                    if ($goods['consumption_type'] == 3) {
+//                        $gwqAmount+=$og['price'] * $og['prosum'];
+//                    } else {
+//                        $otherAmount+=$og['price'] * $og['prosum'];
+//                    }
+//                }
+//            }
+//        }
+        
         $total = $orderInfo['total'];
         $cash = $payTemp['cash'];
         $orderInfo['yjt'] = $payTemp['yjt'];
@@ -469,14 +497,26 @@ class OrderController extends CommonController{
 
         $data['max_cash'] = $defaultMax * $cash/ $total;
         $store = M('Store')->where('store_id ='.$orderInfo['store_id'])->find();
-        if ($store && $store['gwq_max']) {
-            $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $total * $store['gwq_max'] / 100;
+        if ($goods['consumption_type'] == 3) {
+            $orderInfo['gwq']+=$orderInfo['yjt'];
+            $data['max_yjt'] = 0;
         } else {
-            $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $total;
+            $data['max_yjt'] = $defaultMax * $orderInfo['yjt'] / $orderInfo['total'] ;
         }
-        $data['max_yjt'] = $defaultMax * $orderInfo['yjt'] / $orderInfo['total'];
-        $data['max'] = $data['max_yjt'] + $data['max_gwq'] + $data['max_cash'];
+//        if ($store && $store['gwq_max']) {
+//            $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $total * $store['gwq_max'] / 100;
+//        } else {
+        $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $total;
+//        }
 
+        if ($goods['consumption_type' ] == 3) {
+            $data['max_gwq'] = $data['max_gwq'] - $this->sendGWJ($goods);
+        } else {
+            $data['max_yjt'] = $data['max_yjt'] - $this->sendGWJ($goods);
+        }
+
+        $data['max'] = $data['max_yjt'] + $data['max_gwq'] + $data['max_cash'];
+        $data['send_gwq'] = $this->sendGWJ($goods);
         return $data;
     }
 

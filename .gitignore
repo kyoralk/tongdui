@@ -31,3 +31,5 @@ Uploads/
 Common/Conf/config.php
 /Common/Conf/config.php
 /.htaccess
+/Application/Admin/Common/menu_1.php
+/log
