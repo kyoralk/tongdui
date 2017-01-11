@@ -90,7 +90,8 @@ class MemberController extends CommonController{
 		} catch (Exception $e) {
 			jsonReturn('','01017');
 		}
-		jsonReturn();
+      //  jsonReturn();
+		jsonReturn($res);
 	}
 	/**
 	 * 修改密码
