@@ -97,7 +97,7 @@ class OrderController extends CommonController{
 	/**
 	 * 从购物车中提交订单
 	 */
-	private function createFromCart($cart_id,$address,$pay_id,$pay_id,$yjt,$gwq,$total){
+	private function createFromCart($cart_id,$address,$pay_id,$yjt,$gwq,$total){
 		$Cart = new CartController();
 		$cart_info = $Cart->groupByStore($cart_id);
 		$i = 0;

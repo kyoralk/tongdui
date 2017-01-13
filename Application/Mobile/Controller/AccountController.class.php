@@ -119,14 +119,17 @@ class AccountController extends CommonController{
 		}else{
 			$field = $trade_code.'_FEE';
 		}
+
 		$Account = M('MemberAccount',C('DB_PREFIX_C'));
 		if($minus){
 			$fee = $Account->where('uid = '.$uid)->getField($field);
+
 			if($fee-$trade_fee<0){
 				jsonReturn('','01024');
 			}
 			$trade_fee = -$trade_fee;
 		}
+
 		if($trans){
 			$M = M();
 			$M->startTrans();
