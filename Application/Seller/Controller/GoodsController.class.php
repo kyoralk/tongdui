@@ -186,6 +186,7 @@ class GoodsController extends CommonController{
 	 * 商品详情
 	 */
 	public function info(){
+
 		$gc_id_path = empty(I('get.gc_id_path')) ? false : I('get.gc_id_path');
 		if(!empty(I('get.goods_id'))){
 			$goods_info = D('Goods')->relation(true)->where('goods_id = '.I('get.goods_id'))->find();
@@ -194,7 +195,9 @@ class GoodsController extends CommonController{
 			}
 			$this->assign('goods_info',$goods_info);
 			$this->assign('brand_name',M('Brand')->where('brand_id = '.$goods_info['brand_id'])->getField('brand_name'));
+
 		}
+
 		$gc_id_array = explode('-', $gc_id_path);
 		$condition['gc_id'] = array('IN',$gc_id_array);
 		$gc_name_array = M('GoodsClass')->where($condition)->order('gc_id')->getField('gc_name',true);

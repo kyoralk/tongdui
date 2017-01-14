@@ -88,4 +88,9 @@ class OrderController extends MallController{
 			$this->error('发货失败');
 		}
 	}
+	public function sellerlist()
+    {
+        $this->display();
+
+    }
 }

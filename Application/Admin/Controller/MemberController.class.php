@@ -52,8 +52,8 @@ class MemberController extends CommonController{
 		
 	}
 	public function realNameAUTH(){
-		$condition['real_name_auth'] = 2;
-		$data = page(M('Member'), $condition,20,'','uid desc');
+		$condition['real_name_auth'] =array('gt',0);
+		$data = page(M('Member'), $condition,20,'','real_name_auth desc');
 		$this->assign('member_list',$data['list']);
 		$this->assign('page',$data['page']);
 		$this->display('real_name_auth');

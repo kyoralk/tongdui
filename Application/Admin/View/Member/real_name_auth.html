@@ -32,8 +32,12 @@
 							<td class="table-textcenter"><a href="/Uploads/Member/{$ml.card_img_1}" target="_blank"><img width="100" height="100" src="/Uploads/Member/{$ml.card_img_1}"/></a></td>
 							<td class="table-textcenter"><a href="/Uploads/Member/{$ml.card_img_2}" target="_blank"><img width="100" height="100" src="/Uploads/Member/{$ml.card_img_2}"/></a></td>
 							<td class="table-textcenter">
-								<a class="btn btn-success btn-xs" href="{:U('Member/rauth?real_name_auth=1&uid='.$ml['uid'])}">通过</a> 
+								<if condition="$ml.real_name_auth eq 2" ><a class="btn btn-success btn-xs" href="{:U('Member/rauth?real_name_auth=1&uid='.$ml['uid'])}">通过</a>
 								<a class="btn btn-warning btn-xs" href="{:U('Member/rauth?real_name_auth=0&uid='.$ml['uid'])}">驳回</a>
+								<else />
+									己处理
+
+								</if>
 							</td>
 						</tr>
 					</volist>

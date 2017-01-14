@@ -80,6 +80,40 @@
 					{:fastModule('form-group',array('商品运费'),array('text','freight',$goods_info['freight']),'选择固定运费时有效，0表示包邮')}
 					{:fastModule('form-group',array('加入推荐'),array('checkbox',array('is_best','is_new','is_hot'),array(array('精品',1,$goods_info['is_best'],0),array('新品',1,$goods_info['is_new'],0),array('热销',1,$goods_info['is_hot'],0)),'','','checkbox'))}
 					{:fastModule('form-group',array('是否上架'),array('checkbox',array('is_on_sale'),array(array('上架',1,$goods_info['is_on_sale'],1)),'','','checkbox'))}
+
+					<script type="text/javascript">
+                        var consumption_type = $('input[name="consumption_type"]');
+
+                        for(i=0;i<consumption_type.length;i++)
+						{
+						    if($(consumption_type[i]).attr('value')=='1')
+							{
+                                $(consumption_type[i]).attr('disabled','disabled');
+							}
+                            if($(consumption_type[i]).attr('value')=='2')
+                            {
+                                $(consumption_type[i]).attr('checked','checked');
+                                $("input[type=checkbox][name=is_yqt]").attr('checked','checked');
+                                $("input[type=checkbox][name=is_cash]").attr('disabled','disabled');
+                                $("input[type=checkbox][name=is_gwq]").attr('disabled','disabled');
+                            }
+						}
+                        consumption_type.change(function() {
+                            if($(this).val()=="2"){
+
+                                $("input[type=checkbox][name=is_yqt]").removeAttr('disabled');
+                                $("input[type=checkbox][name=is_yqt]").prop('checked',true);
+                                $("input[type=checkbox][name=is_gwq]").attr('checked',false);
+                                $("input[type=checkbox][name=is_gwq]").attr('disabled','disabled');
+							}
+                            if($(this).val()=="3"){
+                                $("input[type=checkbox][name=is_gwq]").removeAttr('disabled');
+                                $("input[type=checkbox][name=is_yqt]").removeAttr('disabled');
+                                $("input[type=checkbox][name=is_yqt]").attr('checked',true);
+                                $("input[type=checkbox][name=is_gwq]").prop('checked',true);
+                            }
+                        });
+					</script>
 					<div class="form-group">
 						<label for="" class="col-sm-2 control-label">商品标签</label>
 						<div class="col-sm-10">

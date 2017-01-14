@@ -1,0 +1,141 @@
+<section class="content-header">
+		<div class="row">
+			<div class="col-md-8">
+				<form action="{:U('Order/sellerlist')}" method="get">
+
+					<h4><small>商家订单列表</small></h4>
+					<div class="form-group">
+						<label>
+							订单状态
+						</label>
+						<select name="select" class="form-control inline-block" style="width: 150px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+							<option value="1" <if condition="$select eq 1">selected</if>>用户名</option>
+							<option value="2" <if condition="$select eq 2">selected</if>>手机号码</option>
+						</select>
+						<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+							<input class="form-control" type="text" name="member_name" value="{$member_name}" placeholder="用户名或手机号">
+							<span class="input-group-btn">
+						<button type="submit" class="btn btn-info btn-flat">搜索</button>
+						</span>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-4 right_menu">
+				<a class="btn btn-info" href="{:U('Member/view')}">添加会员</a>
+			</div>
+
+
+  		</div>
+</section>
+<section class="content">
+	<div class="box">
+		<div class="box-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="table-textcenter">ID</th>
+						<th class="table-textcenter">用户名</th>
+						<th class="table-textcenter">身份</th>
+						<th class="table-textcenter">手机</th>
+						<th class="table-textcenter">推荐人</th>
+						<th class="table-textcenter">一卷通</th>
+						<th class="table-textcenter">赠出一卷通</th>
+						<th class="table-textcenter">购物券</th>
+						<th class="table-textcenter">资产包</th>
+						<th class="table-textcenter">总积分</th>
+						<th class="table-textcenter">可用积分</th>
+						<th class="table-textcenter">冻结积分</th>
+						<th class="table-textcenter">黑金</th>
+						<th class="table-textcenter">状态</th>
+						<th class="table-textcenter">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="member_list" id="ml">
+						<tr>
+							<td class="table-textcenter">{$ml.uid}</td>
+							<td class="table-textcenter">{$ml.username}</td>
+							<td class="table-textcenter">
+							<switch name="ml.rank">
+								<case value="1">消费商</case>
+								<case value="2">合格的消费商</case>
+								<case value="3">合作商{$ml.star_level}星</case>
+								<case value="4">特殊合作商</case>
+							</switch>
+							<if condition="$ml.store_id neq 0">（商家）</if>
+							<switch name="ml.agent_level">
+								<case value="1">（县代理）</case>
+								<case value="2">（市代理）</case>
+								<case value="3">（省代理）</case>
+							</switch>
+							</td>
+							<td class="table-textcenter">{$ml.mobile}</td>
+							<td class="table-textcenter"><empty name="ml.referrer_name">无<else/>{$ml.referrer_name}</empty></td>
+							<td class="table-textcenter">{$ml.member_account.yjt_fee}</td>
+							<td class="table-textcenter">{$ml.member_account.yjt_grant}</td>
+							<td class="table-textcenter">{$ml.member_account.gwq_fee}</td>
+							<td class="table-textcenter">{$ml.member_account.zcb_fee}</td>
+							<td class="table-textcenter">
+								<?php echo $ml['member_account']['jf_fee'] + $ml['member_account']['jf_feeze']; ?></td>
+							<td class="table-textcenter">{$ml.member_account.jf_fee}</td>
+							<td class="table-textcenter">{$ml.member_account.jf_feeze}</td>
+							<td class="table-textcenter">{$ml.member_account.hj_fee}</td>
+							<td class="table-textcenter">
+								<script type="text/javascript">
+                                    function change_user_status(uid,obj)
+									{
+									    thisobj=$(obj);
+									    change_status=thisobj.attr('status')==0?1:0;
+									    $.ajax({
+									       url:'{:U("Member/change_user_status")}',
+										   data:{
+									           uid:uid,
+											   user_status:change_status
+									},
+											dataType:'json',
+											type:'post',
+											success:function(re)
+											{
+											    if(re.msgcode==0)
+												{
+                                                    thisobj.attr('status',change_status);
+											        if(change_status==1)
+													{
+                                                        $(obj).attr('src',"/Static/Admin/Images/yes.gif");
+													}else{
+                                                        $(obj).attr('src',"/Static/Admin/Images/no.gif");
+													}
+												}else{
+                                                    alert("修改失败");
+												}
+											}
+
+										});
+									}
+								</script>
+								<if condition="$ml.user_status eq 1">
+									<img onclick="change_user_status({$ml.uid},this)" src="/Static/Admin/Images/yes.gif" status="{$ml.user_status}"/>
+									<else/>
+									<img  onclick="change_user_status({$ml.uid},this)" src="/Static/Admin/Images/no.gif" status="{$ml.user_status}"/>
+								</if>
+							</td>
+							<td class="table-textcenter">
+								<a href="{:U('Finance/lp_account/','rank='.$rank.'&uid='.$ml['uid'])}">资金</a>
+								<a href="{:U('Member/info?uid='.$ml['uid'])}">编辑</a> 
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+		<div class="box-footer clearfix">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				{$page}
+			</ul>
+		</div>
+	</div>
+</section>
+
+
+

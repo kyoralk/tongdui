@@ -73,6 +73,42 @@
                 {:fastModule('form-group',array('可用一卷通数额[购买此商品能用最大值]'),array('text','yjt_can',$goods_info['yjt_can']))}
                 {:fastModule('form-group',array('可用购物券数额[购买此商品能用最大值]'),array('text','gwq_can',$goods_info['gwq_can']))}
                 {:fastModule('form-group',array('捐赠数额'),array('text','love_amount',$goods_info['love_amount']))}
+                <script type="text/javascript">
+                    var consumption_type = $('input[name="consumption_type"]');
+
+                    for(i=0;i<consumption_type.length;i++)
+                    {
+                        $("input[type=checkbox][name=is_yqt]").attr('checked',true);
+                        $("input[type=checkbox][name=is_cash]").attr('checked',false);
+                        $("input[type=checkbox][name=is_gwq]").attr('checked',false);
+                        if($(consumption_type[i]).attr('value')=='1')
+                        {
+                            $(consumption_type[i]).attr('disabled','disabled');
+                        }
+                        if($(consumption_type[i]).attr('value')=='2')
+                        {
+                            $(consumption_type[i]).attr('checked','checked');
+                            $("input[type=checkbox][name=is_yqt]").attr('checked','checked');
+                            $("input[type=checkbox][name=is_cash]").attr('disabled','disabled');
+                            $("input[type=checkbox][name=is_gwq]").attr('disabled','disabled');
+                        }
+                    }
+                    consumption_type.change(function() {
+                        if($(this).val()=="2"){
+
+                            $("input[type=checkbox][name=is_yqt]").removeAttr('disabled');
+                            $("input[type=checkbox][name=is_yqt]").prop('checked',true);
+                            $("input[type=checkbox][name=is_gwq]").attr('checked',false);
+                            $("input[type=checkbox][name=is_gwq]").attr('disabled','disabled');
+                        }
+                        if($(this).val()=="3"){
+                            $("input[type=checkbox][name=is_gwq]").removeAttr('disabled');
+                            $("input[type=checkbox][name=is_yqt]").removeAttr('disabled');
+                            $("input[type=checkbox][name=is_yqt]").attr('checked',true);
+                            $("input[type=checkbox][name=is_gwq]").prop('checked',true);
+                        }
+                    });
+                </script>
                 <!--<dl>-->
                 <!--<dt class="required"><i class="required">*</i>商品属性：</dt>-->
                 <!--<dd id="attr_values_div"> </dd>-->

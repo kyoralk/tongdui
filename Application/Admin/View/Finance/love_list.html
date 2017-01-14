@@ -4,6 +4,12 @@
             <form action="{:U('Finance/love_list')}" method="get">
                 <h4><small>爱心捐赠明细</small></h4>
                 <div class="form-group">
+                    <select name="type" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+                        <option value="0">捐赠类型</option>
+                        <option value="1" <if condition="$type eq 1">selected</if>>购物劵</option>
+                        <option value="2"  <if condition="$type eq 2">selected</if>>一劵通</option>
+
+                    </select>
                     <div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
                         <input class="form-control" type="text" name="user_name" value="{$user_name}" placeholder="用户">
                         <span class="input-group-btn">

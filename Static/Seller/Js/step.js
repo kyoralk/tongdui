@@ -2,15 +2,23 @@
  * 添加商品相关js
  */
 $(function(){
-	
 	var mid = $("input[name='init_mid']").val();
+
 	if(mid !=''){
-		$("select[name='mid'] option:nth-child(2)").attr("selected" , "selected");  
+	//	$("select[name='mid'] option:nth-child(2)").attr("selected" , "selected");
+        $("select[name='mid'] option[value='"+mid+"']").attr("selected","selected");
 		mid = $("select[name='mid']").find("option:selected").val();
 		var gc_id = $("input[name='gc_id']").val();
 		var goods_id = $("input[name='goods_id']").val();
 		goods_id = goods_id == "" ? 0 : goods_id;
 		getAttr(mid,goods_id);
+	}else{
+        $("select[name='mid'] option:nth-child(2)").attr("selected" , "selected");
+        mid = $("select[name='mid']").find("option:selected").val();
+        var gc_id = $("input[name='gc_id']").val();
+        var goods_id = $("input[name='goods_id']").val();
+        goods_id = goods_id == "" ? 0 : goods_id;
+        getAttr(mid,goods_id);
 	}
 	//初始化品牌
 	getBrand({force:1});

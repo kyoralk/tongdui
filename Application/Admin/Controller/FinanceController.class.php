@@ -441,6 +441,12 @@ class FinanceController extends CommonController{
             $condition['uid']=array("in",$memberlist);
             $this->assign('user_name', $user_name);
         }
+        $type=I('get.type');
+        if($type)
+        {
+            $condition['type']=$type;
+            $this->assign('type', $type);
+        }
 
         $data = page(M('Love', C("DB_PREFIX_MALL")), $condition, 20,'view','grant_time DESC','*');
 

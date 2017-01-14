@@ -1,6 +1,21 @@
 <section class="content-header">
 		<div class="row">
   			<div class="col-md-11"><h4><small>{$content_header}</small></h4></div>
+			<div class="col-md-8">
+				<form action="{:U('Brand/brandList')}" method="get">
+
+
+					<div class="form-group">
+
+						<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+							<input class="form-control" type="text" name="brand_name" value="{$brand_name}" placeholder="品牌名称">
+							<span class="input-group-btn">
+						<button type="submit" class="btn btn-info btn-flat">搜索</button>
+						</span>
+						</div>
+					</div>
+				</form>
+			</div>
   			<div class="col-md-1">
   				<notempty name="right_menu">
   					<a style="margin-top: 13px; display: inline-block;"href="{$right_menu.url}"><i class="fa {$right_menu.icon}"></i>&nbsp;&nbsp;{$right_menu.text}</a>

@@ -8,12 +8,23 @@ class BrandController extends MallController{
 	 * 品牌列表
 	 */
 	public function brandList(){
+
+
+
+
 		$brand = M('Brand');
-		$data = page($brand, $condition,20,'','brand_sort desc');
+        if(I('get.brand_name'))
+        {
+
+            $condition['brand_name']=['like',"%".I('get.brand_name')."%"];
+            $this->assign('brand_name',I('get.brand_name'));
+        }
+		$data = page($brand, $condition,20,'','brand_id desc');
 		$this->assign("page", $data['page']);
 		$this->assign('brand_list',$data['list']);
 		$this->assign('content_header','品牌列表');
 		$this->assign('right_menu',array('url'=>U('Brand/view'),'icon'=>'fa-plus','text'=>'添加品牌'));
+
 		$this->display('Brand/brand_list');
 	}
 	/**
