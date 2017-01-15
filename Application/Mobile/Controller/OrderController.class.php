@@ -509,14 +509,20 @@ class OrderController extends CommonController{
         $data['max_gwq'] = $defaultMax * $orderInfo['gwq'] / $total;
 //        }
 
+
+        $data = [
+            'max_gwq' => 0,
+            'max_yjt' => 0,
+        ];
+
         if ($goods['consumption_type' ] == 3) {
-            $data['max_gwq'] = $data['max_gwq'] - $this->sendGWJ($goods);
+            $data['max_gwq'] = $defaultMax - $this->sendGWJ($goods) * $orderGoods['prosum'];
         } else {
-            $data['max_yjt'] = $data['max_yjt'] - $this->sendGWJ($goods);
+            $data['max_yjt'] = $defaultMax - $this->sendGWJ($goods) * $orderGoods['prosum'];
         }
 
         $data['max'] = $data['max_yjt'] + $data['max_gwq'] + $data['max_cash'];
-        $data['send_gwq'] = $this->sendGWJ($goods);
+        $data['send_gwq'] = $this->sendGWJ($goods)* $orderGoods['prosum'];
         return $data;
     }
 

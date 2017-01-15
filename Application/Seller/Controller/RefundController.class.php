@@ -105,6 +105,7 @@ class RefundController extends CommonController{
             // 如果是购物券商品, 则删除赠送的购物券，全部以购物券返回
             // 獲取贈送的購物券
             $extra = $this->sendGWJ($goods) * $orderGoods['prosum'];
+            $extra = 0;
             if ($goods['consumption_type'] == 3) {
                 // 按商品金額來算
                 $finalGWQ = $refund['cash'] + $refund['yqt'] + $refund['gwq'] - $extra;

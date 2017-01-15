@@ -343,7 +343,7 @@ class RewardController extends CommonController{
 		$condition['g.goods_id'] = count($goods_id) > 1 ? array('in',$goods_id) : $goods_id[0];
 		if(!empty($spec_id)){
 			$condition['gs.spec_id'] = count($spec_id) > 1 ? array('in',$spec_id) : $spec_id[0];
-			$field = 'g.goods_id,gs.cost_price,s.store_id,s.company_province,s.company_city,s.company_district,s.uid';
+			$field = 'g.goods_id,gs.spec_cost_price,s.store_id,s.company_province,s.company_city,s.company_district,s.uid';
 			$data = M('Goods',C('DB_PREFIX_MALL'))->alias('g')->join(C('DB_PREFIX_MALL').'goods_spec gs on g.goods_id = gs.goods_id')->join(C('DB_PREFIX_MALL').'store s on g.store_id=s.store_id')->where($condition)->field($field)->select();
 		}else{
 			$field = 'g.goods_id,g.cost_price,s.store_id,s.company_province,s.company_city,s.company_district,s.uid';

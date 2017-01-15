@@ -344,6 +344,7 @@ class AccountController extends CommonController{
 		$data = appPage(M('MemberAccountLog'), $condition, I('get.num'), I('get.p'),'','time_start desc');
 		if(I('get.sum')){
 			$data['yue'] = M('MemberAccount')->where('uid = '.$this->member_info['uid'])->getField($trade_code.'_FEE');
+            $condition['trade_status'] = 1;
 			$condition['trade_type'] = 1;//充值
 			$zcz = M('MemberAccountLog')->where($condition)->sum('trade_fee');
 			$condition['trade_type'] = 2;//提现
