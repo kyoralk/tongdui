@@ -555,9 +555,9 @@ class OrderController extends CommonController{
         $type = I('get.type');
         if ($type)
             $where.="type ='".$type."'";
-        $uid = session('uid');
+        $uid = $this->member_info['uid'];
         if ($uid) {
-            $where.='user_id ='.$uid;
+            $where.=' and user_id ='.$uid;
         }
 
         $refund = D('Refund');

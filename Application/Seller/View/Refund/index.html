@@ -39,7 +39,7 @@
 
                                 <td class="column-detail column-l">
                                     <ul class="order-goods-list">
-                                        <?php $og = M('OrderGoods')->where('order_sn ='.$ol['order_sn'])->find(); ?>
+                                        <?php $og = M('OrderGoods')->where('goods_id ='.$ol['goods_id'])->find(); ?>
                                         <li>
                                             <a href="javascript:;" target="_blank">
                                                 <img  src="/Uploads/{$og.goods_img}" class="goods-thumb">
