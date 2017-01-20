@@ -5,7 +5,7 @@ use Seller\Controller\CommonController;
 use Seller\Model\RefundModel;
 
 class RefundController extends CommonController{
-
+//
     public function index() {
         $content_header = '退换货列表';
         switch (I('get.type')){
