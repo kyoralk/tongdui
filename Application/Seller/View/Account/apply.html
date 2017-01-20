@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结算申请</title>
+    <link rel="stylesheet" type="text/css" href="/Static/Common/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Static/Common/bootstrap/css/daterangepicker.css">
+
+</head>
+<body>
+<div class="container-fiuled" style="padding: 5px;">
+
+    <div class="page-header">
+        <h3>结算申请</h3>
+        <span class="label label-info">结算总额：{$total.total}</span>
+        <span class="label label-success">己结算：{$total.wei}</span>
+        <span class="label label-primary">未结算：{$no_hand}</span>
+        <span class="label label-warning">审批中：{$in_hand}</span>
+        <span class="label label-info">打款中：{$is_hand}</span>
+        <span class="label label-info">己打款：{$finish}</span>
+    </div>
+
+    <form class="form-inline" role="form" action="{:U('Account/apply','p=1')}">
+        <div class="form-group" >
+            <input type="text" name="time" class="form-control input-sm" id="date-range1" value="{$time}" placeholder="请选择时间" style="width: 320px;height: 30px;">
+            <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+        </div>
+
+
+    </form>
+
+    <table class="table table-bordered table-striped text-center table-hover" style="margin-top:10px; margin-bottom: 0;">
+        <tr style="background-color: #428bca; color:#ffffff" >
+            <th  class="text-center">序号</th>
+            <th  class="text-center">申请日期</th>
+            <th  class="text-center">申请金额</th>
+            <th  class="text-center">申请状态</th>
+            <th  class="text-center">实结金额</th>
+            <th  class="text-center">未结金额</th>
+        </tr>
+        <volist name="list" id="vl">
+        <tr>
+            <td>{$vl.id}</td>
+            <td>{$vl.time}</td>
+            <td>{$vl.total}</td>
+            <td>
+                <switch name="vl.status">
+                    <case value="0"><span class="label label-primary">处理中</span></case>
+                    <case value="1"><span class="label label-success">打款中</span></case>
+                    <case value="2"><span class="label label-info">己驳回</span></case>
+                    <case value="3"><span class="label label-info">己打款</span></case>
+                </switch>
+            </td>
+            <td>{$vl.apply_total}</td>
+
+            <td>{$vl.untreated}</td>
+        </tr>
+        </volist>
+
+    </table>
+    <nav class="text-right">
+        <ul class="pagination">
+            {$page}
+        </ul>
+    </nav>
+</div>
+<script src="/Static/Common/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="/Static/Common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/Static/Common/bootstrap/js/moment.min.js"></script>
+<script src="/Static/Common/bootstrap/js/jquery.daterangepicker.js"></script>
+<script src="/Static/Common/bootstrap/js/data.js"></script>
+</body>
+</html>

@@ -65,6 +65,7 @@ function isExists(variable) {
 /**
  * 检测图片是否存在
  */
+
 $(function(){
     $("img").each(function(){
         var _obj = $(this);

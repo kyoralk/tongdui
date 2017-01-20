@@ -45,4 +45,5 @@ class CenterController extends CommonController{
 			$this->error('店铺正在审核中',U('/Seller'));
 		}
 	}
+
 }

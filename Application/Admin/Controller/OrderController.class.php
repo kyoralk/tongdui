@@ -90,6 +90,68 @@ class OrderController extends MallController{
 	}
 	public function sellerlist()
     {
+        $content_header = '订单列表';
+        switch (I('get.type')){
+            case 1:
+                $condition ['pay_status'] = 0;
+                $condition ['shipping_status'] = 0;
+                $condition ['receipt_status'] = 0;
+                $condition ['evaluate_status'] = 0;
+                $content_header = '待付款';
+                break;
+            case 2:
+                $condition ['pay_status'] = 1;
+                $condition ['shipping_status'] = 0;
+                $condition ['receipt_status'] = 0;
+                $condition ['evaluate_status'] = 0;
+                $content_header = '待发货';
+                break;
+            case 3:
+                $condition ['pay_status'] = 1;
+                $condition ['shipping_status'] = 1;
+                $condition ['evaluate_status'] = 0;
+                $condition ['receipt_status'] = 0;
+                $content_header = '待收货';
+                break;
+            case 4:
+                $condition ['pay_status'] = 1;
+                $condition ['shipping_status'] = 1;
+                $condition ['receipt_status'] = 1;
+                $condition ['evaluate_status'] = 0;
+                $content_header = '待评价';
+                break;
+            case 5:
+                $condition ['pay_status'] = 1;
+                $condition ['shipping_status'] = 1;
+                $condition ['receipt_status'] = 1;
+                $condition ['evaluate_status'] = 1;
+                $content_header = '已完成';
+                break;
+        }
+        if(I('get.order_sn'))
+        {
+            $condition ['order_sn'] = I('get.order_sn');
+            $this->assign("order_sn",I('get.order_sn'));
+        }
+        I('get.type')?$this->assign("select",I('get.type')):$this->assign("type",0);
+        $data = page(D('OrderInfo'), $condition,16,'relation','order_time desc');
+        if ($data['list']) {
+            foreach ($data['list'] as $kk=>$l) {
+
+                foreach ($l['order_goods'] as $k=>$og) {
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                    if (!$goods) {
+                        $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                    }
+                    $link = '/Uploads/'.$goods['save_path'].$goods['save_name'];
+                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:$link;
+
+                }
+            }
+        }
+        $this->assign('order_list',$data['list']);
+        $this->assign('page',$data['page']);
+        $this->assign('content_header',$content_header);
         $this->display();
 
     }

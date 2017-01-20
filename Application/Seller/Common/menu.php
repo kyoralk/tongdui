@@ -143,6 +143,14 @@ function getMenu(){
 									'lang'=>'收款信息',
 									'current'=>1,
 							),
+                        'accounts'=>array(
+                            'url'=>U('Account/accounts'),
+                            'lang'=>'结算中心',
+                        ),
+                        'apply'=>array(
+                            'url'=>U('Account/apply'),
+                            'lang'=>'结算申请',
+                        ),
 							'goods_info'=>array(
 									'url'=>U('Goods/selectClass'),
 									'lang'=>'添加商品'

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结算审批</title>
+    <link rel="stylesheet" type="text/css" href="/Static/Common/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Static/Common/bootstrap/css/daterangepicker.css">
+
+</head>
+<body>
+<div class="container-fiuled" style="padding: 5px;">
+
+    <div class="page-header">
+        <h3>商家结算审批</h3>
+        <span class="label label-info">结算总额：{$total}</span>
+        <span class="label label-success">己结算：{$is_hand}</span>
+        <span class="label label-primary">未结算：{$no_apply}</span>
+        <span class="label label-warning">待审批：{$hand}</span>
+        <span class="label label-warning">待打款：{$apply}</span>
+    </div>
+
+    <form class="form-inline" role="form" action="{:U('Finance/apply_hand','p=1')}">
+        <div class="form-group">
+            <select class="form-control input-sm" name="status">
+                <option value="99">审批状态</option>
+                <option value="0" <if condition="$status eq 0"> selected </if>>待审批 </option>
+                <option value="1" <if condition="$status eq 1"> selected </if>>待打款 </option>
+                <option value="2" <if condition="$status eq 2"> selected </if>>己驳回 </option>
+                <option value="3" <if condition="$status eq 3"> selected </if>>己打款 </option>
+            </select>
+
+            <input type="text" class="form-control input-sm" id="date-range1" placeholder="请选择时间" style="width: 320px" name="time" value="{$time}">
+            <input type="text" class="form-control input-sm" placeholder="申请人" name="username" value="{$username}">
+            <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+        </div>
+
+
+        <div class="modal fade bs-example-modal-sm" id="jiesuan">
+            <div class="modal-dialog modal-sm" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">结算审批</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form">
+                            <div class="form-group ">
+                                <input type="hidden" name="id" id="sq_id">
+                                <label for="money">
+                                    申请金额：
+                                </label>
+                                <input type="text" class="form-control input-sm" id="sq_money" disabled>
+                            </div>
+                            <div class="form-group ">
+                                <label for="money">
+                                    批准金额：
+                                </label>
+                                <input type="text" class="form-control input-sm" id="pz_money" placeholder="请输入金额">
+                            </div>
+                            <div class="form-group">
+                                <label for="account">
+                                    收款账户：
+                                </label>
+                                <input type="text" class="form-control input-sm" id="number" value="36416976@qq.com" disabled>
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="sub" >通过</button>
+                        <button type="button" class="btn btn-info" id="bh" >驳回</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <table class="table table-bordered table-striped text-center table-hover" style="margin-top:10px; margin-bottom: 0;">
+        <tr style="background-color: #428bca; color:#ffffff" >
+            <th  class="text-center">序号</th>
+            <th  class="text-center">申请人</th>
+            <th  class="text-center">店铺</th>
+            <th  class="text-center">收款人</th>
+            <th  class="text-center">支付宝</th>
+            <th  class="text-center">申请日期</th>
+            <th  class="text-center">申请金额</th>
+            <th  class="text-center">申请状态</th>
+            <th  class="text-center">实结金额</th>
+            <th  class="text-center">未结金额</th>
+            <th  class="text-center">操作</th>
+        </tr>
+        <volist name="list" id="ml">
+        <tr>
+            <td>{$ml.id}</td>
+            <td>{$ml.username}</td>
+            <td>{$ml.store_name}</td>
+            <td>{$ml.bank_account_name}</td>
+            <td>{$ml.bank_account_number}</td>
+            <td>{$ml.time}</td>
+            <td>{$ml.total}</td>
+            <td>
+                <switch name="ml.status">
+                    <case value="0"><span class="label label-primary">待审批</span></case>
+                    <case value="1"><span class="label label-success">己审批</span></case>
+                    <case value="2"><span class="label label-warning">己驳回</span></case>
+                    <case value="3"><span class="label label-info">己付款</span></case>
+                </switch>
+
+            </td>
+            <td>{$ml.apply_total}</td>
+            <td>{$ml.untreated}</td>
+            <td>
+                <switch name="ml.status">
+                    <case value="0">
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#jiesuan" data-id="{$ml.id}"
+                                data-total="{$ml.total}" data-number="{$ml.bank_account_number}"
+                        >审批</button>
+                    </case>
+                    <case value="1">
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#qr" data-id="{$ml.id}"
+                                data-total="{$ml.apply_total}" data-number="{$ml.bank_account_number}"
+                        >打款确认</button>
+                    </case>
+                </switch>
+            </td>
+        </tr>
+        </volist>
+        <div class="modal fade bs-example-modal-sm" id="qr">
+            <div class="modal-dialog modal-sm" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <input type="hidden" id="dk_id">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">确定己打款</h4>
+                    </div>
+                    <div class="modal-body" id="qddk">
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="qd" >确定</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </table>
+    <nav class="text-right">
+        <ul class="pagination">
+            {$page}
+        </ul>
+    </nav>
+</div>
+
+<script src="/Static/Common/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="/Static/Common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/Static/Common/bootstrap/js/moment.min.js"></script>
+<script src="/Static/Common/bootstrap/js/jquery.daterangepicker.js"></script>
+<script src="/Static/Common/bootstrap/js/data.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var modal = $("#jiesuan");
+        modal.on("show.bs.modal", function(e) {
+            // 这里的btn就是触发元素，即你点击的删除按钮
+            var btn = $(e.relatedTarget),
+                id = btn.data("id");
+            total = btn.data("total");
+            number = btn.data("number");
+            $("#sq_money").val(total);
+            $("#pz_money").val(total);
+            $("#number").val(number);
+            $("#sq_id").val(id);
+
+        });
+        var qd_modal = $("#qr");
+        qd_modal.on("show.bs.modal", function(e) {
+            // 这里的btn就是触发元素，即你点击的删除按钮
+            var btn = $(e.relatedTarget),
+                id = btn.data("id");
+            total = btn.data("total");
+            number = btn.data("number");
+            $("#dk_id").val(id);
+            $("#qddk").html("您确定己向账户："+number+" 打款："+total+"元?");
+
+        });
+        $("#sub").click(function(){
+            apply_total=$("#pz_money").val();
+            sq_id= $("#sq_id").val();
+            $.ajax({
+               url:"{:U('Finance/check_apply')}",
+               type:"post",
+               dataType:"json",
+               data:{
+                   apply_total:apply_total,
+                   id:sq_id,
+                   sq_money:$("#sq_money").val()
+
+                },
+                success:function(data)
+                {
+                    if(data.msgcode==0)
+                    {
+                        alert("审批成功");
+                        window.location.reload();
+                    }else{
+                        alert("未知错误");
+                    }
+                }
+            });
+        });
+        $("#bh").click(function(){
+            sq_id= $("#sq_id").val();
+            $.ajax({
+                url:"{:U('Finance/bh_apply')}",
+                type:"post",
+                dataType:"json",
+                data:{
+                    id:sq_id
+
+                },
+                success:function(data)
+                {
+                    if(data.msgcode==0)
+                    {
+                        alert("驳回成功");
+                        window.location.reload();
+                    }else{
+                        alert("未知错误");
+                    }
+                }
+            });
+        });
+        $("#qd").click(function(){
+            $(this).attr("disabled",true);
+            id=$("#dk_id").val();
+            $.ajax({
+                url:"{:U('Finance/dk_apply')}",
+                type:'post',
+                dataType:"json",
+                data:{
+                    id:id
+                },
+                success:function(data)
+                {
+                    if(data.msgcode==0)
+                    {
+                        alert("确认成功");
+                        window.location.reload();
+                    }else{
+                        alert("未知错误");
+                    }
+
+                }
+            })
+
+
+        });
+    });
+</script>
+</body>
+</html>

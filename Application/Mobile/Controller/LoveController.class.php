@@ -48,10 +48,11 @@ class LoveController extends CommonController{
 	
 	public function log(){
 		$type = I('get.type',0);
-		$condition['uid'] = $this->member_info['uid'];
+        I('get.flat') or $condition['uid'] = $this->member_info['uid'];
 		if($type){
 			$condition['type'] = $type;
 		}
+        $condition['fee'] = ["gt",0];
 		$Love = M('Love');
 		$data = appPage($Love, $condition, I('get.num'), I('get.p'),'','grant_time desc');	
 		$data['goods'] = 0;
@@ -80,6 +81,7 @@ class LoveController extends CommonController{
 		}
 		jsonReturn($data);
 	}
+
  	
 	// 获得捐献的购物卷总计
 	public function totalgwq() {

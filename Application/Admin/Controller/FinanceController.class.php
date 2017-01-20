@@ -454,4 +454,101 @@ class FinanceController extends CommonController{
         $this->assign('page',$data['page']);
         $this->display('love_list');
     }
+    /**
+     * 结算申请列表
+     */
+    public function apply_hand()
+    {
+        C('DB_PREFIX',C('DB_PREFIX_MALL'));
+        $this->assign('status',99);
+        if(I('get.status') && I('get.status') < 99)
+        {
+            $condition['status']=I('get.status');
+            $this->assign('status',I('get.status'));
+        }
+        $this->assign('status',I('get.status'));
+        if(I('get.time'))
+        {
+            $time=explode('~',I('get.time'));
+            $condition['time']=[['egt',"$time[0]"],['elt',"$time[1]"]];
+            $this->assign('time',I('get.time'));
+        }
+        if(I('get.username'))
+        {
+            $condition['st.username']=I('get.username');
+            $this->assign('username',I('get.username'));
+        }
+        $data = page(D('ApplyView'), $condition, 20,'','id desc','*');
+      //  echo D('ApplyView')->getLastSql();
+        $total=M("order_info")->field('sum(settlement_total) as total,sum(settlement_no) as no,sum(settlement_already) as wei')->find();
+        //待审批
+        $hand=M('settlement')->where(['status'=>'0'])->field('sum(total) as total')->find();
+        $hand['total'] or $hand['total']=0.00;
+        //待打款
+        $apply=M('settlement')->where(['status'=>'1'])->field('sum(total) as total')->find();
+        $apply['total'] or $apply['total']=0.00;
+        //未结算
+        $no_apply=$total['no']-$hand['total'];
+
+        $this->assign('total',$total['total']);
+        $this->assign('is_hand',$total['wei']);
+        $this->assign('hand',$hand['total']);
+        $this->assign('no_apply',$no_apply);
+        $this->assign('apply',$apply['total']);
+        $this->assign('list',$data['list']);
+
+        $this->assign('page',$data['page']);
+        $this->display();
+    }
+    /**
+     * 结算审批
+     */
+    public function check_apply()
+    {
+        $untreated=I("post.sq_money")-I("post.apply_total");
+        M("settlement","ms_mall_")->where(['id'=>I("post.id")])->save(['apply_total'=>I("post.apply_total"),"status"=>"1","untreated"=>$untreated]);
+        die(json_encode(['msgcode'=>0]));
+    }
+
+    /**
+     * 结算驳回
+     */
+    public function bh_apply()
+    {
+        M("settlement","ms_mall_")->where(['id'=>I("post.id")])->save(["status"=>"2"]);
+        die(json_encode(['msgcode'=>0]));
+    }
+    /**
+     * 确认己打款
+     */
+    public  function dk_apply()
+    {
+        $data=M("settlement","ms_mall_")->where(['id'=>I("post.id")])->find();
+        $total=$data['apply_total'];
+        while($total)
+        {
+            $order=M("order_info","ms_mall_")->where(["store_id"=>$data['store_id'],"settlement_status"=>["neq",1],"settlement_no"=>["gt",0]])->field("order_sn,settlement_total,settlement_already,settlement_no")->find();
+            if($order['settlement_no']>$total)
+            {
+                //部分结算
+                $save["settlement_no"]=$order["settlement_no"]-$total;
+                $save["settlement_already"]=$total+$order["settlement_already"];
+                $save["settlement_status"]=2;
+                M("order_info","ms_mall_")->where(['order_sn'=>$order["order_sn"]])->save($save);
+                $total=0;
+
+            }else{
+                //全部结算
+                $save["settlement_no"]=0;
+                $save["settlement_already"]=$order["settlement_already"]+$order["settlement_no"];
+                $save["settlement_status"]=1;
+                M("order_info","ms_mall_")->where(['order_sn'=>$order["order_sn"]])->save($save);
+                $total-=$order['settlement_no'];
+            }
+
+        }
+
+        M("settlement","ms_mall_")->where(['id'=>I("post.id")])->save(["status"=>"3"]);
+        die(json_encode(['msgcode'=>0]));
+    }
 }

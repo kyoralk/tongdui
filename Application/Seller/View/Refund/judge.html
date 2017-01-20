@@ -31,7 +31,7 @@
                 <label>
                     商品图片
                 </label>
-                <span><img src="/Uploads/{$goods.goods_img}" /></span>
+                <span><img src="/Uploads/{$goods.goods_img}" style="max-width: 300px;"/></span>
             </li>
 
             <li>
@@ -49,7 +49,7 @@
 
             <li>
                 <label>上传凭证</label>
-                <span><img src="Uploads/{$model.refund_img}" ></span>
+                <span><img src="Uploads/{$model.refund_img}" style="max-width: 300px;" ></span>
             </li>
 
             <?php if ($model['type']== "退货") { ?>

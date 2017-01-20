@@ -22,10 +22,22 @@ class MemberController extends CommonController{
 		}else{
 			jsonReturn('','01035');
 		}
-		
-		
-		
 	}
+
+    /**
+     * 查询支付宝绑定状态
+     */
+	public function check_bindBand()
+    {
+        if($this->member_info['real_name_auth']) {
+            $data["name"]=$this->member_info["real_name"];
+            $data["mobile"]=$this->member_info["mobile"];
+            $data["alipay_id"]=$this->member_info["alipay_id"];
+            jsonReturn($data);
+        }else{
+            jsonReturn('','00000');
+        }
+    }
 	/**
 	 *  绑定手机
 	 *  当type为UNBIND为解绑

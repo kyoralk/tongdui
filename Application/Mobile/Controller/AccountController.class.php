@@ -349,12 +349,21 @@ class AccountController extends CommonController{
 			$zcz = M('MemberAccountLog')->where($condition)->sum('trade_fee');
 			$condition['trade_type'] = 2;//提现
 			$ztx = M('MemberAccountLog')->where($condition)->sum('trade_fee');
+            $condition['trade_status'] = 0;
 			$condition['trade_type'] = 4;//获得
 			$zhd = M('MemberAccountLog')->where($condition)->sum('trade_fee');
 			$data['zcz'] = empty($zcz) ? '0' : $zcz;
 			$data['ztx'] = empty($ztx) ? '0' : $ztx;
 			$data['zhd'] = empty($zhd) ? '0' : $zhd;
 		}
+		foreach($data["list"] as $key=>$val)
+        {
+            if($val['trade_type']==1 && $val['trade_status']==0)
+            {
+                $data["list"][$key]["trade_fee"]=$val["trade_fee"]."（充值失败）";
+
+            }
+        }
 		jsonReturn($data);
 	}
 }

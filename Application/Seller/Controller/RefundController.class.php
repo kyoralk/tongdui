@@ -5,7 +5,7 @@ use Seller\Controller\CommonController;
 use Seller\Model\RefundModel;
 
 class RefundController extends CommonController{
-//
+
     public function index() {
         $content_header = '退换货列表';
         switch (I('get.type')){
@@ -21,6 +21,29 @@ class RefundController extends CommonController{
 
         $condition ['store_id'] = session('store_id');
         $data = page(D('Refund'), $condition,16,'','refund_id desc');
+        //不修改MODEL下增加图片显示
+        foreach($data["list"] as $key=>$val){
+            $goods_ids.=$val["goods_id"].",";
+        }
+        if($goods_ids)
+        {
+
+            $goods_ids=rtrim($goods_ids,",");
+            $img=M("goods_img","ms_mall_")->where("goods_id",["in",'"'.$goods_ids.'"'])->select();
+            foreach($data["list"] as $k=>$v)
+            {
+
+                foreach($img as $iv)
+                {
+                    if($v["goods_id"]==$iv["goods_id"])
+                    {
+                        $data["list"][$key]["goods_img"]=$iv["save_path"].$iv["save_name"];
+
+                    }
+                }
+            }
+        }
+
         $this->assign('status_array', RefundModel::$status);
         $this->assign('order_list',$data['list']);
         $this->assign('page',$data['page']);
@@ -32,7 +55,11 @@ class RefundController extends CommonController{
         $content_header = '审核退换货';
         $model = M('Refund')->where('refund_id ='.I('get.refund_id'))->find();
         $goods = M('OrderGoods')->where('goods_id ='.$model['goods_id'].' and order_sn="'.$model['order_sn'].'"')->find();
-
+        $img=M("goods_img","ms_mall_")->where("goods_id",$model["goods_id"])->find();
+        if($img)
+        {
+            $goods["goods_img"]=$img["save_path"].$img["save_name"];
+        }
         $this->assign('goods', $goods);
         $this->assign('model', $model);
         $this->assign('content_header',$content_header);
@@ -46,7 +73,6 @@ class RefundController extends CommonController{
         $refund->sure_time = time();
         $refund->status = 1;
         $refund->where($where)->save();
-
         if ($type == "退货") {
             echo json_encode(['status'=>1]);
         } else {
@@ -101,7 +127,12 @@ class RefundController extends CommonController{
             $orderGoods = M('OrderGoods')->where('goods_id ='.$refund['goods_id'].' and order_sn ="'.$refund['order_sn'].'"')->find();
 
             $goods = M('Goods')->where('goods_id = '.$refund['goods_id'])->find();
-            
+            //liaopeng 2017-1-19号添加，退货后，捐赠记录修改
+            $goods["love_amount"];
+            M("love","ms_mall_")->where(["order_sn"=>$refund['order_sn']])->save(["fee"=>"fee=".$goods["love_amount"]]);
+
+
+
             // 如果是购物券商品, 则删除赠送的购物券，全部以购物券返回
             // 獲取贈送的購物券
             $extra = $this->sendGWJ($goods) * $orderGoods['prosum'];

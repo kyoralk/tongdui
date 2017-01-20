@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结算中心</title>
+    <link rel="stylesheet" type="text/css" href="/Static/Common/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Static/Common/bootstrap/css/daterangepicker.css">
+
+</head>
+<body>
+<div class="container-fiuled" style="padding: 5px;">
+
+    <div class="page-header">
+        <h3>商家结算</h3>
+        <span class="label label-info">结算总额：{$total.total}</span>
+        <span class="label label-success">己结算：{$total.wei}</span>
+        <span class="label label-primary">未结算：{$no_hand}</span>
+        <span class="label label-warning">审批中：{$in_hand}</span>
+        <span class="label label-info">打款中：{$is_hand}</span>
+        <span class="label label-info">己打款：{$finish}</span>
+    </div>
+
+    <form class="form-inline" role="form" action="{:U('Account/accounts','p=1')}">
+        <div class="form-group">
+            <input type="text" name="time" class="form-control" id="date-range1" value="{$time}" placeholder="请选择时间" style="width: 320px; height: 30px;">
+            <input type="text" name="order_sn" class="form-control" id="exampleInputEmail2" value="{$order_sn}" style="height: 30px;" placeholder="请输入订单号">
+            <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+        </div>
+
+        <button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#jiesuan">申请结算</button>
+        <div class="modal fade bs-example-modal-sm" id="jiesuan">
+            <div class="modal-dialog modal-sm" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">申请结算</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span class="label label-primary">未结算：{$no_hand}</span>
+                        <form class="form">
+                            <div class="form-group ">
+                                <label for="money">
+                                    结算金额：
+                                </label>
+                                <input type="text" class="form-control input-sm" id="money" placeholder="金额（100至{$no_hand}）">
+                            </div>
+                            <div class="form-group">
+                                <label for="account">
+                                    结算账户：
+                                </label>
+                                <input type="text" class="form-control input-sm" id="account" value="36416976@qq.com" disabled>
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="sub" class="btn btn-primary" >确定</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+<table class="table table-bordered table-striped text-center table-hover" style="margin-top:10px; margin-bottom: 0;">
+    <tr style="background-color: #428bca; color:#ffffff" >
+    <th  class="text-center">订单号</th>
+        <th  class="text-center">下单时间</th>
+        <th  class="text-center">应结金额</th>
+        <th  class="text-center">未结金额</th>
+        <th  class="text-center">己结金额</th>
+        <th  class="text-center">结算状态</th>
+    </tr>
+    <volist  name="datalist" id="od">
+    <tr>
+        <td>{$od.order_sn}</td>
+        <td>{$od.order_time|date='Y-m-d H:i:s',###}</td>
+        <td>{$od.settlement_total}</td>
+        <td>{$od.settlement_no}</td>
+        <td>{$od.settlement_already}</td>
+        <td>
+        <switch name="od.settlement_status">
+            <case value="0"> <span class="label label-primary">未结算</span></case>
+            <case value="1"><span class="label label-success">己结算</span></case>
+            <case value="2"><span class="label label-info">部分结算</span></case>
+        </switch>
+        </td>
+    </tr>
+    </volist>
+</table>
+
+    <nav class="text-right">
+        <ul class="pagination">
+            {$page}
+        </ul>
+    </nav>
+</div>
+<script src="/Static/Common/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="/Static/Common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/Static/Common/bootstrap/js/moment.min.js"></script>
+<script src="/Static/Common/bootstrap/js/jquery.daterangepicker.js"></script>
+<script src="/Static/Common/bootstrap/js/data.js"></script>
+<script type="text/javascript">
+    $(function(){
+            $("#money").blur(function(){
+               if($(this).val()>{$no_hand})
+                {
+                    alert("金额不能大于未结算的{$total.no}元");
+                    $(this).val({$no_hand});
+                }
+            });
+            $("#sub").click(function(){
+               if($("#money").val()>{$no_hand} || $("#money").val()<100)
+                {
+                    alert("金额不能小于100和大于未结算的{$total.no}元");
+                    $("#money").val({$no_hand});
+                }else{
+                   $.ajax({
+                      url:"{:U('Account/check_apply')}",
+                      data:{
+                          store_id:{$store_id},
+                          money:$('#money').val()
+                      },
+                      type:'post',
+                      dataType:'json',
+                    success:function(data){
+                          if(data.msgcode==0)
+                          {
+                              alert("申请成功");
+                              window.location.href="{:U('Account/accounts')}";
+                          }else if(data.msgcode==2){
+                              alert(data.message);
+                              window.location.href="{:U('Account/info')}";
+                          }else{
+                            alert(data.message);
+                        }
+                    }
+
+
+
+                   });
+
+
+                }
+            });
+
+    });
+</script>
+</body>
+</html>

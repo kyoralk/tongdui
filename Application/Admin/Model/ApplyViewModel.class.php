@@ -1,0 +1,1 @@
+<?phpnamespace Admin\Model;use Think\Model\ViewModel;class ApplyViewModel extends ViewModel{	public $viewFields = array(			'settlement'=>array('*','_as'=>'s'),        'store'=>array('*','_on'=>'st.store_id = s.store_id','_as'=>'st'),	);}

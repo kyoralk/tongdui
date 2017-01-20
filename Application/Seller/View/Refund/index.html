@@ -39,10 +39,11 @@
 
                                 <td class="column-detail column-l">
                                     <ul class="order-goods-list">
-                                        <?php $og = M('OrderGoods')->where('goods_id ='.$ol['goods_id'])->find(); ?>
+                                        <?php  $og = M('OrderGoods')->where('goods_id ='.$ol['goods_id'])->find(); ?>
                                         <li>
                                             <a href="javascript:;" target="_blank">
-                                                <img  src="/Uploads/{$og.goods_img}" class="goods-thumb">
+
+                                                <img  src="/Uploads/{$ol.goods_img}" class="goods-thumb">
                                             </a>
                                             <div class="desc"style="width:400px;">
                                                 <p class="baobei-name"> <a href="javascript:void(0);" target="_blank">{$og.goods_name}</a> <em style="color:#ff2222">x {$og.prosum}</em>
@@ -64,10 +65,10 @@
                                         </li>
                                     </ul>
                                 </td>
-                                <td class="column-price"><div  class="order-info order-price">退现金：￥{$ol.cash}</div></td>
-                                <td class="column-price"><div  class="order-info order-price">退一券通：￥{$ol.yqt}</div></td>
+                                <td class="column-price" colspan="4"><div  class="order-info order-price">退款：￥{$ol.cash}</div></td>
+                             <!--   <td class="column-price"><div  class="order-info order-price">退一券通：￥{$ol.yqt}</div></td>
                                 <td class="column-price"><div  class="order-info order-price">退购物卷：￥{$ol.gwq}</div></td>
-                                <td class="column-price"><div  class="order-info order-price">理由：{$ol.reason}</div></td>
+                                <td class="column-price"><div  class="order-info order-price">理由：{$ol.reason}</div></td>-->
                                 <td class="column-action">
                                     <?php echo $status_array[$ol['status']]; ?>
                                 </td>

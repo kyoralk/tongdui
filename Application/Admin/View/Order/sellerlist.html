@@ -1,141 +1,125 @@
-<section class="content-header">
+<link rel="stylesheet" href="/Static/Seller/Css/seller_center.css">
+<link rel="stylesheet" href="/Static/Seller/Css/olist.css">
+<div class="main-content" id="mainContent">
+	<section class="content-header">
 		<div class="row">
 			<div class="col-md-8">
 				<form action="{:U('Order/sellerlist')}" method="get">
 
 					<h4><small>商家订单列表</small></h4>
 					<div class="form-group">
-						<label>
-							订单状态
-						</label>
-						<select name="select" class="form-control inline-block" style="width: 150px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
-							<option value="1" <if condition="$select eq 1">selected</if>>用户名</option>
-							<option value="2" <if condition="$select eq 2">selected</if>>手机号码</option>
+
+						<select name="type" class="form-control inline-block" style="width: 150px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+							<option value="0">订单状态</option>
+							<option value="1" <if condition="$select eq 1">selected</if>>待付款</option>
+							<option value="2" <if condition="$select eq 2">selected</if>>待发货</option>
+							<option value="3" <if condition="$select eq 3">selected</if>>待收货</option>
+							<option value="4" <if condition="$select eq 4">selected</if>>待评价</option>
+							<option value="5" <if condition="$select eq 5">selected</if>>已完成</option>
 						</select>
 						<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
-							<input class="form-control" type="text" name="member_name" value="{$member_name}" placeholder="用户名或手机号">
+							<input class="form-control" type="text" name="order_sn" value="{$order_sn}" placeholder="订单号">
 							<span class="input-group-btn">
-						<button type="submit" class="btn btn-info btn-flat">搜索</button>
+						<button type="submit" class="btn btn-info ">搜索</button>
 						</span>
 						</div>
 					</div>
 				</form>
 			</div>
-			<div class="col-md-4 right_menu">
-				<a class="btn btn-info" href="{:U('Member/view')}">添加会员</a>
-			</div>
 
 
-  		</div>
-</section>
-<section class="content">
-	<div class="box">
-		<div class="box-body">
-			<table class="table table-bordered table-striped">
-				<thead>
-					<tr>
-						<th class="table-textcenter">ID</th>
-						<th class="table-textcenter">用户名</th>
-						<th class="table-textcenter">身份</th>
-						<th class="table-textcenter">手机</th>
-						<th class="table-textcenter">推荐人</th>
-						<th class="table-textcenter">一卷通</th>
-						<th class="table-textcenter">赠出一卷通</th>
-						<th class="table-textcenter">购物券</th>
-						<th class="table-textcenter">资产包</th>
-						<th class="table-textcenter">总积分</th>
-						<th class="table-textcenter">可用积分</th>
-						<th class="table-textcenter">冻结积分</th>
-						<th class="table-textcenter">黑金</th>
-						<th class="table-textcenter">状态</th>
-						<th class="table-textcenter">操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<volist name="member_list" id="ml">
+		</div>
+	</section>
+
+	<div class="uc-order-list-box">
+		<ul class="uc-order-detail-list">
+			<empty name="order_list">
+				<li>
+					<table>
+						<tbody>
 						<tr>
-							<td class="table-textcenter">{$ml.uid}</td>
-							<td class="table-textcenter">{$ml.username}</td>
-							<td class="table-textcenter">
-							<switch name="ml.rank">
-								<case value="1">消费商</case>
-								<case value="2">合格的消费商</case>
-								<case value="3">合作商{$ml.star_level}星</case>
-								<case value="4">特殊合作商</case>
-							</switch>
-							<if condition="$ml.store_id neq 0">（商家）</if>
-							<switch name="ml.agent_level">
-								<case value="1">（县代理）</case>
-								<case value="2">（市代理）</case>
-								<case value="3">（省代理）</case>
-							</switch>
-							</td>
-							<td class="table-textcenter">{$ml.mobile}</td>
-							<td class="table-textcenter"><empty name="ml.referrer_name">无<else/>{$ml.referrer_name}</empty></td>
-							<td class="table-textcenter">{$ml.member_account.yjt_fee}</td>
-							<td class="table-textcenter">{$ml.member_account.yjt_grant}</td>
-							<td class="table-textcenter">{$ml.member_account.gwq_fee}</td>
-							<td class="table-textcenter">{$ml.member_account.zcb_fee}</td>
-							<td class="table-textcenter">
-								<?php echo $ml['member_account']['jf_fee'] + $ml['member_account']['jf_feeze']; ?></td>
-							<td class="table-textcenter">{$ml.member_account.jf_fee}</td>
-							<td class="table-textcenter">{$ml.member_account.jf_feeze}</td>
-							<td class="table-textcenter">{$ml.member_account.hj_fee}</td>
-							<td class="table-textcenter">
-								<script type="text/javascript">
-                                    function change_user_status(uid,obj)
-									{
-									    thisobj=$(obj);
-									    change_status=thisobj.attr('status')==0?1:0;
-									    $.ajax({
-									       url:'{:U("Member/change_user_status")}',
-										   data:{
-									           uid:uid,
-											   user_status:change_status
-									},
-											dataType:'json',
-											type:'post',
-											success:function(re)
-											{
-											    if(re.msgcode==0)
-												{
-                                                    thisobj.attr('status',change_status);
-											        if(change_status==1)
-													{
-                                                        $(obj).attr('src',"/Static/Admin/Images/yes.gif");
-													}else{
-                                                        $(obj).attr('src',"/Static/Admin/Images/no.gif");
-													}
-												}else{
-                                                    alert("修改失败");
-												}
-											}
-
-										});
-									}
-								</script>
-								<if condition="$ml.user_status eq 1">
-									<img onclick="change_user_status({$ml.uid},this)" src="/Static/Admin/Images/yes.gif" status="{$ml.user_status}"/>
-									<else/>
-									<img  onclick="change_user_status({$ml.uid},this)" src="/Static/Admin/Images/no.gif" status="{$ml.user_status}"/>
-								</if>
-							</td>
-							<td class="table-textcenter">
-								<a href="{:U('Finance/lp_account/','rank='.$rank.'&uid='.$ml['uid'])}">资金</a>
-								<a href="{:U('Member/info?uid='.$ml['uid'])}">编辑</a> 
-							</td>
+							<td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
 						</tr>
-					</volist>
-				</tbody>
-			</table>
-		</div>
-		<div class="box-footer clearfix">
-			<ul class="pagination pagination-sm no-margin pull-right">
-				{$page}
-			</ul>
-		</div>
+						</tbody>
+					</table>
+				</li>
+				<else/>
+				<volist name="order_list" id="ol">
+					<li class="uc-order-detail-item">
+						<table class="order-detail-table">
+							<thead>
+							<tr>
+								<th colspan="4" class="column-info column-t"> <div class="column-content"> 订单号：<a href="">{$ol.order_sn}</a><span class="sep">|</span>联系人：{$ol.consignee}<span class="sep">|</span>收货地址：{$ol.address}<span class="sep">|</span>联系电话：{$ol.mobile}<span class="sep">|</span>预定时间：{$ol.order_time|date="Y-m-d h:i:s",###} </div>
+								</th>
+								<th class="column-info column-t">
+									<div class="operates">
+										<if condition="($ol['pay_status'] eq 0) AND ($ol['shipping_status'] eq 0)">
+											<a title="删除" href="{:U('Order/delete?order_sn='.$ol['order_sn'])}"class="del">删除</a>
+										</if>
+									</div>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td class="column-detail column-l">
+									<ul class="order-goods-list">
+										<volist name="ol.order_goods" id="goods" key="gg">
+											<li <if condition="$gg eq 1">class="first"</if>>
+											<a href="javascript:;" target="_blank">
+												<img alt="{$ol.lineTitle}"  src="{$goods.goods_img}" class="goods-thumb">
+											</a>
+											<div class="desc"style="width:400px;">
+												<p class="baobei-name"> <a href="javascript:void(0);" target="_blank">{$goods.goods_name}
+													<?php
+											 if ($goods['spec_id']) { ?>
+													<b class="attr-name">【<?php
+														$spec = M("GoodsSpec")->where('spec_id ='.$goods['spec_id'])->find();
+														if ($spec) {
+														echo str_replace("\r\n", "", $spec['spec_name']);
+														}
+														?>】</b>
+													<?php } ?>
+												</a> </p>
+											</div>
+											<div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">单价：{$goods.price}</i><br>
+												<i class="special-num">数量：{$goods.prosum}</i><br>
+												<i class="special-num">小计：{$goods['price']*$goods['prosum']}</i>
+											</div>
+											</li>
+										</volist>
+									</ul>
+								</td>
+								<td class="column-price"><div  class="order-info order-price">运费：￥{$ol.freight}</div></td>
+								<td class="column-price"><div  class="order-info order-price">合计：￥{$ol.total}</div></td>
+								<td class="column-action column-r">
+									<div class="order-info order-action">
+										<if condition="($ol['pay_status'] eq 0) AND ($ol['shipping_status'] eq 0) AND ($ol['receipt_status'] eq 0) ">
+											<a href="{:U('Order/delete?order_sn='.$ol['order_sn'])}" class="a_btn orangebut"
+											   style="margin:auto;width:80px;color:#fff;">取消订单
+											</a>
+											<elseif condition="($ol['pay_status'] eq 1) AND ($ol['shipping_status'] eq 0) AND ($ol['receipt_status'] eq 0) "/>
+											<a href="{:U('Order/info?order_sn='.$ol['order_sn'])}" class="a_btn orangebut"
+											   style="background:#09c762;border:1px solid #09c762; margin-left:2px;margin-right:2px;display:inline;float:left;color:#fff;">已付款，发货
+											</a> <br/>
+											<elseif condition="($ol['pay_status'] eq 1) AND ($ol['shipping_status'] eq 1) AND ($ol['receipt_status'] eq 0) "/>
+											<span class="order-status">已发货</span>
+											<elseif condition="($ol['pay_status'] eq 1) AND ($ol['shipping_status'] eq 1) AND ($ol['receipt_status'] eq 1) "/>
+											<span class="order-status">交易成功</span>
+										</if>
+									</div>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</li>
+				</volist>
+			</empty>
+		</ul>
 	</div>
-</section>
-
-
-
+	<div class="g-pagination">
+		<ul>
+			{$page}
+		</ul>
+	</div>
+</div>
