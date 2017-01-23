@@ -72,7 +72,7 @@ class PublicController extends InitController{
 				);
 				jsonReturn($data);
 			}else{
-				jsonReturn('','01002');
+				jsonReturn(null,'01002');
 			}
 		}else{
 			jsonReturn('','01003');

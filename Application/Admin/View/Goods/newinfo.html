@@ -63,6 +63,7 @@
                         <a class="ncsc-btn" href="{:U('Goods/selectClass',array('goods_id'=>$goods_info['goods_id']))}">编辑</a>
                         <input name="gc_id" value="{$gc_id}" class="text" type="hidden">
                         <input name="gc_id_path" value="{$gc_id_path}" class="text" type="hidden">
+
                     </dd>
                 </dl>
 
@@ -74,8 +75,20 @@
                 {:fastModule('form-group',array('可用购物券数额[购买此商品能用最大值]'),array('text','gwq_can',$goods_info['gwq_can']))}
                 {:fastModule('form-group',array('捐赠数额'),array('text','love_amount',$goods_info['love_amount']))}
                 <script type="text/javascript">
-                    var consumption_type = $('input[name="consumption_type"]');
+                    if({$goods_info.consumption_type}==2)
+                    {
+                        $("input[type=radio][name='consumption_type'][value='2']").attr("checked",'checked');
+                        $("input[type=radio][name='consumption_type'][value='3']").attr("checked",false);
+                    }
+                    if({$goods_info.consumption_type}==3)
+                    {
 
+                        $("input[type=radio][name='consumption_type'][value='3']").attr("checked",'checked');
+                        $("input[type=radio][name='consumption_type'][value='2']").attr("checked",false);
+
+                    }
+                    var consumption_type = $('input[name="consumption_type"]');
+/*
                     for(i=0;i<consumption_type.length;i++)
                     {
                         $("input[type=checkbox][name=is_yqt]").attr('checked',true);
@@ -92,10 +105,30 @@
                             $("input[type=checkbox][name=is_cash]").attr('disabled','disabled');
                             $("input[type=checkbox][name=is_gwq]").attr('disabled','disabled');
                         }
+                        if($(consumption_type[i]).attr('value')=='3')
+                        {
+                            $(consumption_type[i]).attr('checked','checked');
+                            $("input[type=checkbox][name=is_yqt]").attr('checked','checked');
+                            $("input[type=checkbox][name=is_cash]").attr('disabled','disabled');
+                            $("input[type=checkbox][name=is_gwq]").attr('checked','checked');
+                        }
+                    }
+                    */
+                    if($('input[name="consumption_type"]').val()=="2"){
+
+                        $("input[type=checkbox][name=is_yqt]").removeAttr('disabled');
+                        $("input[type=checkbox][name=is_yqt]").prop('checked',true);
+                        $("input[type=checkbox][name=is_gwq]").attr('checked',false);
+                        $("input[type=checkbox][name=is_gwq]").attr('disabled','disabled');
+                    }
+                    if($('input[name="consumption_type"]').val()=="3"){
+                        $("input[type=checkbox][name=is_gwq]").removeAttr('disabled');
+                        $("input[type=checkbox][name=is_yqt]").removeAttr('disabled');
+                        $("input[type=checkbox][name=is_yqt]").attr('checked',true);
+                        $("input[type=checkbox][name=is_gwq]").prop('checked',true);
                     }
                     consumption_type.change(function() {
                         if($(this).val()=="2"){
-
                             $("input[type=checkbox][name=is_yqt]").removeAttr('disabled');
                             $("input[type=checkbox][name=is_yqt]").prop('checked',true);
                             $("input[type=checkbox][name=is_gwq]").attr('checked',false);

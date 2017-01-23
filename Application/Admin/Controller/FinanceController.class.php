@@ -480,7 +480,7 @@ class FinanceController extends CommonController{
         }
         $data = page(D('ApplyView'), $condition, 20,'','id desc','*');
       //  echo D('ApplyView')->getLastSql();
-        $total=M("order_info")->field('sum(settlement_total) as total,sum(settlement_no) as no,sum(settlement_already) as wei')->find();
+        $total=M("order_info")->where(["receipt_status"=>1])->field('sum(settlement_total) as total,sum(settlement_no) as no,sum(settlement_already) as wei')->find();
         //待审批
         $hand=M('settlement')->where(['status'=>'0'])->field('sum(total) as total')->find();
         $hand['total'] or $hand['total']=0.00;
@@ -527,7 +527,7 @@ class FinanceController extends CommonController{
         $total=$data['apply_total'];
         while($total)
         {
-            $order=M("order_info","ms_mall_")->where(["store_id"=>$data['store_id'],"settlement_status"=>["neq",1],"settlement_no"=>["gt",0]])->field("order_sn,settlement_total,settlement_already,settlement_no")->find();
+            $order=M("order_info","ms_mall_")->where(["store_id"=>$data['store_id'],"settlement_status"=>["neq",1],"settlement_no"=>["gt",0],"receipt_status"=>1])->field("order_sn,settlement_total,settlement_already,settlement_no")->find();
             if($order['settlement_no']>$total)
             {
                 //部分结算

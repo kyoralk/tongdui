@@ -123,14 +123,17 @@ class RefundController extends CommonController{
             $_order->yjt = $_order->yjt - $refund['yqt'];
             $_order->gwq = $_order->gwq - $refund['gwq'];
             $_order->where('order_sn ='.$refund['order_sn'])->save();
-
             $orderGoods = M('OrderGoods')->where('goods_id ='.$refund['goods_id'].' and order_sn ="'.$refund['order_sn'].'"')->find();
-
             $goods = M('Goods')->where('goods_id = '.$refund['goods_id'])->find();
-            //liaopeng 2017-1-19号添加，退货后，捐赠记录修改
-            $goods["love_amount"];
-            M("love","ms_mall_")->where(["order_sn"=>$refund['order_sn']])->save(["fee"=>"fee=".$goods["love_amount"]]);
-
+            //liaopeng 2017-1-19号添加，退货后，捐赠记录修改,退货后结算金额修改
+            $love=M("love","ms_mall_")->where(["order_sn"=>$refund['order_sn'],"fee"=>$goods["love_amount"]])->find();
+            M("love","ms_mall_")->where(["out_trade_no"=>$love['out_trade_no']])->save(["fee"=>0]);
+            //修改结算金额
+            $back_amout=$goods["cost_price"]*$orderGoods["prosum"];
+            $orderinfo = $_order->where('order_sn ='.$refund['order_sn'])->find();
+            $new_data['settlement_total']=$orderinfo["settlement_total"]-$back_amout;
+            $new_data['settlement_no']=$orderinfo["settlement_no"]-$back_amout;
+            $_order->where('order_sn ='.$refund['order_sn'])->save($new_data);
 
 
             // 如果是购物券商品, 则删除赠送的购物券，全部以购物券返回

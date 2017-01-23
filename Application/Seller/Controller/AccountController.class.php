@@ -40,10 +40,11 @@ class AccountController extends CommonController{
         }
         $condition['settlement_total']=['gt','0'];
         $condition['store_id']=session('store_id');
+        $condition["receipt_status"]=1;
         $field = 'order_sn,order_time,settlement_total,settlement_no,settlement_already,settlement_status';
       //  page($obj,$condition,$num=10,$model='',$order='',$field='*',$group='',$count=0)
         $data = page(M("order_info"), $condition,10,'','order_sn desc',$field);
-        $total=M("order_info")->where(['store_id'=>session("store_id")])->field('sum(settlement_total) as total,sum(settlement_no) as no,sum(settlement_already) as wei')->find();
+        $total=M("order_info")->where(['store_id'=>session("store_id"),"receipt_status"=>1])->field('sum(settlement_total) as total,sum(settlement_no) as no,sum(settlement_already) as wei')->find();
 
         $is_hand=M('settlement')->where(['store_id'=>session("store_id"),'status'=>'1'])->field("sum(total) as sum_money")->find();
         $finish=M('settlement')->where(['store_id'=>session("store_id"),'status'=>'3'])->field("sum(apply_total) as sum_money")->find();
@@ -75,7 +76,7 @@ class AccountController extends CommonController{
             $condition['time']=[['egt',"$time[0]"],['elt',"$time[1]"]];
             $this->assign("time",I('get.time'));
         }
-        $total=M("order_info")->where(['store_id'=>session("store_id")])->field('sum(settlement_total) as total,sum(settlement_no) as no,sum(settlement_already) as wei')->find();
+        $total=M("order_info")->where(['store_id'=>session("store_id"),"receipt_status"=>1])->field('sum(settlement_total) as total,sum(settlement_no) as no,sum(settlement_already) as wei')->find();
         $this->assign("store_id",session("store_id"));
         $in_hand=M('settlement')->where(['store_id'=>session("store_id"),'status'=>'0'])->field("sum(total) as sum_money")->find();
         $is_hand=M('settlement')->where(['store_id'=>session("store_id"),'status'=>'1'])->field("sum(total) as sum_money")->find();
@@ -99,7 +100,7 @@ class AccountController extends CommonController{
     {
         $store_info=M("store","ms_mall_")->where(["store_id"=>session("store_id")])->find();
         $store_info["bank_account_number"] or die(json_encode(['msgcode'=>1,"message"=>"请您绑定支付宝账号"]));
-        $total=M("order_info")->where(['store_id'=>session("store_id")])->field('total,sum(settlement_no) as no')->find();
+        $total=M("order_info")->where(['store_id'=>session("store_id"),"receipt_status"=>1])->field('total,sum(settlement_no) as no')->find();
         $in_hand=M('settlement')->where(['store_id'=>session("store_id"),'status'=>0])->field("sum(total) as sum_money")->find();
         $no_hand=$total['no']-$in_hand['sum_money'];
         if(I("post.money")>$no_hand)
