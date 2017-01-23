@@ -39,8 +39,8 @@
 
                                 <td class="column-detail column-l">
                                     <ul class="order-goods-list">
-                                        <?php  $og = M('OrderGoods')->where('goods_id ='.$ol['goods_id'])->find();
-
+                                        <?php  $og = M('OrderGoods')->where('goods_id ='.$ol['goods_id'].' and order_sn='.$ol['order_sn'])->find();
+                                        $og_new = M('Goods')->where('goods_id ='.$ol['goods_id'])->find();
 
                                         ?>
 
@@ -62,14 +62,14 @@
                                                     <?php } ?>
                                                 </p>
                                             </div>
-                                            <div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">单价：{$og.cost_price}</i><br>
+                                            <div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">单价：{$og_new.cost_price}</i><br>
                                                 <i class="special-num">数量：{$og.prosum}</i><br>
 
                                             </div>
                                         </li>
                                     </ul>
                                 </td>
-                                <td class="column-price" colspan="4"><div  class="order-info order-price">退款：￥{$og["cost_price"]*$og["prosum"]}</div></td>
+                                <td class="column-price" colspan="4"><div  class="order-info order-price">退款：￥{$og_new["cost_price"]*$og["prosum"]}</div></td>
                              <!--   <td class="column-price"><div  class="order-info order-price">退一券通：￥{$ol.yqt}</div></td>
                                 <td class="column-price"><div  class="order-info order-price">退购物卷：￥{$ol.gwq}</div></td>
                                 <td class="column-price"><div  class="order-info order-price">理由：{$ol.reason}</div></td>-->

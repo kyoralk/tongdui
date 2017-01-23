@@ -64,7 +64,6 @@ class OrderController extends CommonController{
 	 * 立刻购买提交订单
 	 */
 	private function createFromBuyNow($goods_id,$prosum,$atv_id_str,$address,$pay_id,$spec_id,$yjt,$gwq,$total){
-		
 		$data = $this->handleGoods($goods_id,$prosum,$atv_id_str,$spec_id);
 		if($data){
 			$data['order_sn'] = time().randstr(4,true);
@@ -82,7 +81,6 @@ class OrderController extends CommonController{
 			$PayTemporary['gwq'] = $gwq;
 			$PayTemporary['total'] = $total;
 			$PayTemporary['send_gwj'] = $data['send_gwj'];
-			
 			if(M('PayTemporary')->add($PayTemporary)){
 				if(D('OrderInfo')->relation('order_goods')->add($data)){
 					return $PayTemporary['out_trade_no'];
@@ -166,9 +164,7 @@ class OrderController extends CommonController{
 	 * 创建订单
 	 */
 	public function create(){
-
 	    file_put_contents('log', print_r($_POST, true), FILE_APPEND);
-
 		$goods_id = I('post.goods_id');
 		$prosum = I('post.prosum',1);
 		$atv_id_str = I('post.atv_id_str');
