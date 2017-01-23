@@ -27,6 +27,73 @@ class BrandController extends MallController{
 
 		$this->display('Brand/brand_list');
 	}
+    /**
+     * 品牌审批
+     */
+    function brand_apply()
+    {
+        if(I('get.brand_name'))
+        {
+
+            $condition['brand_name']=['like',"%".I('get.brand_name')."%"];
+            $this->assign('brand_name',I('get.brand_name'));
+        }
+        $data = page(M("brand_apply"), $condition,20,'','status');
+        $this->assign("page", $data['page']);
+        $this->assign('brand_list',$data['list']);
+        $this->assign('content_header','品牌审批');
+        $this->display('Brand/brand_apply_list');
+    }
+    /**
+     * 品牌审请驳回
+     */
+    function apply_bh($brand_id)
+    {
+       if(M("brand_apply")->where(["brand_id"=>$brand_id])->save(["status"=>2]))
+       {
+           $this->success("驳回成功",U("/Admin/Brand/brand_apply"));
+       }
+
+    }
+    /**
+     * 审批界面
+     */
+    function apply_jm($brand_id)
+    {
+        $class_list = M('GoodsClass')->where('gc_parent_id = 0')->field('gc_id,gc_name')->select();
+        $this->assign('class_list',$class_list);
+        $info=M("brand_apply")->where(["brand_id"=>$brand_id])->find();
+        $this->assign('brand_info',$info);
+        $this->assign('content_header','品牌审批');
+        $this->display('Brand/apply_info');
+
+    }
+    /**
+     * 审批操作
+     */
+    function apply_check()
+    {
+        $Brand = M('Brand');
+
+        $data = $Brand->create();
+        $brand_apply_id = I('post.brand_apply_id',0);
+        unset($data["brand_apply_id"]);
+        if(M("brand_apply")->where(["brand_id"=>$brand_apply_id])->save(["status"=>1])){
+            if($Brand->add($data)){
+
+                $this->success('审批成功',U("Admin/Brand/brand_apply"));
+
+            }else{
+                $this->error('审批失败',U("Admin/Brand/brand_apply"));
+            }
+
+        }else{
+            $this->error('审批失败',U("Admin/Brand/brand_apply"));
+        }
+
+
+
+    }
 	/**
 	 * 添加品牌模板页
 	 */
