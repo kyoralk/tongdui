@@ -53,7 +53,7 @@
             </li>
 
             <?php if ($model['type']== "退货") { ?>
-            <li>
+            <!--<li>
                 <label>
                     退货现金
                 </label>
@@ -70,10 +70,15 @@
                     退货购物卷
                 </label>
                 <span>{$model.gwq}</span>
-            </li>
+            </li>-->
             <li>
-                <label>退货总计</label>
-                <span>{$model.amount}</span>
+                <label>退款</label>
+                <span>
+                    <?php
+                        $goods_=M("goods")->where(["goods_id"=>$model["goods_id"]])->find();
+                    echo $goods_["cost_price"]*$goods["prosum"];
+                    ?>
+                    </span>
             </li>
             <?php } ?>
 

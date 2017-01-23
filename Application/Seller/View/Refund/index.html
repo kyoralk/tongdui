@@ -42,12 +42,16 @@
                                         <?php  $og = M('OrderGoods')->where('goods_id ='.$ol['goods_id'].' and order_sn='.$ol['order_sn'])->find();
                                         $og_new = M('Goods')->where('goods_id ='.$ol['goods_id'])->find();
 
+
                                         ?>
 
                                         <li>
                                             <a href="javascript:;" target="_blank">
 
-                                                <img  src="/Uploads/{$ol.goods_img}" class="goods-thumb">
+                                                <img  src="/Uploads/<?php
+                                                 $img=M("goods_img","ms_mall_")->where('goods_id ='.$ol['goods_id'])->find();
+                                                echo $img["save_path"].$img["save_name"];
+                                                 ?>" class="goods-thumb">
                                             </a>
                                             <div class="desc"style="width:400px;">
                                                 <p class="baobei-name"> <a href="javascript:void(0);" target="_blank">{$og.goods_name}</a> <em style="color:#ff2222">x {$og.prosum}</em>

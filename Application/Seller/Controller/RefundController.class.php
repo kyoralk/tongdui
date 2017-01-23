@@ -55,7 +55,8 @@ class RefundController extends CommonController{
         $content_header = '审核退换货';
         $model = M('Refund')->where('refund_id ='.I('get.refund_id'))->find();
         $goods = M('OrderGoods')->where('goods_id ='.$model['goods_id'].' and order_sn="'.$model['order_sn'].'"')->find();
-        $img=M("goods_img","ms_mall_")->where("goods_id",$model["goods_id"])->find();
+        $img=M("goods_img","ms_mall_")->where(["goods_id"=>$model["goods_id"]])->find();
+        
         if($img)
         {
             $goods["goods_img"]=$img["save_path"].$img["save_name"];
