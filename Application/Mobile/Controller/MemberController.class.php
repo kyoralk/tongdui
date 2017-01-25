@@ -305,6 +305,34 @@ class MemberController extends CommonController{
 	}
 
 	/**
+	 * 申请代理
+	 */
+	public function applyYewuyuan(){
+		$data = array(
+			'apply_no'=>serialNumber(),
+			'uid'=>$this->member_info['uid'],
+			'username'=>$this->member_info['username'],
+			'mobile'=>empty(I('post.mobile')) ? $this->member_info['mobile'] : I('post.mobile'),
+			'referrer_id'=>$this->member_info['referrer_id'],
+			'apply_level'=>1,
+//			'agent_province'=>I('post.agent_province'),
+//			'agent_city'=>I('post.agent_city'),
+			'agent_district'=>4591,
+			'address'=>I('post.address'),
+			'apply_time'=>time(),
+			'status'=>2,
+		);
+		if(empty($data['mobile'])){
+			jsonReturn('','01033');
+		}
+		if(M('ApplyAgent')->add($data)){
+			jsonReturn();
+		}else{
+			jsonReturn('','00000');
+		}
+	}
+
+	/**
 	* 计算和谐兄弟，直接推荐的数量
 	*
 	*/	
