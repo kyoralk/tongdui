@@ -18,7 +18,7 @@ class LoveController extends CommonController{
 		$M = M();
 		$M->startTrans();
 		try {
-			M('Love')->add($data);
+			M('Love', C('DB_PREFIX_MALL'))->add($data);
 			AccountController::change($data['uid'], $data['fee'], $trade_code[$data['type']], 6,true,'','',false);
 		} catch (Exception $e) {
 			$M->rollback();
@@ -42,7 +42,7 @@ class LoveController extends CommonController{
 					'order_sn' =>implode(',', $order_sn),
 					'grant_time'=>time(),
 			);
-			M('Love')->add($data);
+			M('Love', C('DB_PREFIX_MALL'))->add($data);
 		}
 	}
 	
@@ -53,7 +53,7 @@ class LoveController extends CommonController{
 			$condition['type'] = $type;
 		}
         $condition['fee'] = ["gt",0];
-		$Love = M('Love');
+		$Love = M('Love', C('DB_PREFIX_MALL'));
 		$data = appPage($Love, $condition, I('get.num'), I('get.p'),'','grant_time desc');	
 		$data['goods'] = 0;
 		if(I('get.sum')){
