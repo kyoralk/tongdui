@@ -173,6 +173,9 @@ class UpgradeController extends InitController{
 		// 	'upgrade_fee' => 'upgrade_fee + '.$yj
 		// 	));
 
+
+		R('Reward/hgxfs');
+
 		if($node_id){
 			R('Reward/duipeng',array($node_id));//对碰奖
 			R('Reward/jiandian',array($node_id,$yj));//见点奖
