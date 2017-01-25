@@ -45,7 +45,7 @@ class LoveController extends CommonController{
 			M('Love', C('DB_PREFIX_MALL'))->add($data);
 		}
 	}
-	
+
 	public function log(){
 		$type = I('get.type',0);
         I('get.flat') or $condition['uid'] = $this->member_info['uid'];
@@ -54,7 +54,7 @@ class LoveController extends CommonController{
 		}
         $condition['fee'] = ["gt",0];
 		$Love = M('Love', C('DB_PREFIX_MALL'));
-		$data = appPage($Love, $condition, I('get.num'), I('get.p'),'','grant_time desc');	
+		$data = appPage($Love, $condition, I('get.num'), I('get.p'),'','grant_time desc');
 		$data['goods'] = 0;
 		if(I('get.sum')){
 			$condition['type'] = 1;
@@ -75,14 +75,14 @@ class LoveController extends CommonController{
 				}
 				$res = $Love->query('SELECT SUM(yjt) as yjt,SUM(gwq) as gwq  ,SUM(total) as total FROM '.C('DB_PREFIX_MALL').'order_info '.$where);
 				$data['goods']=$res['yjt']+$res['gwq']+$res['total'];
-				
+
 			}
 			$data['all']=$data['yjt']+$data['gwq']+$data['goods'];
 		}
 		jsonReturn($data);
 	}
 
- 	
+
 	// 获得捐献的购物卷总计
 	public function totalgwq() {
 		$model = new \Think\Model();
