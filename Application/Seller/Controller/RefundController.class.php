@@ -124,11 +124,14 @@ class RefundController extends CommonController{
             $_order->yjt = $_order->yjt - $refund['yqt'];
             $_order->gwq = $_order->gwq - $refund['gwq'];
             $_order->where('order_sn ='.$refund['order_sn'])->save();
+
+
             $orderGoods = M('OrderGoods')->where('goods_id ='.$refund['goods_id'].' and order_sn ="'.$refund['order_sn'].'"')->find();
             $goods = M('Goods')->where('goods_id = '.$refund['goods_id'])->find();
             //liaopeng 2017-1-19号添加，退货后，捐赠记录修改,退货后结算金额修改
-            $love=M("love","ms_mall_")->where(["order_sn"=>$refund['order_sn'],"fee"=>$goods["love_amount"]])->find();
-            M("love","ms_mall_")->where(["out_trade_no"=>$love['out_trade_no']])->save(["fee"=>0]);
+	        // [因订单金额非单品金额，故应增加减去对应捐赠金额的记录，不应直接摸0]
+//            $love=M("love","ms_mall_")->where(["order_sn"=>$refund['order_sn'],"fee"=>$goods["love_amount"]])->find();
+//            M("love","ms_mall_")->where(["out_trade_no"=>$love['out_trade_no']])->save(["fee"=>0]);
             //修改结算金额
             $back_amout=$goods["cost_price"]*$orderGoods["prosum"];
             $orderinfo = $_order->where('order_sn ='.$refund['order_sn'])->find();
@@ -152,6 +155,25 @@ class RefundController extends CommonController{
                 // 返还购物券回购物券
                 AccountController::change($refund['user_id'], $refund['gwq'], 'GWQ', 7, false, '订单'.$refund['order_sn'].'退货购物券');
             }
+
+
+            // 增加减去爱心基金的记录
+	        if ($goods) {
+		        $amount =$goods['love_amount'];
+		        if ($amount) {
+			        $trade_code = $goods['consumption_type'] == 2? "1":"2";
+			        $data = array(
+				        'out_trade_no'=>serialNumber(),
+				        'uid'=> $orderinfo['uid'],
+				        'fee'=> -$amount * $orderGoods['prosum'],
+				        'type'=>$trade_code,
+				        'order_sn'=>$orderGoods['order_sn'],
+				        'grant_time'=>time(),
+			        );
+			        M('Love',C('DB_PREFIX_MALL'))->add($data);
+		        }
+	        }
+
 
             $refund = M("Refund");
             $refund->status = 3;

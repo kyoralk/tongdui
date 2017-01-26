@@ -25,14 +25,21 @@ class UpgradeController extends InitController{
 			$count_2 = $this->getMyGWQ($this->member_info['uid'], $rc['GWQGDCZ']);
 			if($count_1>= $rc['TJGS']){
 				$msg_1 = str_replace('%d', $rc['TJGS'], L('01025'));//已完成
+                $finish1 = true;
 			}else{
 				$msg_1 = str_replace('%d', $rc['TJGS'] - $count_1, L('01026'));//还差几个
 			}
 			if($count_2){
 				$msg_2 = str_replace('%d', $rc['GWQGDCZ'], L('01027'));//已完成
+                $finish2 = true;
 			}else{
 				$msg_2 = str_replace('%d', $rc['GWQGDCZ'], L('01028'));//未完成
 			}
+
+			if ($finish1 && $finish2) {
+                R('Upgrade/hgxfs');//升级合格消费商
+            }
+
 			$data['upgrade_info'] = array($msg_1,$msg_2);
 			$data['upgrade'] = 1;
 		}else{
@@ -172,6 +179,9 @@ class UpgradeController extends InitController{
 		// M('Member')->where('uid = '.$order_info['uid'])->save(array('upgrade_times'=> 'upgrade_times + 1',
 		// 	'upgrade_fee' => 'upgrade_fee + '.$yj
 		// 	));
+
+
+		R('Reward/hgxfs');
 
 		if($node_id){
 			R('Reward/duipeng',array($node_id));//对碰奖
