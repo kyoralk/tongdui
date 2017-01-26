@@ -173,6 +173,8 @@ class RefundController extends CommonController{
 			        M('Love',C('DB_PREFIX_MALL'))->add($data);
 		        }
 	        }
+	        //增加库存
+            M("goods")->where(["goods_id"=>$orderGoods["goods_id"]])->setInc("stock",$orderGoods['prosum']);
 
 
             $refund = M("Refund");

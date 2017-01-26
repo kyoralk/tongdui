@@ -39,6 +39,11 @@ class VersionController extends CommonController
         $store=M("store","ms_mall_")->where(['uid'=>$this->member_info['uid']])->find();
         jsonReturn($store);
     }
-
+    public  function test()
+    {
+        $prosum=1;
+        M("goods")->where(["goods_id"=>214])->setDec('stock',$prosum);
+        echo M("goods")->getLastSql();
+    }
 
 }

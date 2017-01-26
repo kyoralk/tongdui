@@ -520,11 +520,11 @@ class GoodsController extends MallController{
         $data['give_integral'] = I('post.give_integral');//赠送多少积分
         $data['promote_price'] = empty(I('post.promote_price')) ? 0 : I('post.promote_price');//促销价格
 
+        $data['stock'] = empty(I('post.stock')) ? 0 : I('post.stock');//库存
         $data['is_cash'] = isset($_POST['is_cash']) ? 1: 0;//是否允许现金
         $data['is_yqt'] =  isset($_POST['is_yqt']) ? 1: 0;//是否允许一券通
         $data['is_gwq'] = isset($_POST['is_gwq']) ? 1: 0;//是否允许购物券
         $data['love_amount'] = $_POST['love_amount'] ? floatval($_POST['love_amount']): 0;// 捐赠的数额
-
         //处理促销时间
         $promote_start_date = empty(I('post.promote_start_date')) ? 0 : I('post.promote_start_date');
         $promote_end_date = empty(I('post.promote_end_date'))? 0 : I('post.promote_end_date');

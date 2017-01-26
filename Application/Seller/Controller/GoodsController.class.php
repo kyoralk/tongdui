@@ -245,6 +245,7 @@ class GoodsController extends CommonController{
 		$data['store_tuijian'] = I('post.store_tuijian');//店铺推荐
 		$data['store_class_id'] = I('post.store_class_id');//店铺中分类
 		$data['promote_price'] = empty(I('post.promote_price')) ? 0 : I('post.promote_price');//促销价格
+        $data['stock'] = empty(I('post.stock')) ? 0 : I('post.stock');//促销价格
 		//处理促销时间
 		$promote_start_date = empty(I('post.promote_start_date')) ? 0 : I('post.promote_start_date');
 		$promote_end_date = empty(I('post.promote_end_date'))? 0 : I('post.promote_end_date');
@@ -308,6 +309,8 @@ class GoodsController extends CommonController{
 		}else{
 			$data['goods_sn'] = 'MS_'.serialNumber(); //商品货号
 			if($Goods->relation(true)->add($data)){
+			    echo $Goods->getLastSql();
+			    exit;
 				$this->success('添加成功');
 			}else{
 				$this->error('添加失败');

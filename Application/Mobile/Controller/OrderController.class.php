@@ -60,10 +60,26 @@ class OrderController extends CommonController{
 			return $data;
 		}
 	}
+    /**liaopeng 2017-01-26
+     * 单规格效验库存（请在增加多规格后修改）
+     */
+    function hand_stock($goods_id,$prosum)
+    {
+        $stock=M("goods")->where(["goods_id"=>$goods_id])->find();
+        if($prosum>$stock["stock"])
+        {
+            jsonReturn(null,"商品$stock[goods_name]库存不足",'02018');
+        }
+    }
+
 	/**
 	 * 立刻购买提交订单
 	 */
 	private function createFromBuyNow($goods_id,$prosum,$atv_id_str,$address,$pay_id,$spec_id,$yjt,$gwq,$total){
+        //效验库存
+	    $this->hand_stock($goods_id,$prosum);
+        M("goods")->where(["goods_id"=>$goods_id])->setDec('stock',$prosum);
+
 		$data = $this->handleGoods($goods_id,$prosum,$atv_id_str,$spec_id);
 		if($data){
 			$data['order_sn'] = time().randstr(4,true);
@@ -115,6 +131,15 @@ class OrderController extends CommonController{
 					'freight' => 0,//暂时写0
 			);
 			$data[$i]['total'] = 0;
+			//效验库存须在赠送购物劵之前进行效验
+            foreach ($store['goods_list'] as $v) {
+                $this->hand_stock($v["goods_id"],$v["prosum"]);
+            }
+            //所有库存效验完成后减去库存
+            foreach ($store['goods_list'] as $v) {
+                M("goods")->where(["goods_id"=>$v["goods_id"]])->setDec('stock',$v["prosum"]);
+            }
+
 			foreach ($store['goods_list'] as $goods_info){
                 $sendGWJ = $this->sendGWJ($goods_info);
 				$data[$i]['total'] += $goods_info['price']*$goods_info['prosum'];
