@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结算审批</title>
+    <link rel="stylesheet" type="text/css" href="/Static/Common/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Static/Common/bootstrap/css/daterangepicker.css">
+
+</head>
+<body>
+<div class="container-fiuled" style="padding: 5px;">
+
+    <div class="page-header">
+        <h3>商品评价审批</h3>
+    </div>
+
+    <form class="form-inline" role="form" action="{:U('Goods/appraisal','p=1')}">
+        <div class="form-group">
+            <select class="form-control input-sm" name="status">
+                <option value="99">全部</option>
+                <option value="0" <if condition="$status eq 0"> selected </if>>待审批 </option>
+                <option value="1" <if condition="$status eq 1"> selected </if>>己审批 </option>
+            </select>
+
+            <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+        </div>
+
+
+
+    </form>
+
+    <table class="table table-bordered table-striped text-center table-hover" style="margin-top:10px; margin-bottom: 0;">
+        <tr style="background-color: #428bca; color:#ffffff" >
+            <th  class="text-center">序号</th>
+            <th  class="text-center">评价人</th>
+            <th  class="text-center">店铺</th>
+            <th  class="text-center">商品</th>
+            <th  class="text-center">图片</th>
+            <th  class="text-center">评价日期</th>
+            <th  class="text-center">内容</th>
+            <th  class="text-center">操作</th>
+        </tr>
+        <volist name="list" id="ml">
+        <tr>
+            <td>{$ml.gid}</td>
+            <td>{$ml.username}</td>
+            <td>{$ml.store_name}</td>
+            <td>{$ml.goods_name}</td>
+            <td><img src="/Uploads/Member/{$ml.image}" width="100" /></td>
+
+            <td>{$ml.add_time|date="Y-m-d H:i:s",###}</td>
+            <td>{$ml.content}</td>
+            <td>
+                <switch name="ml.status">
+                    <case value="0">
+                        <a class="btn btn-primary btn-xs" href="{:U('Goods/appraisal_check','id='.$ml['gid'].'&status=1')}"
+                        > 隐藏</a>
+                    </case>
+                    <case value="1">
+                        <a class="btn btn-primary btn-xs" href="{:U('Goods/appraisal_check','id='.$ml['gid'].'&status=0')}"
+                        > 显示</a>
+                    </case>
+                </switch>
+            </td>
+        </tr>
+        </volist>
+
+
+    </table>
+    <nav class="text-right">
+        <ul class="pagination">
+            {$page}
+        </ul>
+    </nav>
+</div>
+
+<script src="/Static/Common/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="/Static/Common/bootstrap/js/bootstrap.min.js"></script>
+<script src="/Static/Common/bootstrap/js/moment.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

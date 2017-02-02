@@ -594,5 +594,76 @@ class GoodsController extends MallController{
             }
         }
     }
+    function appraisal()
+    {
+        $evaluate=M("evaluate_goods","ms_mall_");
+        if(I("get.status")&&I("get.status")<>"99")
+        {
+            $condition["status"]=I("get.status");
+
+        }
+        $this->assign("status",I("get.status"));
+        $list=page($evaluate,$condition,10);
+        $goodsids='';
+        $memberids='';
+        $storeids="";
+        foreach($list["list"] as $key=>$val)
+        {
+            $goodsids.=$val["goods_id"].",";
+            $memberids.=$val["uid"].",";
+            $storeids.=$val["store_id"].",";
+        }
+        $goodsids=rtrim($goodsids,",");
+        $memberids=rtrim($memberids,",");
+        $storeids=rtrim($storeids,",");
+        $goodslist=M("goods","ms_mall_")->where(["goods_id"=>["in",$goodsids]])->select();
+        $memberlist=M("member","ms_common_")->where(["uid"=>["in",$memberids]])->select();
+        $storelist=M("store","ms_mall_")->where(["store_id"=>["in",$storeids]])->select();
+        foreach($list["list"] as $key=>$val)
+        {
+            foreach($goodslist as $gv)
+            {
+                if($val["goods_id"]==$gv["goods_id"])
+                {
+                    $list["list"][$key]["goods_name"]=$gv["goods_name"];
+                }
+            }
+            foreach($memberlist as $mv)
+            {
+             //   $tempname="";
+                if($val["uid"]==$mv["uid"])
+                {
+                  //  $tempname=ltrim($mv["username"],"u");
+                   // if($this->isMobileNum($tempname))
+//                    {
+//                        $tempname="u".substr($tempname,0,3)."***".substr($tempname,8,3);
+//                    }else{
+                        $tempname=$mv["username"];
+                   // }
+                    $list["list"][$key]["username"]=$tempname;
+                }
+            }
+            foreach($storelist as $sv)
+            {
+                if($val["store_id"]==$sv["store_id"])
+                {
+                    $list["list"][$key]["store_name"]=$sv["store_name"];
+                }
+            }
+        }
+
+        $this->assign("list",$list["list"]);
+        $this->assign("page",$list["page"]);
+        $this->display();
+    }
+    public function appraisal_check()
+    {
+        if(M("evaluate_goods","ms_mall_")->where(["gid"=>I("get.id")])->save(["status"=>I("get.status")]))
+        {
+            $this->success("操作成功");
+        }else{
+            $this->error("操作失败");
+      }
+    }
 }
 
