@@ -118,7 +118,7 @@ class StoreController extends CommonController{
 			unlink($file_path);
 		}
 		$res = Image::createImg(array(I('post.new_img')), 'MALL_SELLER',false,session('store_id').'/Store/');
-
+        print_r($res);
 		if(M('StoreSlide')->where('store_id = '.session('store_id').' AND slide_id = "'.$slide_id.'"')->setField('img',$res[0])){
 			$this->ajaxReturn(1,'JSON');
 		}else{

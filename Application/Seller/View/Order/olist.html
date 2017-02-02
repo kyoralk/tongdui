@@ -56,16 +56,16 @@
 											<?php } ?>
 											</a> </p>
 										</div>
-										<div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">单价：{$goods.price}</i><br>
+										<div class="desc" style="width:90px;margin-left: 20px;"> <i class="special-num">进货价：{$goods.new_cost_pride}</i><br>
 											<i class="special-num">数量：{$goods.prosum}</i><br>
-											<i class="special-num">小计：{$goods['price']*$goods['prosum']}</i> 
+											<i class="special-num">小计：{$goods['new_cost_pride']*$goods['prosum']}</i>
 										</div>
 									</li>
 									</volist>
 								</ul>
 							</td>
 							<td class="column-price"><div  class="order-info order-price">运费：￥{$ol.freight}</div></td>
-							<td class="column-price"><div  class="order-info order-price">合计：￥{$ol.total}</div></td>
+							<td class="column-price"><div  class="order-info order-price">合计：￥{$ol.new_total}</div></td>
 							<td class="column-action column-r">
 								<div class="order-info order-action">
 									<if condition="($ol['pay_status'] eq 0) AND ($ol['shipping_status'] eq 0) AND ($ol['receipt_status'] eq 0) ">

@@ -49,7 +49,8 @@ class OrderController extends CommonController{
 		$data = page(D('OrderInfo'), $condition,16,'relation','order_time desc');
         if ($data['list']) {
             foreach ($data['list'] as $kk=>$l) {
-
+                $freight_total=0;
+                $total=0;
                 foreach ($l['order_goods'] as $k=>$og) {
                     $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
                     if (!$goods) {
@@ -57,8 +58,16 @@ class OrderController extends CommonController{
                     }
                     $link = '/Uploads/'.$goods['save_path'].$goods['save_name'];
                     $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:$link;
+                    //2017-02-02 liaopeng添加运费显示和进货价显示
+                    $freight=M("goods")->where(["goods_id"=>$og["goods_id"]])->find();
 
+                    $data['list'][$kk]['order_goods'][$k]["new_cost_pride"]=$freight["cost_price"];
+                    $freight_total+=$freight["freight"]*$og["prosum"];
+                    $total+=$freight["cost_price"]*$og["prosum"];
                 }
+                $data['list'][$kk]["freight"]=$freight_total;
+                $data['list'][$kk]["new_total"]=$total;
+                //修改结束
             }
         }
 		$this->assign('order_list',$data['list']);

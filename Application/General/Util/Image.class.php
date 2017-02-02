@@ -94,9 +94,12 @@ class Image{
 			if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
 				$Suffix = $result[2] == 'jpeg'? 'jpg' : $result[2];
 				$filename = uniqid(rand()).'.'.$Suffix;//$result[2]为图片扩展名
-				if (file_put_contents('./Uploads/'.C($path_key).$extend_path.$filename, base64_decode(str_replace($result[1], '', $base64_image_content)))){
+                $savename[] = $filename;
+                is_dir('./Uploads/'.C($path_key).$extend_path) or mkdir('./Uploads/'.C($path_key).$extend_path);
+                if (file_put_contents('./Uploads/'.C($path_key).$extend_path.$filename, base64_decode(str_replace($result[1], '', $base64_image_content)))){
 					$savename[] = $filename;
 					$local = './Uploads/'.C($path_key).$extend_path.$filename;
+
 					if($thumb){
 						$thumb_size = C('THUMB_SIZE');
 						foreach ($thumb_size as $item){
