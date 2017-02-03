@@ -239,7 +239,7 @@ class NotifyController extends InitController{
 					if($integral){
 						R('Reward/integral',array($integral,$goods_name));//把积分分配成增值积分和资产包
 					}
-					R('Reward/agent',array($order_goods));//代理商奖励
+					// R('Reward/agent',array($order_goods));//代理商奖励
 					R('Love/grantgoods',array($condition));//捐产品
 				}
 				
