@@ -142,6 +142,7 @@ class NotifyController extends InitController{
             $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where($_condition)->select();
 
             $otherFee = 0;
+            $totalFee = 0;
             if ($orderGoods) {
                 foreach ($orderGoods as $og) {
                     $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id ='.$og['goods_id'])->find();
@@ -152,14 +153,17 @@ class NotifyController extends InitController{
                             // 计算一卷通商品用的一卷通
                             $otherFee += $og['price'] * $og['prosum'];
                         }
+                        $totalFee += $og['price'] * $og['prosum'];
                     }
                 }
             }
 
-            // 获得使用一卷通购买购物卷使用的一卷通
-            $yqtUseGWQ= $res['yjt'] -$otherFee;
+            $shippingFee =  abs($res['yjt'] + $res['gwq'] - $totalFee);
 
-            if ($yqtUseGWQ) {
+            // 获得使用一卷通购买购物卷使用的一卷通
+            $yqtUseGWQ = $res['yjt'] -$otherFee;
+            $yqtUseGWQ = $yqtUseGWQ - $shippingFee;
+            if ($yqtUseGWQ > 0) {
                 // 充值
 //                if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$list[0]['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$yqtUseGWQ))) !== false) {
                     R('Upgrade/hgxfs');//升级合格消费商
