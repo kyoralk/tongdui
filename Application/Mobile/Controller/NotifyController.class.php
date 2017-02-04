@@ -202,6 +202,12 @@ class NotifyController extends InitController{
 		$Order = M('OrderInfo',C('DB_PREFIX_MALL'));
 		//查询符合条件的订单支付状态，并且判断，防止重复通知
 		$order_info = $Order->where('order_sn = "'.$this->order_sn.'"')->field('order_sn,pay_status,uid')->find();
+
+		//2017-02-04 liaopeng 增加升级时扣除套餐款项
+            $balance=M("member_account","ms_common_")->where(["uid"=>$this->member_info['uid']])->field("YJT_FEE")->find()[0];
+            ($balance>$order_info["total"]) or jsonReturn(null,"余额不足","09000");//对比余额
+            AccountController::change($this->member_info['uid'], $order_info["total"], 'YJT', 3,true);//扣款
+		//增加结束
 		if(!empty($order_info)){
 			$this->setMemberInfo(array('uid'=>$order_info['uid']));
 			if($order_info['pay_status'] != 1){

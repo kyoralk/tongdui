@@ -27,13 +27,21 @@ class GoodsController extends MallController{
 			$condition['consumption_type'] = I('get.consumption_type');
 			$this->assign('consumption_type',$condition['consumption_type']);
 		}
-		$data = page(M('Goods'), $condition,20,'','goods_id desc','goods_id,goods_name,shop_price,is_on_sale,is_best,is_new,is_hot,floor_show,examine_status,consumption_type');
+		$data = page(M('Goods'), $condition,20,'','goods_id desc','goods_id,sort,goods_name,shop_price,is_on_sale,is_best,is_new,is_hot,floor_show,examine_status,consumption_type');
 		$this->assign('goods_list',$data['list']);
 		$this->assign('page',$data['page']);
 		$this->assign('content_header','商品列表');
 		$this->assign('all_goods',I('get.all_goods'));
 		$this->display('Goods/goods_list');
 	}
+    /**2017-02-04 liaopeng
+     * 更新商品排序
+     */
+    function sort()
+    {
+        M("goods")->where(["goods_id"=>$_POST["gid"]])->save(["sort"=>$_POST["sort"]]);
+        die("ok");
+    }
 	/**
 	 * 添加商品模板页
 	 */

@@ -49,6 +49,7 @@
                 	<tr>
                     	<th width="5%" class="table-textcenter"><input name="check_all" type="checkbox" /></th>
 						<th>ID</th>
+						<th>排序</th>
                         <th>名称</th>
                         <th class="table-textcenter">消费类型</th>
                         <th class="table-textcenter"><if condition="$seller eq 1">审核状态<else/>上架</if></th>
@@ -66,6 +67,9 @@
             		<tr>
                 		<td align="center" class="table-textcenter"><input name="goods_id[]" type="checkbox" value="{$gl.goods_id}"/></td>
 						<td>{$gl.goods_id}</td>
+						<td>
+							<input type="text" value="{$gl.sort}" name="sort" data-id="{$gl.goods_id}" class="form-control sort" style="width: 50px; height: 25px;"/>
+							</td>
                         <td>{$gl.goods_name}</td>
                         <td class="table-textcenter">
                         	<switch name="gl.consumption_type">
@@ -167,5 +171,25 @@ $(function(){
 		$("input[name='"+name+"']").val(value);
 		window.location.href="/Admin/Goods/goodsList/seller/"+seller+"/"+name+"/"+value;
 	});
+$(".sort").blur(function(){
+    var element=$(this);
+   var sort=$(this).val();
+   var gid=$(this).attr("data-id");
+
+   $.ajax({
+       url:'{:U("goods/sort")}',
+	   data:{
+           sort:sort,
+			gid:gid
+	   },
+	   type:"post",
+	   dataType:"json",
+	   success:function(data)
+	   {
+
+	   }
+   });
+});
+
 });
 </script>
