@@ -309,8 +309,7 @@ class GoodsController extends CommonController{
 		}else{
 			$data['goods_sn'] = 'MS_'.serialNumber(); //商品货号
 			if($Goods->relation(true)->add($data)){
-			    echo $Goods->getLastSql();
-			    exit;
+			   
 				$this->success('添加成功');
 			}else{
 				$this->error('添加失败');

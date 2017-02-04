@@ -218,7 +218,6 @@ class OrderController extends CommonController{
 		}else{
 			$response['out_trade_no'] = 'BUY_'.$out_trade_no;
 		}
-		
 		jsonReturn($response);
 	}
 	/**

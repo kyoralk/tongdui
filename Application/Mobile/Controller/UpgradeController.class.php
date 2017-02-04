@@ -181,7 +181,7 @@ class UpgradeController extends InitController{
 		// 	));
 
 
-		R('Reward/hgxfs');
+		R('Upgrade/hgxfs');
 
 		if($node_id){
 			R('Reward/duipeng',array($node_id));//对碰奖
