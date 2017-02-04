@@ -367,11 +367,11 @@ class OrderController extends CommonController{
                     }
                 }
 
-
                 if ($amount > 0) {
                     R('Reward/jdjs',array($amount,'XFYJT'));
                 }
 
+                R('Reward/agent',array($orderGoods));//代理商奖励
             }
 
 			jsonReturn();

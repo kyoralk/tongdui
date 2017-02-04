@@ -288,24 +288,27 @@ class GeneralController extends Controller{
     public function autosure() {
         $set = M('Setting',C('DB_PREFIX_C'))->where('item_key = "autoday" ')->find();
         $day = $set['item_value'] * 86400;
-        $orders = M("OrderInfo")->where('order_time <= '.(time() - $day).' and receipt_status != 1 and shipping_status = 1 and pay_status = 1 and refund_status !=1 ')->select();
+        $orders = M("OrderInfo", C('DB_PREFIX_MALL'))->where('order_time <= '.(time() - $day).' and receipt_status != 1 and shipping_status = 1 and pay_status = 1 and refund_status !=1 ')->select();
         $amount = 0;
         if ($orders) {
             foreach ($orders as $order) {
-                if(M('OrderInfo')->where('order_sn = "'.$order['order_sn'].'"')->setField('receipt_status',1)){
-                    $orderGoods = M('OrderGoods')->where('order_sn = "'.$order['order_sn'].'"')->select();
+                if(M('OrderInfo',C('DB_PREFIX_MALL'))->where('order_sn = "'.$order['order_sn'].'"')->setField('receipt_status',1)){
+                    $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where('order_sn = "'.$order['order_sn'].'"')->select();
                     if ($orderGoods) {
                         foreach ($orderGoods as $og) {
-                            $goods = M("Goods")->where('goods_id ='.$og['goods_id'])->find();
+                            $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id ='.$og['goods_id'])->find();
                             if ($goods) {
                                 // 一券通商品收货进行九代结算
                                 if ($goods['consumption_type']== 2) {
                                     $amount+= $og['price'] * $og['prosum'];
                                 }
                             }
-                            if ($amount > 0)
+                            if ($amount > 0) {
                                 R('Reward/jdjs',array($amount,'XFYJT'));
+                            }
                         }
+
+                        R('Reward/agent',array($orderGoods));//代理商奖励
 
                     }
                 }
