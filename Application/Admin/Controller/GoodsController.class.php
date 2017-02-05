@@ -611,7 +611,7 @@ class GoodsController extends MallController{
 
         }
         $this->assign("status",I("get.status"));
-        $list=page($evaluate,$condition,10);
+        $list=page($evaluate,$condition,10,'',"gid desc");
         $goodsids='';
         $memberids='';
         $storeids="";

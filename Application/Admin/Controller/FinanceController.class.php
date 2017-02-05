@@ -426,7 +426,10 @@ class FinanceController extends CommonController{
     }
 
     public function love_list() {
-
+        $gwj=M('Love', C("DB_PREFIX_MALL"))->where(["type"=>1])->field("sum(fee) as sum")->find()["sum"];
+        $yjt=M('Love', C("DB_PREFIX_MALL"))->where(["type"=>2])->field("sum(fee) as sum")->find()["sum"];
+        $this->assign("gwj",$gwj);
+        $this->assign("yjt",$yjt);
         $user_name=I("get.user_name");
         if($user_name)
         {

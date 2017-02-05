@@ -146,7 +146,8 @@ class BrandController extends MallController{
 	 */
 	public function delete(){
 		$Brand = M('Brand');
-		$brand_logo = $Brand->where('brand_id = '.I('get.brand_id'))->getField('brand_logo');
+		$brandinfo=$Brand->where('brand_id = '.I('get.brand_id'))->find();
+		$brand_logo = $brandinfo['brand_logo'];
 		if(!empty($brand_logo)){
 			$brand_logo = './Uploads/'.C('MALL_BRAND').$brand_logo;
 			if(file_exists($brand_logo)){
@@ -154,6 +155,7 @@ class BrandController extends MallController{
 			}
 		}
 		if($Brand->where('brand_id = '.I('get.brand_id'))->delete()){
+		    M("brand_apply")->where(["brand_name"=>$brandinfo["brand_name"],"brand_desc"=>$brandinfo["brand_desc"],"brand_logo"=>$brandinfo["brand_logo"],"gc_id"=>$brandinfo["gc_id"]])->delete();
 			$this->success('删除成功');
 		}else{
 			$this->error('删除失败');
