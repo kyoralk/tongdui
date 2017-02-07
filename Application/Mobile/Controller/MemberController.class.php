@@ -209,7 +209,11 @@ class MemberController extends CommonController{
 				'position'=>$node_id == 1 ? 'left' : empty(I('get.position'))? 'left' : I('get.position'),
 		);
 // 		dump(urlencode($data));
-		$res = Image::qrcode(json_encode($data),10);
+        //2017-02-07 修改二维码为注册地址 liaopeng
+		//$res = Image::qrcode(json_encode($data),10);
+        $querystring=http_build_query($data);
+        $url="http://".$_SERVER['HTTP_HOST']."/Mobile/Public/register/?".$querystring;
+        $res = Image::qrcode($url,10);
 	}
 	private function applyStore($store_id,$agent_province,$agent_city,$agent_district){
 		$data = array(

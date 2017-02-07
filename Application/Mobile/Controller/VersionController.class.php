@@ -4,6 +4,8 @@
  * User: liaopeng
  * Date: 2017/1/12
  * Time: 9:44
+ * 这个文件本来做版本更新接口与第三方支付的关闭接口，现在用于加上我需要添加的所有接口。
+ *
  */
 namespace Mobile\Controller;
 use Mobile\Controller\CommonController;
@@ -45,5 +47,6 @@ class VersionController extends CommonController
         M("goods")->where(["goods_id"=>214])->setDec('stock',$prosum);
         echo M("goods")->getLastSql();
     }
+
 
 }

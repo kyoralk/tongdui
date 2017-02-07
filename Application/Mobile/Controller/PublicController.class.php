@@ -78,6 +78,23 @@ class PublicController extends InitController{
 			jsonReturn('','01003');
 		}
 	}
+
+    /**
+     * 网页版注册页面
+     * 2017-02-07 liaopeng
+     * f_id为上级ID，market为第几市场
+     */
+    public  function  register()
+    {
+        $referrer_node_id=I("get.referrer_node_id");
+        $referrer_id=I("get.referrer_id");
+        $position=I("get.position");
+        $this->assign("referrer_node_id",$referrer_node_id);
+        $this->assign("referrer_id",$referrer_id);
+        $this->assign("position",$position);
+        $this->display();
+    }
+
 	/**
 	 * 注册
 	 */

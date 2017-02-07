@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>新用户注册</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="/Static/Common/mui/css/mui.min.css">
+		<style>
+			h5 {
+				margin: 5px 7px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">通兑商城</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<h5  style="height: 40px; line-height: 40px;">新用户注册：</h5>
+				
+				<form class="mui-input-group">
+					<input type="hidden" name="referrer_id" id="referrer_id" value="{$referrer_id}" />
+					<input type="hidden" name="position" id="position" value="{$position}" />
+					<input type="hidden" name="referrer_node_id" id="referrer_node_id" value="{$referrer_node_id}" />
+					<div class="mui-input-row">
+						<label style="width: 80px;padding-left: 0px;padding-right: 0px; font-size:13px ; text-align: right;">手机号码：</label>
+						<input type="number" name="mobile" id="mobile" pattern="\d*" placeholder="您的手机号码">
+						
+					</div>
+					<div class="mui-input-row" style="padding-left: 15px; padding-right: 10px; padding-top: 5px; height: 50px;">	
+						<label style="width: 65px;padding-left: 0px;padding-right: 0px; font-size:13px ; text-align: right;">验证码：</label>
+						<label style="width: 85px;padding: 0px; font-size:13px ; text-align: center;"><img style="height:25px;margin-top:5px;" name="codeimage" border="0" id="codeimage" onclick="this.src='/General/General/verifyCode?'+Math.random()" src="/General/General/verifyCode"></label>
+						<button type="button" class="mui-btn mui-btn-info"  id="sendmsg" style="width: 60px;">发送</button>
+						
+						<input type="text" id="verify_code" style="width: 60px;
+    padding-right: 0px;" placeholder="验证码">
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 80px;padding-left: 0px;padding-right: 0px; font-size:13px ; text-align: right;">短信验证：</label>
+						<input type="text" id="sms_code" name="sms_code" placeholder="收到的短信验证码">
+						
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 80px;padding-left: 0px;padding-right: 0px; font-size:13px ; text-align: right;">密码：</label>
+						<input type="password" id="password" placeholder="登陆密码">
+						
+					</div>
+					<div class="mui-input-row">
+						<label style="width: 80px;padding-left: 0px;padding-right: 0px; font-size:13px ; text-align: right;">密码确认：</label>
+						<input type="password" id="password2" placeholder="重复登陆密码">
+						
+					</div>
+
+					<div class="mui-button-row" style="height: 80px; padding-top: 20px;">
+						<button type="button" id="submit" class="mui-btn mui-btn-danger" onclick="return false;">注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</button>
+					</div>
+					
+				</form>
+				
+			</div>
+		</div>
+		<script src="/Static/Common/jQuery/jQuery-2.2.0.min.js"></script>
+		<script src="/Static/Common/jQuery/jquery.cookie.js"></script>
+		<script src="/Static/Common/jQuery/jquery.md5.js"></script>
+		<script src="/Static/Common/mui/js/mui.min.js"></script>
+		<script>
+            // 验证手机号
+            function isPhoneNo(phone) {
+                var pattern = /^1[34578]\d{9}$/;
+                return pattern.test(phone);
+            }
+
+
+			mui.init();
+			$(function(){
+                $.cookie("issend",false);
+                $("#sendmsg").attr("disabled",true);
+                var sendtime=$.cookie("time");
+                if(sendtime==undefined)
+				{
+                    $.cookie("time",0);
+				}
+                var nowtime= Date.parse(new Date())/1000;
+                var end_time=nowtime-sendtime;
+                if(end_time<60)
+                {
+                    $("#sendmsg").attr("disabled",true);
+                    $("#sendmsg").html(60-end_time);
+                }
+                //短信倒计时
+                setInterval(function() {
+                    var sendtime=$.cookie("time");
+                    var nowtime= Date.parse(new Date())/1000;
+                    var end_time=nowtime-sendtime;
+                    if(end_time>=60)
+					{
+                        $("#sendmsg").html("发送");
+                        $("#sendmsg").attr("disabled",false);
+					}else{
+                        $("#sendmsg").attr("disabled",true);
+                        $("#sendmsg").html(60-end_time);
+					}
+
+                },1000)
+
+				$("#sendmsg").click(function(){
+				    $(this).attr("disabled",true);
+				    if($("#verify_code").val()=="")
+					{
+					    alert("请输入验证码");
+                        return;
+					}
+				    if(!isPhoneNo($("#mobile").val()))
+					{
+							alert("手机号码格式错误");
+                        $(this).attr("disabled",false);
+                        return;
+					}else{
+				        $.ajax({
+				            url:"{:U('Public/sendCode')}",
+							type:"get",
+							dataType:"json",
+							data:{
+                                verify_code:$("#verify_code").val(),
+                                mobile:$("#mobile").val(),
+                                sign:$.md5("0fc0284f447fe8802b0f6db0ae3fad19"+$("#mobile").val()),
+							},
+							success:function(data){
+									if(data.status=="01014")
+									{
+
+									    alert("验证码不正确");
+									}else{
+                                        var timestamp = Date.parse(new Date())/1000;
+                                       $.cookie("time",timestamp);
+                                       $.cookie("issend",true);
+									}
+							}
+						})
+					}
+
+                });
+                $("#submit").click(function(){
+
+                   if($.cookie("issend")=="true"){
+						var password1=$("#password").val();
+						var password2=$("#password2").val();
+						if(password1!=password2)
+						{
+						    alert("两次密码不一至");
+						    return;
+						}
+						var sms_code=$("#sms_code").val();
+						if(sms_code=="")
+						{
+						    alert("请输入短信验证码");
+                            return;
+						}
+						var referrer_id=$("#referrer_id").val();
+                        var position=$("#position").val();
+                        var referrer_node_id=$("#referrer_node_id").val();
+                       $(this).attr("disabled",true);
+                       $.ajax({
+                           url:"{:U('Public/registerDo')}",
+                           type:"post",
+                           dataType:"json",
+                           data:{
+                               referrer_id:referrer_id,
+                               position:position,
+                               referrer_node_id:referrer_node_id,
+							   password:password1,
+                               mobile:$("#mobile").val(),
+							   sms_code:sms_code
+                           },
+                           success:function(data){
+                               if(data.status=="01007")
+                               {
+                                   alert("手机号己被注册过");
+                                   $("#submit").attr("disabled",false);
+                                   return;
+                               }
+                               if(data.status=="01011")
+                               {
+                                   alert("短信验证码错误");
+                                   $("#submit").attr("disabled",false);
+                                   return;
+                               }
+                               if(data.status=="01008")
+                               {
+                                   alert("注册失败");
+                                   $("#submit").attr("disabled",false);
+                                   return;
+                               }
+							   alert("注册成功");
+                               window.location.href="http://www.baidu.com";
+
+                           }
+                       });
+				   }else{
+                       alert("请先验证手机号");
+				   }
+				});
+			});
+		</script>
+	</body>
+
+</html>
