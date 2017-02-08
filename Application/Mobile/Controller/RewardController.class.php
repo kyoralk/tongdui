@@ -401,27 +401,33 @@ class RewardController extends CommonController{
                     }
 					// 县代理
                     $memberDistrict = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>1, 'agent_district'=> $goods['company_district']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
-                    $memberDistrict = array_pop($memberDistrict);
-                    $res_onece = $this->outorin($memberDistrict,$goods,$cost_price);
-                    if(!empty($res_onece)){
-                        $res = array_merge($res,$res_onece);
+                    if ($memberDistrict && count($memberDistrict) > 0) {
+                        $memberDistrict = array_pop($memberDistrict);
+                        $res_onece = $this->outorin($memberDistrict,$goods,$cost_price);
+                        if(!empty($res_onece)){
+                            $res = array_merge($res,$res_onece);
+                        }
                     }
                     // 市代理
                     $memberCity = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>2, 'agent_city'=> $goods['company_city']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
-                    $memberCity = array_pop($memberCity);
-                    $res_onece = $this->outorin($memberCity,$goods,$cost_price);
-                    if(!empty($res_onece)){
-                        $res = array_merge($res,$res_onece);
+                    if ($memberCity && count($memberCity) > 0) {
+                        $memberCity = array_pop($memberCity);
+                        $res_onece = $this->outorin($memberCity, $goods, $cost_price);
+                        if (!empty($res_onece)) {
+                            $res = array_merge($res, $res_onece);
+                        }
                     }
                     // 省代理
                     $memberProvince = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>3, 'agent_province'=> $goods['company_province']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
-                    $memberProvince = array_pop($memberProvince);
-                    $res_onece = $this->outorin($memberProvince,$goods,$cost_price);
-                    if(!empty($res_onece)){
-                        $res = array_merge($res,$res_onece);
+                    if ($memberProvince && count($memberProvince) > 0) {
+                        $memberProvince = array_pop($memberProvince);
+                        $res_onece = $this->outorin($memberProvince, $goods, $cost_price);
+                        if (!empty($res_onece)) {
+                            $res = array_merge($res, $res_onece);
+                        }
                     }
 				}
-				
+
 				if(!empty($res)){
 					$uid_array = array_column($res, 'uid');
 					$trade_fee_array = array_column($res, 'reward');
