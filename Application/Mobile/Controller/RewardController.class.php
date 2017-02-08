@@ -374,11 +374,12 @@ class RewardController extends CommonController{
 		$condition['uid'] = count($uid) > 1 ? array('in',$uid) : $uid[0]; 
 		$condition['referrer_id'] = array('gt',0);
 		$referrer_list_temp = M('Member',C('DB_PREFIX_C'))->where($condition)->field('uid,referrer_id')->select();
+
 		if(!empty($referrer_list_temp)){
 			$referrer_id = array_column($referrer_list_temp, 'referrer_id');
 			$condition = null;
 			$condition['uid'] = count($referrer_id) > 1 ? array('in',$referrer_id) : $referrer_id[0];
-			$referrer_info = M('Member')->where($condition)->getField('uid,agent_level,agent_province,agent_city,agent_district',true);//查询直接推荐人的代理级别
+			$referrer_info = M('Member',C('DB_PREFIX_C'))->where($condition)->getField('uid,agent_level,agent_province,agent_city,agent_district',true);//查询直接推荐人的代理级别
 			//整理有资格获得奖励的数据 $reward_temp
 			if(!empty($referrer_info)){
 				foreach ($order_goods as $og){
@@ -392,12 +393,35 @@ class RewardController extends CommonController{
 						$cost_price += $g['cost_price'] * $prosum[$g['goods_id']];
 					}
 					$goods = $data_group_by_uid[$item['uid']][0];
-					$referrer = $referrer_info[$item['referrer_id']];
+
+                    $referrer = $referrer_info[$item['referrer_id']];
 					$res_onece = $this->outorin($referrer,$goods,$cost_price);
-					if(!empty($res_onece)){
-						$res = array_merge($res,$res_onece);
-					}
+                    if(!empty($res_onece)){
+                        $res = array_merge($res,$res_onece);
+                    }
+					// 县代理
+                    $memberDistrict = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>1, 'agent_district'=> $goods['company_district']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
+                    $memberDistrict = array_pop($memberDistrict);
+                    $res_onece = $this->outorin($memberDistrict,$goods,$cost_price);
+                    if(!empty($res_onece)){
+                        $res = array_merge($res,$res_onece);
+                    }
+                    // 市代理
+                    $memberCity = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>2, 'agent_city'=> $goods['company_city']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
+                    $memberCity = array_pop($memberCity);
+                    $res_onece = $this->outorin($memberCity,$goods,$cost_price);
+                    if(!empty($res_onece)){
+                        $res = array_merge($res,$res_onece);
+                    }
+                    // 省代理
+                    $memberProvince = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>3, 'agent_province'=> $goods['company_province']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
+                    $memberProvince = array_pop($memberProvince);
+                    $res_onece = $this->outorin($memberProvince,$goods,$cost_price);
+                    if(!empty($res_onece)){
+                        $res = array_merge($res,$res_onece);
+                    }
 				}
+				
 				if(!empty($res)){
 					$uid_array = array_column($res, 'uid');
 					$trade_fee_array = array_column($res, 'reward');
