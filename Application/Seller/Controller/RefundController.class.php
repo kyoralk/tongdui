@@ -161,7 +161,7 @@ class RefundController extends CommonController{
 	        if ($goods) {
 		        $amount =$goods['love_amount'];
 		        if ($amount) {
-			        $trade_code = $goods['consumption_type'] == 2? "1":"2";
+			        $trade_code = $goods['consumption_type'] == 2? "2":"1";
 			        $data = array(
 				        'out_trade_no'=>serialNumber(),
 				        'uid'=> $orderinfo['uid'],
