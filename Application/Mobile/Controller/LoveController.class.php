@@ -52,7 +52,7 @@ class LoveController extends CommonController{
 		if($type){
 			$condition['type'] = $type;
 		}
-        $condition['fee'] = ["gt",0];
+        $condition['fee'] = ["neq",0];
 		$Love = M('Love', C('DB_PREFIX_MALL'));
 		$data = appPage($Love, $condition, I('get.num'), I('get.p'),'','grant_time desc');
 		$data['goods'] = 0;

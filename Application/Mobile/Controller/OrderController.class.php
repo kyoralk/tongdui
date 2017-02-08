@@ -572,7 +572,7 @@ class OrderController extends CommonController{
      */
     public function refundList() {
         $where = '';
-        $type = I('get.type');
+        $type = I('get.type')?"退货":"换货";
         if ($type)
             $where.="type ='".$type."'";
         $uid = $this->member_info['uid'];
@@ -582,6 +582,29 @@ class OrderController extends CommonController{
 
         $refund = D('Refund');
         $list = $refund->relation(true)->where($where)->select();
+        //2017-02-07 liaopeng  修改图片展示
+        if($list){
+            $goodsids="";
+            foreach($list as $key=>$v)
+            {
+                $goodsids.=$v["goods_id"].",";
+            }
+            $goodsids=rtrim($goodsids,",");
+            $imglist=M("goods_img")->where(["goods_id"=>["in",$goodsids]])->group("goods_id")->select();
+            foreach ($list as $k=>$val)
+            {
+                foreach ($imglist as $imgval)
+                {
+                    if($val["goods_id"]==$imgval["goods_id"])
+                    {
+                        $list[$k]["order_goods"]["goods_img"]=$imgval["save_path"].$imgval["save_name"];
+                    }
+                }
+            }
+        }
+       //修改结束
+
+
         jsonReturn($list);
 
     }
