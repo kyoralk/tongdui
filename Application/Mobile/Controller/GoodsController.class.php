@@ -194,11 +194,38 @@ class GoodsController extends InitController{
 		$Goods = D('GoodsView');
 		$data = appPage($Goods, $condition, I('get.num'), I('get.p'),'view',$order_array[$order_index],'goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,store_id,evaluate_count,click_count,sales,consumption_type,gwq_send,gwq_extra,love_amount','goods_id',$count);
 
+		$data = $this->handleSales($data);
+
 		// 升级增加补差额功能
 		$data = $this->handleGoods($data);
 
 		jsonReturn($data);
 	}
+
+	public function handleSales($data) {
+        if ($data['list']) {
+            foreach ($data['list'] as $k => $v) {
+                $data['list'][$k]['sales'] = $this->countSale($data['list'][$k]['goods_id']);
+            }
+        }
+
+        return $data;
+    }
+
+    private function countSale($goods_id) {
+	    $total = 0;
+        $mo = M();
+        $model = $mo->query("select * from ms_mall_order_goods g LEFT JOIN ms_mall_order_info o ON g.order_sn = o.order_sn WHERE o.receipt_status = 1 AND g.goods_id =".$goods_id);
+        $total = 0;
+        if ($model) {
+            foreach ($model as $m) {
+                $total+=$m['prosum'];
+            }
+        }
+
+        return $total;
+    }
+
 	/**
 	 * 商品详情
 	 */
@@ -265,7 +292,8 @@ class GoodsController extends InitController{
 				foreach ($data['list'] as $k=>$v) {
 					if (strstr($v['goods_name'], '套餐') && $v['store_id'] == 1) {
 						$data['list'][$k]['shop_price'] = $v['shop_price'] - $fee;
-						$data['list'][$k]['shop_price'] = $data['list'][$k]['shop_price']<0?0:$data['list'][$k]['shop_price'];	
+						$data['list'][$k]['shop_price'] = $data['list'][$k]['shop_price']<0?0:$data['list'][$k]['shop_price'];
+
 					}
 				}
 			}
@@ -276,6 +304,7 @@ class GoodsController extends InitController{
 	}
 
 	function handleGood($data) {
+	    $data['sales'] = $this->countSale($data['goods_id']);
 		if ($this->member_info) {
 			$fee = $this->member_info['upgrade_fee'];
 			if (strstr($data['goods_name'], '套餐') && $data['store_id'] == 1) {
