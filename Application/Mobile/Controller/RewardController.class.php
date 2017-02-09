@@ -379,7 +379,7 @@ class RewardController extends CommonController{
 			$referrer_id = array_column($referrer_list_temp, 'referrer_id');
 			$condition = null;
 			$condition['uid'] = count($referrer_id) > 1 ? array('in',$referrer_id) : $referrer_id[0];
-			$referrer_info = M('Member',C('DB_PREFIX_C'))->where($condition)->getField('uid,agent_level,agent_province,agent_city,agent_district',true);//查询直接推荐人的代理级别
+			$referrer_info = M('Member',C('DB_PREFIX_C'))->where($condition)->getField('uid,agent_level,agent_province,agent_city,agent_district, username',true);//查询直接推荐人的代理级别
 			//整理有资格获得奖励的数据 $reward_temp
 			if(!empty($referrer_info)){
 				foreach ($order_goods as $og){
@@ -400,7 +400,7 @@ class RewardController extends CommonController{
                         $res = array_merge($res,$res_onece);
                     }
 					// 县代理
-                    $memberDistrict = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>1, 'agent_district'=> $goods['company_district']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
+                    $memberDistrict = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>1, 'agent_district'=> $goods['company_district']])->getField('uid,agent_level,agent_province,agent_city,agent_district, username',true);
                     if ($memberDistrict && count($memberDistrict) > 0) {
                         $memberDistrict = array_pop($memberDistrict);
                         $res_onece = $this->outorin($memberDistrict,$goods,$cost_price);
@@ -409,7 +409,7 @@ class RewardController extends CommonController{
                         }
                     }
                     // 市代理
-                    $memberCity = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>2, 'agent_city'=> $goods['company_city']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
+                    $memberCity = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>2, 'agent_district'=> $goods['company_district'], 'agent_city'=> $goods['company_city']])->getField('uid,agent_level,agent_province,agent_city,agent_district, username',true);
                     if ($memberCity && count($memberCity) > 0) {
                         $memberCity = array_pop($memberCity);
                         $res_onece = $this->outorin($memberCity, $goods, $cost_price);
@@ -418,7 +418,7 @@ class RewardController extends CommonController{
                         }
                     }
                     // 省代理
-                    $memberProvince = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>3, 'agent_province'=> $goods['company_province']])->getField('uid,agent_level,agent_province,agent_city,agent_district',true);
+                    $memberProvince = M('Member',C('DB_PREFIX_C'))->where(['agent_level'=>3, 'agent_district'=> $goods['company_district'], 'agent_city'=> $goods['company_city'], 'agent_province'=> $goods['company_province']])->getField('uid,agent_level,agent_province,agent_city,agent_district, username',true);
                     if ($memberProvince && count($memberProvince) > 0) {
                         $memberProvince = array_pop($memberProvince);
                         $res_onece = $this->outorin($memberProvince, $goods, $cost_price);
@@ -427,6 +427,8 @@ class RewardController extends CommonController{
                         }
                     }
 				}
+
+//                var_dump($res);exit;
 
 				if(!empty($res)){
 					$uid_array = array_column($res, 'uid');
@@ -455,48 +457,50 @@ class RewardController extends CommonController{
 				}
 			}
 		}
+
 		switch ($referrer['agent_level']){
 			case 1:
 				//县代理
 				//判断县内还是县外
 				if($similarity == 3){
-					$zhijie_nei_bi = $rc['1_V_N_G_I'];//县代里直接对接的企业/商家/代理商
+					$zhijie_nei_bi = $rc['S_V_1_G'];//县代里直接对接的企业/商家/代理商
 				}else{
-					$yewuyuanbi = $rc['1_V_N_G_O'];
+					$yewuyuanbi = $rc['S_V_N_G'];
 				}
-				$agent_city = $this->topRegionId($referrer['agent_district']);
-				$agent_province = $this->topRegionId($agent_city);
-				$zhijiebi[] = array('bi'=>$rc['2_V_1_G'],'agent_city'=>$agent_city);//本市内县代里直接对接的企业/商家/代理商奖励给市代理
-				$zhijiebi[] = array('bi'=>$rc['3_V_1_G'],'agent_province'=>$agent_province);//本省内县代理直接对接的企业/商家/代理商奖励给省代理
+//				$agent_city = $this->topRegionId($referrer['agent_district']);
+//				$agent_province = $this->topRegionId($agent_city);
+//				$zhijiebi[] = array('bi'=>$rc['2_V_1_G'],'agent_city'=>$agent_city);//本市内县代里直接对接的企业/商家/代理商奖励给市代理
+//				$zhijiebi[] = array('bi'=>$rc['3_V_1_G'],'agent_province'=>$agent_province);//本省内县代理直接对接的企业/商家/代理商奖励给省代理
 				break;
 			case 2:
 				//市代理
 				//判断市内还是市外
 				if($similarity >= 2){
-					$zhijie_nei_bi = $rc['2_V_N_G_I'];//市代里直接对接的企业/商家/代理商
+					$zhijie_nei_bi = $rc['S_V_2_G'];//市代里直接对接的企业/商家/代理商
 				}else{
-					$yewuyuanbi = $rc['2_V_N_G_O'];
+					$yewuyuanbi = $rc['S_V_N_G'];
 				}
-				$zhijiebi[] = array('bi'=>$rc['3_V_2_G'],'agent_city'=>$this->topRegionId($referrer['agent_city']));//本省内市代理直接对接的企业/商家/代理商奖励给省代理
+//				$zhijiebi[] = array('bi'=>$rc['3_V_2_G'],'agent_city'=>$this->topRegionId($referrer['agent_city']));//本省内市代理直接对接的企业/商家/代理商奖励给省代理
 				break;
 			case 3:
 				//省代理
 				//判断省内还是县外
 				if($similarity >= 1){
-					$zhijie_nei_bi[] = $rc['3_V_N_G_I'];//省代里直接对接的企业/商家/代理商
+					$zhijie_nei_bi[] = $rc['S_V_3_G'];//省代里直接对接的企业/商家/代理商
 				}else{
-					$yewuyuanbi = $rc['3_V_N_G_O'];
+					$yewuyuanbi = $rc['S_V_N_G'];
 				}
 				break;
 		}
-		$data = $this->arrange($zhijiebi,$cost_price);
+
+//		$data = $this->arrange($zhijiebi,$cost_price);
 		if(!empty($zhijie_nei_bi)){
 			if(!empty($referrer['uid'])){
-				$data[] = array('reward'=>$cost_price * $zhijie_nei_bi/100,'uid'=>$referrer['uid'],'desc'=>'代理商提成');
+				$data[] = array('reward'=>$cost_price * $zhijie_nei_bi/100, 'username'=>$referrer['username'],'uid'=>$referrer['uid'],'desc'=>'代理商提成');
 			}
 		}else{
 			if(!empty($referrer['uid'])){
-				$data[] = array('reward'=>$cost_price * $yewuyuanbi/100,'uid'=>$referrer['uid'],'desc'=>'业务员提成');
+				$data[] = array('reward'=>$cost_price * $yewuyuanbi/100, 'username'=>$referrer['username'], 'uid'=>$referrer['uid'],'desc'=>'业务员提成');
 			}
 		}
 		return $data;
