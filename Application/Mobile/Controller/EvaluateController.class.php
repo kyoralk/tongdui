@@ -170,6 +170,7 @@ class EvaluateController extends InitController{
 		}
 	}
 	public function add(){
+        file_put_contents('Evaluate_add', print_r($_POST, true), FILE_APPEND);
 		//通用的
 		$now_time = time();
 		$anonymous = I('post.anonymous',0);
@@ -181,9 +182,23 @@ class EvaluateController extends InitController{
 		$deliverycredit = I('post.deliverycredit');
 		//产品的
 		$is_add = I('post.is_add',0);
-		$goods_id = I('post.goods_id');
-		$score = I('post.score');
-		$content = I('post.content');
+
+		if(I('post.isandroid'))
+        {
+            $goods_id=explode(",",I('post.goods_id'));
+            $score=explode(",",I('post.score'));
+            $content=explode("^~^",urldecode(I('post.content')));
+
+        }else{
+            $goods_id = I('post.goods_id');
+            $score = I('post.score');
+            $content = I('post.content');
+        }
+
+
+
+
+
 		try {
 			if($is_add != 1){
 				$this->storeE($anonymous, $order_sn, $store_id, $desccredit, $servicecredit, $deliverycredit, $now_time);

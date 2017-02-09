@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的二维码</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="/Static/Common/mui/css/mui.min.css">
+	</head>
+	<body style="background: #ffffff;">
+		<div class="mui-content" style="background: #ffffff;">
+			<ul class="mui-table-view" >
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" >
+						<img class="mui-media-object mui-pull-left" src="/Static/Common/mui/image/shuijiao.jpg" style="border-radius: 50%;">
+						<div class="mui-media-body">
+							我是:{$name}
+							<p class='mui-ellipsis'>和谐湘西·共享未来</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<div style=" width: 95%; margin: 5px auto; position: relative;">
+				<img src="/Static/Common/mui/image/share-bg.jpg" style="width: 100%;" />
+				<img src="{$img}" style="position: absolute; top: 27%; left: 54%; width:25% ;"  />
+			</div>
+			<div>
+				
+			</div>
+			
+			
+		</div>
+
+
+
+		<script src="/Static/Common/jQuery/jQuery-2.2.0.min.js"></script>
+		<script src="/Static/Common/jQuery/jquery.cookie.js"></script>
+		<script src="/Static/Common/jQuery/jquery.md5.js"></script>
+		<script src="/Static/Common/mui/js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		
+	</body>
+
+</html>

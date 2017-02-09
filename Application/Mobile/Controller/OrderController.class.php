@@ -354,7 +354,7 @@ class OrderController extends CommonController{
 	 */
 	public function confirm(){
         $amount = 0;
-		if(M('OrderInfo')->where('order_sn = "'.I('post.order_sn').'"')->setField('receipt_status',1) !== false){
+		if(M('OrderInfo')->where('order_sn = "'.I('post.order_sn').'" and receipt_status = 0 and shipping_status = 1 and pay_status = 1')->setField('receipt_status',1) !== false){
             $orderGoods = M('OrderGoods')->where('order_sn = "'.I('post.order_sn').'"')->select();
             if ($orderGoods) {
                 foreach ($orderGoods as $og) {

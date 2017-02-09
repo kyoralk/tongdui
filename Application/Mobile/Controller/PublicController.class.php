@@ -75,7 +75,7 @@ class PublicController extends InitController{
 				jsonReturn(null,'01002');
 			}
 		}else{
-			jsonReturn('','01003');
+			jsonReturn(null,'01003');
 		}
 	}
 
@@ -86,9 +86,11 @@ class PublicController extends InitController{
      */
     public  function  register()
     {
+
         $referrer_node_id=I("get.referrer_node_id");
         $referrer_id=I("get.referrer_id");
         $position=I("get.position");
+        $this->assign("isandroid",I("get.isandroid"));
         $this->assign("referrer_node_id",$referrer_node_id);
         $this->assign("referrer_id",$referrer_id);
         $this->assign("position",$position);

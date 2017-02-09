@@ -48,5 +48,17 @@ class VersionController extends CommonController
         echo M("goods")->getLastSql();
     }
 
+    public  function share_page()
+    {
+        $userinfo=M("member","ms_common_")->where(["uid"=>$this->member_info["uid"]])->find();
+        $name=$userinfo["real_name"]?$userinfo["real_name"]:$userinfo["username"];
+        if($name==$userinfo["username"])
+        {
+            $name=substr($name,0,4)."***".substr($name,8,3);
+        }
+        $this->assign("img","/Mobile/Member/promoCode/?token=".$userinfo["token"]);
+        $this->assign("name",$name);
+        $this->display("share");
+    }
 
 }
