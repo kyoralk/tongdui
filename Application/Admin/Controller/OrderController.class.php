@@ -135,9 +135,13 @@ class OrderController extends MallController{
         }
         I('get.type')?$this->assign("select",I('get.type')):$this->assign("type",0);
         $data = page(D('OrderInfo'), $condition,16,'relation','order_time desc');
+
+        $userids='';
+        $storeids="";
         if ($data['list']) {
             foreach ($data['list'] as $kk=>$l) {
-
+                $userids.=$l["uid"].",";
+                $storeids=$l["store_id"].",";
                 foreach ($l['order_goods'] as $k=>$og) {
                     $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
                     if (!$goods) {
@@ -148,7 +152,36 @@ class OrderController extends MallController{
 
                 }
             }
+            $userids=rtrim($userids,",");
+            $storeids=rtrim($storeids,",");
+            $userlist=M("member","ms_common_")->where(['uid'=>["in",$userids]])->field("uid,username")->select();
+            $storelist=M("store","ms_mall_")->where(['store_id'=>["in",$storeids]])->field("store_id,store_name")->select();
+
+            foreach ($data['list'] as $ok=>$ov) {
+                foreach ($userlist as $uv)
+                {
+                    if($ov["uid"]==$uv["uid"])
+                    {
+                        $data['list'][$ok]["username"]=$uv["username"];
+                    }
+
+                }
+                foreach ($storelist as $sv)
+                {
+                    if($ov["store_id"]==$sv["store_id"])
+                    {
+                        $data['list'][$ok]["store_name"]=$sv["store_name"];
+                    }
+
+                }
+
+
+
+
+            }
+
         }
+
         $this->assign('order_list',$data['list']);
         $this->assign('page',$data['page']);
         $this->assign('content_header',$content_header);

@@ -14,7 +14,7 @@ class PrintController extends CommonController
     function index()
     {
        // file_put_contents("c:/1.txt",json_encode($_POST));
-        file_put_contents("c:/1.txt","111111");
+       // file_put_contents("c:/1.txt","111111");
         $T = isset($_POST['T']) && trim($_POST['T']) ? trim($_POST['T']) : '';
         $F = isset($_POST['F']) && trim($_POST['F']) ? trim($_POST['F']) : '';
         $W = isset($_POST['W']) && trim($_POST['W']) ? trim($_POST['W']) : '';
