@@ -56,9 +56,30 @@ class VersionController extends CommonController
         {
             $name=substr($name,0,4)."***".substr($name,8,3);
         }
+        if($userinfo["head_photo"])
+        {
+            $photo="/Uploads/Member/".$userinfo["head_photo"];
+        }else{
+            $photo="/Uploads/Logo/ic_app.jpg";
+        }
         $this->assign("img","/Mobile/Member/promoCode/?token=".$userinfo["token"]);
+        $this->assign("photo",$photo);
         $this->assign("name",$name);
         $this->display("share");
     }
-
+    /**
+     * 支付时验证密码
+     */
+    public function check_pwd()
+    {
+        
+        $member=M("member","ms_common_")->where(["uid"=>$this->member_info["uid"]])->find();
+        $password=md5(md5(I('post.password')).$member["salt"]);
+        if($member["password"]==$password)
+        {
+            jsonReturn(nulll);
+        }else{
+            jsonReturn(nulll,"密码错误","100888");
+        }
+    }
 }

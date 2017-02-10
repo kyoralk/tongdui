@@ -363,6 +363,11 @@ class AccountController extends CommonController{
                 $data["list"][$key]["trade_fee"]=$val["trade_fee"]."（充值失败）";
 
             }
+            if($val['trade_type']==2)
+            {
+                $data["list"][$key]["trade_fee"]="-".$val["trade_fee"];//在提现上添加负号。
+            }
+
         }
 		jsonReturn($data);
 	}

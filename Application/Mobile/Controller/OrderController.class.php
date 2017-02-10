@@ -581,7 +581,7 @@ class OrderController extends CommonController{
         }
 
         $refund = D('Refund');
-        $list = $refund->relation(true)->where($where)->select();
+        $list = $refund->relation(true)->where($where)->order("refund_id desc")->select();
         //2017-02-07 liaopeng  修改图片展示
         if($list){
             $goodsids="";
