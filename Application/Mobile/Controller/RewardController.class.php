@@ -428,8 +428,6 @@ class RewardController extends CommonController{
                     }
 				}
 
-//                var_dump($res);exit;
-
 				if(!empty($res)){
 					$uid_array = array_column($res, 'uid');
 					$trade_fee_array = array_column($res, 'reward');
@@ -457,6 +455,7 @@ class RewardController extends CommonController{
 				}
 			}
 		}
+//        echo $similarity."<br>";
 
 		switch ($referrer['agent_level']){
 			case 1:
@@ -486,13 +485,13 @@ class RewardController extends CommonController{
 				//省代理
 				//判断省内还是县外
 				if($similarity >= 1){
-					$zhijie_nei_bi[] = $rc['S_V_3_G'];//省代里直接对接的企业/商家/代理商
+					$zhijie_nei_bi = $rc['S_V_3_G'];//省代里直接对接的企业/商家/代理商
 				}else{
 					$yewuyuanbi = $rc['S_V_N_G'];
 				}
 				break;
 		}
-
+//        var_dump($zhijie_nei_bi);
 //		$data = $this->arrange($zhijiebi,$cost_price);
 		if(!empty($zhijie_nei_bi)){
 			if(!empty($referrer['uid'])){
@@ -500,7 +499,7 @@ class RewardController extends CommonController{
 			}
 		}else{
 			if(!empty($referrer['uid'])){
-				$data[] = array('reward'=>$cost_price * $yewuyuanbi/100, 'username'=>$referrer['username'], 'uid'=>$referrer['uid'],'desc'=>'业务员提成');
+				$data[] = array('reward'=>$cost_price * 2/100, 'username'=>$referrer['username'], 'uid'=>$referrer['uid'],'desc'=>'业务员提成');
 			}
 		}
 		return $data;
