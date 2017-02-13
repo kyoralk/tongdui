@@ -7,4 +7,5 @@ define('WWWROOT',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");//�
 define('APP_PATH','./Application/');// 定义应用目录
 define('RUNTIME_PATH','./Runtime/');// 定义运行时目录
 define('COMMON_PATH','./Common/');
+require "./ThinkPHP/Library/Vendor/jpush/autoload.php";
 require './ThinkPHP/ThinkPHP.php';
