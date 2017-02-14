@@ -1,7 +1,7 @@
 <?php return array (
   'chuanglan' => 
   array (
-    'api_account' => 'vipyrdz_jiajun',
-    'api_password' => 'Aa123123',
+    'api_account' => '13762109871',
+    'api_password' => 'Hxwl123456',
   ),
 );
