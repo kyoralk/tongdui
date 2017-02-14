@@ -239,7 +239,6 @@ function tree_to_list($tree, $child = '_child', $order='id', &$list = array()){
  * @return string
  */
 function randstr($length = 32, $int = false ){
-	return '0000';
 	if($int){
 		$chars = '0123456789';
 	}else{

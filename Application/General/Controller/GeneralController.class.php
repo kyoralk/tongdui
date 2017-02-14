@@ -105,11 +105,14 @@ class GeneralController extends Controller{
 		if(!session('?send_time') || $now_time - session('send_time')>=60){
 			if(md5(C('SECRET_KEY').$mobile) == $sign){
 				$tmpl = C('SMS_TMPL');
+				$code = randstr(6,true);
 				switch ($id){
 					case 0:
-						$msg = str_replace('{$var}', session('sms_code',randstr(6,true)), $tmpl[$id]);
+					    session('sms_code', $code);
+						$msg = str_replace('{$var}', $code , $tmpl[$id]);
 						break;
 				}
+
 				session('send_time',time());
 				return SMS::send($mobile, $msg);
 			}else{
