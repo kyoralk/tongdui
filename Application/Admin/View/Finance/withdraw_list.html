@@ -70,7 +70,8 @@
                         <td class="table-textcenter">
                             <a class="btn btn-info btn-xs" href="{:U('Finance/drawDetail?apply_no='.$gl['apply_no'])}">编辑</a>
                             <?php if ($gl['status'] == 2){?>
-                            <a class="btn btn-info btn-xs" href="javascript:void(0);" onclick="Da('<?php  echo $gl[\'apply_no\']; ?>', this);">打款</a>
+                           <!-- <a class="btn btn-info btn-xs" href="javascript:void(0);" onclick="Da('<?php  echo $gl[\'apply_no\']; ?>', this);">打款</a>-->
+                            <a class="btn btn-info btn-xs" href="<?php echo U('Finance/finished?apply_no='.$gl['apply_no']); ?>">设置为己打款</a>
                             <?php } ?>
 
                         </td>

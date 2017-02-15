@@ -14,7 +14,7 @@ class MemberController extends CommonController{
 			jsonReturn('','01011');
 		}
 		if($this->member_info['real_name_auth']){
-			if(M('Member')->where($this->member_info['uid'])->setField('alipay_id',I('post.alipay_id'))){
+			if(M('Member')->where(["uid"=>$this->member_info['uid']])->setField('alipay_id',I('post.alipay_id'))){
 				jsonReturn();
 			}else{
 				jsonReturn('','00000');

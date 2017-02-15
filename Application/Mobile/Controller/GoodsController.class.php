@@ -53,7 +53,7 @@ class GoodsController extends InitController{
 			return S('sglist_'.$store_id);
 		}else{
 			$goods_list = D('GoodsView')->where('is_on_sale = 1 AND g.store_id = '.$store_id)->limit($limit)->order('rand()')->group('goods_id')
-			->field('goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,evaluate_count,store_id')->select();
+			->field('goods_id,goods_name,love_amount,consumption_type,gwq_extra,gwq_send,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,evaluate_count,store_id')->select();
 			S('sglist_'.$store_id,$goods_list,60);
 			return $goods_list;
 		}
@@ -66,7 +66,7 @@ class GoodsController extends InitController{
 			return S('tlglist_'.$gc_id);
 		}else{
 			$goods_list = D('GoodsView')->where('is_on_sale = 1 AND gc_id = '.$gc_id)->limit($limit)->order('rand()')->group('goods_id')
-			->field('goods_id,goods_name,market_price,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,evaluate_count,store_id')->select();
+			->field('goods_id,goods_name,market_price,consumption_type,love_amount,gwq_extra,gwq_send,shop_price,promote_price,promote_start_date,promote_end_date,save_name,save_path,evaluate_count,store_id')->select();
 			S('tlglist_'.$gc_id,$goods_list,60);
 			return $goods_list;
 		}

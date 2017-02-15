@@ -101,9 +101,9 @@ class PublicController extends InitController{
 	 * 注册
 	 */
 	public function registerDo(){
-// 		if(!$this->checkSMSCode(I('post.sms_code'))){
-// 			jsonReturn('','01011');
-// 		}
+		if(!$this->checkSMSCode(I('post.sms_code'))){
+ 			jsonReturn(null,'01011');
+ 		}
 		$username = 'u'.I('post.mobile');
 		$password = I('post.password');
 		$mobile = I('post.mobile');
@@ -146,7 +146,7 @@ class PublicController extends InitController{
 			);
 			jsonReturn($res);
 		}else{
-			jsonReturn('','01008');
+			jsonReturn(null,'01008');
 		}
 	}
 	/**

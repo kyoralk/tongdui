@@ -198,7 +198,8 @@ class FinanceController extends CommonController{
     }
 
     public static function withdraw_status() {
-        return ['1'=>'未审核', '2'=>'通过', '3'=>'驳回', '4'=>'正在打款', '5'=>'已完成'];
+       // return ['1'=>'未审核', '2'=>'通过', '3'=>'驳回', '4'=>'正在打款', '5'=>'已完成'];
+        return ['1'=>'未审核', '2'=>'通过', '3'=>'驳回', '4'=>'已完成'];
     }
 
     /**
@@ -553,5 +554,17 @@ class FinanceController extends CommonController{
 
         M("settlement","ms_mall_")->where(['id'=>I("post.id")])->save(["status"=>"3"]);
         die(json_encode(['msgcode'=>0]));
+    }
+    /**
+     * 设置为己打款 2017-04-14 liaopeng
+     */
+    public function finished()
+    {
+        if(M("apply_withdraw","ms_common_")->where(["apply_no"=>$_GET["apply_no"]])->save(["status"=>4]))
+        {
+            $this->success("设置成功",U("Finance/withdrawlist"));
+        }else{
+            $this->error("设置失败",U("Finance/withdrawlist"));
+        }
     }
 }

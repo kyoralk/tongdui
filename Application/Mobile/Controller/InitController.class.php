@@ -49,14 +49,14 @@ class InitController extends GeneralController{
 	 */
 	protected function checkMobile($mobile,$bind = false){
 		if(empty($mobile)){
-			jsonReturn('','01006');
+			jsonReturn(null,'01006');
 		}
 		$count = M('Member')->where('binary mobile = "'.$mobile.'"')->count();
 		if($bind & $count == 0){
-			jsonReturn('','01010');
+			jsonReturn(null,'01010');
 		}
 		if(!$bind &$count != 0){
-			jsonReturn('','01007');
+			jsonReturn(null,'01007');
 		}
 	}
 	/**
