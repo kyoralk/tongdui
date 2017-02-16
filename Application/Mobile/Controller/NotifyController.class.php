@@ -36,12 +36,32 @@ class NotifyController extends InitController{
 	 * 支付宝通知
 	 */
 	public function alipay(){
-		echo 'success';
+	    //liaopeng 2017-02-16 添加后台支付通知 现在平台无现金支付，仅需处理充值
+            if ($_POST['trade_status'] == 'TRADE_SUCCESS') {
+                $trade=str_replace("REC_","",$_POST["out_trade_no"]);
+                $this->recharge($trade);
+                echo 'success';
+            }else{
+                echo "fail";
+            }
 	}
 	/**
 	 * 微信通知
 	 */
 	public function wxpay(){
+        $xml = file_get_contents('php://input');
+        $xmlObj=simplexml_load_string($xml);
+        $out_trade_no=$xmlObj->out_trade_no; //订单号
+        $result_code=$xmlObj->result_code; //状态
+        if($result_code=='SUCCESS'){
+            $trade=str_replace("REC_","",$out_trade_no);
+            $this->recharge($trade);
+            echo 'SUCCESS';
+            exit;
+        }else{ //失败
+            return;
+            exit;
+        }
 		echo 'success';
 	}
 	/**

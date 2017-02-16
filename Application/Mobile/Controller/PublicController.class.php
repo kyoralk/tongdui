@@ -208,5 +208,12 @@ class PublicController extends InitController{
 	public function getset(){
 		jsonReturn($this->setting());
 	}
-	
+    /**
+     * 获取版本
+     */
+    public function check_version()
+    {
+        jsonReturn(['version'=>"1.01"],"获取成功","999998");
+    }
+
 }
