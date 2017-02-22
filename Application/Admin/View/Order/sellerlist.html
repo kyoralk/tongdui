@@ -108,6 +108,12 @@
 											<elseif condition="($ol['pay_status'] eq 1) AND ($ol['shipping_status'] eq 1) AND ($ol['receipt_status'] eq 1) "/>
 											<span class="order-status">交易成功</span>
 										</if>
+
+										<?php
+											if ($ol['refund_status']) {
+										?>
+										<span class="order-status"  style="background:#f22222;border:1px solid #f22222; margin-left:2px;margin-right:2px;display:inline;float:left;color:#fff;">已退货申请</span>
+										<?php } ?>
 									</div>
 								</td>
 							</tr>

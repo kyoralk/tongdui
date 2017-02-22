@@ -347,18 +347,50 @@ class FinanceController extends CommonController{
             $this->assign('reward_code', $recharge_num);
         }
 		$status = I('get.trade_status');
+		if($recharge_sn > 2)
+        {
+            $status=0;
+        }
 
 		if ($status !== false) {
 
 			$condition['trade_status'] = $status;
+			if(!$recharge_sn){
+			if($status==1)
+            {
+                $condition=array(
+                    'trade_type'=>["gt",3],
+                    '_complex'=>$condition,
+                    '_logic'=>'or'
+                );
+            }
+            }
+            if(!$recharge_sn) {
+                if ($status == 0) {
+                    $condition['trade_type'] = ["lt", 4];
+
+                }
+            }
+
 			$this->assign('trade_status', $status);
 		}
 
 		$data = page(M('MemberAccountLog'), $condition, 20,'view','time_start DESC','*');
+
 		$this->assign('account_types', $this->account_type());
 		$this->assign('reward_types', $this->reward_type());
 		$this->assign('trade_types', $this->trade_types());
 		$this->assign('trade_statuss', $this->trade_status());
+
+		foreach ($data["list"] as $key=>$val)
+        {
+            if($val["trade_type"]>3)
+            {
+                $data["list"][$key]["trade_status"]=1;
+            }
+        }
+
+
 		$this->assign('goods_list',$data['list']);
 		$this->assign('page',$data['page']);
 		$this->display('account_list');

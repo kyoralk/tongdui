@@ -2,7 +2,7 @@
 namespace Mobile\Controller;
 use Mobile\Controller\CommonController;
 
-class RewardController extends CommonController{
+class RewardbController extends InitController{
 	/**
 	 * 套餐包积分分配
 	 */

@@ -37,13 +37,17 @@ class NotifyController extends InitController{
 	 */
 	public function alipay(){
 	    //liaopeng 2017-02-16 添加后台支付通知 现在平台无现金支付，仅需处理充值
+        /*
+        file_put_contents("1.log", print_r($_POST,true), FILE_APPEND);
             if ($_POST['trade_status'] == 'TRADE_SUCCESS') {
                 $trade=str_replace("REC_","",$_POST["out_trade_no"]);
-                $this->recharge($trade);
+                $this->rechargeb($trade);
                 echo 'success';
             }else{
                 echo "fail";
             }
+        */
+        echo 'success';
 	}
 	/**
 	 * 微信通知
@@ -55,13 +59,14 @@ class NotifyController extends InitController{
         $result_code=$xmlObj->result_code; //状态
         if($result_code=='SUCCESS'){
             $trade=str_replace("REC_","",$out_trade_no);
-            $this->recharge($trade);
+            $this->rechargeb($trade);
             echo 'SUCCESS';
             exit;
         }else{ //失败
             return;
             exit;
         }
+
 		echo 'success';
 	}
 	/**
@@ -97,6 +102,46 @@ class NotifyController extends InitController{
 		$this->checkGive();
 		return true;
 	}
+    /**
+     * 充值 (新增后台回调充值)
+     * @param string $out_trade_no
+     */
+    private function rechargeb($out_trade_no){
+        $Log = M('MemberAccountLog',C('DB_PREFIX_C'));
+        $log_info = $Log->where('out_trade_no = "'.$out_trade_no.'"')->field('trade_code,trade_fee,uid,trade_status')->find();
+
+        if($log_info['trade_status']==0){
+
+            $M = M();
+            $M->startTrans();
+            try {
+                $Log->where('out_trade_no = "'.$out_trade_no.'"')->setField('trade_status',1);
+                M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$log_info['uid'])->save(array($log_info['trade_code'].'_FEE'=>array('exp',$log_info['trade_code'].'_FEE'.'+'.$log_info['trade_fee'])));
+            } catch (Exception $e) {
+                $M->rollback();
+                jsonReturn('','00000');
+            }
+            $M->commit();
+            $this->setMemberInfo(array('uid'=>$log_info['uid']));
+
+            if($log_info['trade_code'] == 'GWQ'){
+//				R('Reward/giveGWQ',array($log_info['trade_fee']));//充值购物券赠送购物券
+               R('Upgrade/hgxfs');//升级合格消费商
+                echo "a";
+                $reward=new RewardbController();
+                echo "b";
+                echo
+                $reward->setMemberInfo(array('uid'=>$log_info['uid']));
+                echo "c";
+                $reward->jdjs($log_info['trade_fee'],'CZGWQ');
+                echo "d";
+                $reward->heijin($log_info['trade_fee'],'CZ');
+                //   R('Reward/jdjs',array($log_info['trade_fee'],'CZGWQ'));//充值购物券送一卷通
+                //	R('Reward/heijin',array($log_info['trade_fee'],'CZ'));//赠送黑金
+            }
+        }
+
+    }
 	/**
 	 * 充值
 	 * @param string $out_trade_no
@@ -104,7 +149,9 @@ class NotifyController extends InitController{
 	private function recharge($out_trade_no){
 		$Log = M('MemberAccountLog',C('DB_PREFIX_C'));
 		$log_info = $Log->where('out_trade_no = "'.$out_trade_no.'"')->field('trade_code,trade_fee,uid,trade_status')->find();
+
 		if($log_info['trade_status']==0){
+
 			$M = M();
 			$M->startTrans();
 			try {
@@ -116,11 +163,16 @@ class NotifyController extends InitController{
 			}
 			$M->commit();
 			$this->setMemberInfo(array('uid'=>$log_info['uid']));
+
 			if($log_info['trade_code'] == 'GWQ'){
 //				R('Reward/giveGWQ',array($log_info['trade_fee']));//充值购物券赠送购物券
 				R('Upgrade/hgxfs');//升级合格消费商
-				R('Reward/jdjs',array($log_info['trade_fee'],'CZGWQ'));//充值购物券送一卷通
-				R('Reward/heijin',array($log_info['trade_fee'],'CZ'));//赠送黑金
+                //$reward=new RewardbController();
+                //$reward->setMemberInfo(array('uid'=>$log_info['uid']));
+               // $reward->jdjs($log_info['trade_fee'],'CZGWQ');
+             //   $reward->heijin($log_info['trade_fee'],'CZ');
+                R('Reward/jdjs',array($log_info['trade_fee'],'CZGWQ'));//充值购物券送一卷通
+                R('Reward/heijin',array($log_info['trade_fee'],'CZ'));//赠送黑金
 			}
 		}
 		

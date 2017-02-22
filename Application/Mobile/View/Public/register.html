@@ -31,7 +31,7 @@
 					<input type="hidden" name="referrer_node_id" id="referrer_node_id" value="{$referrer_node_id}" />
 					<div class="mui-input-row">
 						<label style="width: 80px;padding-left: 0px;padding-right: 0px; font-size:13px ; text-align: right;">手机号码：</label>
-						<input type="number" name="mobile" id="mobile" pattern="\d*" placeholder="您的手机号码">
+						<input type="number" name="mobile" id="mobile" pattern="\d*" id="mobile" placeholder="您的手机号码">
 						
 					</div>
 					<div class="mui-input-row" style="padding-left: 15px; padding-right: 10px; padding-top: 5px; height: 50px;">	
@@ -138,6 +138,7 @@
 
 									    alert("验证码不正确");
 									}else{
+										$("#mobile").attr("disabled",true);
                                         var timestamp = Date.parse(new Date())/1000;
                                        $.cookie("time",timestamp);
                                        $.cookie("issend",true);
