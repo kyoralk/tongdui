@@ -80,7 +80,16 @@ class NotifyController extends InitController{
 	 */
 	public function client(){
 		if($this->shuntByNo(I('post.out_trade_no'))){
-			jsonReturn();
+            $trade = explode('_', I('post.out_trade_no'));
+            if ($trade[0] == 'BUY') {
+                $PayTemporary = M('PayTemporary',C('DB_PREFIX_MALL'));
+                $res = $PayTemporary->where('out_trade_no = "'.$trade[1].'"')->find();
+                if ($res) {
+                    $arr = ['order_sn'=>$res['order_sn']];
+                }
+            }
+
+			jsonReturn($arr);
 		}
 	}
 	/**
