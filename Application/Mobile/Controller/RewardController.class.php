@@ -66,13 +66,14 @@ class RewardController extends CommonController{
 	 * @param string $key 配置信息的key
 	 */
 	public function jdjs($base,$key){
-        file_put_contents("33.log", $base."|".$key, FILE_APPEND);
+//        file_put_contents("33.log", $base."|".$key, FILE_APPEND);
 		$info['CZGWQ'] = '充值购物券赠送';
 		$info['XFYJT'] = '消费一卷通赠送';
 		$rc = $this->ruleConfig(4);
 		$rc = $rc[$key];
 		$uid_array = $this->getReferrer($this->member_info['uid']);
-        file_put_contents("33.log", $uid_array, FILE_APPEND);
+//        file_put_contents("33.log", $uid_array, FILE_APPEND);
+//        var_dump($rc);
 		$i = 1;
 		do{
 		    /**原来的代码
@@ -93,6 +94,9 @@ class RewardController extends CommonController{
 
 			$i++;
 		}while (!empty($uid_array[$i]));
+//		var_dump(array_values($uid_array));
+//		var_dump($trade_fee_array);
+//		exit;
 		AccountController::changeALL(array_values($uid_array), $trade_fee_array, 'YJT', 4,$desc);//分红
 
 	}
@@ -502,7 +506,7 @@ class RewardController extends CommonController{
 			}
 		}else{
 			if(!empty($referrer['uid'])){
-				$data[] = array('reward'=>$cost_price * 2/100, 'username'=>$referrer['username'], 'uid'=>$referrer['uid'],'desc'=>'业务员提成');
+				// $data[] = array('reward'=>$cost_price * 2/100, 'username'=>$referrer['username'], 'uid'=>$referrer['uid'],'desc'=>'业务员提成');
 			}
 		}
 		return $data;

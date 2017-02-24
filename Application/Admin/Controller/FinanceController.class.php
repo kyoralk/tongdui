@@ -274,7 +274,8 @@ class FinanceController extends CommonController{
         
 		// $recharge_sn = I('get.account_type');
 		// if ($recharge_sn) {
-			$condition['trade_type'] = 1;
+			$condition['trade_type'] = [1,7, 'or'];
+
 			$this->assign('account_type', 1);
 		// }
 

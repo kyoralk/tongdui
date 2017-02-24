@@ -87,7 +87,7 @@ class AccountController extends CommonController{
 	 * @param string $trade_code
 	 * @param int $trade_type
 	 */
-	private function addLog($uid, $trade_fee, $trade_code, $trade_type, $desc = '',$reward_code = '' ,$proportion = 1){
+	public function addLog($uid, $trade_fee, $trade_code, $trade_type, $desc = '',$reward_code = '' ,$proportion = 1){
 		$data = AccountController::assemblyLog($uid, $trade_fee, $trade_code, $trade_type, $desc,$reward_code,$proportion);
 		if(!empty($data['log'])){
 			if($data['bulk'] == 1){
