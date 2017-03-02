@@ -348,12 +348,18 @@ class FinanceController extends CommonController{
             $this->assign('reward_code', $recharge_num);
         }
 		$status = I('get.trade_status');
+		if (empty($status)) {
+		    if ($status !== '0') {
+		        $status = -1;
+            }
+        }
+
 		if($recharge_sn > 2)
         {
             $status=0;
         }
 
-		if ($status !== false) {
+		if ($status != '-1') {
 
 			$condition['trade_status'] = $status;
 			if(!$recharge_sn){
@@ -369,13 +375,11 @@ class FinanceController extends CommonController{
             if(!$recharge_sn) {
                 if ($status == 0) {
                     $condition['trade_type'] = ["lt", 4];
-
                 }
             }
-
-			$this->assign('trade_status', $status);
 		}
 
+        $this->assign('trade_status', $status);
 		$data = page(M('MemberAccountLog'), $condition, 20,'view','time_start DESC','*');
 
 		$this->assign('account_types', $this->account_type());

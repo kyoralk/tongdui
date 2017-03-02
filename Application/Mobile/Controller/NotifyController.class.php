@@ -54,6 +54,8 @@ class NotifyController extends InitController{
 	 */
 	public function wxpay(){
         $xml = file_get_contents('php://input');
+        @file_put_contents('wxpay_log',print_r($_POST, true), FILE_APPEND); 
+	    @file_put_contents('wxpay_log',$xml, FILE_APPEND);
         $xmlObj=simplexml_load_string($xml);
         $out_trade_no=$xmlObj->out_trade_no; //订单号
         $result_code=$xmlObj->result_code; //状态
@@ -80,16 +82,17 @@ class NotifyController extends InitController{
 	 */
 	public function client(){
 		if($this->shuntByNo(I('post.out_trade_no'))){
-            $trade = explode('_', I('post.out_trade_no'));
+            /*
+			$trade = explode('_', I('post.out_trade_no'));
             if ($trade[0] == 'BUY') {
                 $PayTemporary = M('PayTemporary',C('DB_PREFIX_MALL'));
                 $res = $PayTemporary->where('out_trade_no = "'.$trade[1].'"')->find();
                 if ($res) {
                     $arr = ['order_sn'=>$res['order_sn']];
                 }
-            }
+            }*/
 
-			jsonReturn($arr);
+			jsonReturn();
 		}
 	}
 	/**
@@ -206,75 +209,84 @@ class NotifyController extends InitController{
 			$Order = M('OrderInfo',C('DB_PREFIX_MALL'));
 			//查询符合条件的订单支付状态，并且判断，防止重复通知
 			$list = $Order->where($condition)->field('order_sn,uid')->select();
+            if ($list) {
+                $this->order_sn = array_column($list, 'order_sn');
 
-			$this->order_sn = array_column($list, 'order_sn');
+                $this->setMemberInfo(array('uid'=>$list[0]['uid']));
+                if($res['yjt']>0){
+                    AccountController::change($list[0]['uid'], $res['yjt'], 'YJT', 3,true);//减少消费的一卷通
+                }
 
-			$this->setMemberInfo(array('uid'=>$list[0]['uid']));
-			if($res['yjt']>0){
-				AccountController::change($list[0]['uid'], $res['yjt'], 'YJT', 3,true);//减少消费的一卷通
-			}
+                if($res['gwq']>0){
+                    AccountController::change($list[0]['uid'], $res['gwq'], 'GWQ', 3,true);//减少消费的购物券
+                }
 
-			if($res['gwq']>0){
-				AccountController::change($list[0]['uid'], $res['gwq'], 'GWQ', 3,true);//减少消费的购物券
-			}
+                // 判断是否有购物券商品, 购物券商品的一卷通作为充值进行九代结算
+                $_condition['order_sn'] = array('in',$this->order_sn);
+                $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where($_condition)->select();
 
-			// 判断是否有购物券商品, 购物券商品的一卷通作为充值进行九代结算
-            $_condition['order_sn'] = array('in',$this->order_sn);
-            $orderGoods = M('OrderGoods',C('DB_PREFIX_MALL'))->where($_condition)->select();
+                $otherFee = 0;
+                $totalFee = 0;
+                if ($orderGoods) {
+                    foreach ($orderGoods as $og) {
+                        $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id ='.$og['goods_id'])->find();
+                        if ($goods) {
+                            if ($goods['consumption_type'] == 3) {
 
-            $otherFee = 0;
-            $totalFee = 0;
-            if ($orderGoods) {
-                foreach ($orderGoods as $og) {
-                    $goods = M("Goods",C('DB_PREFIX_MALL'))->where('goods_id ='.$og['goods_id'])->find();
-                    if ($goods) {
-                        if ($goods['consumption_type'] == 3) {
-
-                        } else {
-                            // 计算一卷通商品用的一卷通
-                            $otherFee += $og['price'] * $og['prosum'];
+                            } else {
+                                // 计算一卷通商品用的一卷通
+                                $otherFee += $og['price'] * $og['prosum'];
+                            }
+                            $totalFee += $og['price'] * $og['prosum'];
                         }
-                        $totalFee += $og['price'] * $og['prosum'];
                     }
                 }
-            }
 
-            $shippingFee =  abs($res['yjt'] + $res['gwq'] - $totalFee);
+                $shippingFee =  abs($res['yjt'] + $res['gwq'] - $totalFee);
 
-            // 获得使用一卷通购买购物卷使用的一卷通
-            $yqtUseGWQ = $res['yjt'] -$otherFee;
-            $yqtUseGWQ = $yqtUseGWQ - $shippingFee;
-            if ($yqtUseGWQ > 0) {
-                // 充值
+                // 获得使用一卷通购买购物卷使用的一卷通
+                $yqtUseGWQ = $res['yjt'] -$otherFee;
+                $yqtUseGWQ = $yqtUseGWQ - $shippingFee;
+                if ($yqtUseGWQ > 0) {
+                    // 充值
 //                if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$list[0]['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$yqtUseGWQ))) !== false) {
                     // 增加购物卷充值记录
                     // AccountController::change($list[0]['uid'], $yqtUseGWQ, 'GWQ', 1, false, '一卷通购买自动充值购物卷');//减少消费的购物券
-                    AccountController::addLog($list[0]['uid'], $yqtUseGWQ, 'GWQ', 1,  '一卷通充值购物卷消费');
-                    AccountController::addLog($list[0]['uid'], -$yqtUseGWQ, 'GWQ', 1,  '一卷通充值购物卷消费完成');
+
+                    $_out_trade_no = AccountController::addLog($list[0]['uid'], $yqtUseGWQ, 'GWQ', 1,  '一卷通充值购物卷消费');
+                    if ($_out_trade_no) {
+                        $_log = M('MemberAccountLog',C('DB_PREFIX_C'));
+                        $_log->where('out_trade_no = "'.$_out_trade_no.'"')->setField('trade_status',1);
+                    }
+
+                    // AccountController::addLog($list[0]['uid'], -$yqtUseGWQ, 'GWQ', 1,  '一卷通充值购物卷消费完成');
                     R('Reward/jdjs',array($yqtUseGWQ,'CZGWQ'));//充值购物券送一卷通
                     R('Reward/heijin',array($yqtUseGWQ,'CZ'));//赠送黑金
                     R('Upgrade/hgxfs');//升级合格消费商
 //                }
-            }
+                }
 
 
-			if(!empty($this->order_sn)){
-				$condition['order_sn'] = array('in',$this->order_sn);
-				$Order->where($condition)->setField('pay_status',1);
+                if(!empty($this->order_sn)){
+
+                    $condition['order_sn'] = array('in',$this->order_sn);
+                    $Order->where($condition)->setField('pay_status',1);
 //				if($res['gwq']>0){ // 购物赠送购物券
-					R('Reward/sendGWQ', array($res['send_gwj'], $res['order_sn']));
+                    R('Reward/sendGWQ', array($res['send_gwj'], $res['order_sn']));
 //				}
-				R('Upgrade/hgxfs',array(true));//升级合格消费商
-				if($res['yjt']>0){
-					// R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
-                    if ($res['yjt'] - $yqtUseGWQ > 0)
-					    R('Reward/heijin',array(($res['yjt'] - $yqtUseGWQ),'XF'));//赠送黑金
-				}
+                    R('Upgrade/hgxfs',array(true));//升级合格消费商
+                    if($res['yjt']>0){
+                        // R('Reward/jdjs',array($res['yjt'],'XFYJT'));//消费一卷通送一卷通
+                        if ($res['yjt'] - $yqtUseGWQ > 0)
+                            R('Reward/heijin',array(($res['yjt'] - $yqtUseGWQ),'XF'));//赠送黑金
+                    }
 
-				R('Reward/love', array($orderGoods, $list[0]['uid'])); // 捐献一卷通和购物卷
-			}
-			$PayTemporary->where('out_trade_no = "'.$out_trade_no.'"')->setField('status',1);
-			
+                    R('Reward/love', array($orderGoods, $list[0]['uid'])); // 捐献一卷通和购物卷
+                }
+
+                $PayTemporary = M('PayTemporary',C('DB_PREFIX_MALL'));
+                $PayTemporary->where('out_trade_no = "'.$out_trade_no.'"')->setField('status',1);
+            }
 		}
 		
 	}

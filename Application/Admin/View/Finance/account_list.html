@@ -19,7 +19,7 @@
                     </select>
 
                     <select name="trade_status" class="form-control inline-block" style="width: 100px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
-                        <option value="0">交易状态</option>
+                        <option value="-1" <if condition="$trade_status eq -1">selected</if> >交易状态</option>
                         <?php foreach ($trade_statuss as $k=>$v){ ?>
                         <option value="{$k}" <if condition="$k eq $trade_status">selected</if>>{$v}</option>
                         <?php } ?>
@@ -60,11 +60,17 @@
                     <tr>
                         <td>{$gl.out_trade_no}</td>
                         <td class="table-textcenter">
-                            <?php $user = M('Member')->where('uid='.$gl['uid'])->find();
-                            if ($user)
-                            echo $user['username'];
-                            else
-                            echo $gl['uid'];
+                            <?php
+                            if ($gl['uid']) {
+                                $user = M('Member')->where('uid='.$gl['uid'])->find();
+
+                                if ($user)
+                                echo $user['username'];
+                                else
+                                echo $gl['uid'];
+                            } else {
+                                echo "空";
+                            }
                             ?>
                         </td>
 
