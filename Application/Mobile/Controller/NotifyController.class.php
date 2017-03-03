@@ -247,22 +247,29 @@ class NotifyController extends InitController{
                 // 获得使用一卷通购买购物卷使用的一卷通
                 $yqtUseGWQ = $res['yjt'] -$otherFee;
                 $yqtUseGWQ = $yqtUseGWQ - $shippingFee;
+                $secunce = true;
                 if ($yqtUseGWQ > 0) {
                     // 充值
 //                if (M('MemberAccount',C('DB_PREFIX_C'))->where('uid = '.$list[0]['uid'])->save(array('GWQ_FEE'=>array('exp','GWQ_FEE'.'+'.$yqtUseGWQ))) !== false) {
                     // 增加购物卷充值记录
                     // AccountController::change($list[0]['uid'], $yqtUseGWQ, 'GWQ', 1, false, '一卷通购买自动充值购物卷');//减少消费的购物券
 
-                    $_out_trade_no = AccountController::addLog($list[0]['uid'], $yqtUseGWQ, 'GWQ', 1,  '一卷通充值购物卷消费');
-                    if ($_out_trade_no) {
-                        $_log = M('MemberAccountLog',C('DB_PREFIX_C'));
-                        $_log->where('out_trade_no = "'.$_out_trade_no.'"')->setField('trade_status',1);
-                    }
+                    $condition['order_sn'] = array('in',$this->order_sn);
+                    $Order->where($condition)->setField('pay_status',1);
+//				if($res['gwq']>0){ // 购物赠送购物券
 
+                    R('Reward/sendGWQ', array($res['send_gwj'], $res['order_sn']));
+                    $secunce = false;
                     // AccountController::addLog($list[0]['uid'], -$yqtUseGWQ, 'GWQ', 1,  '一卷通充值购物卷消费完成');
                     R('Reward/jdjs',array($yqtUseGWQ,'CZGWQ'));//充值购物券送一卷通
                     R('Reward/heijin',array($yqtUseGWQ,'CZ'));//赠送黑金
                     R('Upgrade/hgxfs');//升级合格消费商
+                    
+                    $_out_trade_no = AccountController::addLog($list[0]['uid'], -$yqtUseGWQ, 'GWQ', 1,  '一卷通充值购物卷消费');
+                    if ($_out_trade_no) {
+                        $_log = M('MemberAccountLog',C('DB_PREFIX_C'));
+                        $_log->where('out_trade_no = "'.$_out_trade_no.'"')->setField('trade_status',1);
+                    }
 //                }
                 }
 
@@ -272,7 +279,9 @@ class NotifyController extends InitController{
                     $condition['order_sn'] = array('in',$this->order_sn);
                     $Order->where($condition)->setField('pay_status',1);
 //				if($res['gwq']>0){ // 购物赠送购物券
-                    R('Reward/sendGWQ', array($res['send_gwj'], $res['order_sn']));
+                    if ($secunce) {
+                        R('Reward/sendGWQ', array($res['send_gwj'], $res['order_sn']));
+                    }
 //				}
                     R('Upgrade/hgxfs',array(true));//升级合格消费商
                     if($res['yjt']>0){
