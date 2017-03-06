@@ -251,6 +251,17 @@ class AccountController extends CommonController{
 		$trade_code = I('post.trade_code');
 		$rc = $this->ruleConfig(1);
 		$proportion = $rc['CZ'][$trade_code];
+
+		$uid = $this->member_info['uid'];
+        if ($uid) {
+            $Log = M('MemberAccountLog',C('DB_PREFIX_C'));
+            $log_info = $Log->where('uid = "'.$uid.'" and trade_type= 1')->order('time_start desc')->find();
+            if (time() - $log_info['time_start'] < 10) {
+                $response['out_trade_no'] = '';
+                jsonReturn($response,'00000');
+            }
+        }
+
 		$out_trade_no = $this->addLog($this->member_info['uid'],I('post.trade_fee'), $trade_code, 1,'','',$proportion);
 		$response = $this->notifyURL();
 		if($out_trade_no){

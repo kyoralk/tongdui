@@ -57,6 +57,8 @@ class OrderController extends MallController{
 	 */
 	public function info(){
 		$shipping_list = M('Shipping')->where('enabled = 1')->field('shipping_name,shipping_id')->select();
+		$deliverboss_list = M("ApplyDeliver", C('DB_PREFIX_C')  )->where('apply_level=2 and status = 1')->select();
+        $this->assign('deliverboss_list',$deliverboss_list);
 		$this->assign('shipping_list',$shipping_list);
 		$info = D('OrderInfo')->relation(true)->where('order_sn = "'.I('get.order_sn').'"')->find();
 		$this->assign('oi',$info);
@@ -81,13 +83,80 @@ class OrderController extends MallController{
 				'shipping_status'=>1,
 				'shipping_id'=>I('post.shipping_id'),
 				'shipping_sn'=>I('post.shipping_sn'),
+            'deliverboss_id' =>I('post.deliverboss_id'),
 		);
+
+        if ($data['deliverboss_id']) {
+            // 创建配送单
+            $deliver = M('Deliver')->where(['order_sn' => $data['order_sn']])->find();
+            if ($deliver) {
+                if ($deliver['status'] > 2) {
+                    $this->error('配送员已取货，无法更改');
+                }
+            }
+        }
+
 		if(M('OrderInfo')->save($data)){
+
+		    if ($data['deliverboss_id']) {
+                // 创建配送单
+                if ($deliver) {
+                    $deliver['deliverboss_id'] = $data['deliverboss_id'];
+                    $deliver['shipping_time'] =  date('Y-m-d H:i:s', time());
+                    $deliver['bossget_time'] =  date('Y-m-d H:i:s', time());
+                    $deliver['status'] = 2; // 默认boss已经接受
+                    M("Deliver")->where(['order_sn' => $data['order_sn']])->save($deliver);
+                } else {
+                    $_data['deliver_sn'] = "S".time().randstr(4,true);
+                    $_data['order_sn'] = $data['order_sn'];
+                    $_data['deliverboss_id'] = $data['deliverboss_id'];
+                    $_data['shipping_time'] =  date('Y-m-d H:i:s', time());
+                    $_data['bossget_time'] =  date('Y-m-d H:i:s', time());
+                    $_data['status'] = 2; // 默认boss已经接受
+                    // 保存状态后开始结算
+                    $ordergoods = M('OrderGoods')->where(['order_sn'=>$data['order_sn']])->select();
+                    $baseFee = 5; // 待设置
+                    $addFee = 1; // 待设置
+                    $totalWeight = 0;
+                    if ($ordergoods) {
+                        foreach ($ordergoods as $og) {
+                            $goods = M("Goods")->where(['goods_id'=>$og['goods_id']])->find();
+                            if ($goods) {
+                                $totalWeight+=$goods['goods_weight'] * $og['prosum'];
+                            }
+                        }
+                    }
+
+                    if ($totalWeight > 1) {
+                        $_data['deliverboss_fee'] = $baseFee + ($totalWeight - 1) * $addFee;
+                        $_data['deliver_fee'] = $baseFee + ($totalWeight - 1) * $addFee;
+                    } else {
+                        $_data['deliverboss_fee'] = $baseFee;
+                        $_data['deliver_fee'] = $baseFee;
+                    }
+                    // 和谐物流的费用
+                    $_data['system_fee'] = 1;
+                    if (M('Deliver')->data($_data)->add()) {
+                        // 修改结算的金额
+                        $data['settlement_total'] = $data['settlement_total']
+                            - $_data['deliverboss_fee']
+                            - $_data['deliver_fee']
+                            - $_data['system_fee'];
+                        $data['settlement_total'] =  $data['settlement_total'] > 0?  $data['settlement_total']:0;
+                        $data['settlement_already'] = 0;
+                        $data['settlement_no'] = $data['settlement_total'];
+                        M('OrderInfo')->save($data);
+                    }
+                }
+            }
+
 			$this->success('发货成功');
 		}else{
 			$this->error('发货失败');
 		}
 	}
+
+
 	public function sellerlist()
     {
         $content_header = '订单列表';
@@ -174,10 +243,6 @@ class OrderController extends MallController{
                     }
 
                 }
-
-
-
-
             }
 
         }

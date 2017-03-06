@@ -17,5 +17,11 @@ class OrderInfoModel extends RelationModel{
 					'mapping_name'=>'store',
 					'mapping_fields'=>'store_id,store_name',
 			),
+            'deliver'=>array(
+                'mapping_type'=>self::HAS_ONE,
+                'class_name'=>'deliver',
+                'foreign_key'=>'order_sn',
+                'mapping_name'=>'deliver',
+            ),
 	);
 }

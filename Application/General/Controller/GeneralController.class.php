@@ -1,5 +1,6 @@
 <?php
 namespace General\Controller;
+use Mobile\Controller\OrderController;
 use Think\Controller;
 use Think\Model;
 use General\Util\SMS;
@@ -312,8 +313,9 @@ class GeneralController extends Controller{
                         }
 
                         R('Reward/agent',array($orderGoods));//代理商奖励
-
                     }
+                    // 对配送员，配送主管进行奖励
+                    OrderController::sureDeliver($order['order_sn']);
                 }
             }
         }

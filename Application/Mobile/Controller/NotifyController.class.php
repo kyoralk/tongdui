@@ -102,6 +102,14 @@ class NotifyController extends InitController{
 		$trade = explode('_', $out_trade_no);
 		switch ($trade[0]){
 			case 'REC':
+                    $uid = $this->member_info['uid'];
+                    if ($uid) {
+                        $Log = M('MemberAccountLog',C('DB_PREFIX_C'));
+                        $log_info = $Log->where('uid = "'.$uid.'" and trade_type= 1')->order('time_start desc')->find();
+                        if (time() - $log_info['time_start'] < 10) {
+                            jsonReturn('','00000');
+                        }
+                    }
 				$this->recharge($trade[1]);
 				break;
 			case 'BUY':

@@ -30,6 +30,11 @@ class StoreController extends InitController{
 		}
 		$condition['store_status'] = 1;
 		$data = appPage(M('Store'), $condition, I('get.num'), I('get.p'),'','store_sort desc','store_id,store_name,store_logo,store_banner,store_credit,praise_rate,store_desccredit,store_servicecredit,store_deliverycredit,collect_times');
+		foreach ($data['list'] as $k=>$v) {
+            $json['store_id'] = $data['list'][$k]['store_id'];
+            $json['api'] = 'store';
+            $data['list'][$k]['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
+        }
 		jsonReturn($data);
 	}
 	

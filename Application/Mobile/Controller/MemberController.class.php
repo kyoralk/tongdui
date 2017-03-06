@@ -424,4 +424,32 @@ class MemberController extends CommonController{
 
         jsonReturn($res);
     }
+
+    /**
+     * 申请配送员
+     */
+    public function applyDeliver(){
+        $data = array(
+            'apply_no'=>serialNumber(),
+            'uid'=>$this->member_info['uid'],
+            'username'=>$this->member_info['username'],
+            'mobile'=>empty(I('post.mobile')) ? $this->member_info['mobile'] : I('post.mobile'),
+            'referrer_id'=>$this->member_info['referrer_id'],
+            'apply_level'=>I('post.apply_level'),
+            'agent_province'=>I('post.agent_province'),
+            'agent_city'=>I('post.agent_city'),
+            'agent_district'=>I('post.agent_district'),
+            'address'=>I('post.address'),
+            'apply_time'=>time(),
+            'status'=>2,
+        );
+        if(empty($data['mobile'])){
+            jsonReturn('','01033');
+        }
+        if(M('ApplyDeliver')->add($data)){
+            jsonReturn();
+        }else{
+            jsonReturn('','00000');
+        }
+    }
 }

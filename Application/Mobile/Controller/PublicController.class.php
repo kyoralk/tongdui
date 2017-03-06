@@ -69,6 +69,7 @@ class PublicController extends InitController{
 						'real_name_auth'=>$res['real_name_auth'],
 						'head_photo'=>$res['head_photo'],
 						'token'=>$res['token'],
+                        'deliverboss_id' => $res['deliverboss_id'],
 				);
 				jsonReturn($data);
 			}else{

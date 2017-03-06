@@ -206,6 +206,10 @@ class GoodsController extends InitController{
         if ($data['list']) {
             foreach ($data['list'] as $k => $v) {
                 $data['list'][$k]['sales'] = $this->countSale($data['list'][$k]['goods_id']);
+                $json['goods_id'] = $data['list'][$k]['goods_id'];
+                $json['api'] = 'goods';
+                $data['list'][$k]['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
+
             }
         }
 
@@ -311,7 +315,11 @@ class GoodsController extends InitController{
 				$data['shop_price'] = $data['shop_price'] - $fee;
 				$data['shop_price'] = $data['shop_price']<0?0:$data['shop_price'];	
 			}
-		} 
+		}
+
+        $json['goods_id'] = $data['goods_id'];
+		$json['api'] = 'goods';
+		$data['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
 
 		return $data;
 	}

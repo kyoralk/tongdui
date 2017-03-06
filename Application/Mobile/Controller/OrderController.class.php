@@ -307,6 +307,78 @@ class OrderController extends CommonController{
 
 		jsonReturn($data);
 	}
+
+    // 配送主管的列表
+    public function deliverboss_list(){
+        $condition ['deliver.status'] = I('get.type');
+        $condition ['deliverboss_id'] = $this->member_info['uid'];
+        $data = appPage(D('OrderInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
+
+        if ($data['list']) {
+            foreach ($data['list'] as $kk=>$l) {
+                // 新增二维码 3-5
+                $json['order_sn'] = $l['order_sn'];
+                $json['api'] = 'order_bossthere_get';
+                $data['list'][$kk]['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
+
+                foreach ($l['order_goods'] as $k=>$og) {
+                    if ($og['spec_id']) {
+                        $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
+                        if ($spec)
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] = $spec['spec_name'];
+                        else
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    } else {
+                        $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    }
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                    if (!$goods) {
+                        $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                    }
+                    $link = "http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$goods['save_path'].$goods['save_name'];
+                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:$link;
+
+                }
+            }
+        }
+
+
+        jsonReturn($data);
+    }
+
+    // 配送员的列表
+    public function deliver_list(){
+        $condition ['deliver.status'] = I('get.type');
+        $condition ['deliverboss_id'] = $this->member_info['uid'];
+        $data = appPage(D('OrderInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
+
+        if ($data['list']) {
+            foreach ($data['list'] as $kk=>$l) {
+
+                foreach ($l['order_goods'] as $k=>$og) {
+                    if ($og['spec_id']) {
+                        $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
+                        if ($spec)
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] = $spec['spec_name'];
+                        else
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    } else {
+                        $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    }
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                    if (!$goods) {
+                        $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                    }
+                    $link = "http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$goods['save_path'].$goods['save_name'];
+                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:$link;
+
+                }
+            }
+        }
+
+        jsonReturn($data);
+    }
+
 	/**
 	 * 订单详情
 	 */
@@ -373,6 +445,8 @@ class OrderController extends CommonController{
 
                 R('Reward/agent',array($orderGoods));//代理商奖励
             }
+
+            OrderController::sureDeliver(I('post.order_sn'));
 
 			jsonReturn();
 		}else{
@@ -607,6 +681,86 @@ class OrderController extends CommonController{
 
         jsonReturn($list);
 
+    }
+
+    // 配送员到配送主管处取到货物扫码
+    public function deliverGet() {
+        $order_sn = I('post.order_sn');
+        $uid = $this->member_info['uid'];
+
+        // 检测是不是配送员
+        if ($this->member_info['deliver_level']) {
+            $deliver = M('Deliver')->where(['order_sn'=>$order_sn])->find();
+            if ($deliver) {
+                if ($deliver['status'] > 2) {
+                    jsonReturn('该单已经被取货', '00000');
+                } else {
+                    $deliver['uid'] = $uid;
+                    $deliver['get_time'] = date('Y-m-d H:i:s', time());
+                    $deliver['status'] = 3; // 配送员已收货
+                    if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
+                        jsonReturn();
+                    } else {
+                        jsonReturn('', '00000');
+                    }
+                }
+            } else {
+                jsonReturn('不存在该配送单', '00000');
+            }
+        } else {
+            jsonReturn('您还不是配送员', '00000');
+        }
+    }
+
+    public function deliverSend() {
+        $order_sn = I('post.order_sn');
+        $uid = $this->member_info['uid'];
+
+        // 检测是不是配送员
+        if ($this->member_info['deliver_level']) {
+            $deliver = M('Deliver')->where(['order_sn'=>$order_sn])->find();
+            if ($deliver && $deliver['status'] != 5) {
+
+                    $deliver['deliver_id'] = $uid;
+                    // 配送员如果没有去提货的话，只给自己分成
+                    if ($deliver['status'] != 3) {
+                        $deliver['deliverboss_id'] = '';
+                        $order = M('OrderInfo')->where(['order_sn'=>$order_sn])->find();
+                        $order['settlement_total'] = $order['settlement_total'] + $deliver['deliverboss_fee'];
+                        $order['settlement_no'] = $order['settlement_total'] + $deliver['deliverboss_fee'];
+                        M('OrderInfo')->where(['order_sn'=>$order_sn])->save($order);
+                    }
+                    $deliver['status'] = 5;
+                    if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
+                        jsonReturn();
+                    } else {
+                        jsonReturn('', '00000');
+                    }
+
+            } else {
+                jsonReturn('不存在该配送单', '00000');
+            }
+        } else {
+            jsonReturn('您还不是配送员', '00000');
+        }
+    }
+
+    // 确认收货的时候进行的物流系统结算
+    public static function sureDeliver($order_sn) {
+        $deliver = M('Deliver')->where(['order_sn'=>$order_sn])->find();
+        if ($deliver) {
+            if ($deliver['status'] == 3 || $deliver['status'] == 5) {
+                // 只发生在客户取货取货的时候
+                $deliver['status'] = 4;
+                // $deliver['finish_time'] = date('Y-m-d H:i:s', time());
+                if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
+                    if ($deliver['deliverboss_fee'])
+                        AccountController::change($deliver['deliverboss_id'], $deliver['deliverboss_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送主管奖励');
+                    if ($deliver['deliver_fee'])
+                        AccountController::change($deliver['deliver_id'], $deliver['deliver_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送员奖励');
+                }
+            }
+        }
     }
 
 }

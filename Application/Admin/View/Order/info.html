@@ -57,16 +57,30 @@
 				condition="($oi['pay_status'] eq 1) AND ($oi['shipping_status'] eq 0) AND ($oi['order_status'] eq 0) " />
 			<form class="form-horizontal"
 				action="__URL__/deliver" method="post">
+
 				<div class="form-group">
 					<label for="inputEmail3" class="col-sm-2 control-label">物流公司</label>
 					<div class="col-sm-4">
-						<select name="shipping_id" class="form-control">
+						<select name="shipping_id" class="form-control" onchange="chooseBoss(this);">
 							<volist name="shipping_list" id="vo">
 							<option value="{$vo.shipping_id}">{$vo.shipping_name}</option>
 							</volist>
 						</select>
 					</div>
 				</div>
+
+				<div class="form-group bossDiv hide">
+					<label for="inputEmail3" class="col-sm-2 control-label">配送主管</label>
+					<div class="col-sm-4">
+						<select name="deliverboss_id" class="form-control" id="deliverboss_id">
+							<option value="0">不选择物流主管</option>
+							<volist name="deliverboss_list" id="vo">
+								<option value="{$vo.uid}">{$vo.username}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+
 				<div class="form-group">
 					<label for="inputEmail3" class="col-sm-2 control-label">物流编号</label>
 					<div class="col-sm-4">
@@ -89,3 +103,14 @@
 	</div>
 </section>
 
+<script>
+	function chooseBoss(obj) {
+		if ($(obj).val() == '57') {
+			$(".bossDiv").removeClass('hide');
+			$("#deliverboss_id").attr('name', 'deliverboss_id');
+		} else {
+            $(".bossDiv").addClass('hide');
+            $("#deliverboss_id").attr('name', '');
+		}
+	}
+</script>

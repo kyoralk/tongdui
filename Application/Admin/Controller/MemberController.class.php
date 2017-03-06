@@ -212,6 +212,51 @@ class MemberController extends CommonController{
 		$this->assign('status',$condition['status']);
 		$this->display('agent_apply');
 	}
+
+    public function deliver_apply(){
+        $condition['status'] = I('get.status',2);
+        $data = page(M('ApplyDeliver'), $condition,20);
+        $this->assign('list',$data['list']);
+        $this->assign('page',$data['page']);
+        $this->assign('status',$condition['status']);
+        $this->display('deliver_apply');
+    }
+    public function deliver_examine(){
+        $data = array(
+            'join_fee'=>I('post.join_fee'),
+            'status'=>I('post.status'),
+            'examine_time'=>time(),
+        );
+        $apply_no = I('post.apply_no');
+        $ApplyAgent = M('ApplyDeliver');
+        if($ApplyAgent->where('apply_no = "'.$apply_no.'"')->save($data)){
+            $apply_info = $ApplyAgent->where('apply_no = "'.$apply_no.'"')->find();
+            if($data['status'] == 1){
+                $agent_data = array(
+                    'deliver_level'=>$apply_info['apply_level'],
+                    'deliver_province'=>$apply_info['agent_province'],
+                    'deliver_city'=>$apply_info['agent_city'],
+                    'deliver_district'=>$apply_info['agent_district'],
+                );
+                M('Member')->where('uid = '.$apply_info['uid'])->save($agent_data);
+            }
+            $this->success('审核成功');
+        }else{
+            $this->error('审核失败');
+        }
+    }
+
+    public function deliver_list() {
+        $condition['status'] = I('get.status',1);
+        $condition['apply_level'] = I('get.apply_level',1);
+        $data = page(M('ApplyDeliver'), $condition,20);
+        $this->assign('list',$data['list']);
+        $this->assign('page',$data['page']);
+        $this->assign('status',$condition['status']);
+        $this->assign('apply_level', $condition['apply_level']);
+        $this->display('deliver_apply');
+    }
+
 	//禁用或开通账户
     public function change_user_status()
     {

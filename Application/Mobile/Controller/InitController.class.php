@@ -74,7 +74,7 @@ class InitController extends GeneralController{
 	protected function notifyURL(){
 		return array(
 				'notify_alipay'=>'Notify/alipay',
-				'notify_wxpay'=>'http://www.tdsc18.com/Mobile/Notify/wxpay',
+				'notify_wxpay'=>'Notify/wxpay',
 				'notify_unionpay'=>'Notify/unionpay',
 				'notify_client'=>'Notify/client'
 		);
