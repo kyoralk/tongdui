@@ -57,7 +57,8 @@ class OrderController extends MallController{
 	 */
 	public function info(){
 		$shipping_list = M('Shipping')->where('enabled = 1')->field('shipping_name,shipping_id')->select();
-		$deliverboss_list = M("ApplyDeliver", C('DB_PREFIX_C')  )->where('apply_level=2 and status = 1')->select();
+		// 配送员和主管都可以直接被任命
+		$deliverboss_list = M("ApplyDeliver", C('DB_PREFIX_C')  )->where('status = 1')->select();
         $this->assign('deliverboss_list',$deliverboss_list);
 		$this->assign('shipping_list',$shipping_list);
 		$info = D('OrderInfo')->relation(true)->where('order_sn = "'.I('get.order_sn').'"')->find();
@@ -96,6 +97,7 @@ class OrderController extends MallController{
             }
         }
 
+        $data['deliver_status'] = 2;
 		if(M('OrderInfo')->save($data)){
 
 		    if ($data['deliverboss_id']) {

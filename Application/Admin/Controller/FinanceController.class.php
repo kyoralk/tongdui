@@ -246,8 +246,8 @@ class FinanceController extends CommonController{
         $order_sn = $withdraw['apply_no'];
 // 		$batch_fee = array_sum(array_column($settlement_list, 'settlement_no'));
         $batch_fee = $withdraw['withdraw_money']-$withdraw['withdraw_fee'];
-        //$detail_data = serialNumber().'^'.$settlement_list['bank_account_number'].'^'.$settlement_list['bank_account_name'].'^'.$batch_fee.'^'.'商家结算';
-        $detail_data = serialNumber().'^327993561@qq.com^杨帅^'.$batch_fee.'^'.'用户提现';
+        $detail_data = serialNumber().'^'.$withdraw['bank_num'].'^'.$withdraw['account_name'].'^'.$batch_fee.'^'.'商家结算';
+        //$detail_data = serialNumber().'^327993561@qq.com^杨帅^'.$batch_fee.'^'.'用户提现';
         //必填，格式：流水号1^收款方帐号1^真实姓名^付款金额1^备注说明1|流水号2^收款方帐号2^真实姓名^付款金额2^备注说明2....
         $pay_date = date('Ymd',time());
 
@@ -260,7 +260,7 @@ class FinanceController extends CommonController{
             'detail_data'=>$detail_data,
         );
         $Alipay =  new AlipayController();
-        $content =  $Alipay->send($data, 'http://tongdui.yingrongkeji.com/withdraw_trans_notify-PHP-UTF-8/notify_url.php');
+        $content =  $Alipay->send($data, 'http://www.tdsc18.com/withdraw_trans_notify-PHP-UTF-8/notify_url.php');
         $this->assign('content', $content);
         $this->display('pay');
     }

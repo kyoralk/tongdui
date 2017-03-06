@@ -283,6 +283,11 @@ class OrderController extends CommonController{
 		if ($data['list']) {
 		    foreach ($data['list'] as $kk=>$l) {
 
+		        // 加入二維碼，配送員可以掃，掃了之後就會進行狀態修改。
+                $json['order_sn'] = $l['order_sn'];
+                $json['api'] = 'order_custom_get';
+                $data['list'][$kk]['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
+
                 foreach ($l['order_goods'] as $k=>$og) {
                     if ($og['spec_id']) {
                         $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
@@ -310,7 +315,7 @@ class OrderController extends CommonController{
 
     // 配送主管的列表
     public function deliverboss_list(){
-        $condition ['deliver.status'] = I('get.type');
+        $condition ['deliver_status'] = I('get.type');
         $condition ['deliverboss_id'] = $this->member_info['uid'];
         $data = appPage(D('OrderInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
 
@@ -348,7 +353,7 @@ class OrderController extends CommonController{
 
     // 配送员的列表
     public function deliver_list(){
-        $condition ['deliver.status'] = I('get.type');
+        $condition ['deliver_status'] = I('get.type');
         $condition ['deliverboss_id'] = $this->member_info['uid'];
         $data = appPage(D('OrderInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
 
@@ -379,6 +384,44 @@ class OrderController extends CommonController{
         jsonReturn($data);
     }
 
+    /**
+     * 订单详情
+     */
+    public function deliver_info(){
+        $data = D('OrderInfo')->relation(true)->where('order_sn = "'.I('get.order_sn').'"')->find();
+
+        if ($data) {
+
+            if ($this->member_info['deliver_level'] == 2) {
+                $json['order_sn'] = $data['order_sn'];
+                $json['api'] = 'order_bossthere_get';
+                $data['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
+            }
+
+            foreach ($data['order_goods'] as $k=>$og) {
+                if ($og['spec_id']) {
+                    $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
+                    if ($spec)
+                        $data['order_goods'][$k]['spec_name'] = $spec['spec_name'];
+                    else
+                        $data['order_goods'][$k]['spec_name'] =  '';
+                } else {
+                    $data['order_goods'][$k]['spec_name'] =  '';
+
+                }
+                $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                if (!$goods) {
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                }
+                $link = "http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$goods['save_path'].$goods['save_name'];
+
+                $data['order_goods'][$k]['goods_img'] =  $data['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['order_goods'][$k]['goods_img']:$link;
+            }
+
+        }
+        jsonReturn($data);
+    }
+
 	/**
 	 * 订单详情
 	 */
@@ -386,6 +429,10 @@ class OrderController extends CommonController{
 		$data = D('OrderInfo')->relation(true)->where('order_sn = "'.I('get.order_sn').'"')->find();
 
         if ($data) {
+
+            $json['order_sn'] = $data['order_sn'];
+            $json['api'] = 'order_custom_get';
+            $data['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
 
             foreach ($data['order_goods'] as $k=>$og) {
                 if ($og['spec_id']) {
@@ -699,6 +746,7 @@ class OrderController extends CommonController{
                     $deliver['get_time'] = date('Y-m-d H:i:s', time());
                     $deliver['status'] = 3; // 配送员已收货
                     if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
+                        M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>3]);
                         jsonReturn();
                     } else {
                         jsonReturn('', '00000');
@@ -712,6 +760,9 @@ class OrderController extends CommonController{
         }
     }
 
+    /**
+     * 配送員到客戶那掃碼確認
+     */
     public function deliverSend() {
         $order_sn = I('post.order_sn');
         $uid = $this->member_info['uid'];
@@ -732,13 +783,14 @@ class OrderController extends CommonController{
                     }
                     $deliver['status'] = 5;
                     if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
+                        M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>5]);
                         jsonReturn();
                     } else {
                         jsonReturn('', '00000');
                     }
 
             } else {
-                jsonReturn('不存在该配送单', '00000');
+                jsonReturn('请勿重复扫码', '00000');
             }
         } else {
             jsonReturn('您还不是配送员', '00000');
@@ -754,6 +806,7 @@ class OrderController extends CommonController{
                 $deliver['status'] = 4;
                 // $deliver['finish_time'] = date('Y-m-d H:i:s', time());
                 if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
+                    M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>4]);
                     if ($deliver['deliverboss_fee'])
                         AccountController::change($deliver['deliverboss_id'], $deliver['deliverboss_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送主管奖励');
                     if ($deliver['deliver_fee'])

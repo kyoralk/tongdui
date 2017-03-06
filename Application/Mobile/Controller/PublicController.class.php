@@ -66,10 +66,11 @@ class PublicController extends InitController{
 						'username'=>$res['username'],
 						'mobile'=>$res['mobile'],
 						'rank'=>$res['rank'],
+                        'real_name'=>$res['real_name'],
 						'real_name_auth'=>$res['real_name_auth'],
 						'head_photo'=>$res['head_photo'],
 						'token'=>$res['token'],
-                        'deliverboss_id' => $res['deliverboss_id'],
+                        'deliver_level' => $res['deliver_level'],
 				);
 				jsonReturn($data);
 			}else{

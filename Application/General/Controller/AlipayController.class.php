@@ -29,7 +29,7 @@ class AlipayController extends Alipay{
 	public function send($data, $notify_url=""){
 		$this->setConfig();
 		//服务器异步通知页面路径
-		$notify_url = $notify_url?$notify_url:"http://tongdui.hulianwangdai.com/batch_trans_notify-PHP-UTF-8/notify_url.php";
+		$notify_url = $notify_url?$notify_url:"http://www.tdsc18.com/batch_trans_notify-PHP-UTF-8/notify_url.php";
 		//构造要请求的参数数组，无需改动
 		$parameter = array(
 				'service' => 'batch_trans_notify',

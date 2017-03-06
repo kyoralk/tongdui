@@ -83,7 +83,7 @@ class RewardbController extends InitController{
             /**增加对非合格消纲商的过滤*/
             $is_hzs=M('Member',C('DB_PREFIX_C'))->where(["uid"=>$uid_array[$i]])->field("rank")->find();
             if($is_hzs["rank"]>1){
-                $yjt = $base * $rc['D'.$i][0]/100 * $rc['D'.$i][1]/100 * $rc['D'.$i][2]/100;
+                $yjt = $base * $rc['D'.$i][0]/100 * $rc['D'.$i][1]/100 * $rc['D'.$i][2]/100 * 95 / 100;
                 $trade_fee_array[] = $yjt;
                 $desc[] = $info[$key].$yjt.'一卷通';
             }else{
