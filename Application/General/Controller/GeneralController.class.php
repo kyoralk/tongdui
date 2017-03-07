@@ -292,6 +292,10 @@ class GeneralController extends Controller{
     public function autosure() {
         $set = M('Setting',C('DB_PREFIX_C'))->where('item_key = "autoday" ')->find();
         $day = $set['item_value'] * 86400;
+        // 不允許空設置，否則所有訂單都是收穫訂單
+        if (empty($day))
+            return false;
+
         $orders = M("OrderInfo", C('DB_PREFIX_MALL'))->where('order_time <= '.(time() - $day).' and receipt_status != 1 and shipping_status = 1 and pay_status = 1 and refund_status !=1 ')->select();
         $amount = 0;
         if ($orders) {

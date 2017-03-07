@@ -353,8 +353,7 @@ class OrderController extends CommonController{
 
     // 配送员的列表
     public function deliver_list(){
-        $condition ['deliver_status'] = I('get.type');
-        $condition ['deliverboss_id'] = $this->member_info['uid'];
+        $condition = 'deliver_status ='.I('get.type').' and (deliver_id = '.$this->member_info['uid'].' or deliverboss_id = '.$this->member_info['uid'].')';
         $data = appPage(D('OrderInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
 
         if ($data['list']) {
@@ -746,7 +745,7 @@ class OrderController extends CommonController{
                     $deliver['get_time'] = date('Y-m-d H:i:s', time());
                     $deliver['status'] = 3; // 配送员已收货
                     if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
-                        M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>3]);
+                        M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>3, 'deliver_id'=>$uid]);
                         jsonReturn();
                     } else {
                         jsonReturn('', '00000');
@@ -775,7 +774,9 @@ class OrderController extends CommonController{
                     $deliver['deliver_id'] = $uid;
                     // 配送员如果没有去提货的话，只给自己分成
                     if ($deliver['status'] != 3) {
-                        $deliver['deliverboss_id'] = '';
+                        if ($deliver['deliverboss_id'] != $deliver['deliver_id']) {
+                            $deliver['deliverboss_id'] = '';
+                        }
                         $order = M('OrderInfo')->where(['order_sn'=>$order_sn])->find();
                         $order['settlement_total'] = $order['settlement_total'] + $deliver['deliverboss_fee'];
                         $order['settlement_no'] = $order['settlement_total'] + $deliver['deliverboss_fee'];
@@ -807,6 +808,12 @@ class OrderController extends CommonController{
                 // $deliver['finish_time'] = date('Y-m-d H:i:s', time());
                 if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
                     M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>4]);
+                    if ($deliver['deliver_id'] == '0')
+                        $deliver['deliver_id'] = $deliver['deliveboss_id'];
+
+                    if ($deliver['deliveboss_id'] == '0')
+                        $deliver['deliveboss_id'] = $deliver['deliver_id'];
+
                     if ($deliver['deliverboss_fee'])
                         AccountController::change($deliver['deliverboss_id'], $deliver['deliverboss_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送主管奖励');
                     if ($deliver['deliver_fee'])

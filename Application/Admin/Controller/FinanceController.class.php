@@ -432,7 +432,7 @@ class FinanceController extends CommonController{
 				$type = I('post.type');
 				$minus = (I('post.htype')==1)?true:false;
 
-				AccountController::change($user['uid'], $amount, $type, 7, $minus, '平台调整操作');
+				AccountController::change($user['uid'], $amount, $type, 7, $minus, '福利');
 				$this->success('操作成功');
 			}
 		}
@@ -450,7 +450,7 @@ class FinanceController extends CommonController{
                 $type = I('post.type');
                 $minus = (I('post.htype')==1)?true:false;
 
-                AccountController::change($user['uid'], $amount, $type, 7, $minus, '平台调整操作');
+                AccountController::change($user['uid'], $amount, $type, 7, $minus, '福利');
                 $this->success('操作成功',U('Member/memberList','rank='.I('get.rank')));
             }
         }else{

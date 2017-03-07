@@ -54,7 +54,7 @@ class NotifyController extends InitController{
 	 */
 	public function wxpay(){
         $xml = file_get_contents('php://input');
-        @file_put_contents('wxpay_log',print_r($_POST, true), FILE_APPEND); 
+        @file_put_contents('wxpay_log_arr',print_r($_REQUEST, true), FILE_APPEND);
 	    @file_put_contents('wxpay_log',$xml, FILE_APPEND);
         $xmlObj=simplexml_load_string($xml);
         $out_trade_no=$xmlObj->out_trade_no; //订单号
@@ -68,8 +68,6 @@ class NotifyController extends InitController{
             return;
             exit;
         }
-
-		echo 'success';
 	}
 	/**
 	 * 银联通知
