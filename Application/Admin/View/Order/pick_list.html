@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="/Static/Seller/Css/seller_center.css">
 <link rel="stylesheet" href="/Static/Seller/Css/olist.css">
+<link rel="stylesheet" href="/Static/Common/layer/skin/layer.css">
+<script src="/Static/Common/layer/layer.js"></script>
 <div class="main-content" id="mainContent">
 	<section class="content-header">
 		<div class="row">
@@ -102,7 +104,7 @@
 										<?php
 											if ($ol['pick_status'] == 1) {
 											?>
-										<a href="javascript:void(0);" class="a_btn orangebut" style="color:#fff;">
+										<a href="javascript:void(0);" class="a_btn orangebut" style="color:#fff;" data-id="{:U('Order/pickcode?pick_sn='.$ol['pick_sn'])}" onclick="callForScan(this);">
 											扫描提货
 										</a>
 										<?php
@@ -127,3 +129,32 @@
 		</ul>
 	</div>
 </div>
+
+<style>
+	.none {
+		display: none;
+	}
+</style>
+<div id="tong" class="none" ><img src=""></div>
+
+<script>
+	function callForScan(obj) {
+
+        $.ajax({
+			type: 'get',
+			url: $(obj).attr('data-id'),
+			success: function(msg) {
+			    $("#tong img").attr('src', msg);
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: '300px',
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shadeClose: true,
+                    content: $('#tong')
+                });
+			}
+		});
+	}
+</script>

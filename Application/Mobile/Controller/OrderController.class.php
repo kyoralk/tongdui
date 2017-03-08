@@ -783,6 +783,7 @@ class OrderController extends CommonController{
                         M('OrderInfo')->where(['order_sn'=>$order_sn])->save($order);
                     }
                     $deliver['status'] = 5;
+                    $deliver['finish_time'] = date('Y-m-d H:i:s', time());
                     if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
                         M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>5]);
                         jsonReturn();
@@ -808,6 +809,7 @@ class OrderController extends CommonController{
                 // $deliver['finish_time'] = date('Y-m-d H:i:s', time());
                 if (M("Deliver")->where(['order_sn'=>$order_sn])->save($deliver)) {
                     M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>4]);
+
                     if ($deliver['deliver_id'] == '0')
                         $deliver['deliver_id'] = $deliver['deliveboss_id'];
 
@@ -823,16 +825,73 @@ class OrderController extends CommonController{
                     // 生成提货单
                     $order = M("OrderInfo")->where(['order_sn'=>$order_sn])->find();
                     if ($order) {
-                        // 分配给主管或者配送员
-                        $orderGoods = M("OrderGoods")->where(['order_sn'=>$order_sn])->select();
-                        $order['order_sn'] = time().randstr(4,true);
-                        $user = M("Member")->where(['uid'=>$deliver['deliveboss_id']])->find();
-                        $order['consignee'] = $user['real_name'];
+                        $order['pick_sn'] = 'T'.time().randstr(4,true);
+                        $store = M('Store')->where(['store_id'=>$order['store_id']])->find();
+                        $order['address'] = $store['company_address'];
+                        $deliverboss = M("Member")->where(['uid'=>$deliver['deliveboss_id']])->find();
+                        $order['consignee'] = $deliverboss['real_name'];
+                        $order['mobile'] = $deliverboss['mobile'];
+                        $order['pick_uid'] = $deliverboss['uid'];
+                        $order['pick_status'] = 1;
+                        $order['pick_create_time'] = date('Y-m-d H:i:s', time());
+                        M("PickInfo")->data($order)->add();
                     }
+                }
+            }
+        }
+    }
+
+    // 配送员扫码提货
+    public function pick() {
+        $pick_sn = I('post.pick_sn');
+        $pick = M("PickInfo")->where(['pick_sn'=>$pick_sn])->find();
+        if ($pick) {
+            $pick['pick_time'] =  date('Y-m-d H:i:s', time());
+            $pick['pick_status'] = 2;
+            if (M("PickInfo")->where(['pick_sn'=>$pick_sn])->save($pick)) {
+                jsonReturn();
+            } else {
+                jsonReturn('', '00000');
+            }
+        } else {
+            jsonReturn('没有该配送单', '00000');
+        }
+    }
+
+    /**
+     * 前台调用的提货单列表
+     */
+    public function pick_list() {
+        $condition ['pick_status'] = I('get.type');
+        $condition ['pick_uid'] = $this->member_info['uid'];
+        $data = appPage(D('PickInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
+
+        if ($data['list']) {
+            foreach ($data['list'] as $kk=>$l) {
+                foreach ($l['order_goods'] as $k=>$og) {
+                    if ($og['spec_id']) {
+                        $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
+                        if ($spec)
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] = $spec['spec_name'];
+                        else
+                            $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    } else {
+                        $data['list'][$kk]['order_goods'][$k]['spec_name'] =  '';
+                    }
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                    if (!$goods) {
+                        $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                    }
+                    $link = "http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$goods['save_path'].$goods['save_name'];
+                    $data['list'][$kk]['order_goods'][$k]['goods_img'] =  $data['list'][$kk]['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['list'][$kk]['order_goods'][$k]['goods_img']:$link;
 
                 }
             }
         }
+
+
+        jsonReturn($data);
+
     }
 
 }
