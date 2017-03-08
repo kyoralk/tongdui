@@ -440,6 +440,7 @@ class MemberController extends CommonController{
             'agent_city'=>I('post.agent_city'),
             'agent_district'=>I('post.agent_district'),
             'address'=>I('post.address'),
+            'real_name'=>I('post.real_name'),
             'apply_time'=>time(),
             'status'=>2,
         );

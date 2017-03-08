@@ -818,6 +818,18 @@ class OrderController extends CommonController{
                         AccountController::change($deliver['deliverboss_id'], $deliver['deliverboss_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送主管奖励');
                     if ($deliver['deliver_fee'])
                         AccountController::change($deliver['deliver_id'], $deliver['deliver_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送员奖励');
+
+
+                    // 生成提货单
+                    $order = M("OrderInfo")->where(['order_sn'=>$order_sn])->find();
+                    if ($order) {
+                        // 分配给主管或者配送员
+                        $orderGoods = M("OrderGoods")->where(['order_sn'=>$order_sn])->select();
+                        $order['order_sn'] = time().randstr(4,true);
+                        $user = M("Member")->where(['uid'=>$deliver['deliveboss_id']])->find();
+                        $order['consignee'] = $user['real_name'];
+                    }
+
                 }
             }
         }
