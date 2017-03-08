@@ -1,0 +1,129 @@
+<link rel="stylesheet" href="/Static/Seller/Css/seller_center.css">
+<link rel="stylesheet" href="/Static/Seller/Css/olist.css">
+<div class="main-content" id="mainContent">
+	<section class="content-header">
+		<div class="row">
+			<div class="col-md-8">
+				<form action="{:U('Order/pick_list')}" method="get">
+
+					<h4><small>提货单列表</small></h4>
+					<div class="form-group">
+						<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+						<select name="type" class="form-control inline-block" style="width: 150px; height:30px; float: left;border-color: #d2d6de;font-size:12px;border-radius:3px;">
+							<option value="0">订单状态</option>
+							<option value="1" <if condition="$select eq 1">selected</if>>未提货</option>
+							<option value="2" <if condition="$select eq 2">selected</if>>已提货</option>
+						</select>
+						</div>
+						<div class="input-group input-group-sm" style="margin-left:5px;width: 200px;display: inline-flex;">
+							<input class="form-control" type="text" name="order_sn" value="{$order_sn}" placeholder="订单号">
+						</div>
+						<button type="submit" class="btn btn-info ">搜索</button>
+					</div>
+				</form>
+			</div>
+
+
+		</div>
+	</section>
+
+	<div class="uc-order-list-box">
+		<ul class="uc-order-detail-list">
+			<empty name="order_list">
+				<li>
+					<table>
+						<tbody>
+						<tr>
+							<td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+						</tr>
+						</tbody>
+					</table>
+				</li>
+				<else/>
+				<volist name="order_list" id="ol">
+					<li class="uc-order-detail-item">
+						<table class="order-detail-table">
+							<thead>
+							<tr>
+								<th colspan="4" class="column-info column-t">
+									<div class="column-content">
+										提货单号：{$ol.pick_sn}<span class="sep">|</span>
+										订单号：{$ol.order_sn}<span class="sep">|
+									</span>提货人：{$ol.consignee}<span class="sep">|
+									</span>联系电话：{$ol.mobile}<span class="sep">|
+									</span>商家：{$ol.store_name}<span class="sep">|
+									</span>提货地址：{$ol.address}
+									</div>
+								</th>
+								<th class="column-info column-t">
+									<div class="operates">
+										<if condition="($ol['pay_status'] eq 0) AND ($ol['shipping_status'] eq 0)">
+											<a title="删除" href="{:U('Order/delete?order_sn='.$ol['order_sn'])}"class="del">删除</a>
+										</if>
+									</div>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td class="column-detail column-l">
+									<ul class="order-goods-list">
+										<volist name="ol.order_goods" id="goods" key="gg">
+											<li <if condition="$gg eq 1">class="first"</if>>
+											<a href="javascript:;" target="_blank">
+												<img alt="{$ol.lineTitle}"  src="{$goods.goods_img}" class="goods-thumb">
+											</a>
+											<div class="desc"style="width:400px;">
+												<p class="baobei-name"> <a href="javascript:void(0);" target="_blank">{$goods.goods_name}
+													<?php
+											 if ($goods['spec_id']) { ?>
+													<b class="attr-name">【<?php
+														$spec = M("GoodsSpec")->where('spec_id ='.$goods['spec_id'])->find();
+														if ($spec) {
+														echo str_replace("\r\n", "", $spec['spec_name']);
+														}
+														?>】</b>
+													<?php } ?>
+												</a> </p>
+											</div>
+											<div class="desc" style="width:300px;margin-left: 20px;height:80px">
+												<i class="special-num">顾客购买单价：{$goods.price}</i><br>
+												<i class="special-num">提货数量：{$goods.prosum}</i><br>
+											</div>
+											</li>
+										</volist>
+									</ul>
+								</td>
+								<td class="column-price"></td>
+								<td class="column-price"></td>
+								<td class="column-action column-r">
+									<div class="order-info order-action">
+
+										<?php
+											if ($ol['pick_status'] == 1) {
+											?>
+										<a href="javascript:void(0);" class="a_btn orangebut" style="color:#fff;">
+											扫描提货
+										</a>
+										<?php
+											} else {
+										?>
+										已提货
+										<?php } ?>
+
+									</div>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</li>
+				</volist>
+			</empty>
+		</ul>
+	</div>
+	<div class="g-pagination">
+		<ul>
+			{$page}
+		</ul>
+	</div>
+</div>
