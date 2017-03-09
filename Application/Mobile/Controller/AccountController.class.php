@@ -372,7 +372,7 @@ class AccountController extends CommonController{
             $data['zcz'] = empty($zcz) ? '0' : $zcz;
 			$data['ztx'] = empty($ztx) ? '0' : $ztx;
 			$data['zhd'] = empty($zhd) ? '0' : $zhd;
-			$data['dtt'] = empty($zhd) ? '0' : $dtt;
+			$data['dtt'] = empty($dtt) ? '0' : $dtt;
 		}
 		foreach($data["list"] as $key=>$val)
         {

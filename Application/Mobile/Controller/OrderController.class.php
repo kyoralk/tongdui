@@ -816,11 +816,11 @@ class OrderController extends CommonController{
                     if ($deliver['deliveboss_id'] == '0')
                         $deliver['deliveboss_id'] = $deliver['deliver_id'];
 
-                    if ($deliver['deliverboss_fee'])
+                    $deliverboss = M("Member", C('DB_PREFIX_C'))->where(['uid'=>$deliver['deliveboss_id']])->find();
+                    if ($deliver['deliverboss_fee'] && $deliverboss['deliver_level'] == 2)
                         AccountController::change($deliver['deliverboss_id'], $deliver['deliverboss_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送主管奖励');
                     if ($deliver['deliver_fee'])
                         AccountController::change($deliver['deliver_id'], $deliver['deliver_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送员奖励');
-
 
                     // 生成提货单
                     $order = M("OrderInfo")->where(['order_sn'=>$order_sn])->find();
@@ -828,7 +828,6 @@ class OrderController extends CommonController{
                         $order['pick_sn'] = 'T'.time().randstr(4,true);
                         $store = M('Store')->where(['store_id'=>$order['store_id']])->find();
                         $order['address'] = $store['company_address'];
-                        $deliverboss = M("Member")->where(['uid'=>$deliver['deliveboss_id']])->find();
                         $order['consignee'] = $deliverboss['real_name'];
                         $order['mobile'] = $deliverboss['mobile'];
                         $order['pick_uid'] = $deliverboss['uid'];
@@ -840,6 +839,27 @@ class OrderController extends CommonController{
             }
         }
     }
+
+    // 测试
+    public function test() {
+        $order_sn = I('post.order_sn');
+        $deliver = M('Deliver')->where(['order_sn'=>$order_sn])->find();
+        // 生成提货单
+        $order = M("OrderInfo")->where(['order_sn'=>$order_sn])->find();
+        if ($order) {
+            $order['pick_sn'] = 'T'.time().randstr(4,true);
+            $store = M('Store')->where(['store_id'=>$order['store_id']])->find();
+            $order['address'] = $store['company_address'];
+            $deliverboss = M("Member", C('DB_PREFIX_C'))->where(['uid'=>$deliver['deliveboss_id']])->find();
+            $order['consignee'] = $deliverboss['real_name'];
+            $order['mobile'] = $deliverboss['mobile'];
+            $order['pick_uid'] = $deliverboss['uid'];
+            $order['pick_status'] = 1;
+            $order['pick_create_time'] = date('Y-m-d H:i:s', time());
+            M("PickInfo")->data($order)->add();
+        }
+    }
+
 
     // 配送员扫码提货
     public function pick() {
@@ -893,6 +913,60 @@ class OrderController extends CommonController{
 
         jsonReturn($data);
 
+    }
+
+    /**
+     * 大桶水模式扫码之后反馈
+     * 扫码模式为api:water_send | water_sn:XXXXXXXXX
+     */
+    public function waterSend() {
+        $water_sn = I('post.water_sn');
+        $water = M('Water', C("DB_PREFIX_MALL"))->where(['water_sn'=>$water_sn])->find();
+        if ($water && $water['status'] == 1) {
+            $water['uid'] = $this->member_info['uid'];
+            $water['status'] = 2;
+            $water['finish_time'] = date('Y-m-d H:i:s', time());
+            $goods = M("Goods", C("DB_PREFIX_MALL"))->where(['goods_id'=>$water['goods_id']])->find();
+            if (M("Water", C("DB_PREFIX_MALL"))->where(['water_sn'=>$water_sn])->save($water) !== false) {
+                AccountController::change($water['uid'], $goods['water_fee'] , 'YJT', 8, false, "运费一卷通结算：".$water_sn.', 配送员奖励');
+                jsonReturn();
+            } else {
+                jsonReturn('操作失败', '00000');
+            }
+        } else {
+            jsonReturn('无此单号或已作废', '00000');
+        }
+    }
+
+    /**
+     * 显示提货单详情
+     */
+    public function pick_info(){
+        $data = D('PickInfo')->relation(true)->where('pick_sn = "'.I('post.pick_sn').'"')->find();
+
+        if ($data) {
+            foreach ($data['order_goods'] as $k=>$og) {
+                if ($og['spec_id']) {
+                    $spec = M("GoodsSpec")->where("spec_id =".$og['spec_id'])->find();
+                    if ($spec)
+                        $data['order_goods'][$k]['spec_name'] = $spec['spec_name'];
+                    else
+                        $data['order_goods'][$k]['spec_name'] =  '';
+                } else {
+                    $data['order_goods'][$k]['spec_name'] =  '';
+
+                }
+                $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'].' and is_cover = 1')->find();
+                if (!$goods) {
+                    $goods = M('GoodsImg')->where('goods_id ='.$og['goods_id'])->find();
+                }
+                $link = "http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$goods['save_path'].$goods['save_name'];
+
+                $data['order_goods'][$k]['goods_img'] =  $data['order_goods'][$k]['goods_img']?"http://".$_SERVER['HTTP_HOST'].'/Uploads/'.$data['order_goods'][$k]['goods_img']:$link;
+            }
+        }
+
+        jsonReturn($data);
     }
 
 }

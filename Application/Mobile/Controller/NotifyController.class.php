@@ -244,6 +244,10 @@ class NotifyController extends InitController{
                                 $otherFee += $og['price'] * $og['prosum'];
                             }
                             $totalFee += $og['price'] * $og['prosum'];
+
+                            if ($goods['water_mode']) {
+                                $this->makeWater($order_sn, $goods['goods_id'], $goods['water_num']?$goods['water_num']:10);
+                            }
                         }
                     }
                 }
@@ -364,7 +368,6 @@ class NotifyController extends InitController{
 					// R('Reward/agent',array($order_goods));//代理商奖励
 					R('Love/grantgoods',array($condition));//捐产品
 				}
-				
 			}
 
 		}
@@ -372,5 +375,19 @@ class NotifyController extends InitController{
 
 	public function test() {
 	    $this->buy(I('get.sn'));
+    }
+
+    public function makeWater($order_sn, $goods_id, $num=10) {
+        // 生成10张水票
+        $record = M("Water", C('DB_PREFIX_MALL'))->where(['order_sn'=>$order_sn])->select();
+        $num = $num - count($record); // 保证数量一致, 默认是没有的
+        for ($i=1 ; $i<=$num; $i++) {
+            $data['water_sn'] = 'W'.time().rand(100, 999);
+            $data['order_sn'] = $order_sn;
+            $data['goods_id'] = $goods_id;
+            $data['create_time'] = date('Y-m-d H:i:s', time());
+            $data['status'] = 1;
+            M('Water', C('DB_PREFIX_MALL'))->data($data)->add();
+        }
     }
 }

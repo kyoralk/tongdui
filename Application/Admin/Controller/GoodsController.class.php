@@ -530,6 +530,7 @@ class GoodsController extends MallController{
 
         $data['water_mode'] = empty(I('post.water_mode')) ? 0 : I('post.water_mode');
         $data['water_fee'] = floatval(I('post.water_fee'));
+        $data['water_num'] = intval(I('post.water_num'));
 
         $data['stock'] = empty(I('post.stock')) ? 0 : I('post.stock');//库存
         $data['is_cash'] = isset($_POST['is_cash']) ? 1: 0;//是否允许现金

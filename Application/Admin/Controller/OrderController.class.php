@@ -235,7 +235,7 @@ class OrderController extends MallController{
                         $_data['deliver_fee'] = $baseFee;
                     }
                     // 主管可以拿两次费用，而配送员自己只能拿一次
-                    $person = M('Member')->where(['UserId'=>$data['deliverboss_id']])->find();
+                    $person = M('Member', "ms_common_")->where(['UserId'=>$data['deliverboss_id']])->find();
                     if ($person['deliver_level'] == 1) {
                         $_data['deliverboss_fee'] = 0;
                     }
@@ -341,6 +341,17 @@ class OrderController extends MallController{
         $json['api'] = 'pick_order';
         $res = 'http://qr.liantu.com/api.php?text='.json_encode($json);
         echo $res;
+    }
+
+    public function deliver_water() {
+        $data = page(M('Water'), $condition,20);
+        $this->assign('list',$data['list']);
+        $this->assign('page',$data['page']);
+        $this->display('deliver_water');
+    }
+
+    public function printWater() {
+        echo '等待格式设计中...';
     }
 
 }

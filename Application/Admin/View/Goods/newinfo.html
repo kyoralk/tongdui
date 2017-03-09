@@ -85,7 +85,9 @@
                     <div class="col-sm-4" style="height: 74px;">
                         <input type="checkbox" <?php echo $goods_info['water_mode']?"checked":""; ?>  value="1" name="water_mode" id="water_mode" onclick="checkWater(this);" >
                         <b for="water_mode">开启</b>
-                        <input class="form-control <?php echo $goods_info['water_mode']?'':'hide'; ?>" id="water_fee" placeholder="" name="water_fee" type="text" value="<?php echo $goods_info['water_fee']?$goods_info['water_fee']:'0.00'; ?>">
+                        <input class="form-control <?php echo $goods_info['water_mode']?'':'hide'; ?>" id="water_fee" placeholder="单件配送费用" name="water_fee" type="text" value="<?php echo $goods_info['water_fee']?$goods_info['water_fee']:'0.00'; ?>">
+                        <input class="form-control <?php echo $goods_info['water_mode']?'':'hide'; ?>" id="water_num" placeholder="一次打印数量" name="water_num" type="text" value="<?php echo $goods_info['water_num']?$goods_info['water_num']:'10'; ?>" >
+
                         <p class="hint">开启之后请设置对应单件配送费用(数字)，直接结算给配送员</p>
                     </div>
                 </div>
@@ -97,8 +99,10 @@
                     function checkWater(obj) {
                         if ($(obj).prop('checked') == true) {
                             $("#water_fee").removeClass('hide');
+                            $("#water_num").removeClass('hide');
                         } else {
                             $("#water_fee").addClass('hide');
+                            $("#water_num").addClass('hide');
                         }
                     }
 
