@@ -528,6 +528,9 @@ class GoodsController extends MallController{
         $data['give_integral'] = I('post.give_integral');//赠送多少积分
         $data['promote_price'] = empty(I('post.promote_price')) ? 0 : I('post.promote_price');//促销价格
 
+        $data['water_mode'] = empty(I('post.water_mode')) ? 0 : I('post.water_mode');
+        $data['water_fee'] = floatval(I('post.water_fee'));
+
         $data['stock'] = empty(I('post.stock')) ? 0 : I('post.stock');//库存
         $data['is_cash'] = isset($_POST['is_cash']) ? 1: 0;//是否允许现金
         $data['is_yqt'] =  isset($_POST['is_yqt']) ? 1: 0;//是否允许一券通

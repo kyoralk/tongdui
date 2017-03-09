@@ -90,11 +90,11 @@ class MemberController extends CommonController{
 			switch (I('post.type')){
 				case 'BASE64':
 					$res = Image::createImg(array(I('post.head_photo')),'MEMBER');
-                    file_put_contents('base_log', print_r($res, true));
+                    //file_put_contents('base_log', print_r($res, true));
 					$head_photo = $res[0];
 					break;
 				default:
-				    file_put_contents('upload_log', print_r($_FILES, true), FILE_APPEND);
+				    //file_put_contents('upload_log', print_r($_FILES, true), FILE_APPEND);
 					$res = Image::upload('head_photo', 'MEMBER');
 					$head_photo = $res['savename'];
 			}
@@ -451,6 +451,16 @@ class MemberController extends CommonController{
             jsonReturn();
         }else{
             jsonReturn('','00000');
+        }
+    }
+
+    public function modifyName() {
+        $name = I('get.name');
+        $this->member_info['real_name'] = $name;
+        if (M('Member')->where(['uid'=>$this->member_info['uid']])->save($this->member_info)!== false) {
+            jsonReturn();
+        } else {
+            jsonReturn('', '00000');
         }
     }
 }

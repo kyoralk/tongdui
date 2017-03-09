@@ -1,4 +1,7 @@
 <style>
+    .hide {
+        display: none!important;
+    }
     .ncsc-form-goods .form-group {
         font-size: 0;
         line-height: 20px;
@@ -71,10 +74,34 @@
                 {:fastModule('form-group',array('支付类型'),array('checkbox',['is_cash','is_yqt','is_gwq'],array(array('现金',1,$goods_info['is_cash'],1),array('一卷通',1,$goods_info['is_yqt'],1),array('购物券',1,$goods_info['is_gwq'],1)),'','','checkbox'))}
                 {:fastModule('form-group',array('赠送购物券'),array('text','gwq_send',$goods_info['gwq_send']))}
                 {:fastModule('form-group',array('额外赠送购物券'),array('text','gwq_extra',$goods_info['gwq_extra']))}
-                {:fastModule('form-group',array('可用一卷通数额[购买此商品能用最大值]'),array('text','yjt_can',$goods_info['yjt_can']))}
-                {:fastModule('form-group',array('可用购物券数额[购买此商品能用最大值]'),array('text','gwq_can',$goods_info['gwq_can']))}
+                {:fastModule('form-group',array('可用一卷通[购买用最大值]'),array('text','yjt_can',$goods_info['yjt_can']))}
+                {:fastModule('form-group',array('可用购物券[购买用最大值]'),array('text','gwq_can',$goods_info['gwq_can']))}
                 {:fastModule('form-group',array('捐赠数额'),array('text','love_amount',$goods_info['love_amount']))}
+
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">开启大桶水模式
+                        <p class="hint">指的是像桶装水单独配送扫码直接给配送员结算的模式</p>
+                    </label>
+                    <div class="col-sm-4" style="height: 74px;">
+                        <input type="checkbox" <?php echo $goods_info['water_mode']?"checked":""; ?>  value="1" name="water_mode" id="water_mode" onclick="checkWater(this);" >
+                        <b for="water_mode">开启</b>
+                        <input class="form-control <?php echo $goods_info['water_mode']?'':'hide'; ?>" id="water_fee" placeholder="" name="water_fee" type="text" value="<?php echo $goods_info['water_fee']?$goods_info['water_fee']:'0.00'; ?>">
+                        <p class="hint">开启之后请设置对应单件配送费用(数字)，直接结算给配送员</p>
+                    </div>
+                </div>
+
+
+
                 <script type="text/javascript">
+
+                    function checkWater(obj) {
+                        if ($(obj).prop('checked') == true) {
+                            $("#water_fee").removeClass('hide');
+                        } else {
+                            $("#water_fee").addClass('hide');
+                        }
+                    }
+
                     if({$goods_info.consumption_type}==2)
                     {
                         $("input[type=radio][name='consumption_type'][value='2']").attr("checked",'checked');

@@ -862,8 +862,9 @@ class OrderController extends CommonController{
      * 前台调用的提货单列表
      */
     public function pick_list() {
-        $condition ['pick_status'] = I('get.type');
-        $condition ['pick_uid'] = $this->member_info['uid'];
+        $condition['pick_status'] = I('get.type');
+        $condition['pick_status'] = $condition['pick_status']?$condition['pick_status']:1;
+        $condition['pick_uid'] = $this->member_info['uid'];
         $data = appPage(D('PickInfo'), $condition, I('get.num'), I('get.p'),'relation','order_time desc');
 
         if ($data['list']) {
