@@ -365,9 +365,14 @@ class AccountController extends CommonController{
             $condition['trade_status'] = 0;
 			$condition['trade_type'] = 4;//获得
 			$zhd = M('MemberAccountLog')->where($condition)->sum('trade_fee');
-			$data['zcz'] = empty($zcz) ? '0' : $zcz;
+
+            $condition['trade_type'] = 8;//获得
+            $dtt = M('MemberAccountLog')->where($condition)->sum('trade_fee');
+
+            $data['zcz'] = empty($zcz) ? '0' : $zcz;
 			$data['ztx'] = empty($ztx) ? '0' : $ztx;
 			$data['zhd'] = empty($zhd) ? '0' : $zhd;
+			$data['dtt'] = empty($zhd) ? '0' : $dtt;
 		}
 		foreach($data["list"] as $key=>$val)
         {
