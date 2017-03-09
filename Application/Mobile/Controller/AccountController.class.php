@@ -87,7 +87,7 @@ class AccountController extends CommonController{
 	 * @param string $trade_code
 	 * @param int $trade_type
 	 */
-	public function addLog($uid, $trade_fee, $trade_code, $trade_type, $desc = '',$reward_code = '' ,$proportion = 1){
+	public static function addLog($uid, $trade_fee, $trade_code, $trade_type, $desc = '',$reward_code = '' ,$proportion = 1){
 		$data = AccountController::assemblyLog($uid, $trade_fee, $trade_code, $trade_type, $desc,$reward_code,$proportion);
 		if(!empty($data['log'])){
 			if($data['bulk'] == 1){
@@ -156,7 +156,7 @@ class AccountController extends CommonController{
 	 * @param boolen $minus 为true时 为减少
 	 * @param string $desc 详情
 	 */
-	public static function changeALL($uid_array,$trade_fee_array,$trade_code,$trade_type,$desc,$reward_code,$minus = false){
+	public static function changeALL($uid_array,$trade_fee_array,$trade_code,$trade_type,$desc,$reward_code='',$minus = false){
 		if(empty($uid_array)){
 			return true;
 		}
@@ -234,8 +234,8 @@ class AccountController extends CommonController{
 		try {
 			$Account->where('uid = '.$this->member_info['uid'])->setDec($field_fee,$trade_fee);//减少form
 			$Account->where('uid = '.$to_uid)->setInc($field_fee,$trade_fee);//增加to
-			$this->addLog($this->member_info['uid'],$trade_fee, $trade_code, $trade_type,$form_desc);
-			$this->addLog($to_uid, $trade_fee, $trade_code, $trade_type,$to_desc);
+			AccountController::addLog($this->member_info['uid'],$trade_fee, $trade_code, $trade_type,$form_desc);
+			AccountController::addLog($to_uid, $trade_fee, $trade_code, $trade_type,$to_desc);
 		} catch (Exception $e) {
 			$M->rollback();
 			jsonReturn('','01032');
@@ -262,7 +262,7 @@ class AccountController extends CommonController{
             }
         }
 
-		$out_trade_no = $this->addLog($this->member_info['uid'],I('post.trade_fee'), $trade_code, 1,'','',$proportion);
+		$out_trade_no = AccountController::addLog($this->member_info['uid'],I('post.trade_fee'), $trade_code, 1,'','',$proportion);
 		$response = $this->notifyURL();
 		if($out_trade_no){
 			$response['out_trade_no'] = 'REC_'.$out_trade_no;
@@ -299,8 +299,8 @@ class AccountController extends CommonController{
 		$M = M();
 		try {
 			$this->feeze($this->member_info['uid'], $withdraw_money, $withdraw_type);//冻结
-			$this->addLog($this->member_info['uid'], $withdraw_money, $withdraw_type, 2);//添加冻结日志
-			$this->change($this->member_info['uid'], $withdraw_fee, $withdraw_type, 5,true,'','',false);//扣除手续费
+			AccountController::addLog($this->member_info['uid'], $withdraw_money, $withdraw_type, 2);//添加冻结日志
+			AccountController::change($this->member_info['uid'], $withdraw_fee, $withdraw_type, 5,true,'','',false);//扣除手续费
 			$data = array(
 					'apply_no'=>serialNumber(),
 					'account_name'=>$this->member_info['real_name'],

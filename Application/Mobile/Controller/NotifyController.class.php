@@ -120,6 +120,11 @@ class NotifyController extends InitController{
 		$this->checkGive();
 		return true;
 	}
+
+	public function test() {
+	    $out_trade_no = I('post.out_trade_no');
+	    $this->rechargeb($out_trade_no);
+    }
     /**
      * 充值 (新增后台回调充值)
      * @param string $out_trade_no
@@ -373,9 +378,6 @@ class NotifyController extends InitController{
 		}
 	}
 
-	public function test() {
-	    $this->buy(I('get.sn'));
-    }
 
     public function makeWater($order_sn, $goods_id, $num=10) {
         // 生成10张水票
