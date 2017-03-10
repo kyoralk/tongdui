@@ -448,6 +448,7 @@ class MemberController extends CommonController{
             jsonReturn('','01033');
         }
         if(M('ApplyDeliver')->add($data)){
+            M('Member', C("DB_PREFIX_C"))->where(['uid'=>$this->member_info['uid']])->save(['deliver_level'=>3]);
             jsonReturn();
         }else{
             jsonReturn('','00000');
@@ -463,4 +464,96 @@ class MemberController extends CommonController{
             jsonReturn('', '00000');
         }
     }
+    
+    /**
+     * @param string $uid_array
+     * @return array
+     * 和谐网络三层图
+     */
+    public function brother() {
+        $members = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$this->member_info['uid']])->select();
+        if ($members) {
+            $countArr['level1'] = $this->countBrotherData($members);
+            $child = [];
+            $child2 = [];
+            $res = '';
+            if ($members) {
+                foreach ($members as $m) {
+                    $_part = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$m['uid']])->select();
+                    foreach ($_part as $c) {
+                        if ($c) {
+                            $res[] = $c;
+                        }
+                    }
+                }
+            }
+            $child = $res;
+//            var_dump($child);exit;
+
+            if ($child) {
+                $res = '';
+                $countArr['level2'] = $this->countBrotherData($child);
+                foreach ($child as $c) {
+                    $_part = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$c['uid']])->select();
+                    foreach ($_part as $c) {
+                        if ($c) {
+                            $res[] = $c;
+                        }
+                    }
+                }
+            }
+            $child2 = $res;
+            if ($child2) {
+                $child2 = $res;
+                $countArr['level3'] = $this->countBrotherData($child2);
+            }
+        }
+
+        jsonReturn($countArr);
+    }
+
+    /**
+     * @param string $uid_array
+     * @return array
+     * 和谐网络三层图
+     */
+    public function countBrotherData($uid_array='') {
+        $res = ['all_charge'=>0, 'all_trade'=>0];
+
+        if ($uid_array) {
+            foreach ($uid_array as $u) {
+                $_uid[] = $u['uid'];
+            }
+        } else {
+            return $res;
+        }
+        $data = M('MemberAccountLog', C("DB_PREFIX_C"))->where('uid in ('.implode(",", $_uid).') and trade_type in (1, 3)')->select();
+        if ($data) {
+            foreach ($data as $d) {
+                if ($d['trade_type'] == '1' && $d['trade_code'] == 'GWQ' && $d['trade_status'] == '1') {
+                    $res['all_charge']+=$d['final_fee'];
+                    $res['list'][$d['uid']]['all_charge']+=$d['final_fee'];
+                }
+                if ($d['trade_type'] == '3' && $d['trade_code'] == 'YJT') {
+                    $res['all_trade']+=$d['final_fee'];
+                    $res['list'][$d['uid']]['all_trade']+=$d['final_fee'];
+                }
+            }
+        }
+
+        if ($res) {
+            foreach ($res['list'] as $k=>$d) {
+                $member = M('Member', C('DB_PREFIX_C'))->where(['uid'=>$k])->find();
+                $res['list'][$k]['card_img_1'] = $member['card_img_1'];
+                $res['list'][$k]['username'] = $member['username'];
+                $res['list'][$k]['real_name'] = $member['real_name'];
+                $res['list'][$k]['all_charge'] = $res['list'][$k]['all_charge']?abs($res['list'][$k]['all_charge']):0;
+                $res['list'][$k]['all_trade'] = $res['list'][$k]['all_trade']?abs($res['list'][$k]['all_trade']):0;
+            }
+        }
+        $res['all_charge'] = abs($res['all_charge']);
+        $res['all_trade'] = abs($res['all_trade']);
+        return $res;
+    }
+
 }

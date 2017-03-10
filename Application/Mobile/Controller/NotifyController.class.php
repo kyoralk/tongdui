@@ -80,7 +80,7 @@ class NotifyController extends InitController{
 	 */
 	public function client(){
 		if($this->shuntByNo(I('post.out_trade_no'))){
-            /*
+
 			$trade = explode('_', I('post.out_trade_no'));
             if ($trade[0] == 'BUY') {
                 $PayTemporary = M('PayTemporary',C('DB_PREFIX_MALL'));
@@ -88,9 +88,9 @@ class NotifyController extends InitController{
                 if ($res) {
                     $arr = ['order_sn'=>$res['order_sn']];
                 }
-            }*/
+            }
 
-			jsonReturn();
+			jsonReturn($res);
 		}
 	}
 	/**
