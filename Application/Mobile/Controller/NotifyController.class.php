@@ -79,7 +79,21 @@ class NotifyController extends InitController{
 	 * 客户端通知
 	 */
 	public function client(){
-		if($this->shuntByNo(I('post.out_trade_no'))){
+
+        /************************************************************/
+        // 增加验签环节
+	    $key = I('post.key'); // 随机一组数
+	    $sn = I('post.sn');
+	    $secret = md5('tdsc18');
+	    // 生成sn方法为 首先md5一下随机组数， 然后与固定密钥的组合
+        // 然后前后增加字符|
+        // 最后再进行md5
+	    if (strtoupper(md5('|'.md5($key).$secret.'|')) != $sn) {
+	        jsonReturn('', '00000');
+        }
+        /**********************************************************/
+
+        if($this->shuntByNo(I('post.out_trade_no'))){
 
 			$trade = explode('_', I('post.out_trade_no'));
             if ($trade[0] == 'BUY') {

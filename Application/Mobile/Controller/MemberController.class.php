@@ -464,7 +464,7 @@ class MemberController extends CommonController{
             jsonReturn('', '00000');
         }
     }
-    
+
     /**
      * @param string $uid_array
      * @return array
@@ -472,42 +472,35 @@ class MemberController extends CommonController{
      */
     public function brother() {
         $members = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$this->member_info['uid']])->select();
-        if ($members) {
-            $countArr['level1'] = $this->countBrotherData($members);
-            $child = [];
-            $child2 = [];
-            $res = '';
-            if ($members) {
-                foreach ($members as $m) {
-                    $_part = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$m['uid']])->select();
-                    foreach ($_part as $c) {
-                        if ($c) {
-                            $res[] = $c;
-                        }
-                    }
-                }
-            }
-            $child = $res;
-//            var_dump($child);exit;
 
-            if ($child) {
-                $res = '';
-                $countArr['level2'] = $this->countBrotherData($child);
-                foreach ($child as $c) {
-                    $_part = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$c['uid']])->select();
-                    foreach ($_part as $c) {
-                        if ($c) {
-                            $res[] = $c;
-                        }
+        $countArr[] = $this->countBrotherData($members, "生死之交", 1);
+        $res = '';
+        if ($members) {
+            foreach ($members as $m) {
+                $_part = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$m['uid']])->select();
+                foreach ($_part as $c) {
+                    if ($c) {
+                        $res[] = $c;
                     }
                 }
-            }
-            $child2 = $res;
-            if ($child2) {
-                $child2 = $res;
-                $countArr['level3'] = $this->countBrotherData($child2);
             }
         }
+        
+        $child = $res;
+        $countArr[] = $this->countBrotherData($child, "左膀右臂", 2);
+        if ($child) {
+            $res = '';
+            foreach ($child as $c) {
+                $_part = M('Member', C('DB_PREFIX_C'))->where(['referrer_id'=>$c['uid']])->select();
+                foreach ($_part as $c) {
+                    if ($c) {
+                        $res[] = $c;
+                    }
+                }
+            }
+        }
+        $child2 = $res;
+        $countArr[] = $this->countBrotherData($child2, "情同手足", 3);
 
         jsonReturn($countArr);
     }
@@ -517,8 +510,8 @@ class MemberController extends CommonController{
      * @return array
      * 和谐网络三层图
      */
-    public function countBrotherData($uid_array='') {
-        $res = ['all_charge'=>0, 'all_trade'=>0];
+    public function countBrotherData($uid_array='', $levelName = '', $levelId='') {
+        $res = ['all_charge'=>0, 'all_trade'=>0, 'level_name'=>$levelName, 'level_id'=>$levelId];
 
         if ($uid_array) {
             foreach ($uid_array as $u) {
@@ -544,15 +537,19 @@ class MemberController extends CommonController{
         if ($res) {
             foreach ($res['list'] as $k=>$d) {
                 $member = M('Member', C('DB_PREFIX_C'))->where(['uid'=>$k])->find();
+                $res['list'][$k]['uid'] = $member['uid'];
                 $res['list'][$k]['card_img_1'] = $member['card_img_1'];
                 $res['list'][$k]['username'] = $member['username'];
                 $res['list'][$k]['real_name'] = $member['real_name'];
                 $res['list'][$k]['all_charge'] = $res['list'][$k]['all_charge']?abs($res['list'][$k]['all_charge']):0;
                 $res['list'][$k]['all_trade'] = $res['list'][$k]['all_trade']?abs($res['list'][$k]['all_trade']):0;
+                $res['info'][] = $res['list'][$k];
+                unset($res['list'][$k]);
             }
         }
         $res['all_charge'] = abs($res['all_charge']);
         $res['all_trade'] = abs($res['all_trade']);
+        unset($res['list']);
         return $res;
     }
 
