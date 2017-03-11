@@ -324,4 +324,17 @@ class GeneralController extends Controller{
             }
         }
     }
+
+    /**
+     * 二维码跳转
+     */
+    public function barcode() {
+        $param = I("get.param");
+        if (I('get.platform')) {
+            echo $param;
+        } else {
+            echo "<script>window.location.href='http://www.hxg19.com'</script>";
+        }
+    }
+
 }

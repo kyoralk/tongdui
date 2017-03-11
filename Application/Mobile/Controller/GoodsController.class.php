@@ -206,9 +206,11 @@ class GoodsController extends InitController{
         if ($data['list']) {
             foreach ($data['list'] as $k => $v) {
                 $data['list'][$k]['sales'] = $this->countSale($data['list'][$k]['goods_id']);
+
+                $barcodePrefix = "http://www.tdsc18.com/general/general/barcode?platform=android%26param=";
                 $json['goods_id'] = $data['list'][$k]['goods_id'];
                 $json['api'] = 'goods';
-                $data['list'][$k]['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
+                $data['list'][$k]['barcode'] = 'http://qr.liantu.com/api.php?text='.$barcodePrefix.json_encode($json);
 
             }
         }
@@ -317,9 +319,10 @@ class GoodsController extends InitController{
 			}
 		}
 
+        $barcodePrefix = "http://www.tdsc18.com/general/general/barcode?platform=android%26param=";
         $json['goods_id'] = $data['goods_id'];
 		$json['api'] = 'goods';
-		$data['barcode'] = 'http://qr.liantu.com/api.php?text='.json_encode($json);
+		$data['barcode'] = 'http://qr.liantu.com/api.php?text='.$barcodePrefix.json_encode($json);
 
 		return $data;
 	}

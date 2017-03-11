@@ -811,12 +811,12 @@ class OrderController extends CommonController{
                     M("OrderInfo")->where(['order_sn'=>$order_sn])->save(['deliver_status'=>4]);
 
                     if ($deliver['deliver_id'] == '0')
-                        $deliver['deliver_id'] = $deliver['deliveboss_id'];
+                        $deliver['deliver_id'] = $deliver['deliverboss_id'];
 
-                    if ($deliver['deliveboss_id'] == '0')
-                        $deliver['deliveboss_id'] = $deliver['deliver_id'];
+                    if ($deliver['deliverboss_id'] == '0')
+                        $deliver['deliverboss_id'] = $deliver['deliver_id'];
 
-                    $deliverboss = M("Member", C('DB_PREFIX_C'))->where(['uid'=>$deliver['deliveboss_id']])->find();
+                    $deliverboss = M("Member", C('DB_PREFIX_C'))->where(['uid'=>$deliver['deliverboss_id']])->find();
                     if ($deliver['deliverboss_fee'] && $deliverboss['deliver_level'] == 2)
                         AccountController::change($deliver['deliverboss_id'], $deliver['deliverboss_fee'], 'YJT', 8, false, "订单配送：".$deliver['order_sn'].', 配送主管奖励');
                     if ($deliver['deliver_fee'])
@@ -850,7 +850,7 @@ class OrderController extends CommonController{
             $order['pick_sn'] = 'T'.time().randstr(4,true);
             $store = M('Store')->where(['store_id'=>$order['store_id']])->find();
             $order['address'] = $store['company_address'];
-            $deliverboss = M("Member", C('DB_PREFIX_C'))->where(['uid'=>$deliver['deliveboss_id']])->find();
+            $deliverboss = M("Member", C('DB_PREFIX_C'))->where(['uid'=>$deliver['deliverboss_id']])->find();
             $order['consignee'] = $deliverboss['real_name'];
             $order['mobile'] = $deliverboss['mobile'];
             $order['pick_uid'] = $deliverboss['uid'];
